@@ -364,3 +364,16 @@ export async function getSysUserById(params) {
 	}
 	);
 }
+
+//获取文章阅读奖励
+
+export async function getBonus(params) {
+	var data = Base64.encode(JSON.stringify(params));
+    var sign = md5(data+userId+'_'+token);
+	let url = '/admin/article/getBonus?data='+data+"&sign="+sign;
+
+	return request(url,{
+		method:"post"
+	}
+	);
+}

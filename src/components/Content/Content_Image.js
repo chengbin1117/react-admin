@@ -5,9 +5,9 @@ import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+import {uploadUrl} from "../../services/common"
 let X = 0; //出事选中父选择器的
-function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loading,editorItem,setStatus}) {
+function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loading,editorItem,setStatus,changepage}) {
 	console.log('loading',loading)
 	const columns = [{
 	  title: '类型',
@@ -29,7 +29,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  dataIndex: 'imageAddress',
 	  key: 'imageAddress',
 	  render:(text,record)=> (
-	  	    <span><img src ={record.imageAddress}  style={{width:'50px',height:"50px"}}/></span>
+	  	    <span><img src ={record.imageAddress!=""?uploadUrl+record.imageAddress:''}  style={{width:'50px',height:"50px"}}/></span>
 	  	)
 	},{
 	  title: '发布人',
@@ -81,7 +81,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	    <span>
 	      <a className = "action_font" onClick={()=>editorItem(record)}>编辑</a>
 	      <Popconfirm title="确定删除吗？" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
-		    <a href="#" className = "action_font">删除</a>
+		    <a href="#" className = "action_font" style={{marginLeft:10}}>删除</a>
 		  </Popconfirm>
 	    </span>
 	  )

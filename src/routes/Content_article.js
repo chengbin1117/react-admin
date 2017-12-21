@@ -88,13 +88,12 @@ function ContentArticle({location,dispatch,router,content}) {
 		            });	
 		},
 		editorItem(record){
-			router.push('content/editor_article?articleId='+record.articleId)
+			dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
+			
 		},
 		changepage(page){
 			 dispatch(routerRedux.push('/content/content_article?page='+page))
 		          
-		       
-			//router.push('content/content_article?page='+page)
 		},
 		delArticle(record){
 			/*console.log(location)*/

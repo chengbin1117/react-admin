@@ -2,29 +2,16 @@ import React from 'react';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
+import styles from './Content_Opinion_Show.css';
 import Editor from '../../editor/index';
 import WrappedEditorForm from './EditorForm';
+import RelationModal from '../Setting/RelationUser';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
-const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,ArticleList}) => {
-	//let logoimg = require("image!../../assets/images/lx4.png");
-  let merId =localStorage.getItem("userId");
-  let html = '';
-  let text = '';
-  //console.log(ArticleList)
-  let tags =[];
-  let articleText = "";
-  if(ArticleList!=undefined){
-    tags=ArticleList.tags;
-    articleText= String(ArticleList.articleText);
-  }
-
-  const options = ColumnList;
-
-	const formItemLayout = {
+const formItemLayout = {
       labelCol: {
         xs: { span: 2 },
         sm: { span: 2 },
@@ -34,67 +21,222 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
         sm: { span: 16 },
       },
     };
-	function onChange(value) {
-      console.log(value);
-    }
-  const config = {
-      rules: [{ type: 'object', required: false, message: 'Please select time!' }],
-  };
-
-  function showModal(){
+const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 24,
+          offset: 1,
+        },
+      },
+    };
+function ArticleEditor({
+  dispatch,
+  imgUrl,
+  ArticleList,
+  ColumnList,
+  UserById,
+  setting,
+  form: {
+    getFieldDecorator,
+    validateFields,
+    getFieldsValue,
+    setFieldsValue,
+  },
+}){
+  let merId =localStorage.getItem("userId");
+  const options = ColumnList;
+  console.log("setting",ArticleList)
+  const {RelationVisible} =setting
+  function handleSubmit (){
+      validateFields((errors) => {
+        if (errors) {
+          return;
+        }else{
+          const data = {...getFieldsValue()};
+          console.log(data)
           dispatch({
-            type:'content/showBgModal'
+              type:'content/publishArticle',
+              payload:{
+                articleTitle:data.articleTitle,
+                articleText:data.text,
+                articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
+                description:data.artic,
+                image:imgUrl,
+                type:parseInt(data.type),
+                columnId:parseInt(data.column[0]),
+                displayStatus:parseInt(data.radioT),
+                displayOrder:parseInt(data.sort),
+                commentSet:data.radioS == "true"?true:false,
+                publishSet:data.radioG == "true"?true:false,
+                createUser:parseInt(data.createUser),
+                sysUser:parseInt(merId),
+                bonusStatus:parseInt(data.bonusStatus)
+              }
           })
-
         }
-   function edtiorContent (editor){
+      })
+  }
+  function publishStatus (){
+    validateFields((errors) => {
+        if (errors) {
+          return;
+        }else{
+          const data = {...getFieldsValue()};
+          console.log(data)
+          dispatch({
+              type:'content/publishArticle',
+              payload:{
+                articleTitle:data.articleTitle,
+                articleText:data.text,
+                articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
+                description:data.artic,
+                image:imgUrl,
+                type:parseInt(data.type),
+                columnId:parseInt(data.column[0]),
+                displayStatus:parseInt(data.radioT),
+                displayOrder:parseInt(data.sort),
+                commentSet:data.radioS == "true"?true:false,
+                publishSet:data.radioG == "true"?true:false,
+                createUser:parseInt(data.createUser),
+                sysUser:parseInt(merId),
+                bonusStatus:data.bonusStatus,
+                publishStatus:0
+              }
+          })
+        }
+      })
+  }
+  function showModal(){
+      dispatch({
+            type:'content/showBgModal'
+      })
+  }
+  function edtiorContent (value){
         //console.log(editor.txt.html());
-        html  = editor.txt.html()
-        text  = editor.txt.text();
-        localStorage.setItem("text", text);
-        localStorage.setItem("html", html);
+        /*var html  = editor.txt.html()
+        var value  = editor.txt.text();*/
+        /*localStorage.setItem("text", text);
+        localStorage.setItem("html", html);*/
+        console.log(typeof(value))
+        return String(value)
     }
-  function getFields(getFieldDecorator,formItemLayout){
-    const children = [];
-    console.log(ArticleList);
-    let articleText =ArticleList.articleText;
-    if(articleText ==undefined){
-      return false;
+  function handleChange(imgUrl){
+    console.log(imgUrl)
+    return imgUrl
+  }
+
+
+  function showUser(){
+    dispatch({
+        type:"setting/showRelationModal"
+      })
+  }
+  const RelationModalProps ={
+    visible:RelationVisible,
+    onCancel(){
+      dispatch({
+        type:"setting/hideRelationModal"
+      })
+    },
+    onOk(record,values){
+      console.log(record,values)
+      Modal.confirm({
+        title:"确认关联前台用户吗？",
+        okText : '确定',
+          onOk() {
+              dispatch({
+                type:"setting/setKgUser",
+                payload:{
+                  userId:record.id,
+                  kgUserId:values.kgUserId
+                }
+                  })
+          },
+          onCancel() {
+                console.log('Cancel');
+          },  
+      })
+      
+    },
+    handleBlur(e){
+      console.log(e.target.value)
+      dispatch({
+        type:"setting/getUserId",
+        payload:{
+          userMobile:e.target.value
+        }
+      })
     }
-    
-      children.push(
-        <div key="0">
-          <Row span={24} key='0'>
-            <Col>
-              <FormItem label="文章标题" {...formItemLayout}>
+  }
+  function onChange(rule, value, callback) {
+    console.log(rule)
+    /*let n = 0;
+        for(var i in this.tag){
+            if (this.tag[i].value == '') {
+              // callback(new Error('请输入密码'));
+              n +=1
+            }else if(this.tag[i].value.length > 5 || this.tag[i].value.length < 2){
+              callback(new Error('每个tag：2-5个汉字'));
+            }
+        }
+        if(n > 2){
+          callback(new Error('至少输入3个tag'));
+        }else{
+          callback()
+        }*/
+  }
+  var Item =['1','2','3','4','5']
+  return(
+      <Form onSubmit={handleSubmit}>
+            <FormItem label="文章标题" {...formItemLayout}>
                     {getFieldDecorator('articleTitle', {
-                      initialValue:ArticleList!=undefined?ArticleList.articleTitle:"",
-                      rules: [{ required: true, message: '摘要10-100字,支持中英文!' }],
+                      initialValue:ArticleList.articleTitle,
+                      rules: [{
+                          type: 'string', 
+                          message: '文章标题1-64个字符,支持中英文及特殊符号，空格，不区分大小写',
+                          min:1,
+                          max:64,
+
+                        }, {
+                          required: true, message: '请输入标题!',
+                        }
+                        ],
                     })(
-                      <Input  type="text" placeholder="输入标题" style={{width:'40%'}}/>
+                      <Input  type="text" placeholder="输入标题" style={{width:'60%'}}/>
                     )}
               </FormItem>
-            </Col>
-          </Row>      
-          <Row span={24} key='1'>
-            <Col>
-                <FormItem >
+              <FormItem >
                   {getFieldDecorator('text', {
-                      rules: [{ required: false, message: '请输入正文!' }],
+                      initialValue:ArticleList.articleText,
+                      rules: [
+                      { required: true, message: '请输入正文!' },
+                      {type:'string',min:1,max:5000,message:'请输入1-5000个字符'}
+                      ],
+                      trigger:'edtiorContent'
                     })(
-                         <Editor edtiorContent={edtiorContent} articleText={articleText}/>
+                         <Editor edtiorContent={edtiorContent} articleText={ArticleList.articleText}/>
                     )}
                   
-                </FormItem>
-            </Col>
-           </Row>
-           <Row  key='2'>
+              </FormItem>
+              <Row  key='2'>
               <Col span={4} style={{marginLeft:'65px'}}>
                   <FormItem label="Tag标签 " labelCol={{ span: 6 }}
                       wrapperCol={{ span: 14 }}>
                       {getFieldDecorator('tag1', {
-                        initialValue:tags!=undefined?tags[0]:'',
-                        rules: [{ required: true, message: '请至少输入3个标签!' }],
+                        initialValue:ArticleList.tags!=undefined?ArticleList.tags[0]:'',
+                        rules: [
+                          {
+                            required: true, 
+                            message: '请输入标签!',
+                           },{
+                            min:2,
+                            max:5,
+                            message: '请输入2-5个字符!',
+                        }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
                       )}
@@ -104,8 +246,16 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
               <Col span={2} style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag2', {
-                        initialValue:tags!=undefined?tags[1]:'',
-                        rules: [{ required: true, message: '请至少输入3个标签!' }],
+                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[1]:'',
+                         rules: [
+                          {
+                            required: true, 
+                            message: '请输入标签!',
+                           },{
+                            min:2,
+                            max:5,
+                            message: '请输入2-5个字符!',
+                        }],
                       })(
                         <Input style={{width:'100%'}}/>
                       )}
@@ -115,8 +265,16 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
               <Col span={2} style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag3', {
-                        initialValue:tags!=undefined?tags[2]:'',
-                        rules: [{ required: true, message: '请至少输入3个标签!' }],
+                        initialValue:ArticleList.tags!=undefined?ArticleList.tags[2]:'',
+                         rules: [
+                          {
+                            required: true, 
+                            message: '请输入标签!',
+                           },{
+                            min:2,
+                            max:5,
+                            message: '请输入2-5个字符!',
+                        }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -126,8 +284,10 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
               <Col span={2} style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag4', {
-                        initialValue:tags!=undefined?tags[3]:'',
-                        rules: [{ required: false, message: '请至少输入3个标签!' }],
+                        initialValue:ArticleList.tags!=undefined?ArticleList.tags[3]:'',
+                        rules: [{ required: false, min:2,
+                            max:5,
+                            message: '请输入2-5个字符!', }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -137,8 +297,10 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
               <Col span={2} style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag5', {
-                        initialValue:tags!=undefined?tags[4]:'',
-                        rules: [{ required: false, message: '请至少输入3个标签!' }],
+                        initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
+                        rules: [{ required: false, min:2,
+                            max:5,
+                            message: '请输入2-5个字符!',}],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -146,79 +308,91 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
                   </FormItem>
               </Col>
            </Row> 
-           <Row span={24} key='3'>
-              <Col>
-                  <FormItem label="摘要" {...formItemLayout}>
+             
+              <FormItem label="摘要" {...formItemLayout}>
                     {getFieldDecorator('artic', {
-                      initialValue:ArticleList!=undefined?ArticleList.articleDescription:"",
-                      rules: [{ required: false, message: '摘要10-100字,支持中英文!' }],
+                      initialValue:ArticleList.articleDescription,
+                      rules: [{ required: false,min:10,max:100,message: '摘要10-100字,支持中英文,数字，符号，不区分大小写!' }],
                     })(
-                      <TextArea ></TextArea>
+                      <TextArea style={{minHeight:"100px"}}></TextArea>
                     )}
-                  </FormItem>
-              </Col>
-           </Row>
-           <Row span={24} key='4'>
-              <Col>
-                  <FormItem
+              </FormItem>
+              <FormItem
                     {...formItemLayout}
                     label="封面图"
                     extra=""
                   >
                    {getFieldDecorator('image',{
-                    rules: [{ required: false, message: '请选择图片!' }],
+                    initialValue:ArticleList.articleImage,
+                    rules: [{ required: false, message: '请选择图片!' },
+                    {type:"string",trigger:'hanlele'}
+                    ],
                    })(
-
-                    <div onClick ={showModal}> <img src={cruImage== ''?"":cruImage} style={{width:300+'px',height:200+'px'}}/></div>
+                    <img onClick ={showModal} src={'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+ArticleList.articleImage} className={styles.bgImg} hanlele={handleChange}/>
                     )}
-                    
-                  </FormItem>
-              </Col>
-           </Row>
-           <Row span={24} key='5'>
-              <Col>
-                  <FormItem
+              </FormItem>
+              <FormItem
                       {...formItemLayout}
                       label="类别"
                     >
                       {getFieldDecorator('type',{
-                        initialValue:ArticleList!=undefined?String(ArticleList.articleType):'1',
+                        initialValue:ArticleList.articleType+'',
+                        rules: [{ required: true, message: '请选择类别!' },
+                       ],
                       })(
                         <RadioGroup>
                           <Radio value="1">原创</Radio>
                           <Radio value="2">转载</Radio>
                         </RadioGroup>
                       )}
-                    </FormItem>
-              </Col>
-           </Row>     
-           <Row span={24} key='6'>
-              <Col>
-                  <FormItem
+              </FormItem>
+               <FormItem
+                      {...formItemLayout}
+                      label="文章来源"
+                    >
+                      {getFieldDecorator('type',{
+                        initialValue:ArticleList.articleSource,
+                        rules: [{ required: true, message: '请填写转载文章来源!' },
+                       ],
+                      })(
+                        <Input />
+                      )}
+              </FormItem>
+               <FormItem
+                      {...formItemLayout}
+                      label="原文链接"
+                    >
+                      {getFieldDecorator('type',{
+                        initialValue:ArticleList.articleLink,
+                        rules: [{ required: true, message: '请填写转载文章来源链接地址!' },
+                       ],
+                      })(
+                        <Input />
+                      )}
+              </FormItem>
+              <FormItem
                       {...formItemLayout}
                       label="选择栏目"
                      
                     >
                       {getFieldDecorator('column', {
+                        initialValue:[ArticleList.columnId,ArticleList.secondColumn],
                         rules: [
                           { required: true, message: '请选择文章栏目!' },
+                          {type: 'array'}
                         ],
                       })(
                         <Cascader options={options}  placeholder="请选择文章栏目" style={{width:'20%'}}/>
                       )}
-                    </FormItem>
-              </Col>
-           </Row>     
-           <Row span={24} key='7'>
-              <Col>
-                  <FormItem
+              </FormItem>
+              <FormItem
                       {...formItemLayout}
                       label="显示设置"
                     >
                       {getFieldDecorator('radioT',{
-                        initialValue:ArticleList!=undefined?String(ArticleList.displayStatus):'1',
+                        initialValue:ArticleList.displayStatus+'',
                         rules: [
-                          { required: true,message:'请选择' },
+                          { required: true,message:'请选择显示位置' },
                         ],
                       })(
                         <RadioGroup>
@@ -228,17 +402,13 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
                           <Radio value="4">前台隐藏</Radio>
                         </RadioGroup>
                       )}
-                    </FormItem>
-              </Col>
-           </Row>     
-           <Row span={24} key='8'>
-              <Col>
-                 <FormItem
+              </FormItem>
+              <FormItem
                       {...formItemLayout}
                       label="排序"
                     >
                       {getFieldDecorator('sort',{
-                        initialValue:ArticleList!=undefined?String(ArticleList.displayOrder):'',
+                        initialValue:ArticleList.displayOrder,
                         rules: [
                           { required: false, },
                         ],
@@ -246,79 +416,90 @@ const ArticleEditor = ({dispatch,ColumnList,handlsearch,editorText,cruImage,Arti
                         <Input style={{width:'10%'}}/>
                           
                       )}
-                    </FormItem>
-              </Col>
-           </Row>     
-           <Row span={24} key='9'>
-              <Col>
-                   <FormItem
-                      {...formItemLayout}
-                      label="评论设置"
-                    >
-                      {getFieldDecorator('radioS',{
-                        initialValue:ArticleList!=undefined?(ArticleList.commentSet ==true?'true':"false"):'true',
-                        rules: [
-                          { required: true,message:'请选择' },
-                        ],
-                      })(
-                        <RadioGroup>
-                          <Radio value='true'>开启评论</Radio>
-                          <Radio value='false'>关闭评论</Radio>
-                        </RadioGroup>
-                      )}
-                    </FormItem>
-              </Col>
-           </Row>
-           <Row span={24} key='10'>
-              <Col>
-                   <FormItem
+              </FormItem>
+              <FormItem
                       {...formItemLayout}
                       label="定时发布"
                     >
                       {getFieldDecorator('radioG',{
-                         initialValue:ArticleList!=undefined?(ArticleList.publishSet ==true?'true':"false"):'false',
+                         initialValue:ArticleList.publishSet==true?"true":'false',
                       })(
                         <RadioGroup >
                           <Radio value="true">开启定时发布</Radio>
                           <Radio value="false">不开启</Radio>
                         </RadioGroup>
                       )}
-                    </FormItem>
-              </Col>
-           </Row>      
-           <Row span={24} key='11'>
-              <Col>
-                   <FormItem
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label=" " colon ={false}
+                      extra ="定时范围：从当前时间点开始至未来7天内，按自然日计算"
+                    >
+                      {getFieldDecorator('time',{
+                         
+                      })(
+                        <DatePicker /*disabled={flag}*/ /*disabledDate={disabledDate}*//>
+                      )}
+              </FormItem>
+              
+              <FormItem
+                      {...formItemLayout}
+                      label="文章打赏"
+                      extra="提示：若您想设置阅读奖励规则，可用已关联的前台账号进入前台个人中心-我的专栏页面进行操作。"
+                    >
+                      {getFieldDecorator('bonusStatus',{
+                        initialValue:'true',
+                        rules: [
+                          { required: true,message:'请选择' },
+                        ],
+                      })(
+                        <RadioGroup>
+                          <Radio value='1'>开启</Radio>
+                          <br />
+                          <Radio value='0'>不开启</Radio>
+                        </RadioGroup>
+                      )}
+              </FormItem>
+              <FormItem label="阅读奖励">
+                     <Row>
+                        <Col span="8">
+                          xxxxxxx
+                        </Col>
+                         <Col span="5">
+                          奖励钛值0.5个/人
+                        </Col>
+                         <Col span="5">
+                          奖励钛值0.5个/人
+                        </Col>
+                     </Row>
+              </FormItem>
+              <FormItem {...tailFormItemLayout}>
+                <Button type="primary" htmlType="submit">保存</Button>
+               
+                <RelationModal {...RelationModalProps} />
+              </FormItem>
+              
+              
+      </Form>
+    )
+}
+
+export default Form.create()(ArticleEditor);
+
+{/*<FormItem
                       {...formItemLayout}
                        label="发布人"
+                       extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:ArticleList!=undefined?ArticleList.createUser:'',
+                        initialValue:(UserById.kgUserId!=null&&UserById.kgUserId!="")?UserById.kgUserId:'',
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],
                       })(
-                        <Input style={{width:'20%'}}/>
+                        <Input style={{width:'20%'}} disabled={(UserById.kgUserId!=null&&UserById.kgUserId!="")?true:false}/>
+
                       )}
-                    </FormItem>
-              </Col>
-           </Row>      
-                       
-          </div>
-        );
-      return children;
-  }
-
-  return (
-    <div>
-      <WrappedEditorForm getFields={getFields} handlsearch={handlsearch}/>
-      
-        
-    </div>
-  );
-};
-
-ArticleEditor.propTypes = {
-};
-
-export default ArticleEditor;
+                      {(UserById.kgUserId!=null&&UserById.kgUserId!="")?<a style={{maginLeft:30+'px'}} onClick={showUser} >关联前台用户</a>:null}
+              </FormItem>
+*/}

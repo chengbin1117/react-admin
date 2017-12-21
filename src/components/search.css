@@ -10,3 +10,12 @@
 	/*background:#eee;*/
 	padding-bottom:50px;
 }
+.NoImg{
+	width:150px;
+	height:150px;
+	line-height: 150px;
+	text-align: center;
+	border: 1px dashed  #e5e5e5;
+	border-radius: 5px;
+
+}

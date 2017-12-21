@@ -1,5 +1,5 @@
 
-//import './index.css';
+import './index.css';
 import dva from 'dva';
 
 // 1. Initialize

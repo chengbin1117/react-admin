@@ -56,6 +56,10 @@ export function GetRequest(url) {
 
 }
 
-let ImgUrl = "http://172.16.0.15";
+let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload";
 
-let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/"
+let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";
+export {
+  ImgUrl,
+  uploadUrl
+}

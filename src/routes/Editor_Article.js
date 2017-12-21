@@ -18,7 +18,7 @@ import Editor from '../editor/index';
 import ArticleEditor from '../components/Content/ArticeEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 
-function Editor_article({dispatch,router,content}) {
+function Editor_article({dispatch,router,content,setting}) {
 	//let logoimg = require("image!../assets/images/lx4.png");
   let merId =localStorage.getItem("userId");
 
@@ -35,6 +35,7 @@ function Editor_article({dispatch,router,content}) {
     ArticleList:editorList,
     router,
     cruImage,
+    setting,
     handlsearch(values){
        
         var ImgSrc = localStorage.getItem("img");
@@ -132,7 +133,7 @@ function Editor_article({dispatch,router,content}) {
 
 
 	return (
-			<div>
+			<LayoutContainer>
 				<Row span={24} >
 					<Col>
 						<ArticleEditor {...ArticleEditorProps}/>
@@ -140,7 +141,7 @@ function Editor_article({dispatch,router,content}) {
             <FtModal {...FtModalProps} />
 					</Col>
 				</Row>
-			</div>
+			</LayoutContainer>
 
 	);
 }
@@ -150,10 +151,10 @@ Editor_article.propTypes = {
 };
 
 function mapStateToProps({
-	content
+	content,setting
 }) {
 	return {
-		content
+		content,setting
 	};
 }
 

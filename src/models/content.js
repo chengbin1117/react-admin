@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import {
   getArticleList,setDisplayStatus,articleservice,auditArticle,getColumnList,deleteArticle,publishArticle,getArticleById,siteimagelist,addImage,deleteImage,
   getFeedbackList,deleteFeedback,setStatus,replay,ImageSetStatus,getCommentList,commentSet,deleteComment,setcommentStatus,auditComment,addColumn,deleteColumn,
-  sendEmail,getSysUserById
+  sendEmail,getSysUserById,getBonus
 } from '../services/content';
 import {
   message
@@ -32,7 +32,8 @@ export default {
     type:'create',
     editorList:{},
     imgUrl:'',
-    UserById:{}
+    UserById:{},
+    getBonus:[]
   },
 
   subscriptions: {
@@ -48,7 +49,7 @@ export default {
             type:'getArticleList',
             payload:{
               currentPage:search.page,
-              pageSIze:20,
+              pageSIze:25,
             }
           })
           dispatch({
@@ -93,10 +94,13 @@ export default {
         }
         match =pathToRegexp('/content/content_image').exec(location.pathname);
         if(match){
+          const search =GetRequest(location.search);
+          console.log("tupian",search)
           dispatch({
               type:'siteimagelist',
               payload:{
-                
+                  currentPage:parseInt(search.page),
+                  pageSize:25,
               }
             })
         }
@@ -379,12 +383,7 @@ export default {
       }
     },
     *getArticleById({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-      yield put({
-        type: 'hideLoading',
-      });
+    
       const { data } = yield call(getArticleById, payload);
       //console.log("栏目",data)
       if (data && data.code == 10000) {
@@ -397,7 +396,15 @@ export default {
                 editorList:res,
                 loading:false,
               }
-            }); 
+            });
+            if(res.sysUser!=null||res.sysUser!=""){
+               yield put({
+                type: 'getBonus',
+                payload:{
+                  articleId:res.articleId,
+                }
+              });
+            } 
       } else {
         tokenLogOut(data)
       }
@@ -431,10 +438,15 @@ export default {
         type: 'showLoading',
       });
       const { data } = yield call(addImage, payload);
-      console.log("图片",data)
+     
       if (data && data.code == 10000) {
+        if(payload.imageId !=undefined){
+          message.success('图片编辑成功');
+        }else{
           message.success('图片添加成功');
-            yield put({
+        }
+          
+        yield put({
               type: 'siteimagelist',
               payload:{
                 
@@ -443,7 +455,12 @@ export default {
             yield put({
               type: 'hideAddImgModal',
               
-            }); 
+            });
+            yield put({
+              type: 'hideEditorImageModal',
+              
+            });  
+      
       } else {
         tokenLogOut(data)
       }
@@ -743,6 +760,23 @@ export default {
         tokenLogOut(data)
       }
     },
+    *getBonus({ payload }, {call , put}) {
+ 
+      const { data } = yield call(getBonus, payload);
+          console.log(data)
+      if (data && data.code == 10000) {
+            var res = data.responseBody;
+            yield put({
+              type: 'getBonusSuccess',
+              payload:{
+                  getBonus:res
+              }
+
+           })
+      } else {
+        tokenLogOut(data)
+      }
+    },
   },
   reducers: {  
     showLoading(state, action) { 
@@ -913,6 +947,24 @@ export default {
         ...action.payload,
       };
     },
+    showEditorImageModal(state, action) {
+      return {...state,
+        ...action.payload,
+        EditorImageVisible: true
+      };
+    },
+    hideEditorImageModal(state, action) {
+      return {...state,
+        ...action.payload,
+        EditorImageVisible: false
+      };
+    },
+    getBonusSuccess(state, action) {
+      return {...state,
+        ...action.payload,
+      };
+    },
+    
   },
 
 }

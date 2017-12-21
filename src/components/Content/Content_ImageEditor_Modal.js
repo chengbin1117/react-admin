@@ -14,16 +14,12 @@ const formItemLayout_radio = {
   },
 };
 
-const Content_ImageAdd_Modal = ({
+const Content_ImageEditor_Modal = ({
   visible,
-  item = {},
-  type,
+   item= {},
   onCheckOk,
   onCancel,
-  selectList,
-  fatherType,
   showfpModal,
-  currentItem,
   form: {
     getFieldDecorator,
     validateFields,
@@ -32,10 +28,10 @@ const Content_ImageAdd_Modal = ({
   },
 }) => {
 
-  console.log(type,currentItem)
-  function handleOk(value,text) {
+    console.log(item)
+  function handleOk(value,text,id) {
     
-      onCheckOk(value,text);
+      onCheckOk(value,text,id);
     
     
   }
@@ -48,7 +44,7 @@ const Content_ImageAdd_Modal = ({
     });
   }
   const modalOpts = {
-    title: "添加图片",
+    title:"编辑图片",
     visible,
     onOk: handleOk,
     onCancel: Cancel,
@@ -126,16 +122,16 @@ const Content_ImageAdd_Modal = ({
     state = {
       checkNick: false,
       text:'',
-      value:"1",
+      value:item.imageType+'',
       imageDetail:'',
-      Imgvalue:"",
+      Imgvalue:item.imageDetail,
     };
     check = (text) => {
       this.props.form.validateFields(
         (err,value) => {
           if (!err) {
-            console.info(value,text);
-            handleOk(value,text)
+            
+            handleOk(value,this.state.Imgvalue,item.imageId)
 
           }
         },
@@ -163,19 +159,19 @@ const Content_ImageAdd_Modal = ({
         <Form>
           <FormItem {...formItemLayout_radio} label="添加图片">
             {getFieldDecorator('imageAddress', {
-              initialValue: "",
+              initialValue:item.imageAddress,
               rules: [
                   { required: true, message: '请上传图片' },
                   {type:"string"}
               ],
               trigger:'checkimg'
             })(
-              <Upload_Image checkimg={this.checkimg}/>
+              <Upload_Image checkimg={this.checkimg} editorImg={item.imageAddress}/>
             )}
           </FormItem>
           <FormItem {...formItemLayout_radio} label="类型" className="collection-create-form_last-form-item">
             {getFieldDecorator('type', {
-              initialValue: '1',
+              initialValue: item.imageType+'',
                rules: [
               { required: true, message: '请选择类型' },
               ],
@@ -192,15 +188,15 @@ const Content_ImageAdd_Modal = ({
                     label="显示位置"
                   >
                     {getFieldDecorator('residence', {
+                      initialValue:[item.navigatorPos+'',item.imagePos+""],
                       rules: [{ type: 'array', required: true, message: '请选择!' }],
-                    
                     })(
                       <Cascader options={residences}placeholder="请选择" />
                     )}
-          </FormItem>
+                  </FormItem>
           <FormItem {...formItemLayout_radio} label="显示状态" className="collection-create-form_last-form-item">
             {getFieldDecorator('showStatus', {
-              initialValue: "1",
+              initialValue: item.imageStatus==true?"1":"0",
                rules: [
               { required: true, message: '请选择显示状态' },
               ],
@@ -213,7 +209,7 @@ const Content_ImageAdd_Modal = ({
           </FormItem>
           <FormItem {...formItemLayout_radio} label="排序" className="collection-create-form_last-form-item">
             {getFieldDecorator('sort', {
-              initialValue: '',
+              initialValue: item.imageOrder,
             })(
               <Input />
             )}
@@ -235,6 +231,6 @@ const Content_ImageAdd_Modal = ({
 };
 
 
-export default Form.create()(Content_ImageAdd_Modal);
+export default Form.create()(Content_ImageEditor_Modal);
 
 

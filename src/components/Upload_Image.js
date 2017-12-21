@@ -1,5 +1,7 @@
 import React from 'react';
 import { Upload, Icon, message } from 'antd';
+import styles from "./search.css";
+import {uploadUrl,ImgUrl} from "../services/common"
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -26,26 +28,41 @@ function beforeUpload(file) {
   }
   return isTrue && is2M
 }   
-    var url = "http://120.78.186.139:8088/kgapi/admin/siteimage/upload"
+    var url = "http://120.78.186.139:8088/kgapi/image/upload"
     var token = localStorage.getItem("Kgtoken");
     var userId = localStorage.getItem("userId");
     const headers ={
       "token":userId+"_"+token
     }
 export default class Upload_Image extends React.Component {
-  state = {};
+  state = {
+    loading: false,
+    imageUrl:this.props.editorImg!=undefined?this.props.editorImg:''
+  };
 
   handleChange = (info) => {
-    console.log(info)
+ 
     if (info.file.status === 'done') {
+      console.log(info.fileList[0])
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
+     // getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl,loading:false }));
+      var img_url = info.fileList[0].response;
+      this.setState({
+        imageUrl:img_url.data[0].filePath,
+        loading:false
+      })
+      this.props.checkimg(img_url.data[0].filePath)
     }
   }
 
   render() {
     const imageUrl = this.state.imageUrl;
-    
+    const uploadButton = (
+      <div className={styles.NoImg}>
+        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        
+      </div>
+    );
     return (
       <Upload
         className="avatar-uploader"
@@ -58,8 +75,8 @@ export default class Upload_Image extends React.Component {
       >
         {
           imageUrl ?
-            <img src={imageUrl} alt="" className="avatar" /> :
-            <Icon type="plus" className="avatar-uploader-trigger" />
+            <img src={uploadUrl+imageUrl} alt="" className="avatar" className={styles.NoImg}/> :
+            uploadButton
         }
       </Upload>
     );

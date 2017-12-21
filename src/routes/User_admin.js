@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -184,7 +184,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 
 		},
 		changepage(page){
-			router.push('user/user_admin?page='+page)
+			dispatch(routerRedux.push('/user/user_admin?page='+page))
+			
 		}
 	}
 	const ExamineModalProps ={
