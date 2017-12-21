@@ -1,0 +1,25 @@
+.tableStyle{
+	height:655px;
+	overflow:scroll;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+.tags {
+	height:60px;
+	line-height:60px;
+	
+}
+.tagName{
+	text-align: right;
+    vertical-align: middle;
+    line-height: 32px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+.upImg {
+	width:100px;
+	height:100px;
+}

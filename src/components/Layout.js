@@ -1,0 +1,228 @@
+import React from 'react';
+import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import styles from './Layout.css';
+import style from './common.css';
+
+import {
+	withRouter,Link,hashHistory
+} from 'dva/router';
+
+import {
+	connect
+} from 'dva';
+import SideBar from './SideBar.js'
+const { Header, Content, Footer, Sider } = Layout;
+const SubMenu = Menu.SubMenu;
+let selectItem = '';
+// const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
+
+let nav = JSON.parse(localStorage.getItem("nav"))
+let userId  = localStorage.getItem("userId")
+//console.log("nav",nav)
+let first = "";
+let second = "";
+let third = "";
+//console.log("hashHistory",history)
+//let location=history.location
+//let path = location.pathname
+console.log("hashHistory",withRouter)
+   /* if(path =="/index"){
+          first ="";
+          second = "";
+      }else if(path =="/user/user_admin"){
+          first= "首页";
+          second= "用户管理";
+          third=""
+      }else if(path =="/user/user_role"){
+          first= "首页";
+          second= "用户角色管理";
+          third=""
+      }else if(path =="/user/user_login"){
+          first= "首页";
+          second= "用户登陆管理";
+          third=""
+      }else if(path =="/user/user_info"){
+          first= "首页";
+          second= "用户默认信息设置";
+          third=""
+      }else if(path =="/user/realName"){
+          first= "首页";
+          second= "实名认证管理";
+          third=""
+      }else if(path =="/content/content_column"){
+          first= "首页";
+          second= "栏目管理";
+          third=""
+      }else if(path =="/content/content_article"){
+          first= "首页";
+          second= "文章管理";
+          third=""
+      }else if(path =="/content/content_comment"){
+          first= "首页";
+          second= "评论管理";
+          third=""
+      }else if(path =="/content/release_article"){
+          first= "首页";
+          second= "文章管理",
+          third= "发布文章"
+      }else if(path =="/content/content_opinion"){
+          first= "首页";
+          second= "意见反馈";
+          third=""
+      }else if(path =="/content/content_image"){
+          first= "首页";
+          second= "图片管理";
+          third=""
+      }else if(path =="/setting/about"){
+          first= "首页";
+          second= "关于我们";
+          third=""
+      }else if(path =="/setting/base"){
+          first= "首页";
+          second= "网站基本信息"
+      }else if(path =="/setting/account"){
+          first= "首页";
+          second= "系统账号管理";
+          third=""
+      }else if(path =="/finance/recharge"){
+          first= "首页";
+          second= "充值管理";
+          third=""
+      }else if(path =="/finance/withdrawals"){
+          first= "首页";
+          second= "提现管理";
+          third=""
+      }else if(path =="/finance/record"){
+          first= "首页";
+          second= "交易记录";
+          third=""
+      }else if(path =="/finance/bond"){
+          first= "首页";
+          second= "保证金记录";
+          third=""
+      }
+*/
+  
+
+class LayoutContainer extends React.Component {
+  constructor(){
+        super();
+        this.state = {
+		    collapsed: false,
+		    defaultOpenKeys:['sub1','sub2','sub3','sub4','sub5','sub6']
+        };
+        this.onOpenChange = this.onOpenChange.bind(this);
+        this.onClick = this.onClick.bind(this);
+  }
+  onCollapse = (collapsed) => {
+    console.log('collapsed',collapsed);
+    // this.setState({ collapsed });
+  }
+  onClick(item){
+  	// hashHistory.push('/index')
+  	//console.log('item',item)
+  	//console.log('keyPath',item.keyPath[1])
+  	this.setState({
+  		defaultOpenKeys:item.keyPath[1]
+  	})
+  }
+  onOpenChange(val){
+/*  	this.setState({
+  		defaultOpenKeys:val
+  	})*/
+  	//console.log('val',val)
+  }
+  render() {
+  	//let logoimg = require("image!../assets/images/code.png");
+   
+    return (
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider
+			collapsible = {false}
+			onCollapse = {this.onCollapse}
+			defaultCollapsed = {false}
+			reverseArrow = {true}
+        >
+          <div className={styles.logo}>
+            <Link to = {'/index?userId='+userId}><Icon type="home" /></Link>
+          </div>
+          <Menu 
+	          theme="dark"  
+	          mode="inline" 
+	          onClick = {this.onClick} 
+	          inlineCollapsed = {false}
+	          onOpenChange = {this.onOpenChange}
+	          defaultOpenKeys = {this.state.defaultOpenKeys}
+          >
+            {nav&&nav.map((item,index)=>
+                   <SubMenu key={index} title={<span><Icon type="user1" /><span>{item.menuName}</span></span>}>
+                    {item.children.map((c,inde)=>
+                        <Menu.Item key={c.menuId}><Link activeClassName = {style.activeColor} to = {"/"+c.menuLink+'?page=1'}>{c.menuName}</Link></Menu.Item>
+                      )}
+                  </SubMenu>
+                )
+                
+            }
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}>
+          		<div className = {styles.header_right}>
+          			<span>CB</span>
+          			<Link to="/" className={styles.logOut}>退出</Link>
+          		</div>
+          </Header>
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>{first}</Breadcrumb.Item>
+              <Breadcrumb.Item>{second}</Breadcrumb.Item>
+              <Breadcrumb.Item>{third}</Breadcrumb.Item>
+            </Breadcrumb>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+              {this.props.children}
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            KG ©2016 Created by Ant UED
+          </Footer>
+        </Layout>
+      </Layout>
+    );
+  }
+}
+
+function mapStateToProps({
+	user
+}) {
+	return {
+		user
+	};
+}
+
+export default connect(mapStateToProps)(withRouter(LayoutContainer));
+{/*		<div className={styles.container} style = {{height:containerHeight}}>
+			<SideBar />
+			<div className = {styles.right_content}>
+				<div className={styles.nav}  style = {{height:navHeight}}>
+					<span><img  style = {{height:navHeight}}/></span>
+					<span className={styles.pullRight} style = {{lineHeight:navHeight + 'px',display:'none'}}><span className={styles.pullText}>{scmAddress}</span>,欢迎您!</span>
+					<span onClick={handleClick} className={styles.out}  style = {{lineHeight:navHeight + 'px'}}><span className={styles.outpull}><Icon type='arrow-right' /></span></span>
+				</div>
+				<div className={styles.content} style = {{height:contentHeight}}>
+				    {props.children}
+				</div>
+			</div>
+		</div>*/}
+
+   {/*  <SubMenu key="sub3"  style ={{display:"none"}} title={<span><Icon type="user3" /><span>seo中心</span></span>}>
+              <Menu.Item key="7"><Link activeClassName = {style.activeColor} to = '/seo/tdk'>首页TDK</Link></Menu.Item>
+              <Menu.Item key="8"><Link activeClassName = {style.activeColor} to = '/seo/hot'>热门关键词</Link></Menu.Item>
+              <Menu.Item key="9"><Link activeClassName = {style.activeColor} to = '/seo/link'>友情链接</Link></Menu.Item>
+              <Menu.Item key="556"><Link activeClassName = {style.activeColor} to = '/seo/top_search'>热搜词管理</Link></Menu.Item>
+            </SubMenu>*/}
+
+            {/* <SubMenu key="sub5" style ={{display:"none"}} title={<span><Icon type="user4" /><span>日志管理</span></span>}>
+              <Menu.Item key="14"><Link activeClassName = {style.activeColor} to = '/log/log_user'>用户日志</Link></Menu.Item>
+              <Menu.Item key="15"><Link activeClassName = {style.activeColor} to = '/log/log_admin'>管理员日志</Link></Menu.Item>
+            </SubMenu>*/}

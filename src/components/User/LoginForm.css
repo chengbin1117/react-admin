@@ -1,0 +1,82 @@
+
+.main{
+	height:100%;
+	width:100;
+	background-image: url(../../assets/images/dspack.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.login {
+	margin:50px auto;
+	width:500px;
+	height:400px;  
+	border-radius: 8px;
+	/*z-index: -100;*/
+	/*background-image: url(../../assets/images/logobox.png);*/
+	background-repeat: no-repeat;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.p3 {
+	font-size:24px;
+	color:#000!important;
+	font-family: "微软雅黑";
+	text-align: center;
+	margin-bottom:30px;
+}
+.loginform{
+	margin:0 auto;
+}
+.checkbox{
+	color:#fff;
+}
+.useImg{
+	display: inline-block;
+	width:20px;
+	height:20px;
+	
+}
+.Input{
+	width:300px;
+}
+.userimg{
+	display: inline-block;
+	width:20px;
+	height:20px;
+	background-color: #fff;
+}
+.button {
+	width:100%;
+	border:0;
+	background: -moz-linear-gradient( left,#1485ee,#19d0ec);
+	background: -webkit-linear-gradient(left,#1485ee,#19d0ec);
+	background: -o-linear-gradient(left,#1485ee, #19d0ec);
+	margin-top:30px;
+}
+.button:hover {
+	background: -moz-linear-gradient( left,#1485ee,#19d0ec);
+	background: -webkit-linear-gradient(left,#1485ee,#19d0ec);
+	background: -o-linear-gradient(left,#1485ee, #19d0ec);
+}
+.leftcol{
+	
+	text-align: center;
+}
+.audit{
+	color:#bbb;
+}
+.audit:hover{
+	color:#bbb!important;
+}
+@media only screen and (max-width:1440px){
+	.login{
+		width:430px;
+	}
+}
+@media only screen and (max-height:600px){
+	.p3{
+		font-size:18px;
+		margin:0px;
+	}
+}

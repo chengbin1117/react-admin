@@ -1,0 +1,16 @@
+.activeColor{
+    color:#fff!important;
+    background:#108ee9;
+    text-decoration: none!important;
+}
+.contentDiv{
+    width:100%;
+}
+@media only screen and (max-width:1366px){
+    .sideBar{
+        width:180px;
+    }
+    .sideBar li{
+        font-size:15px;
+    }
+}

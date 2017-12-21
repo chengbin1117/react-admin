@@ -1,0 +1,88 @@
+.opinion_show p{
+  margin:20px 10px;
+  font-size:16px;
+}
+.opinion_show p span:nth-child(1){
+  display: inline-block;
+  width:140px;
+  text-align: right;
+}
+.opinion_show .ant-input{
+  width:50%!important;
+}
+.upTitle {
+	text-align: center;
+	font-size:16px;
+}
+.active{
+	border-bottom: 2px solid #108ee9;
+	height:40px;
+	line-height:40px;
+	color:#108ee9;
+}
+.fp {
+	height:40px;
+	line-height:40px;
+}
+.upImg {
+	width: 200px!important;
+	height:200px;
+	margin-right: 20px;
+    margin-top: 20px;
+}
+.selImg{
+	width: 200px!important;
+	height:200px;
+	margin-right: 20px;
+    margin-top: 20px;
+	border:2px solid #f00;
+}
+.selImg img {
+	width:100%!important;
+	height:100%!important;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.upImg img{
+	width:100%!important;
+	height:100%!important;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.next{
+	text-align: center;
+}
+.xImg p {
+	font-size:14px;
+}
+.upFile{
+	opacity: 1;
+	position: relative;
+	
+}
+.upBox{
+	
+}
+.upBtn{
+	margin-top: 40px;
+	text-align: center;
+}
+.actieImg{
+	width:200px;
+	height:200px;
+}
+.crpprt {
+	width:200px;
+	height:200px;
+	background: #000;
+	margin-top: 20px;
+}
+.abtn{
+	float:right;
+	margin-right: 20px;
+}
+.bgImg{
+	display: block;
+	width:200px;
+	height:200px;
+}
