@@ -55,3 +55,7 @@ export function GetRequest(url) {
    return theRequest; 
 
 }
+
+let ImgUrl = "http://172.16.0.15";
+
+let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/"

@@ -439,7 +439,7 @@ function RelesEditor({
                 publishSet:data.radioG == "true"?true:false,
                 createUser:parseInt(data.createUser),
                 sysUser:parseInt(merId),
-                bonusStatus:data.bonusStatus
+                bonusStatus:parseInt(data.bonusStatus)
               }
           })
         }
@@ -805,9 +805,9 @@ function RelesEditor({
                         ],
                       })(
                         <RadioGroup>
-                          <Radio value='true'>开启</Radio>
+                          <Radio value='1'>开启</Radio>
                           <br />
-                          <Radio value='false'>不开启</Radio>
+                          <Radio value='0'>不开启</Radio>
                         </RadioGroup>
                       )}
               </FormItem>
