@@ -77,8 +77,8 @@ const UserAdmin = ({
 		  key: 'userRoleDisplay',
 		}, {
 		  title: '级别',
-		  dataIndex: 'userLevel',
-		  key: 'userLevel',
+		  dataIndex: 'userLevelDisplay',
+		  key: 'userLevelDisplay',
 		}, {
 		  title: '最后活动时间',
 		  dataIndex: 'lastActiveTime',

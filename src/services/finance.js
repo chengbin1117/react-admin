@@ -1,20 +1,15 @@
 import request from '../utils/request';
 import qs from 'qs';
 import md5 from 'js-md5';
-
+import {Base64Url,SignUrl} from './common';
 let Base64 = require('js-base64').Base64;
-let userId = localStorage.getItem('userId')
-let token = localStorage.getItem('Kgtoken')
+
 
 
 //获得充值列表接口
 export async function getAccountRecharge(params) {
-
-	var data = Base64.encode(JSON.stringify(params));
-
-	console.log("sign",data+userId+'_'+token)
-    var sign = md5(data+userId+'_'+token);
-   
+    var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/account/getAccountRecharge?data='+data+"&sign="+sign;
 
 	return request(url,{
@@ -26,10 +21,8 @@ export async function getAccountRecharge(params) {
 //获得提币列表接口
 export async function getAccountWIthdraw(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-
-	console.log("sign",data+userId+'_'+token)
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
    
 	let url = '/admin/account/getAccountWithdraw?data='+data+"&sign="+sign;
 
@@ -42,11 +35,8 @@ export async function getAccountWIthdraw(params) {
 
 export async function auditAccountWithdraw(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-
-	console.log("sign",data+userId+'_'+token)
-    var sign = md5(data+userId+'_'+token);
-   
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/account/auditAccountWithdraw?data='+data+"&sign="+sign;
 
 	return request(url,{
@@ -57,11 +47,8 @@ export async function auditAccountWithdraw(params) {
 //获得交易记录列表接口
 export async function getAccount(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-
-	console.log("sign",data+userId+'_'+token)
-    var sign = md5(data+userId+'_'+token);
-   
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/account/getAccount?data='+data+"&sign="+sign;
 
 	return request(url,{
@@ -74,10 +61,8 @@ export async function getAccount(params) {
 
 export async function getAccountDiposit(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-
-	console.log("sign",data+userId+'_'+token)
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
    
 	let url = '/admin/account/getAccountDiposit?data='+data+"&sign="+sign;
 
@@ -89,10 +74,8 @@ export async function getAccountDiposit(params) {
 //获得业务类型列表接口
 export async function getBusinessType(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-
-	console.log("sign",data+userId+'_'+token)
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
    
 	let url = '/admin/account/getBusinessType?data='+data+"&sign="+sign;
 

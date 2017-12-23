@@ -8,7 +8,7 @@ import {
 import styles from './AboutUs.css'
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -27,7 +27,8 @@ function AboutUs({dispatch,router,setting}) {
 		BaseInfoList,
 		onEditItem:function(record){
 			localStorage.setItem('kg_aboutEditor',JSON.stringify(record));
-			router.push('setting/addinfoEditor?id='+record.id)
+			dispatch(routerRedux.push('/setting/addinfoEditor?id='+record.id))
+		
 		},
 		handleDel(record){
 			dispatch({
@@ -56,15 +57,15 @@ function AboutUs({dispatch,router,setting}) {
 				}
 	}
 	function addInfo (){
-		
-		router.push('setting/addinfo')
+		dispatch(routerRedux.push('/setting/addinfo'))
+		//router.push('setting/addinfo')
 	}
 	return (
-			<LayoutContainer className={styles.Indexbox}>
+			<div className={styles.Indexbox}>
 				<div className={styles.addbtn}><Button type="primary" size="large" onClick={()=>addInfo()}>添加信息</Button></div>				
 				<ArticleList {...ArticleListProps}/>
 				
-			</LayoutContainer>
+			</div>
 
 	);
 }

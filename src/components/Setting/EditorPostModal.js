@@ -24,9 +24,9 @@ const formItemLayout = {
 };
 
     let list =[]
-const AddPostModal = ({
+const EditorPostModal = ({
 	visible,
-	type,
+	item = {},
 	onOk,
 	onCancel,
 	TreeList,
@@ -38,16 +38,19 @@ const AddPostModal = ({
 	},
 }) => {
 
+console.log("selectlist",item)
 const FormItem = Form.Item;
 	function handleOk() {
 		validateFields((errors,values) => {
+		
+
 			if (errors) {
+
 				return;
 			}
 
-			//const data = {...getFieldsValue()}
-			console.log(values)
-			onOk(values);
+			
+			onOk(values,item.postId);
 		});
 	}
 
@@ -56,12 +59,11 @@ const FormItem = Form.Item;
 		
 	}
 	function checked(checked){
-		console.log(checked)
-		//list = checked.join(",");
+		console.log("checked",checked)
 		return checked
 	}
 	const modalOpts = {
-		title: '添加岗位',
+		title: "编辑岗位",
 		visible,
 		onOk: handleOk,
 		onCancel: Cancel,
@@ -88,7 +90,7 @@ const FormItem = Form.Item;
   
 
     function TreeItem(list) {
-    	console.log("list",list)
+
     	var arr =[];
     	let params ={};
     	let chid ={};
@@ -114,16 +116,18 @@ const FormItem = Form.Item;
 			<Form>
 				<FormItem label="岗位名称" {...formItemLayout}>
 			        {getFieldDecorator('name', {
-			        	initialValue:'',
+			        	initialValue:item.name,
 			            rules: [{ required: true, message: '请填写岗位名称!' }],
 			        })(<Input />)}
 			    </FormItem>
 			    <FormItem>
-			    	{getFieldDecorator('rules', {
+			        {getFieldDecorator('rules', {
+			        	initialValue:item.authIds!=undefined?item.authIds.split(','):[],
 			    		rules: [{ required: true, message: '请填写选择权限!' },
 			    		{ type: 'array', message: '请填写选择权限!' }],
 			    		trigger:'checked',
-			        })(<RuleList plainOptions = {TreeItem(TreeList)}  checked={checked}/>)}
+			        })(<RuleList plainOptions = {TreeItem(TreeList)} defavalue={checked(item.authIds!=undefined?item.authIds.split(','):[])} checked={checked}/>)}
+			    	
 			     </FormItem>
 			    
 			</Form>
@@ -132,7 +136,7 @@ const FormItem = Form.Item;
 	);
 };
 
-AddPostModal.propTypes = {
+EditorPostModal.propTypes = {
 	visible: PropTypes.any,
 	form: PropTypes.object,
 	item: PropTypes.object,
@@ -140,4 +144,4 @@ AddPostModal.propTypes = {
 	onCancel: PropTypes.func,
 };
 
-export default Form.create()(AddPostModal);
+export default Form.create()(EditorPostModal);

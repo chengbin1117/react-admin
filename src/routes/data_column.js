@@ -144,10 +144,10 @@ function DataColumn({dispatch,center}) {
 	}
 	
 	return (
-			<LayoutContainer>
+			<div>
 				<h2>专栏作者增长趋势<span>*此处仅统计审核通过的专栏作者数</span></h2>
 				<MyComponent/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

@@ -8,9 +8,9 @@ import React, {
   Link,
 } from 'dva/router';*/
 
-import { Router, Route, Switch,IndexRoute} from 'dva/router';
-
-
+// /import { Router, Route, Switch,IndexRoute} from 'dva/router';
+import { Router, Route, Link, Switch, HashHistory } from 'react-router-dom';
+import LayoutContainer from './components/Layout';
 import UserRouter from './routes/UserLoginPage';
 import Login from './routes/Login';
 import IndexPage from './routes/IndexPage';
@@ -64,7 +64,7 @@ import DataUser from './routes/data_user';
 //财务管理
 import Finance from './routes/Finance';
 import FinanceRecharge from './routes/Finance_recharge';
-import Withdrawals from './routes/Withdrawals';
+import Withdrawals from './routes/Withdrawals.js';
 import Record from './routes/Record';
 import Bond from './routes/Bond';
 function requireAuth(nextState, replace, callback) {
@@ -84,8 +84,9 @@ function requireAuth(nextState, replace, callback) {
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
-      <Switch>
-          <Route path="/" exact  component={UserRouter} />
+    <Switch>
+      <Route path="/" exact  component={UserRouter} />
+      <LayoutContainer >
           <Route path="/index" exact component={IndexPage} />
           <Route path="/user/user_admin" exact component={UserAdmin}/>
           <Route path="/user/user_role" exact component={UserRole} />
@@ -93,33 +94,34 @@ function RouterConfig({ history }) {
           <Route path="/user/user_login" exact component={UserLogin} />
           <Route path="/user/user_info" exact component={UserInfo} />
           <Route path="/user/realName" exact component={realName} />
-          <Route path="/setting/about" component={About}/>
-          <Route path="/setting/base" component={BaseInfo}/>
-          <Route path="/setting/account" component={AccountRule}/>
-          <Route path="/setting/addinfo" component={AddInfo}/>
-          <Route path="/setting/addinfoEditor" component={EditorInfo}/>
-          <Route path="/data/data_column" component={DataColumn}/>
-          <Route path="/data/data_user" component={DataUser}/>
-          <Route path="/log/log_admin" component={LogAdmin}/>
-          <Route path="/log/log_user" component={LogUser} />
+          <Route path="/setting/about" strict component={About}/>
+          <Route path="/setting/base" strict component={BaseInfo}/>
+          <Route path="/setting/account" strict component={AccountRule}/>
+          <Route path="/setting/addinfo" strict component={AddInfo}/>
+          <Route path="/setting/addinfoEditor" strict  component={EditorInfo}/>
+          <Route path="/data/data_column" strict  component={DataColumn}/>
+          <Route path="/data/data_user" strict  component={DataUser}/>
+          <Route path="/log/log_admin" strict  component={LogAdmin}/>
+          <Route path="/log/log_user" strict  component={LogUser} />
           <Route path="/seo/tdk" component={SeoTdk}/>
           <Route path="/seo/hot" component={SeoHot} />
           <Route path="/seo/link" component={SeoLink} />
           <Route path="/seo/top_search" component={SeoTopSearch} />
-          <Route path="/content/content_column" component={ContentColumn} />
-          <Route path = '/content/content/content_column/:id' component={Content_Column_Editor}/>
+          <Route path="/content/content_column" strict component={ContentColumn} />
+          <Route path = '/content/content/content_column/:id' strict component={Content_Column_Editor}/>
       
-        <Route path="/content/content_article" component={ContentArticle}/>
-        <Route path="/content/content_image" component={ContentImage}/>
-        <Route path="/content/content_comment" component={ContentComment}/>
-        <Route path="/content/release_article" component={Release_article}/>
-        <Route path="/content/editor_article" component={Editor_Article}/>
-        <Route path="/content/content_opinion" component={ContentOpinion} />
-        <Route path ='/content/content/content_opinion/:id' component={ContentOpinionShow}/>
-        <Route path="/finance/recharge" component={FinanceRecharge}/>
-        <Route path="/finance/withdratwals" exact  component={Withdrawals} />
-        <Route path="/finance/record" exact component={Record} />
-        <Route path="/finance/bond" component={Bond} />
+        <Route path="/content/content_article" strict component={ContentArticle}/>
+        <Route path="/content/content_image" strict component={ContentImage}/>
+        <Route path="/content/content_comment" strict component={ContentComment}/>
+        <Route path="/content/release_article" strict component={Release_article}/>
+        <Route path="/content/editor_article" strict component={Editor_Article}/>
+        <Route path="/content/content_opinion" strict component={ContentOpinion} />
+        <Route path ='/content/content/content_opinion/:id' strict component={ContentOpinionShow}/>
+        <Route path="/finance/recharge" strict component={FinanceRecharge}/>
+        <Route path="/finance/withdrawals"   strict component={Withdrawals} />
+        <Route path="/finance/record" strict component={Record} />
+        <Route path="/finance/bond" strict component={Bond} />
+      </LayoutContainer>
       </Switch>
     </Router>
   );

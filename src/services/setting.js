@@ -1,16 +1,15 @@
 import request from '../utils/request';
 import qs from 'qs';
 import md5 from 'js-md5';
-
+import {Base64Url,SignUrl} from './common';
 let Base64 = require('js-base64').Base64;
-let userId = localStorage.getItem('userId')
-let token = localStorage.getItem('Kgtoken')
+
 
 //关于我们列表
 export async function getBaseinfoList(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
    
 	let url = '/admin/about/getBaseinfoList?data='+data+"&sign="+sign;
 
@@ -22,8 +21,8 @@ export async function getBaseinfoList(params) {
 //删除列表
 export async function deleteBaseinfo(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
    
 	let url = '/admin/about/deleteBaseinfo?data='+data+"&sign="+sign;
 
@@ -38,9 +37,8 @@ export async function deleteBaseinfo(params) {
 //添加关于我们信息接口
 export async function addBaseinfo(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
-   
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/about/addBaseinfo?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
@@ -51,8 +49,8 @@ export async function addBaseinfo(params) {
 //系统账号列表
 export async function getSysUserList(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
    
 	let url = '/admin/sysuser/getSysUserList?data='+data+"&sign="+sign;
 
@@ -65,9 +63,8 @@ export async function getSysUserList(params) {
 
 export async function getPostList(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
-   
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/sysuser/getPostList?data='+data+"&sign="+sign;
 
 	return request(url,{
@@ -79,9 +76,8 @@ export async function getPostList(params) {
 //重置密码
 export async function resetPassword(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
-   
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/sysuser/resetPassword?data='+data+"&sign="+sign;
 
 	return request(url,{
@@ -92,8 +88,8 @@ export async function resetPassword(params) {
 //启用/禁用账户接口
 export async function sysuserSetStatus(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/sysuser/setStatus?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -103,8 +99,8 @@ export async function sysuserSetStatus(params) {
 //关联前台用户接口
 export async function setKgUser(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/sysuser/setKgUser?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -113,9 +109,8 @@ export async function setKgUser(params) {
 }
 //添加/编辑账户接口
 export async function addSysUser(params) {
-
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+    var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/sysuser/addSysUser?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -125,8 +120,8 @@ export async function addSysUser(params) {
 //根据ID获得账户详情接口
 export async function getSysUserById(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/sysuser/getSysUserById?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -138,8 +133,8 @@ export async function getSysUserById(params) {
 
 export async function getPost(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/post/getPostList?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -151,8 +146,8 @@ export async function getPost(params) {
 
 export async function addPost(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/post/addPost?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -163,9 +158,9 @@ export async function addPost(params) {
 //获取权限树
 export async function getAuthTree(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
-	let url = '/admin/post/getAuthTree?data='+data+"&sign="+sign;
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+    let url = '/admin/post/getAuthTree?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
 		method:"post"
 	}
@@ -176,8 +171,8 @@ export async function getAuthTree(params) {
 
 export async function postSetStatus(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/post/setStatus?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -188,8 +183,8 @@ export async function postSetStatus(params) {
 //设置显示状态
 export async function setInfoStatus(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/about/setInfoStatus?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"
@@ -201,8 +196,8 @@ export async function setInfoStatus(params) {
 
 export async function getUserId(params) {
 
-	var data = Base64.encode(JSON.stringify(params));
-    var sign = md5(data+userId+'_'+token);
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
 	let url = '/admin/user/getUserId?data='+data+"&sign="+sign;
 	return request(url,{
 		method:"post"

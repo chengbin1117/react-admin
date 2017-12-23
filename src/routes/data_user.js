@@ -141,10 +141,10 @@ function DataUser({dispatch,center}) {
 	}
 	
 	return (
-			<LayoutContainer>
+			<div>
 				<h2>普通用户增长趋势<span>*此处仅统计解锁状态下的普通用户数</span></h2>
 				<MyComponent/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

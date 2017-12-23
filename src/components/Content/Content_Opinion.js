@@ -127,7 +127,7 @@ function Content_Opinion({data,total,confirm,handlsearch,delFeeks,onEditor}) {
 			      <div>
 			      	<p >当前共有反馈数：{total}</p>
 			      </div>
-			      <Table style ={{marginTop:20}} bordered columns={columns} rowKey={record => record.id+''} rowSelection={rowSelection} dataSource={data} pagination = {false} />
+			      <Table style ={{marginTop:20}} bordered columns={columns} rowKey={record => record.id+''} rowSelection={rowSelection} dataSource={data} pagination = {false} locale={{emptyText:"暂无数据"}}/>
 			      <Pagination className = {style_pagination.pagination} showQuickJumper showSizeChanger  total={500} onChange={onChange} />
 			      <Button type="primary" size = 'large' disabled={!hasSelected} onClick={()=>delFeeks(selectedRows)}>删除</Button>
 			    </div>

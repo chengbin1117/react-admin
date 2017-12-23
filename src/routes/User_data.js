@@ -108,7 +108,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 	const WrappedDynamicRule = Form.create()(DynamicRule);
 	
 	return (
-			<LayoutContainer>
+			<div>
 				<h2 >基础信息</h2>
 					<table className={stytes.table}>
 						<tr><td>用户ID</td><td>{userInfo.userId}</td><td>邮箱</td><td>{userInfo.userEmail}</td></tr>
@@ -139,7 +139,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 					<p className={stytes.dataBox}><span className={stytes.span1}>其他资质</span><span className={stytes.span2}>{userInfo.otherPic}</span></p>
 					<WrappedDynamicRule />
 				</div>
-			</LayoutContainer>
+			</div>
 
 	);
 }

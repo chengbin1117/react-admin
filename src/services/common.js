@@ -2,18 +2,32 @@ import {
   message
 } from 'antd';
 import {
-  hashHistory,
-} from 'react-router';
+  withRouter,
+  routerRedux,
+  BrowserRouter,
+  Link,
+} from 'dva/router';
+
+import dva from 'dva';
+import md5 from 'js-md5';
+let Base64 = require('js-base64').Base64;
+import createBrowserHistory from 'history/createBrowserHistory';
+const history = createBrowserHistory()
+
+function p(s) {
+        return s < 10 ? '0' + s: s;
+    }
 //获取年份
+
 export  function formatDate(now)   {
-              var   now= new Date(now)
-              var   year=now.getFullYear(); 
-              var   month=now.getMonth()+1;     
-              var   date=now.getDate();     
-              var   hour=now.getHours();     
-              var   minute=now.getMinutes();     
-              var   second=now.getSeconds();     
-              return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
+      var   now= new Date(now)
+      var   year=now.getFullYear(); 
+      var   month=now.getMonth()+1;     
+      var   date=now.getDate();     
+      var   hour=now.getHours();     
+      var   minute=now.getMinutes();     
+      var   second=now.getSeconds();     
+      return   year+"-"+p(month)+"-"+p(date)+"   "+p(hour)+":"+p(minute)+":"+p(second);
 }
 
 
@@ -31,10 +45,12 @@ export function timeFormat(date) {
 }
 
 //token失效
-export function tokenLogOut(data) {
+export function tokenLogOut(data,dispatch) {
     if(data.code ==10004){
-        message.error(data.message);
-        hashHistory.push('/');
+         message.error(data.message,5);
+         dispatch(routerRedux.push("/#/user/user_admin"))
+        //history.go('/#/')
+        
 
     }else{
       message.error(data.message);
@@ -56,9 +72,22 @@ export function GetRequest(url) {
 
 }
 
-let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload";
+export function Base64Url(params){
+    var data = Base64.encode(JSON.stringify(params));
+    return data
+}
 
+export function SignUrl (data){
+    let userId = localStorage.getItem('userId')
+    let token = localStorage.getItem('Kgtoken')
+    var sign = md5(data+userId+'_'+token)
+    return sign
+}
+
+let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload";
+//let ImgUrl = "http://172.16.0.15/image/upload";
 let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";
+//let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com";
 export {
   ImgUrl,
   uploadUrl

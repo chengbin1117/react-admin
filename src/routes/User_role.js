@@ -144,10 +144,10 @@ function UserRole({location,dispatch,user,router,}) {
 	
 	return (
 
-			<LayoutContainer>
+			<div>
 				<Table bordered columns={columns} pagination = {false} dataSource={userRoleList} rowKey={record => record.id+''}/>
 				<SetUserModal {...SetUserModalProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

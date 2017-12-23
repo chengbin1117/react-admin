@@ -43,17 +43,17 @@ function UserRealName({location,dispatch,user,router,}) {
 			    title: (<div>身份证照片</div>),
 			    content: (<div><Row>
 			    			<Col span={12} style={{textAlign:'center',width:'50%'}}>
-			    				<img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardFront}/>
+			    				<img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardFront} style={{width:300,height:300}}/>
 			    				<p  style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>正面</p>
 			    			</Col>
-			    			<Col span={12} style={{textAlign:'center',width:'50%'}}>
-			    			    <img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardBack}/>
+			    			<Col span={12} style={{textAlign:'center',width:'50%'}} >
+			    			    <img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardBack} style={{width:300,height:300}}/>
 			    			    <p style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>反面</p>
 			    			</Col>
 			    			</Row>
 			    			<Row>
 			    				<Col span={12} style={{textAlign:'center',width:'50%'}}>
-			    			    <img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardBack}/>
+			    			    <img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardBack} style={{width:300,height:300}}/>
 			    			    <p  style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>手持正面</p>
 			    			    </Col>
 			    			</Row>
@@ -204,11 +204,11 @@ function UserRealName({location,dispatch,user,router,}) {
 		}
 	}
 	return (
-			<LayoutContainer>
+			<div>
 				<RealName {...UserRealNameProps}/>
 				<RealNameModal {...RealNameModalProps} />
 				<RealsModal {...RealsModalProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

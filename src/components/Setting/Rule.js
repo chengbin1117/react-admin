@@ -117,9 +117,9 @@ const TreeNode = Tree.TreeNode;
 
 class RuleList extends React.Component {
   state = {
-    expandedKeys: ['0-0-0', '0-0-1'],
+    expandedKeys: this.props.defavalue!=undefined?this.props.defavalue:[],
     autoExpandParent: true,
-    checkedKeys: this.props.defavalue!=undefined?this.props.defavalue.split(','):[],
+    checkedKeys: this.props.defavalue!=undefined?this.props.defavalue:[],
     selectedKeys: [],
   }
   onExpand = (expandedKeys) => {
@@ -154,7 +154,7 @@ class RuleList extends React.Component {
     });
   }
   render() {
-    console.log("props",this.props.defavalue)
+    /*console.log("props",this.props.defavalue)*/
     return (
       <Tree
         checkable
@@ -165,6 +165,7 @@ class RuleList extends React.Component {
         checkedKeys={this.state.checkedKeys}
         onSelect={this.onSelect}
         selectedKeys={this.state.selectedKeys}
+        
       >
         {this.renderTreeNodes(this.props.plainOptions)}
       </Tree>

@@ -15,11 +15,12 @@ import LayoutContainer from '../components/Layout';
 import Content_Image from '../components/Content/Content_Image';
 import Content_ImageAdd_Modal from '../components/Content/Content_ImageAdd_Modal';
 import Content_ImageEditor_Modal from '../components/Content/Content_ImageEditor_Modal';
+import ImgShowModal from '../components/Content/ImgShowModal';
 
 
 function ContentImage({dispatch,content}) {
 	let  userId = localStorage.getItem('userId')
-	const {ImageList,addImageVisible,loading,currentItem,type,currentPage,totalNumber,EditorImageVisible} = content;
+	const {selectList,ImageList,ImgShowVisible,addImageVisible,loading,currentItem,type,currentPage,totalNumber,EditorImageVisible} = content;
 	
 	const content_imageProps ={
 		data:ImageList,
@@ -76,13 +77,16 @@ function ContentImage({dispatch,content}) {
 			//console.log(selectlist)
 			var Ids = "";
 			for(var i in selectlist){
-				if(selectlist[i].imageStatus==false){
 					Ids += selectlist[i].imageId+','
-				}
-				
 			}
+			dispatch({
+				type:"content/showImageModal",
+				payload:{
+					selectList:Ids
+				}
+			})
 
-			Modal.confirm({
+			/*Modal.confirm({
 				title:"是否批量设置成显示状态",
 				onOk(){
 					if(Ids==""){
@@ -93,11 +97,12 @@ function ContentImage({dispatch,content}) {
 							payload:{
 								ids:Ids,
 								updateUser:parseInt(userId),
+								imageStatus:true
 							}
 						})
 					}
 				}
-			})
+			})*/
 			
 		},
 		changepage(page){
@@ -117,19 +122,14 @@ function ContentImage({dispatch,content}) {
 			})
 		},
 
-		onCheckOk(value,text){
-			console.log(value,text)
+		onCheckOk(value){
+			//alert(value.imageDetail)
 			if(value.type == "1"){
-				if(text= ""){
-					message.warn('请输入文章ID')
-				}else{
-
 					dispatch({
 						type:"content/addImage",
 						payload:{
-							
 							imageType:parseInt(value.type),
-							imageDetail:text,
+							imageDetail:value.imageDetail,
 							navigatorPos:parseInt(value.residence[0]),
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),
@@ -138,26 +138,20 @@ function ContentImage({dispatch,content}) {
 							imageAddress:value.imageAddress
 						}
 					})
-				}
 			}else{
-				if(text= ""){
-					message.warn('请输入链接')
-				}else{
-					dispatch({
-						type:"content/addImage",
-						payload:{
-							imageAddress:value.imageAddress,
-							imageType:parseInt(value.type),
-							imageDetail:text,
-							navigatorPos:parseInt(value.residence[0]),
-							imagePos:parseInt(value.residence[1]),
-							imageStatus:parseInt(value.showStatus),
-							createUser:userId,
-							iimage_order:parseInt(value.sort),
-						}
-					})
-				}
-
+				dispatch({
+					type:"content/addImage",
+					payload:{
+						imageAddress:value.imageAddress,
+						imageType:parseInt(value.type),
+						imageDetail:value.imageDetail,
+						navigatorPos:parseInt(value.residence[0]),
+						imagePos:parseInt(value.residence[1]),
+						imageStatus:parseInt(value.showStatus),
+						createUser:userId,
+						iimage_order:parseInt(value.sort),
+					}
+				})
 			}
 		}
 
@@ -174,10 +168,6 @@ function ContentImage({dispatch,content}) {
 		onCheckOk(value,text,id){
 			console.log(value,text,id)
 			if(value.type == "1"){
-				if(text= ""){
-					message.warn('请输入文章ID')
-				}else{
-
 					dispatch({
 						type:"content/addImage",
 						payload:{
@@ -192,12 +182,8 @@ function ContentImage({dispatch,content}) {
 							imageAddress:value.imageAddress
 						}
 					})
-				}
 			}else{
-				if(text= ""){
-					message.warn('请输入链接')
-				}else{
-					dispatch({
+			    dispatch({
 						type:"content/addImage",
 						payload:{
 							imageId:id,
@@ -211,17 +197,35 @@ function ContentImage({dispatch,content}) {
 							iimage_order:parseInt(value.sort),
 						}
 					})
-				}
-
 			}
 		}
 	}
+	const ImgShowModalProps ={
+		visible:ImgShowVisible,
+		selectList,
+		onCancel(){
+			dispatch({
+				type:"content/hideImageModal",
+			})
+		},
+		onOk(ids,data){
+			dispatch({
+				type:'content/ImageSetStatus',
+				payload:{
+					ids:ids,
+					updateUser:parseInt(userId),
+					imageStatus:data.radio=="1"?true:false
+				}
+			})
+		}
+	}
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Image {...content_imageProps}/>
 				<Content_ImageAdd_Modal {...Content_ImageAdd_ModalProps}/>
 				<Content_ImageEditor_Modal {...Content_ImageEditor_ModalProps}/>
-			</LayoutContainer>
+				<ImgShowModal {...ImgShowModalProps}/>
+			</div>
 
 	);
 }

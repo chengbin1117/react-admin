@@ -93,7 +93,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
       }
     },
     *getColumnUserList({ payload }, {call , put}) {
@@ -116,16 +121,19 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
       }
     },
     *getNormalUserList({ payload }, {call , put}) {
       yield put({
         type: 'showLoading',
       });
-      yield put({
-        type: 'hideLoading',
-      });
+     
       const { data } = yield call(getNormalUserList, payload);
       //console.log("11",data)
       if (data && data.code == 10000) {
@@ -140,6 +148,12 @@ export default {
             }); 
       } else {
         message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
       }
     },
     

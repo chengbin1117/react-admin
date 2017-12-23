@@ -110,7 +110,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
          yield put({
             type: 'hideLoading',
           });
@@ -140,7 +145,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
          yield put({
             type: 'hideLoading',
           });
@@ -168,7 +178,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
          yield put({
             type: 'hideLoading',
           });
@@ -196,7 +211,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
          yield put({
             type: 'hideLoading',
           });
@@ -218,7 +238,12 @@ export default {
             type: 'hideModal',
           });
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
         
       }
     },
@@ -236,7 +261,12 @@ export default {
           });
           
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
         
       }
     },

@@ -316,12 +316,12 @@ function UserAdmin({location,dispatch,user,router,}) {
 		}
 	}
 	return (
-			<LayoutContainer>
+			<div>
 				<Useradmin {...UseradminProps}/>
 				<ExamineModal {...ExamineModalProps}/>
 				<SetHotuser {...SetHotuserModalProps}/>
 				<LockModal {...LockModalProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

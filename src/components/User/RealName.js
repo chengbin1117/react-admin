@@ -63,7 +63,7 @@ const RealName = ({
 		  key: 'IdCard',
 		  render: (text, record) => (
 		    <div>
-		    	<p onClick={()=>showIdCard(record)}><img src={'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardFront}/></p>
+		    	<p onClick={()=>showIdCard(record)}><img src={'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardFront} style={{width:100,height:100}}/></p>
          	
 		    </div>
 		    )

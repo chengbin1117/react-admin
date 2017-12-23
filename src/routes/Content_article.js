@@ -34,6 +34,7 @@ function ContentArticle({location,dispatch,router,content}) {
 				type:"content/deleteArticle",
 				payload:{
 					articleId:record.articleId,
+					dispatch,
 				}
 			})
 		},
@@ -173,11 +174,11 @@ function ContentArticle({location,dispatch,router,content}) {
 		}
 	}
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Article {...Content_ArticleProps}/>
 				<SetModal {...SetModalProps}/>
 				<ArticleModal {...ArticleModalProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

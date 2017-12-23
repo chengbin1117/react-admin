@@ -159,11 +159,11 @@ function AddinfoEditor({dispatch,setting,router}) {
 
 const WrappedDemo = Form.create()(FormInfo);
 	return (
-			<LayoutContainer className={styles.Indexbox}>
+			<div className={styles.Indexbox}>
 					
 				<WrappedDemo />
 				
-			</LayoutContainer>
+			</div>
 
 	);
 }

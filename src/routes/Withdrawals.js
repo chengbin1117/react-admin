@@ -11,7 +11,7 @@ import {
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
-import Manage from '../components/Finance/Withdrawals';
+import Manage from '../components/Finance/Mange';
 import stytes from './UserLoginPage.css';
 import ExamineModal from '../components/Finance/ExamineModal';
 import {timeFormat} from '../services/common';
@@ -129,10 +129,10 @@ function Withdrawals({location,dispatch,finance,router,}) {
 
 	}
 	return (
-			<LayoutContainer>
-				<Manage {...ManageProps}/>
-				<ExamineModal {...ExamineModalProps}/>
-			</LayoutContainer>
+			<div>
+						<Manage {...ManageProps}/>
+						<ExamineModal {...ExamineModalProps}/>
+			</div>
 
 	);
 }

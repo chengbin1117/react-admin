@@ -119,9 +119,10 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 			          <FormItem {...formItemLayout} label='状态'>
 			            {getFieldDecorator('status')(
 			              <Select placeholder="请选择">
-			              	<Option value="0">审核中</Option>
+			              	<Option value="0">草稿</Option>
 			              	<Option value="1">通过</Option>
-			              	<Option value="2">不通过</Option>
+			              	<Option value="2">审核中</Option>
+			              	<Option value="3">不通过</Option>
 			              </Select>
 			            )}
 			          </FormItem>
@@ -174,7 +175,7 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 		    const hasSelected = selectedRowKeys.length > 0;
 		    return (
 		    	<div>
-		             <Table bordered rowSelection={rowSelection} columns={columns} dataSource={ArticleList} pagination = {false}  rowKey={record => record.articleId} loading={loading}/>
+		             <Table bordered rowSelection={rowSelection} columns={columns} dataSource={ArticleList} pagination = {false}  rowKey={record => record.articleId} loading={loading} locale={{emptyText:"暂无数据"}}/>
                      <Button type="primary" onClick={()=>onShowMOdal(selectedRows)} disabled={!hasSelected} size = 'large'>批量设置显示状态</Button>
                      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
 		        </div>

@@ -263,8 +263,8 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 					      <Button type="primary" size = 'large' onClick={showModal}>添加图片</Button>
 					      <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} handlsearch ={handlsearch}/>
 					      <p >当前共有图片：{total}</p>
-					      <Table style ={{marginTop:20}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} rowKey={record => record.imageId+''} loading={loading}/>
-					      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
+					      <Table style ={{marginTop:20}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} rowKey={record => record.imageId+''} loading={loading} locale={{emptyText:"暂无数据"}}/>
+					      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 					      <Button type="primary" size = 'large' disabled={!hasSelected} onClick={()=>setStatus(selectedRows)}>批量设置显示状态</Button>
 					      
 					    </div>

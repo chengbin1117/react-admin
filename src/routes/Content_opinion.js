@@ -68,9 +68,9 @@ function ContentOpinion({dispatch,content,router}) {
 	}
 
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Opinion {...Content_OpinionProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

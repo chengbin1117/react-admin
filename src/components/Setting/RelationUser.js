@@ -25,6 +25,7 @@ const RelationModal = ({
 	onOk,
 	onCancel,
 	handleBlur,
+	deskUserId,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -43,8 +44,12 @@ const RelationModal = ({
 			const data = {
 				...getFieldsValue(),
 			}
+			if(deskUserId == ""){
+				message.warn('无此前台账户')
+			}else{
+				onOk(item,deskUserId);
+			}
 			
-			onOk(item,data);
 		});
 	}
 
@@ -72,13 +77,14 @@ const RelationModal = ({
 					{...formItemLayout}
 				>
 					{getFieldDecorator('kgUserId', {
-						initialValue: item.mobile,
+						initialValue: '',
 						rules: [
 							{required: true, message: '请输入正确手机号',pattern:/^1[3|4|5|8][0-9]\d{4,8}$/},
 						],
 					})(
-						<Input type="text" onBlur={handleBlur}/>
+						<Input type="text" onChange={handleBlur}/>
 					)}
+					<span>该用户ID：{deskUserId}</span>
 				</FormItem>	
 			</Form>
 		</Modal>

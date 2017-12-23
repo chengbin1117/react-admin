@@ -80,9 +80,9 @@ function Bond({location,dispatch,finance,router,}) {
 		}
 	}
 	return (
-			<LayoutContainer>
+			<div>
 				<BondList {...BondListProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

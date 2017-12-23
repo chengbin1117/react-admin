@@ -19,7 +19,7 @@ const formItemLayout = {
 	},
 };
 
-const AdduserModal = ({
+const EditoruserModal = ({
 	visible,
 	item = {},
 	PostList,
@@ -42,7 +42,7 @@ const AdduserModal = ({
 				...getFieldsValue(),
 			}
 			
-			onOk(data);
+			onOk(item.id,data);
 		});
 	}
 
@@ -51,7 +51,7 @@ const AdduserModal = ({
 		
 	}
 	const modalOpts = {
-		title: '添加账号',
+		title: '编辑账号',
 		visible,
 		onOk: handleOk,
 		onCancel: Cancel,
@@ -67,13 +67,11 @@ const AdduserModal = ({
 				<Form.Item 
 					label="用户名 "
 					{...formItemLayout}
-					hasFeedback
 				>
 					{getFieldDecorator('username', {
-						initialValue: '',
+						initialValue: item.username,
 						rules: [
-							{required: true, message: '请填写用户名'},
-							{type: "string",max:100,message: '不超过100个字符'},
+							{required: true, message: '用户名未填写'},
 						],
 					})(
 						<Input type="text" />
@@ -85,10 +83,9 @@ const AdduserModal = ({
 					{...formItemLayout}
 				>
 					{getFieldDecorator('mobile', {
-						initialValue: '',
+						initialValue: item.mobile,
 						rules: [
 							{required: true, message: '手机号未填写'},
-							{type: "string",message: '请填写正确的手机号',pattern:/^1[0-9]{10}$/},
 						],
 					})(
 						<Input type="text" />
@@ -100,28 +97,12 @@ const AdduserModal = ({
 					{...formItemLayout}
 				>
 					{getFieldDecorator('realname', {
-						initialValue: "",
+						initialValue: item.realname,
 						rules: [
-							{required: true, message: '请填写管理员姓名'},
-							{type: "string",max:100,message: '不超过100个字符'},
+							{required: true, message: '姓名未填写'},
 						],
 					})(
 						<Input type="text" />
-					)}
-				</Form.Item>
-				<Form.Item 
-					label="设置密码 "
-					hasFeedback
-					{...formItemLayout}
-				>
-					{getFieldDecorator('password', {
-						initialValue: "",
-						rules: [
-							{required: true, message: '密码未填写'},
-							{type: "string",min:6,max:20,message: '登陆密码6-20,必须大写，小写字母，数字三种组合',pattern:/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9]).*$/},
-						],
-					})(
-						<Input type="password" />
 					)}
 				</Form.Item>
 				<Form.Item 
@@ -130,9 +111,9 @@ const AdduserModal = ({
 					{...formItemLayout}
 				>
 					{getFieldDecorator('postId', {
-						
+						initialValue: item.postId==0?"请选择":item.postId+'',
 						rules: [
-							{required: true, message: '未选择岗位'},
+							{required: true, message: '姓名未填写'},
 						],
 					})(
 						<Select style = {{marginRight:20}} size = "large"  placeholder="请选择" >
@@ -147,7 +128,7 @@ const AdduserModal = ({
 	);
 };
 
-AdduserModal.propTypes = {
+EditoruserModal.propTypes = {
 	visible: PropTypes.any,
 	form: PropTypes.object,
 	item: PropTypes.object,
@@ -155,4 +136,4 @@ AdduserModal.propTypes = {
 	onCancel: PropTypes.func,
 };
 
-export default Form.create()(AdduserModal);
+export default Form.create()(EditoruserModal);

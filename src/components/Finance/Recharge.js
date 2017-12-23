@@ -145,7 +145,7 @@ const Recharge = ({
 			   
 			    return (
 			      <div>
-			        <Table bordered columns={columns} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
+			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
 	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={1} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
 			          
 			      </div>

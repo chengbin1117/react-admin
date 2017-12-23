@@ -155,7 +155,6 @@ function IndexPage({location,dispatch,user,router,content}) {
 	  	}
 	  }
 	return (
-		<Layout>
 			<div>
 				<div>
 				    <h2>待审核的专栏用户 <Link to={{ 
@@ -175,7 +174,6 @@ function IndexPage({location,dispatch,user,router,content}) {
 				    <AuditingModal {...AuditingModalProps}/>
 				</div>
 			</div>
-		</Layout>
 
 	);
 }

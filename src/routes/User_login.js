@@ -130,9 +130,9 @@ function UserLogin({dispatch,user}) {
 
       const WrappedDemo = Form.create()(Demo);
 	return (
-			<LayoutContainer>
+			<div>
 				<WrappedDemo />
-			</LayoutContainer>
+			</div>
 
 	);
 }

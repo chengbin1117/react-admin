@@ -5,9 +5,11 @@ import {
  getUserId
 
 } from '../services/setting';
+import {formatDate,tokenLogOut,GetRequest} from '../services/common'
 import {
   message
 } from 'antd';
+import { routerRedux } from 'dva/router';
 export default {
 
   namespace: 'setting',
@@ -22,6 +24,8 @@ export default {
    currentItem:{},
    arr:[],
    item:{},
+   loading:false,
+   deskUserId:''
   },
 
   subscriptions: {
@@ -71,14 +75,14 @@ export default {
        
         if(match){
              const search =GetRequest(location.search);
-            if(query!=undefined){
+
               dispatch({
                 type:'getBaseinfoList',
                 payload:{
                   id:search.id
                 }
               })
-            }
+          
             
         }
       })
@@ -103,19 +107,19 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+                message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
              yield put({
             type: 'hideLoading',
           });
           }
         },
         *deleteBaseinfo({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
-          yield put({
-            type: 'hideLoading',
-          });
+          
           const { data } = yield call(deleteBaseinfo, payload);
           
           if (data && data.code == 10000) {
@@ -127,37 +131,47 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *getSysUserList({ payload }, {call , put}) {
           yield put({
             type: 'showLoading',
           });
-          yield put({
-            type: 'hideLoading',
-          });
+         
           const { data } = yield call(getSysUserList, payload);
             
           if (data && data.code == 10000) {
              var res = data.responseBody.data;
+             for(var i in res){
+              res[i].createDate=formatDate(res[i].createDate)
+             }
              yield put({
                 type:'getSysUserListSuccess',
                 payload:{
-                    SysUserList:res
+                    SysUserList:res,
+                    loading:false
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
+             yield put({
+              type: 'hideLoading',
+            });
           }
         },
         *sysuserSetStatus({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
-          yield put({
-            type: 'hideLoading',
-          });
+         
           const { data } = yield call(sysuserSetStatus, payload);
             console.log(data)
           if (data && data.code == 10000) {
@@ -169,14 +183,16 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *resetPassword({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
-  
+          
           const { data } = yield call(resetPassword, payload);
             console.log(data)
           if (data && data.code == 10000) {
@@ -188,13 +204,16 @@ export default {
                 }
              })*/
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *getPostList({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
+         
   
           const { data } = yield call(getPostList, payload);
             
@@ -207,14 +226,16 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *getPost({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
-  
+         
           const { data } = yield call(getPost, payload);
             
           if (data && data.code == 10000) {
@@ -226,7 +247,12 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *getAuthTree({ payload }, {call , put}) {
@@ -246,14 +272,16 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *postSetStatus({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
-  
+          
           const { data } = yield call(postSetStatus, payload);
             console.log(data)
           if (data && data.code == 10000) {
@@ -266,40 +294,59 @@ export default {
                 }
              })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *addSysUser({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
   
           const { data } = yield call(addSysUser, payload);
-            console.log(data)
           if (data && data.code == 10000) {
-            message.success('添加成功')
-              //var res = data.responseBody;
-               yield put({
+            if(payload.userId!=undefined){
+              message.success('编辑成功')
+            }else{
+              message.success('添加成功')
+            }
+            
+            yield put({
+                type:'getSysUserList',
+                payload:{
+                  
+                }
+            })
+            yield put({
                 type:'hideListModal',
                 payload:{
                     
                 }
              })
-               yield put({
-                type:'getSysUserList',
+            yield put({
+                type:'hideEditorListModal',
                 payload:{
-                  
+                    
                 }
-               })
+            })
+            yield put({
+                type:'getPost',
+                payload:{
+                    
+                }
+             })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *setKgUser({ payload }, {call , put}) {
-          yield put({
-            type: 'showLoading',
-          });
-  
+
           const { data } = yield call(setKgUser, payload);
             console.log(data)
           if (data && data.code == 10000) {
@@ -317,7 +364,12 @@ export default {
                 }
                })
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
        *addBaseinfo({ payload }, {call , put}) {
@@ -339,48 +391,55 @@ export default {
             }else{
               message.success('添加成功')
             }
-              
-              router.push('/setting/about') 
+              yield put(routerRedux.push('/setting/about'))
+              //router.push('/setting/about') 
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *addPost({ payload }, {call , put}) {
         
-          const {name,authIds,userId,postId,router} =payload;
-
-          let params ={
-
-          }
-          if(postId!=undefined){
-            params={
-              name:name,
-              authIds:authIds,
-              userId:userId,
-              postId:postId,
-            }
-          }else{
-            params={
-              name:name,
-              authIds:authIds,
-              userId:userId,
-            }
-          }
-          const { data } = yield call(addPost, params);
+          
+          const { data } = yield call(addPost, payload);
             console.log(data)
           if (data && data.code == 10000) {
-              if(postId!=undefined){
+              if(payload.postId!=undefined){
                 message.success('编辑成功')
               }else{
                 message.success('添加成功')
               }
-              router.push('/setting/account')
-               yield put({
-                type:'hidePostModal'
+              yield put({
+                type:'getSysUserList',
+                payload:{
+                  
+                }
                })
+              yield put({
+                type:'getPost',
+                payload:{
+                    
+                }
+             })
+               
+              yield put({
+                  type:'hidePostModal'
+              })
+              yield put({
+                  type:'hideEditorPostModal'
+              })
           
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *setInfoStatus({ payload }, {call , put}) {
@@ -395,20 +454,33 @@ export default {
                })
                
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
         *getUserId({ payload }, {call , put}) {
           const { data } = yield call(getUserId, payload);
           console.log("data",data)
           if (data && data.code == 10000) {
-             
+              var res =data.responseBody;
                yield put({
-                type:'getBaseinfoList'
+                type:'getUserIdSuccess',
+                payload:{
+                  deskUserId:res.userId
+                }
                })
                
           } else {
-            message.error(data.message);
+            if(data.code ==10004){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
           }
         },
    
@@ -427,11 +499,26 @@ export default {
       };
     },
     showListModal(state, action) {
-      console.log('showList', action.payload)
+      
       return {...state,
         ...action.payload,
         listVisible: true,
+        
+      };
+    },
+    showEditorListModal(state, action) {
+      
+      return {...state,
+        ...action.payload,
+        editorUserVisible: true,
         currentItem: action.payload.currentItem
+      };
+    },
+    hideEditorListModal(state, action) {
+      
+      return {...state,
+        ...action.payload,
+        editorUserVisible: false,
       };
     },
     hideListModal(state, action) {
@@ -495,6 +582,23 @@ export default {
     hideRelationModal(state, action) {
       return {...state,
         RelationVisible: false,
+        ...action.payload
+      };
+    },
+    showEditorPostModal(state, action) {
+      return {...state,
+        EditorPostVisible: true,
+        ...action.payload
+      };
+    },
+    hideEditorPostModal(state, action) {
+      return {...state,
+        EditorPostVisible: false,
+        ...action.payload
+      };
+    },
+    getUserIdSuccess(state, action) {
+      return {...state,
         ...action.payload
       };
     },

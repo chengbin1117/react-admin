@@ -73,7 +73,9 @@ function UserInfo({dispatch,user}) {
 	          
 	          label="默认值"
 	        >
-	          {getFieldDecorator('info')(
+	          {getFieldDecorator('info',{
+	          	initialValue:'',
+	          })(
 	            	<TextArea style={{ width:'40%',minHeight:"100px" }} disabled={this.state.dis=="0"?false:true}
 	            	placeholder="请输入"
 	            	/>
@@ -92,9 +94,9 @@ function UserInfo({dispatch,user}) {
 
 const WrappedDemo = Form.create()(Demo);
 	return (
-			<LayoutContainer>
+			<div>
 				<WrappedDemo />
-			</LayoutContainer>
+			</div>
 
 	);
 }

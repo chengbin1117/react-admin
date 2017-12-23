@@ -36,12 +36,12 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		  render: (text, record) => (
 		    <span>
 		    	{record.status == 1? <span className = "action_font" style={{color:'#e5e5e5'}}>审核</span>:
-		    	<a className = "action_font" onClick={()=>audit(record)}>审核</a>
+		    	<a className = "action_font" onClick={()=>audit(record)} >审核</a>
 		    }
 		      
-		      <a  className = "action_font" onClick={()=>showSet(record)}>显示设置</a>
+		      <a  className = "action_font" onClick={()=>showSet(record)} style={{marginLeft:10}}>显示设置</a>
 		      <Popconfirm title="确定删除吗？" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
-			    <a href="#" className = "action_font">删除</a>
+			    <a href="#" className = "action_font" style={{marginLeft:10}}>删除</a>
 			  </Popconfirm>
 		    </span>
 		  )
@@ -158,7 +158,7 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		      	<p style = {{float:"left",margin:10}}>当前共有评论：{total}</p>
 		      	<Button type="primary" size = 'large' style = {{float:'right'}} onClick = {opinionSetModal}>评论审核设置</Button>
 		      </div>
-		      <Table style = {{marginTop:90}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId}/>
+		      <Table style = {{marginTop:90}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId} locale={{emptyText:"暂无数据"}}/>
 		      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange} total={total} onChange={this.onChange} pageSize={20}/>
 		      <Button type="primary" size = 'large' disabled={!hasSelected} onClick={()=>showSets(selectedRows)}>批量设置显示状态</Button>
 		     

@@ -38,29 +38,21 @@ function AboutUs({dispatch,setting,router}) {
 	    e.preventDefault();
 	    this.props.form.validateFields((err, values) => {
 	      if (!err) {
-	        console.log('Received values of form: ', values);
-	        console.log(this.state.html)
-	        var h = this.state.html;
-	        var t = this.state.text;
+	        console.log('Received values of form: ', values)
 	        var v = values.info;
 	        var type = v.split(',');
-	        if(t == ""){
-	        	message.warn('请输入正文')
-	        }else{
+	    
 	        	dispatch({
 	        		type:'setting/addBaseinfo',
 	        		payload:{
-	        			infoDetail:h+'',
+	        			infoDetail:values.text,
 	        			infoOrder:parseInt(values.infoOrder),
 	        			infoType:type[1]+'',
 	        			createUser:parseInt(userId),
 	        			infoName:type[0]+'',
 	        			infoStatus:values.setshow == "a"?true:false,
-	        			router,
 	        		}
 	        	})
-	        }
-
 	      }
 	    });
 	  }
@@ -71,14 +63,14 @@ function AboutUs({dispatch,setting,router}) {
 	    }
 	    return e && e.fileList;
 	  }
-	  edtiorContent=(editor) =>{
+	  edtiorContent=(value) =>{
 	  //	console.log(editor)
-	  	var html  = editor.txt.html()
+	  	/*var html  = editor.txt.html()
         var text  = editor.txt.text();
-        this.setState({
-        	html:html,
-        	text:text
-        })
+        console.log(typeof(text))*/
+        console.log(value)
+
+         return value
 	  }
 	  render() {
 	    const { getFieldDecorator } = this.props.form;
@@ -107,7 +99,15 @@ function AboutUs({dispatch,setting,router}) {
 	          )}
 	        </FormItem>
 	        <FormItem>
-	         	<Editor ref="editor" edtiorContent={this.edtiorContent}/>
+	             {getFieldDecorator('text', {
+                      rules: [
+                      { required: true, message: '请输入正文!' },
+                      {type:'string',min:1,max:5000,message:'请输入1-5000个字符'}
+                      ],
+                      trigger:'edtiorContent'
+                    })(
+                         <Editor edtiorContent={this.edtiorContent} />
+                    )}
 	        </FormItem>
 			<FormItem
 	         {...formItemLayout}
@@ -151,11 +151,11 @@ function AboutUs({dispatch,setting,router}) {
 
 const WrappedDemo = Form.create()(FormInfo);
 	return (
-			<LayoutContainer className={styles.Indexbox}>
+			<div className={styles.Indexbox}>
 					
 				<WrappedDemo />
 				
-			</LayoutContainer>
+			</div>
 
 	);
 }

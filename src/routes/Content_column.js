@@ -13,10 +13,13 @@ import {
 import LayoutContainer from '../components/Layout';
 import Content_Column from '../components/Content/Content_Column';
 import Content_ColumnAdd_Modal from '../components/Content/Content_ColumnAdd_Modal';
+import Content_ColumnEditor_Modal from '../components/Content/Content_ColumnEditor_Modal';
+import Content_ColumnChild_Modal from '../components/Content/Content_ColumnChild_Modal';
+
 import { message } from 'antd';
 function ContentColumn({dispatch,content,router}){
 
-	const {ColumnAddVisbile,CList,current,type,loading} =content;
+	const {childCloum,ColumnAddVisbile,CList,current,type,loading,columnEditor} =content;
 	
 	const Content_ColumnProps ={
 		data:CList,
@@ -31,19 +34,16 @@ function ContentColumn({dispatch,content,router}){
 		},
 		editor(record){
 			dispatch({
-				type:"content/showColumnAddModal",
+				type:"content/showColumnEditorModal",
 				payload:{
-					type:'update',
 					current:record
 				}
 			})
 		},
 		addChildColumn(record){
-			console.log(1)
 			dispatch({
-				type:"content/showColumnAddModal",
+				type:"content/showColumnChildModal",
 				payload:{
-					type:'addchild',
 					current:record
 				}
 			})
@@ -101,8 +101,6 @@ function ContentColumn({dispatch,content,router}){
 
 	const Content_ColumnAdd_ModalProps ={
 		visible:ColumnAddVisbile,
-		type,
-		item:current,
 		onCancel(){
 			dispatch({
 				type:"content/hideColumnAddModal"
@@ -115,9 +113,8 @@ function ContentColumn({dispatch,content,router}){
 				dispatch({
 				type:"content/addColumn",
 				payload:{
-					columnId:parseInt(data.id),
 					parentId:parseInt(data.parentId),
-					name:data.name,
+					name:data.cname,
 					navigatorDisplay:parseInt(data.navigatorDisplay),
 					displayStatus:data.displayStatus=="public"?true:false,
 					order:parseInt(data.order),
@@ -132,7 +129,7 @@ function ContentColumn({dispatch,content,router}){
 				type:"content/addColumn",
 				payload:{
 					parentId:parseInt(data.parentId),
-					name:data.name,
+					name:data.cname,
 					navigatorDisplay:parseInt(data.navigatorDisplay),
 					displayStatus:data.displayStatus=="public"?true:false,
 					order:parseInt(data.order),
@@ -147,11 +144,71 @@ function ContentColumn({dispatch,content,router}){
 		}
 
 	}
+
+	//编辑栏目
+	const Content_ColumnEditor_ModalProps ={
+		visible:columnEditor,
+		item:current,
+		onCancel(){
+			dispatch({
+				type:"content/hideColumnEditorModal"
+			})
+		},
+		onOk(data){
+			
+			dispatch({
+				type:"content/addColumn",
+				payload:{
+					columnId:parseInt(data.id),
+					parentId:parseInt(data.parentId),
+					name:data.name,
+					navigatorDisplay:parseInt(data.navigatorDisplay),
+					displayStatus:data.displayStatus=="public"?true:false,
+					order:parseInt(data.order),
+					displayMode:data.displayMode =="public"?1:2,
+					title:data.title,
+					keyword:data.keyword,
+					description:data.description
+				}
+			})
+			
+		}
+	}
+	const Content_ColumnChild_ModalProps ={
+		visible:childCloum,
+		item:current,
+		onCancel(){
+			dispatch({
+				type:'content/hideColumnChildModal'
+			})
+		},
+		onOk(data){
+			
+			dispatch({
+				type:"content/addColumn",
+				payload:{
+					
+					parentId:parseInt(data.parentId),
+					name:data.name,
+					navigatorDisplay:parseInt(data.navigatorDisplay),
+					displayStatus:data.displayStatus=="public"?true:false,
+					order:parseInt(data.order),
+					displayMode:data.displayMode =="public"?1:2,
+					title:data.title,
+					keyword:data.keyword,
+					description:data.description
+				}
+			})
+		}
+
+	}
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Column {...Content_ColumnProps}/>
 				<Content_ColumnAdd_Modal {...Content_ColumnAdd_ModalProps}/>
-			</LayoutContainer>
+				<Content_ColumnEditor_Modal {...Content_ColumnEditor_ModalProps}/>
+				<Content_ColumnChild_Modal {...Content_ColumnChild_ModalProps}/>
+			</div>
 
 	);
 }

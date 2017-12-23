@@ -151,7 +151,7 @@ function Release_article({dispatch,router,content,setting}) {
   }
   
 	return (
-			<LayoutContainer>
+			<div>
 				<Row span={24} >
 					<Col>
 						<RelesEditor {...ArticleEditorProps}/>
@@ -159,7 +159,7 @@ function Release_article({dispatch,router,content,setting}) {
             <FtModal {...FtModalProps} />
 					</Col>
 				</Row>
-			</LayoutContainer>
+			</div>
 
 	);
 }

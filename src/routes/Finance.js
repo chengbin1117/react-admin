@@ -15,9 +15,9 @@ import LayoutContainer from '../components/Layout';
 const Finance = (props) => {
 
 	return (
-		<LayoutContainer>
+		<div>
 			{props.children}
-		</LayoutContainer>
+		</div>
 
 	);
 }

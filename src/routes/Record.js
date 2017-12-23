@@ -93,9 +93,9 @@ function Record({location,dispatch,finance,router,}) {
 	}
 
 	return (
-			<LayoutContainer>
+			<div>
 				<Transaction {...TransactionProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

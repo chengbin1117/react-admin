@@ -4,7 +4,7 @@ import styles from './Layout.css';
 import style from './common.css';
 
 import {
-	withRouter,Link,hashHistory
+	withRouter,Link,hashHistory,NavLink
 } from 'dva/router';
 
 import {
@@ -16,7 +16,7 @@ const SubMenu = Menu.SubMenu;
 let selectItem = '';
 // const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-
+let menuItems = []
 let nav = JSON.parse(localStorage.getItem("nav"))
 let userId  = localStorage.getItem("userId")
 //console.log("nav",nav)
@@ -26,7 +26,42 @@ let third = "";
 //console.log("hashHistory",history)
 //let location=history.location
 //let path = location.pathname
-console.log("hashHistory",withRouter)
+
+/*function hasPermission(permission) {
+  const resourceList = session.get(resourceSessionKey) // 获取登录用户的所有权限
+  resourceList || redirectLoginPage()
+  if (!resourceList || !resourceList.length || (permission && resourceList.indexOf(permission) === -1)) {
+    // 无权限访问跳转到无权限页面
+    return false
+  }
+  return true
+}
+// 递归生成菜单
+  const getMenus = menuTreeN => {
+    return menuTreeN.map(item => {
+      if (item.children) {
+        return (
+          hasPermission(item.permission) && <Menu.SubMenu
+            key={item.id}
+            title={<span>{item.icon && <Icon type={item.icon} />}{item.name}</span>}
+          >
+            {getMenus(item.children)}
+          </Menu.SubMenu>
+        )
+      }
+      return (
+        hasPermission(item.permission) && <Menu.Item key={item.id}>
+          <Link to={item.url}>
+            {item.icon && <Icon type={item.icon} />}
+            {item.name}
+          </Link>
+        </Menu.Item>
+      )
+    })
+  }
+  menuItems = getMenus(nav)*/
+
+
    /* if(path =="/index"){
           first ="";
           second = "";
@@ -105,7 +140,7 @@ console.log("hashHistory",withRouter)
 */
   
 
-class LayoutContainer extends React.Component {
+/*class LayoutContainer extends React.Component {
   constructor(){
         super();
         this.state = {
@@ -132,14 +167,14 @@ class LayoutContainer extends React.Component {
   		defaultOpenKeys:val
   	})*/
   	//console.log('val',val)
-  }
-  render() {
+  //}
+  /*render() {
   	//let logoimg = require("image!../assets/images/code.png");
    
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
-			collapsible = {false}
+			collapsible = {true}
 			onCollapse = {this.onCollapse}
 			defaultCollapsed = {false}
 			reverseArrow = {true}
@@ -172,6 +207,102 @@ class LayoutContainer extends React.Component {
           			<span>CB</span>
           			<Link to="/" className={styles.logOut}>退出</Link>
           		</div>
+          </Header>
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>{first}</Breadcrumb.Item>
+              <Breadcrumb.Item>{second}</Breadcrumb.Item>
+              <Breadcrumb.Item>{third}</Breadcrumb.Item>
+            </Breadcrumb>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+              {this.props.children}
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            KG ©2016 Created by Ant UED
+          </Footer>
+        </Layout>
+      </Layout>
+    );
+  }
+}*/
+
+class LayoutContainer extends React.Component {
+  rootSubmenuKeys:['sub0','sub1','sub2','sub3','sub4','sub5','sub6','sub7']
+  state = {
+    collapsed: false,
+    openKeys: ['sub0'],
+    current:'1'
+  };
+  onCollapse = (collapsed) => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  }
+  onOpenChange =(openKeys) => {
+    //console.log(openKeys)
+    const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+    //console.log(latestOpenKey)
+    this.setState({
+        openKeys: latestOpenKey ? [latestOpenKey] : [],
+      });
+    /*if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      this.setState({ openKeys });
+    } else {
+      this.setState({
+        openKeys: latestOpenKey ? [latestOpenKey] : [],
+      });
+    }*/
+  }
+  handleClick=(e)=>{
+    console.log('click ', e);
+    this.setState({
+      current: e.key,
+      openKeys:[e.keyPath[1]]
+    });
+  }
+  render() {
+    console.log('openKeys',this.state.openKeys)
+    return (
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider
+          collapsible
+          collapsed={this.state.collapsed}
+          onCollapse={this.onCollapse}
+        >
+        <Menu 
+          theme="dark" 
+          onClick={this.handleClick} 
+          inlineCollapsed ={false}
+          mode="inline" 
+          openKeys={this.state.openKeys} 
+          onOpenChange={this.onOpenChange}
+          
+          >
+          <Menu.Item key="-1">
+          <Link to={"/index?userId="+userId}>
+            <Icon type="home" />
+            <span>主页</span>
+          </Link>
+        </Menu.Item>
+          {nav&&nav.map((item,index)=>
+                   <SubMenu key={"sub"+index} title={<span><Icon type="user1" /><span>{item.menuName}</span></span>}>
+                    {item.children.map((c,inde)=>
+                        <Menu.Item key={c.menuId+''} >
+                        <Link   to = {"/"+c.menuLink+'?page=1'}>{c.menuName}</Link>
+                        </Menu.Item>
+                      )}
+                  </SubMenu>
+                )
+                
+            }
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}>
+              <div className = {styles.header_right}>
+                <span>CB</span>
+                <Link to="/" className={styles.logOut}>退出</Link>
+              </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
@@ -226,3 +357,5 @@ export default connect(mapStateToProps)(withRouter(LayoutContainer));
               <Menu.Item key="14"><Link activeClassName = {style.activeColor} to = '/log/log_user'>用户日志</Link></Menu.Item>
               <Menu.Item key="15"><Link activeClassName = {style.activeColor} to = '/log/log_admin'>管理员日志</Link></Menu.Item>
             </SubMenu>*/}
+
+  

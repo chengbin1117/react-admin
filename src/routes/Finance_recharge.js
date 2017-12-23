@@ -92,9 +92,9 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 	}
 	
 	return (
-			<LayoutContainer>
+			<div>
 				<Recharge {...RechargeProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

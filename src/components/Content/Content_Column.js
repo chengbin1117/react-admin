@@ -4,7 +4,7 @@ import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select} from 
 
 const Option = Select.Option;
 function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,handleChange,fixName,fix}){
-	console.log(loading)
+
 
 	
 	class Content extends React.Component{
@@ -72,10 +72,10 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 		  	return(
 		  		<span>
 		  		  <a className = "action_font" onClick = {()=>editor(record)}>编辑</a>
-		  		  {record.columnLevel ==2?null:<a className = "action_font" onClick = {()=>addChildColumn(record)}>添加子栏目</a>}
+		  		  {record.columnLevel ==2?null:<a className = "action_font" onClick = {()=>addChildColumn(record)} style={{marginLeft:10}}>添加子栏目</a>}
 			      
 			      <Popconfirm title="确定删除吗？" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
-				  <a  className = "action_font">删除</a>
+				  <a  className = "action_font" style={{marginLeft:10}}>删除</a>
 				  </Popconfirm>
 			    </span>
 		  	)
@@ -85,7 +85,7 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 	    <div>
 	      <Button type="primary" size = 'large' onClick = {()=>addColumn()}>添加一级栏目</Button>
 	      <p>同级栏目排序越小越靠前</p>
-	      <Table bordered columns={columns} dataSource={data} pagination = {false} rowKey={record => record.id} indentSize={100} loading={loading}/>
+	      <Table bordered columns={columns} dataSource={data} pagination = {false} rowKey={record => record.id} indentSize={100} loading={loading} locale={{emptyText:"暂无数据"}}/>
 	      
 	    </div>
 	  );

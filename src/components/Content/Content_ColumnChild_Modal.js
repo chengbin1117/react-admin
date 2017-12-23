@@ -20,11 +20,10 @@ const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 17, offset: 10 },
     };
-const Content_ColumnAdd_Modal = ({
+const Content_ColumnChild_Modal = ({
   visible,
-  item={},
   onOk,
-  type,
+  item={},
   onCancel,
   RoleProfile,
   form: {
@@ -46,7 +45,7 @@ const FormItem = Form.Item;
       }
      
       const data = {
-       
+       parentId:item.parentId,
         ...getFieldsValue(),
        
       }
@@ -63,7 +62,7 @@ const FormItem = Form.Item;
     });
   }
   const modalOpts = {
-    title:"添加一级栏目",
+    title:"添加子栏目",
     visible,
     onOk: handleOk,
     onCancel: Cancel,
@@ -90,8 +89,8 @@ const FormItem = Form.Item;
        <Form>
           <FormItem {...formItemLayout} label="上级栏目">
 
-            {getFieldDecorator('parentId', {
-              initialValue:'0',
+            {getFieldDecorator('id', {
+              initialValue:item.id+'',
               rules: [{ required: true, message: '请选择' }],
             })(
               <Select disabled>
@@ -102,7 +101,7 @@ const FormItem = Form.Item;
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="栏目名称">
-            {getFieldDecorator('name', {
+            {getFieldDecorator('cname', {
               initialValue:'',
               rules: [
                  { required: true, message: '请输入栏目名称!' },
@@ -184,7 +183,7 @@ const FormItem = Form.Item;
   );
 };
 
-Content_ColumnAdd_Modal.propTypes = {
+Content_ColumnChild_Modal.propTypes = {
   visible: PropTypes.any,
   form: PropTypes.object,
   item: PropTypes.object,
@@ -192,4 +191,4 @@ Content_ColumnAdd_Modal.propTypes = {
   onCancel: PropTypes.func,
 };
 
-export default Form.create()(Content_ColumnAdd_Modal);
+export default Form.create()(Content_ColumnChild_Modal);

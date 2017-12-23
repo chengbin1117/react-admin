@@ -27,7 +27,7 @@ function UserList({
   onEditItem,
   setKgUser
 }) {
-
+ 
   const columns = [{
     title: '用户名',
     dataIndex: 'username',
@@ -70,21 +70,9 @@ function UserList({
 			)
 		}
   },];
-  const pagination = {
-    total: 10,
-    showSizeChanger: true,
-    pageSize: 15,
-    pageSizeOptions: ['15', '30', '45', '60'],
-    onShowSizeChange: (current, pageSize) => {
-      console.log('Current: ', current, '; PageSize: ', pageSize);
-    },
-    onChange: (current) => {
-      console.log('Current: ', current);
-    },
-  };
 
   return (
-    <Table bordered rowKey={record => record.id+''} columns={columns}  dataSource={data} pagination={false} />
+    <Table bordered rowKey={record => record.id+''} columns={columns}  dataSource={data} pagination={false} loading={loading}/>
   )
 }
 

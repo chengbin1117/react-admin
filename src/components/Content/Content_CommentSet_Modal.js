@@ -72,8 +72,9 @@ const Content_CommentSet_Modal = ({
     visible,
     onOk: handleOk,
     onCancel: onCancel,
-
-  };
+    okText:"确定",
+    cancelText:"取消"
+    };
   
   
   
@@ -83,7 +84,7 @@ const Content_CommentSet_Modal = ({
           <Form>
           <FormItem  label="新评论是否需要审核" className="collection-create-form_last-form-item">
             {getFieldDecorator('set', {
-              initialValue: 'public',
+              initialValue: 'private',
             })(
               <RadioGroup>
                 <Radio value="public">需要审核</Radio><span>注：设置为需要审核后，所有新评论需通过审核才能在前台显示</span><br />

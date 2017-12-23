@@ -134,8 +134,8 @@ const Content_ImageAdd_Modal = ({
       this.props.form.validateFields(
         (err,value) => {
           if (!err) {
-            console.info(value,text);
-            handleOk(value,text)
+            value.imageDetail =text
+            handleOk(value)
 
           }
         },

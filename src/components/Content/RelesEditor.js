@@ -62,6 +62,7 @@ function RelesEditor({
           dispatch({
               type:'content/publishArticle',
               payload:{
+                
                 articleTitle:data.articleTitle,
                 articleText:data.text,
                 articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
@@ -93,7 +94,7 @@ function RelesEditor({
               payload:{
                 articleTitle:data.articleTitle,
                 articleText:data.text,
-                articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
+                articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4!=undefined?data.tag4:''+','+data.tag5!=undefined?data.tag5:'',
                 description:data.artic,
                 image:imgUrl,
                 type:parseInt(data.type),
@@ -440,7 +441,7 @@ function RelesEditor({
                         <Input style={{width:'20%'}} disabled={(UserById.kgUserId!=null&&UserById.kgUserId!="")?true:false}/>
 
                       )}
-                      {(UserById.kgUserId!=null&&UserById.kgUserId!="")?<a style={{maginLeft:30+'px'}} onClick={showUser} >关联前台用户</a>:null}
+                      {(UserById.kgUserId ==null&&UserById.kgUserId=="")?<a style={{maginLeft:30+'px'}} onClick={showUser} >关联前台用户</a>:null}
               </FormItem>
               <FormItem
                       {...formItemLayout}

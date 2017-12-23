@@ -156,10 +156,10 @@ function BaseInfo() {
 	
 	const BaseInfoForm = Form.create()(InfoForm);
 	return (
-			<LayoutContainer className={styles.Indexbox}>
+			<div className={styles.Indexbox}>
 				<h2>网站基本信息</h2>
 				<BaseInfoForm />
-			</LayoutContainer>
+			</div>
 
 	);
 }

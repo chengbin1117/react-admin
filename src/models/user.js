@@ -87,7 +87,7 @@ export default {
                       auditStatus:0
                   }
                 });
-            dispatch({
+           dispatch({
                   type: 'getSysMenu',
                   payload: {
                       userId:parseInt(search.userId),
@@ -120,14 +120,21 @@ export default {
       const {
         data
       } = yield call(login, params);
-      console.log(data)
+      //console.log(data)
       if (data && data.code == 10000) {
-        localStorage.setItem("Kgtoken", data.responseBody.token);
-        localStorage.setItem("userId", data.responseBody.userId);
-       // console.log(hashHistory)
-       dispatch(routerRedux.push('/index?userId='+data.responseBody.userId));
+          localStorage.setItem("Kgtoken", data.responseBody.token);
+          localStorage.setItem("userId", data.responseBody.userId);
+          
+            /*yield put({
+                  type:"getSysMenu",
+                  payload:{
+                    userId:parseInt(data.responseBody.userId),
+                  }
+              })*/
+          
+          dispatch(routerRedux.push('/index?userId='+data.responseBody.userId));
       
-        window.location.reload()
+          
         
       } else {
         message.error(data.message);
@@ -153,7 +160,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
         yield put({
           type: 'hideLoading',
         });
@@ -177,7 +189,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *auditUser({ payload }, {call , put}) {
@@ -228,7 +245,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+       if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *setHotUser({ payload }, {call , put}) {
@@ -254,7 +276,12 @@ export default {
               }
             });
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
         yield put({
               type: 'hideHotModal',
               payload:{
@@ -282,7 +309,12 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *siteinfoservice({ payload }, {call , put}) {
@@ -296,7 +328,12 @@ export default {
           message.success('设置成功')
          
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getRoleList({ payload }, {call , put}) {
@@ -317,7 +354,12 @@ export default {
             }); 
          
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *roleSetStatus({ payload }, {call , put}) {
@@ -336,7 +378,12 @@ export default {
               }
           }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getRoleProfile({ payload }, {call , put}) {
@@ -355,7 +402,12 @@ export default {
               }
           }); 
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *loginSet({ payload }, {call , put}) {
@@ -375,7 +427,12 @@ export default {
               }
           }); */
       } else {
-        message.error(data.message);
+       if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *userInfoSet({ payload }, {call , put}) {
@@ -395,28 +452,28 @@ export default {
               }
           }); */
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getSysMenu({ payload }, {call , put}) {
-       yield put({
-        type: 'showLoading',
-       });
-
       const { data } = yield call(getSysMenu, payload);
 
       if (data && data.code == 10000) {
-          //console.log("菜单",data)
            localStorage.setItem("nav", JSON.stringify(data.responseBody));
-          /*var res = data.responseBody;
-          yield put({
-              type: 'getRoleProfileSuccess',
-              payload:{
-                RoleProfile:res
-              }
-          }); */
+          // window.location.reload()
+
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getUserCert({ payload }, {call , put}) {
@@ -454,7 +511,12 @@ export default {
               }
           });
       } else {
-        message.error(data.message);
+       if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
         yield put({
         type: 'hideLoading',
        });
@@ -489,7 +551,12 @@ export default {
               }
           });  
       } else {
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
   },

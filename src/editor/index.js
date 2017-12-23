@@ -65,12 +65,12 @@ const { TextArea } = Input;
           this.setState({
             editorContent: html
           })
-         this.props.edtiorContent(editor.txt.text())
+         this.props.edtiorContent(editor.txt.html())
         }
-
-        editor.create();
         console.log("编辑器内容",this.props.articleText)
-        editor.txt.html(this.props.articleText)
+        
+        editor.create();
+        editor.txt.html(this.props.articleText!=undefined?this.props.articleText:'')
       }
       
       render() {

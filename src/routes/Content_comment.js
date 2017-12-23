@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import { Modal,message} from 'antd';
@@ -21,7 +21,7 @@ function ContentComment({location,dispatch,router,content}) {
     
     const {CommentList,CommentSetVisible,showSetVisible,selectList,ExamineVisible,loading,totalNumber,currentPage} = content;
 
-	//console.log("loading",loading)
+	console.log("loading",location)
 
 	const Content_CommentProps ={
 		data:CommentList,
@@ -46,7 +46,7 @@ function ContentComment({location,dispatch,router,content}) {
 				type:"content/deleteComment",
 				payload:{
 					commentId:record.commentId,
-					query:location.query
+					search:location.search
 				}
 			})
 		},
@@ -97,8 +97,7 @@ function ContentComment({location,dispatch,router,content}) {
 			}
 		},
 		changepage(page){
-			router.push('content/content_comment?page='+page)
-		
+			dispatch(routerRedux.push('/content/content_comment?page='+page))
 		}
 	}
 
@@ -172,12 +171,12 @@ function ContentComment({location,dispatch,router,content}) {
 		}
 	}
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Comment {...Content_CommentProps}/>
 				<Content_CommentSet_Modal {...Content_CommentSet_ModalProps}/>
 				<Content_CommentSetShow_Modal {...Content_CommentSetShow_ModalProps} />
 				<ExamineModal {...ExamineModalProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

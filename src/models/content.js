@@ -7,6 +7,7 @@ import {
 import {
   message
 } from 'antd';
+import { routerRedux } from 'dva/router';
 import {formatDate,tokenLogOut,GetRequest} from '../services/common'
 export default {
 
@@ -49,7 +50,8 @@ export default {
             type:'getArticleList',
             payload:{
               currentPage:search.page,
-              pageSIze:25,
+              pageSize:25,
+
             }
           })
           dispatch({
@@ -126,7 +128,9 @@ export default {
         }
         match =pathToRegexp('/content/content_comment').exec(location.pathname);
         if(match){
+
           const search =GetRequest(location.search);
+         
           dispatch({
               type:'getCommentList',
               payload:{
@@ -198,8 +202,13 @@ export default {
           type: 'hideLoading',
         });
         //message.error(data.message);
-        tokenLogOut(data)
-        
+        //tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *setDisplayStatus({ payload }, {call , put}) {
@@ -228,7 +237,13 @@ export default {
               }
             });
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+        
       }
     },
     *articleservice({ payload }, {call , put}) {
@@ -254,7 +269,12 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-       tokenLogOut(data)
+       if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *auditArticle({ payload }, {call , put}) {
@@ -280,7 +300,12 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *publishArticle({ payload }, {call , put}) {
@@ -307,7 +332,12 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *getColumnList({ payload }, {call , put}) {
@@ -324,15 +354,10 @@ export default {
          let chid ={};
          let c= [];
          for (var i in res) {
-            
-
-           /* for(var j in res[i].children){
-                chid ={
-                  'value': res[i].children[j].id,
-                  'label': res[i].children[j].name,
-                }
-                c.push(chid)
-            }*/
+            res[i].createDate =formatDate(res[i].createDate);
+            for (var k in res[i].children){
+              res[i].children[k].createDate =formatDate(res[i].children[k].createDate);
+            }
             params={
               'value': res[i].id,
               'label': res[i].name,
@@ -357,7 +382,12 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *deleteArticle({ payload }, {call , put}) {
@@ -374,12 +404,17 @@ export default {
               type: 'getArticleList',
               payload:{
                 currentPage:search.page,
-                pageSIze:25,
+                pageSize:25,
               }
             });
       } else {
          
-        message.error(data.message);
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *getArticleById({ payload }, {call , put}) {
@@ -406,7 +441,12 @@ export default {
               });
             } 
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
       }
     },
     *siteimagelist({ payload }, {call , put}) {
@@ -430,13 +470,19 @@ export default {
               }
             }); 
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
       }
     },
     *addImage({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+    
       const { data } = yield call(addImage, payload);
      
       if (data && data.code == 10000) {
@@ -462,7 +508,12 @@ export default {
             });  
       
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *deleteImage({ payload }, {call , put}) {
@@ -480,7 +531,12 @@ export default {
               }
             }); 
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *ImageSetStatus({ payload }, {call , put}) {
@@ -495,7 +551,12 @@ export default {
               }
             }); */
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getFeedbackList({ payload }, {call , put}) {
@@ -517,7 +578,12 @@ export default {
               }
             }); 
       } else {
-        tokenLogOut(data)
+       if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *deleteFeedback({ payload }, {call , put}) {
@@ -535,7 +601,12 @@ export default {
               }
             }); 
       } else {
-        tokenLogOut(data)
+       if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *setStatus({ payload }, {call , put}) {
@@ -547,7 +618,12 @@ export default {
       if (data && data.code == 10000) {
             
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *replay({ payload }, {call , put}) {
@@ -559,7 +635,12 @@ export default {
       if (data && data.code == 10000) {
            message.success('保存成功'); 
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getCommentList({ payload }, {call , put}) {
@@ -569,6 +650,9 @@ export default {
       const { data } = yield call(getCommentList, payload);
       if (data && data.code == 10000) {
            var res = data.responseBody;
+           for (var i in res.data){
+              res.data[i].createDate=formatDate(res.data[i].createDate);
+           }
            yield put({
               type: 'getCommentListSuccess',
               payload:{
@@ -584,7 +668,12 @@ export default {
           yield put({
             type: 'hideLoading',
           });
-          tokenLogOut(data)
+          if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *commentSet({ payload }, {call , put}) {
@@ -600,29 +689,41 @@ export default {
            })
       
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *deleteComment({ payload }, {call , put}) {
-      const {commentId,query} =payload;
+      const {commentId} =payload;
       let params ={
         commentId:commentId
       }
+      
       const { data } = yield call(deleteComment, params);
           
       if (data && data.code == 10000) {
            message.success('删除成功')
-          // var res = data.responseBody.data;
+          const search = GetRequest(payload.search)
+    
            yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:query.page,
+                currentPage:search.page,
                 pageSize:25,
               }
 
            })
       } else {
-       tokenLogOut(data)
+       if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *setcommentStatus({ payload }, {call , put}) {
@@ -648,7 +749,12 @@ export default {
               
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *auditComment({ payload }, {call , put}) {
@@ -674,7 +780,12 @@ export default {
 
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *addColumn({ payload }, {call , put}) {
@@ -697,6 +808,21 @@ export default {
 
            })
             yield put({
+              type: 'hideColumnChildModal',
+              payload:{
+              
+              }
+
+           })
+            yield put({
+              type: 'hideColumnEditorModal',
+              payload:{
+              
+              }
+
+           })
+           
+            yield put({
               type: 'getColumnList',
               payload:{
               
@@ -704,7 +830,12 @@ export default {
 
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *deleteColumn({ payload }, {call , put}) {
@@ -723,7 +854,12 @@ export default {
 
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *sendEmail({ payload }, {call , put}) {
@@ -740,7 +876,12 @@ export default {
 
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getSysUserById({ payload }, {call , put}) {
@@ -757,7 +898,12 @@ export default {
 
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
     *getBonus({ payload }, {call , put}) {
@@ -774,7 +920,12 @@ export default {
 
            })
       } else {
-        tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
       }
     },
   },
@@ -964,7 +1115,45 @@ export default {
         ...action.payload,
       };
     },
-    
+    showImageModal(state, action) {
+      return {...state,
+        ...action.payload,
+        ImgShowVisible: true
+      };
+    },
+    hideImageModal(state, action) {
+      return {...state,
+        ...action.payload,
+        ImgShowVisible: false
+      };
+    },
+    showColumnEditorModal(state, action) {
+      
+      return {...state,
+        ...action.payload,
+        columnEditor: true
+      };
+    },
+    hideColumnEditorModal(state, action) {
+      return {...state,
+        ...action.payload,
+        columnEditor: false
+      };
+    },
+    showColumnChildModal(state, action) {
+      
+      return {...state,
+        ...action.payload,
+        childCloum: true
+      };
+    },
+    hideColumnChildModal(state, action) {
+      
+      return {...state,
+        ...action.payload,
+        childCloum: false
+      };
+    },
   },
 
 }

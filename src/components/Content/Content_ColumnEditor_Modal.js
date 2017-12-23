@@ -20,13 +20,11 @@ const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 17, offset: 10 },
     };
-const Content_ColumnAdd_Modal = ({
+const Content_ColumnEditor_Modal = ({
   visible,
-  item={},
+  item = {},
   onOk,
-  type,
   onCancel,
-  RoleProfile,
   form: {
     getFieldDecorator,
     validateFields,
@@ -37,7 +35,6 @@ const Content_ColumnAdd_Modal = ({
 }) => {
 
 const FormItem = Form.Item;
-
   console.log(item)
   function handleOk() {
     validateFields((errors) => {
@@ -46,9 +43,9 @@ const FormItem = Form.Item;
       }
      
       const data = {
-       
+        id: item.id,
         ...getFieldsValue(),
-       
+        key: item.key
       }
       
       onOk(data);
@@ -63,13 +60,14 @@ const FormItem = Form.Item;
     });
   }
   const modalOpts = {
-    title:"添加一级栏目",
+    title:item.columnLevel==1?"编辑一级栏目":"编辑二级栏目",
     visible,
     onOk: handleOk,
     onCancel: Cancel,
     maskClosable: false,
-    width:'670px'
-
+    width:'670px',
+    okText:"确定",
+    cancelText:"取消"
   };
 
    const formItemLayout = {
@@ -91,7 +89,7 @@ const FormItem = Form.Item;
           <FormItem {...formItemLayout} label="上级栏目">
 
             {getFieldDecorator('parentId', {
-              initialValue:'0',
+              initialValue:item.columnLevel==1?'0':item.id+'',
               rules: [{ required: true, message: '请选择' }],
             })(
               <Select disabled>
@@ -102,19 +100,17 @@ const FormItem = Form.Item;
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="栏目名称">
-            {getFieldDecorator('name', {
-              initialValue:'',
-              rules: [
-                 { required: true, message: '请输入栏目名称!' },
-                 {type:'string',min:2,max:6,message:"2-6个字符,支持中英文"}
-              ],
+            {getFieldDecorator('cname', {
+              id:item.id,
+              initialValue:item&&item.name,
+              rules: [{ required: true, message: '请输入栏目名称!' }],
             })(
-              <Input />
+              <Input type="text"/>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="导航栏显示">
             {getFieldDecorator('navigatorDisplay', {
-              initialValue:'2',
+              initialValue:item!={}?String(item.navigatorDisplay):'',
               rules: [{ required: true, message: '请选择' }],
             })(
               <Select >
@@ -128,9 +124,7 @@ const FormItem = Form.Item;
           <FormItem {...formItemLayout_radio} label="前台是否显示" className="collection-create-form_last-form-item">
             {getFieldDecorator('displayStatus', {
               initialValue: 'public',
-               rules: [{ required: true, message: '请设置前台是否显示!' },
-                
-               ],
+               rules: [{ required: true, message: '请设置前台是否显示!' }],
             })(
               <Radio.Group>
                 <Radio value="public">是</Radio>
@@ -141,8 +135,7 @@ const FormItem = Form.Item;
           <FormItem {...formItemLayout} label="同级栏目排序">
             {getFieldDecorator('order', {
               initialValue: '',
-              rules: [{ required: false, message: '请输入排序' },
-              {message:'只能输入数字'}],
+              rules: [{ required: false, message: '请输入排序' }],
             })(
               <Input />
             )}
@@ -163,6 +156,7 @@ const FormItem = Form.Item;
           <h1>seo设置</h1>
           <FormItem {...formItemLayout} label="标题">
             {getFieldDecorator('title', {
+              initialValue:"",
               rules: [{ required: true, message: '请输入seo标题!' }],
             })(
               <Input />
@@ -184,7 +178,7 @@ const FormItem = Form.Item;
   );
 };
 
-Content_ColumnAdd_Modal.propTypes = {
+Content_ColumnEditor_Modal.propTypes = {
   visible: PropTypes.any,
   form: PropTypes.object,
   item: PropTypes.object,
@@ -192,4 +186,4 @@ Content_ColumnAdd_Modal.propTypes = {
   onCancel: PropTypes.func,
 };
 
-export default Form.create()(Content_ColumnAdd_Modal);
+export default Form.create()(Content_ColumnEditor_Modal);

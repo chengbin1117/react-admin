@@ -16,14 +16,16 @@ import { Form ,Button, Upload, Icon,Input,Select,Col,Modal} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import UserList from '../components/Setting/UserList';
-/*import AdduserModal from '../components/Setting/AdduserModal';*/
+import AdduserModal from '../components/Setting/AddUserModal.js';
+import EditoruserModal from '../components/Setting/EditorUserModal.js';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import ManageModal from '../components/Setting/ManageModal';
 import AddPostModal from '../components/Setting/AddPostModal';
+import EditorPostModal from '../components/Setting/EditorPostModal';
 import RelationModal from '../components/Setting/RelationUser';
 function AccountRule({location,dispatch,setting,router,}) {
 	let  userId = localStorage.getItem('userId')
-	const { listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList}=setting;
+	const { deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList}=setting;
 	//console.log('getAuthTree',getAuthTree)
 	//生成随机密码
 	function randomString(len, charSet) {
@@ -114,12 +116,8 @@ function AccountRule({location,dispatch,setting,router,}) {
 	const AdduserModalProps = {
 		visible: listVisible,
 		PostList,
-		type:type,
-		item:currentItem,
 		onOk:function(vaules){
-				console.log(vaules)
-				if(vaules.id ==undefined){
-					dispatch({
+				dispatch({
 					type:'setting/addSysUser',
 					payload:{
 						username:vaules.username,
@@ -129,19 +127,6 @@ function AccountRule({location,dispatch,setting,router,}) {
 						postId:parseInt(vaules.postId),
 					}
 				})
-				}else{
-					dispatch({
-					type:'setting/addSysUser',
-					payload:{
-						userId:vaules.id,
-						username:vaules.username,
-						mobile:vaules.mobile,
-						realname:vaules.realname,
-						password:vaules.password,
-						postId:parseInt(vaules.postId),
-					}
-				})
-				}
 				
 		},
 		onCancel:function(){
@@ -154,7 +139,34 @@ function AccountRule({location,dispatch,setting,router,}) {
 		}
 	}
 	
-
+	//编辑账号
+	const EditoruserModalProps ={
+		visible: editorUserVisible,
+		PostList,
+		type:type,
+		item:currentItem,
+		onCancel(){
+			dispatch({
+				type: 'setting/hideEditorListModal',
+				
+			});
+		},
+		onOk:function(id,vaules){
+				console.log(id,vaules)
+				dispatch({
+					type:'setting/addSysUser',
+					payload:{
+						userId:id,
+						username:vaules.username,
+						mobile:vaules.mobile,
+						realname:vaules.realname,
+						password:vaules.password,
+						postId:parseInt(vaules.postId),
+					}
+				})
+				
+		}
+	}
 	//岗位列表
 	const ManageModalProps = {
 		visible: ManageVisible,
@@ -198,10 +210,9 @@ function AccountRule({location,dispatch,setting,router,}) {
 				
 			});
 			dispatch({
-				type: 'setting/showPostModal',
+				type: 'setting/showEditorPostModal',
 				payload:{
 					currentItem:record,
-					type:"update"
 				}
 			});
 		}
@@ -221,7 +232,6 @@ function AccountRule({location,dispatch,setting,router,}) {
 	//添加岗位
 	const AddPostModalProps ={
 		visible: PostVisible,
-		type,
 		TreeList,
 		item:currentItem,
 		onCancel:function(){
@@ -230,48 +240,58 @@ function AccountRule({location,dispatch,setting,router,}) {
 			
 		    });
 		},
-		onOk(id,values,postId){
-			console.log(id,values,postId)
-			if(postId!=undefined){
-				dispatch({
+		onOk(values){
+			dispatch({
 					type: 'setting/addPost',
 					payload: {
 						name:values.name,
-						authIds:id,
+						authIds:values.rules.join(','),
 						userId:userId,
-						postId:postId,
-						router,
 					},
 			    });
-			}else{
-				dispatch({
-					type: 'setting/addPost',
-					payload: {
-						name:values.name,
-						authIds:id,
-						userId:userId,
-						router
-					},
-			    });
-			}
-			
 		}
 	}
 
+	//编辑岗位
+	const EditorPostModalProps ={
+		visible: EditorPostVisible,
+		TreeList,
+		item:currentItem,
+		onCancel:function(){
+			dispatch({
+			    type: 'setting/hideEditorPostModal',
+				currentItem:{...{}}
+		    });
+		     //window.location.reload()
+		},
+		onOk(values,id){
+			dispatch({
+					type: 'setting/addPost',
+					payload: {
+						name:values.name,
+						postId:id,
+						authIds:values.rules.join(','),
+						userId:userId,
+					},
+			    });
+		}
+	}
 	const UserListProps ={
 		data:SysUserList,
+		loading,
 		onEditItem:function(record){
 			dispatch({
-				type: 'setting/showListModal',
+				type: 'setting/showEditorListModal',
 				payload: {
-					type: 'update',
-						currentItem:record,
+				    currentItem:record,
 				},
 		    });
 		},
 		setStatus(record){
 			Modal.confirm({
 				title: record.status ==0?"是否启用？":"是否禁用？",
+				okText:"确定",
+		        cancelText:"取消",
 				onOk() {
 				    dispatch({
 				    	type:"setting/sysuserSetStatus",
@@ -293,6 +313,8 @@ function AccountRule({location,dispatch,setting,router,}) {
 			//console.log(paw)
 			Modal.confirm({
 				title: "确认重置密码吗？",
+				okText:"确定",
+		        cancelText:"取消",
 				content:(
 					      <div>
 					        <p style={{fontSize:16+'px'}}>将重置为初始密码:{paw}</p>
@@ -348,34 +370,47 @@ function AccountRule({location,dispatch,setting,router,}) {
 	const RelationModalProps ={
 		visible:RelationVisible,
 		item,
+		deskUserId,
 		onCancel(){
 			dispatch({
 				type:"setting/hideRelationModal"
 			})
 		},
-		onOk(record,values){
-			console.log(record,values)
-			Modal.confirm({
+		handleBlur(e){
+			console.log(e.target.value.length)
+			if(e.target.value.length == 11){
+				dispatch({
+					type:"setting/getUserId",
+					payload:{
+						userMobile:e.target.value
+					}
+				})
+			}
+		},
+		onOk(record,deskUserId){
+			//console.log(record,deskUserId)
+            Modal.confirm({
 				title:"确认关联前台用户吗？",
 				okText : '确定',
-					onOk() {
-					    dispatch({
-					    	type:"setting/setKgUser",
+				cancelText:"取消",
+				onOk() {
+					dispatch({
+					    type:"setting/setKgUser",
 					    	payload:{
 					    		userId:record.id,
-					    		kgUserId:values.kgUserId
+					    		kgUserId:parseInt(deskUserId)
 					    	}
 			            })
 					},
-					onCancel() {
+				onCancel() {
 					      console.log('Cancel');
 					},	
-			})
-			
-		}
+			    })
+			}
+		
 	}
 	return (
-			<LayoutContainer className={styles.Indexbox}>
+			<div className={styles.Indexbox}>
 				<div>
 					<WrappedAdvancedSearchForm getFields = {getFields}  handlsearch={handlsearch}/>
 				</div>
@@ -383,11 +418,13 @@ function AccountRule({location,dispatch,setting,router,}) {
 					<Button type="primary" size='large' onClick = {addUser} >添加账号</Button><Button type="primary" size='large' className={styles.post} onClick = {manage}>管理岗位</Button>
 				</div>
 				<UserList {...UserListProps}/>
-				{/*<AdduserModal {...AdduserModalProps}/>*/}
+				<AdduserModal {...AdduserModalProps} />
+				<EditoruserModal {...EditoruserModalProps} />
 				<ManageModal {...ManageModalProps}/>
 				<AddPostModal {...AddPostModalProps}/>
 				<RelationModal {...RelationModalProps}/>
-			</LayoutContainer>
+				<EditorPostModal {...EditorPostModalProps}/>
+			</div>
 
 	);
 }
