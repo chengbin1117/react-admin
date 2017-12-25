@@ -31,9 +31,9 @@ function ContentOpinionShow({dispatch,content}) {
 	}
 	
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Opinion_Show {...Content_Opinion_ShowProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

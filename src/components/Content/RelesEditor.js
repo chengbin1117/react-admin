@@ -5,7 +5,8 @@ import style_pagination from '../pagination.css';
 import Editor from '../../editor/index';
 import styles from './Content_Opinion_Show.css';
 import RelationModal from '../Setting/RelationUser';
-
+import {options,uploadUrl} from "../../services/common"
+import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
@@ -49,7 +50,7 @@ function RelesEditor({
   },
 }){
   let merId =localStorage.getItem("userId");
-  const options = ColumnList;
+  const option = ColumnList;
   //console.log("setting",setting)
   const {RelationVisible} =setting
   function handleSubmit (){
@@ -58,7 +59,11 @@ function RelesEditor({
           return;
         }else{
           const data = {...getFieldsValue()};
-          console.log(data)
+          //console.log(data)
+          if(imgUrl == ""){
+            message.error('请上传封面图')
+            return true
+          }
           dispatch({
               type:'content/publishArticle',
               payload:{
@@ -70,9 +75,10 @@ function RelesEditor({
                 image:imgUrl,
                 type:parseInt(data.type),
                 columnId:parseInt(data.column[0]),
+                secondColumn:parseInt(data.column[1]),
                 displayStatus:parseInt(data.radioT),
                 displayOrder:parseInt(data.sort),
-                commentSet:data.radioS == "true"?true:false,
+                commentSet:data.commentSet == "true"?true:false,
                 publishSet:data.radioG == "true"?true:false,
                 createUser:parseInt(data.createUser),
                 sysUser:parseInt(merId),
@@ -99,9 +105,10 @@ function RelesEditor({
                 image:imgUrl,
                 type:parseInt(data.type),
                 columnId:parseInt(data.column[0]),
+                secondColumn:parseInt(data.column[1]),
                 displayStatus:parseInt(data.radioT),
                 displayOrder:parseInt(data.sort),
-                commentSet:data.radioS == "true"?true:false,
+                commentSet:data.commentSet == "true"?true:false,
                 publishSet:data.radioG == "true"?true:false,
                 createUser:parseInt(data.createUser),
                 sysUser:parseInt(merId),
@@ -174,6 +181,26 @@ function RelesEditor({
       })
     }
   }
+
+  function range(start, end) {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+  }
+  function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current.valueOf() <= Date.now();
+  }
+
+  function disabledDateTime() {
+    return {
+      disabledHours: () => range(0, 24).splice(4, 20),
+      disabledMinutes: () => range(30, 60),
+      disabledSeconds: () => [55, 56],
+    };
+  }
   function onChange(rule, value, callback) {
     console.log(rule)
     /*let n = 0;
@@ -190,6 +217,9 @@ function RelesEditor({
         }else{
           callback()
         }*/
+  }
+  function normFile(e){
+    console.log("e",e)
   }
   var Item =['1','2','3','4','5']
   return(
@@ -324,10 +354,15 @@ function RelesEditor({
                   >
                    {getFieldDecorator('image',{
                     rules: [{ required: false, message: '请选择图片!' },
-                    {type:"string",trigger:'hanlele'}
+                    {type:"string",}
                     ],
+                    valuePropName: 'src',
+                    getValueFromEvent:normFile
                    })(
-                    <img onClick ={showModal} src={'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+imgUrl} className={styles.bgImg} hanlele={handleChange}/>
+                    <div >
+                    {imgUrl==""?<div className={styles.bgImg} onClick ={showModal}> <Icon type="plus"/></div>:<img onClick ={showModal} src={uploadUrl+imgUrl} className={styles.bgImg} />}
+                    
+                    </div>
                     )}
               </FormItem>
               <FormItem
@@ -355,7 +390,7 @@ function RelesEditor({
                           { required: true, message: '请选择文章栏目!' },
                         ],
                       })(
-                        <Cascader options={options}  placeholder="请选择文章栏目" style={{width:'20%'}}/>
+                        <Cascader options={option}  placeholder="请选择文章栏目" style={{width:'20%'}}/>
                       )}
               </FormItem>
               <FormItem
@@ -383,7 +418,7 @@ function RelesEditor({
                       {getFieldDecorator('sort',{
                         initialValue:'',
                         rules: [
-                          { required: false, },
+                          { required: false,message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
                         ],
                       })(
                         <Input style={{width:'10%'}}/>
@@ -392,13 +427,13 @@ function RelesEditor({
               </FormItem>
               <FormItem
                       {...formItemLayout}
-                      label="定时发布"
+                      label="评论设置"
                     >
-                      {getFieldDecorator('radioG',{
+                      {getFieldDecorator('commentSet',{
                          initialValue:'false',
                       })(
                         <RadioGroup >
-                          <Radio value="true">开启定时发布</Radio>
+                          <Radio value="true">开启</Radio>
                           <Radio value="false">不开启</Radio>
                         </RadioGroup>
                       )}
@@ -424,7 +459,14 @@ function RelesEditor({
                       {getFieldDecorator('time',{
                          
                       })(
-                        <DatePicker /*disabled={flag}*/ /*disabledDate={disabledDate}*//>
+                         <DatePicker
+                            format="YYYY-MM-DD HH:mm:ss"
+                            disabledDate={disabledDate}
+                            disabledTime={disabledDateTime}
+                            showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                            locale ={options}
+                            size="large"
+                          />
                       )}
               </FormItem>
               <FormItem
@@ -462,7 +504,7 @@ function RelesEditor({
                       )}
               </FormItem>
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">发布</Button>
+                <Button type="primary" onClick={handleSubmit}>发布</Button>
                 <Button type="primary" style={{marginLeft:30}} onClick={publishStatus}>存草稿</Button>
                 <Button type="primary" style={{marginLeft:30}}>预览</Button>
                 <RelationModal {...RelationModalProps} />

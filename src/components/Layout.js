@@ -301,7 +301,7 @@ class LayoutContainer extends React.Component {
           <Header style={{ background: '#fff', padding: 0 }}>
               <div className = {styles.header_right}>
                 <span>CB</span>
-                <Link to="/" className={styles.logOut}>退出</Link>
+                <Link to="/login" className={styles.logOut}>退出</Link>
               </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>

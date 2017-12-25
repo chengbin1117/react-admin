@@ -15,6 +15,7 @@ import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
 import styles from './LoginForm.css';
+import {uploadUrl} from '../../services/common'
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
@@ -63,7 +64,7 @@ const RealName = ({
 		  key: 'IdCard',
 		  render: (text, record) => (
 		    <div>
-		    	<p onClick={()=>showIdCard(record)}><img src={'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardFront} style={{width:100,height:100}}/></p>
+		    	<p onClick={()=>showIdCard(record)}><img src={uploadUrl+record.idcardFront} style={{width:100,height:100}}/></p>
          	
 		    </div>
 		    )

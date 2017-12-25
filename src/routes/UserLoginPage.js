@@ -10,7 +10,9 @@ function LoginPage({location, dispatch, user, router}) {
 	// 		type:"user/redirect",
 	// 		router: router,			
 	// 	})
-	// }	
+	// 
+	console.log("location",location)
+
 	const loginProps = {
 		onSubmit: function(data) {
 			//console.log("login:", data);
@@ -21,13 +23,6 @@ function LoginPage({location, dispatch, user, router}) {
 				},
 			})
 		},
-		router,
-		forget: function() {
-			dispatch({
-				type:'user/forgetBox',
-				
-			})
-		}
 	};
 
  

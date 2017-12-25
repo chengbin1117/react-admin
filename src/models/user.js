@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import { routerRedux,hashHistory } from 'dva/router';
 import {
   login,getUserList,getUserInfo,auditUser,setHotUser,lockUser,siteinfoservice,getRoleList,roleSetStatus,getRoleProfile,loginSet,
-  userInfoSet,getSysMenu,getUserCert,auditUserCert
+  userInfoSet,getSysMenu,getUserCert,auditUserCert,getSiteInfo
 } from '../services/user';
 import {formatDate,GetRequest} from '../services/common'
 import {
@@ -26,6 +26,7 @@ export default {
     totalNumber:0,
     currentPage:1,
     UserCertList:[],
+    SiteInfo:{}
   },
 
   subscriptions: {
@@ -77,6 +78,16 @@ export default {
                   }
                 });
           }
+           match = pathToRegexp('/user/user_info').exec(location.pathname);
+          if(match){
+            
+            dispatch({
+                  type: 'getSiteInfo',
+                  payload: {
+                      
+                  }
+                });
+          }
           match = pathToRegexp('/index').exec(location.pathname);
           if(match){
             const search =GetRequest(location.search);
@@ -87,12 +98,12 @@ export default {
                       auditStatus:0
                   }
                 });
-           dispatch({
+          /* dispatch({
                   type: 'getSysMenu',
                   payload: {
                       userId:parseInt(search.userId),
                   }
-                });
+                });*/
           }
         
       })
@@ -120,10 +131,13 @@ export default {
       const {
         data
       } = yield call(login, params);
-      //console.log(data)
+      console.log(data)
       if (data && data.code == 10000) {
-          localStorage.setItem("Kgtoken", data.responseBody.token);
-          localStorage.setItem("userId", data.responseBody.userId);
+          localStorage.setItem("nav", JSON.stringify(data.responseBody.menuList));
+          localStorage.setItem("Kgtoken", data.responseBody.token.token);
+          localStorage.setItem("userId", data.responseBody.token.userId);
+          
+          //localStorage.setItem("userId", data.responseBody.userId);
           
             /*yield put({
                   type:"getSysMenu",
@@ -132,8 +146,8 @@ export default {
                   }
               })*/
           
-          dispatch(routerRedux.push('/index?userId='+data.responseBody.userId));
-      
+          dispatch(routerRedux.push('/index?userId='+data.responseBody.token.userId));
+          window.location.reload()
           
         
       } else {
@@ -411,10 +425,7 @@ export default {
       }
     },
     *loginSet({ payload }, {call , put}) {
-       yield put({
-        type: 'showLoading',
-       });
-
+        console.log(payload)
       const { data } = yield call(loginSet, payload);
        console.log("11",data)
       if (data && data.code == 10000) {
@@ -559,6 +570,30 @@ export default {
         }
       }
     },
+    *getSiteInfo({ payload }, {call , put}) {
+       yield put({
+        type: 'showLoading',
+       });
+
+      const { data } = yield call(getSiteInfo, payload);
+      console.log(data)
+      if (data && data.code == 10000) {
+          var res = data.responseBody;
+        yield put({
+          type:"getSiteInfoSuccess",
+          payload:{
+            SiteInfo:res
+          }
+        })
+      } else {
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+      }
+    },
   },
   reducers: {
     // showLogging(state) {
@@ -692,6 +727,11 @@ export default {
     getUserCertSuccess(state, action) {
       return {...state,
         LockVisible: false,
+        ...action.payload
+      };
+    },
+    getSiteInfoSuccess(state, action) {    
+      return {...state,
         ...action.payload
       };
     },

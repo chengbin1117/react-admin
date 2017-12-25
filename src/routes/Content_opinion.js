@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -63,7 +63,7 @@ function ContentOpinion({dispatch,content,router}) {
         },
         onEditor(record){
         	localStorage.setItem('kg_opinionEditor',JSON.stringify(record));
-        	router.push('/content/content_opinion/'+record.id)
+        	dispatch(routerRedux.push('/content/opinion?id='+record.id))
         }
 	}
 

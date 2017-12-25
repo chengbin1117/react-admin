@@ -14,7 +14,7 @@ import style_search from '../search.css';
 import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
-
+import {options} from "../../services/common"
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
@@ -110,7 +110,7 @@ const Recharge = ({
 		         <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='充值时间'>
 		            {getFieldDecorator('time')(
-		              <RangePicker />
+		              <RangePicker locale={options}/>
 		            )}
 		          </FormItem>
 		        </Col>

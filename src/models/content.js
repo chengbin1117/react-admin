@@ -318,6 +318,7 @@ export default {
             message.success('存草稿成功')
          }else{
            message.success('发布成功')
+           window.location.reload()
          }
          
          /*console.log(res)

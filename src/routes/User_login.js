@@ -91,14 +91,25 @@ function UserLogin({dispatch,user}) {
 			    e.preventDefault();
 			    this.props.form.validateFields((err, values) => {
 			      if (!err) {
-			        //console.log('Received values of form: ', values);
-			        dispatch({
-			        	type:'user/loginSet',
-			        	payload:{
-			        		time:parseInt(values.number),
-			        		unit:parseInt(values.currency),
-			        	}
-			        })
+			        console.log('Received values of form: ', values);
+			        if(values.tmie.currency=="小时"){
+			        	dispatch({
+				        	type:'user/loginSet',
+				        	payload:{
+				        		time:parseInt(values.tmie.number),
+				        		unit:parseInt(1),
+				        	}
+			            })
+			        }else{
+			        	dispatch({
+				        	type:'user/loginSet',
+				        	payload:{
+				        		time:parseInt(values.tmie.number),
+				        		unit:parseInt(2),
+				        	}
+			            })
+			        }
+			        
 			      }
 			    });
 			  }
@@ -120,7 +131,7 @@ function UserLogin({dispatch,user}) {
 			          })(<PriceInput />)}
 			        </FormItem>
 			        <FormItem >
-			          <Button type="primary" htmlType="submit" size="large">确定</Button>
+			          <Button type="primary" onClick={this.handleSubmit} size="large">确定</Button>
 			          
 			        </FormItem>
 			      </Form>

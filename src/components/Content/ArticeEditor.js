@@ -39,7 +39,7 @@ const tailFormItemLayout = {
     };
 
 //编辑器
-   
+ var value ='1'  
 function ArticleEditor({
   dispatch,
   imgUrl,
@@ -209,7 +209,11 @@ function ArticleEditor({
     return imgUrl
   }
 
-
+function StatusonChange(e) {
+    //console.log(e.target.value)
+    value =e.target.value;
+    
+  }
   function showUser(){
     dispatch({
         type:"setting/showRelationModal"
@@ -499,26 +503,15 @@ function ArticleEditor({
               </FormItem>
               <FormItem
                       {...formItemLayout}
-                      label="定时发布"
+                      label="评论设置"
                     >
                       {getFieldDecorator('radioG',{
                          initialValue:ArticleList.publishSet==true?"true":'false',
                       })(
                         <RadioGroup >
-                          <Radio value="true">开启定时发布</Radio>
-                          <Radio value="false">不开启</Radio>
+                          <Radio value="true">开启评论</Radio>
+                          <Radio value="false">关闭评论</Radio>
                         </RadioGroup>
-                      )}
-              </FormItem>
-              <FormItem
-                      {...formItemLayout}
-                      label=" " colon ={false}
-                      extra ="定时范围：从当前时间点开始至未来7天内，按自然日计算"
-                    >
-                      {getFieldDecorator('time',{
-                         
-                      })(
-                        <DatePicker /*disabled={flag}*/ /*disabledDate={disabledDate}*//>
                       )}
               </FormItem>
               
@@ -553,6 +546,29 @@ function ArticleEditor({
                         </Col>
                      </Row>
               </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="审核处理"
+                    >
+                      {getFieldDecorator('publishStatus',{
+                         
+                      })(
+                        <RadioGroup onChange={StatusonChange}>
+                          <Radio value="1">通过</Radio>
+                          <Radio value="2">不通过</Radio>
+
+                        </RadioGroup>
+                      )}
+              </FormItem>
+              {value == "2"? <FormItem>
+              {getFieldDecorator('ref',{
+                 rules: [{
+                    required: false, message: '请输入!',
+                  }], 
+              })(
+              <TextArea  style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)"/> 
+              )}
+              </FormItem>:null}
               <FormItem {...tailFormItemLayout}>
                 <Button type="primary" htmlType="submit">保存</Button>
                

@@ -72,10 +72,20 @@
 	height:200px;
 }
 .crpprt {
-	width:200px;
+	width:220px;
+    height:144px;
+  
+	margin: 0 auto;
+	
+	
+}
+.crpprtBox{
+	width:80%;
 	height:200px;
-	background: #000;
-	margin-top: 20px;
+	background:rgba(0,0,0,0.7);
+	margin-top: 80px;
+	margin-left:20px;
+
 }
 .abtn{
 	float:right;
@@ -85,4 +95,8 @@
 	display: block;
 	width:200px;
 	height:200px;
+	line-height: 200px;
+	font-size:22px;
+	border: 1px dashed #e5e5e5;
+	text-align: center;
 }

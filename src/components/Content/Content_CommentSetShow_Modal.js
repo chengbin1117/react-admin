@@ -59,7 +59,7 @@ const Content_CommentSetShow_Modal = ({
         
       }
       
-      onOk(data,selectList.commentId);
+      onOk(data,selectList);
     });
     
     

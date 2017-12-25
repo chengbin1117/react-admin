@@ -6,6 +6,7 @@ import { Modal, Button,Input } from 'antd';
 import Uploader from './upload';
 import E from 'wangeditor';
 const { TextArea } = Input;
+import {uploadUrl} from "../services/common"
 //编辑器
    class Editor extends Component {
       constructor(props, context) {
@@ -17,7 +18,7 @@ const { TextArea } = Input;
       componentDidMount() {
         const elem = this.refs.editorElem
         const editor = new E(elem)
-        editor.customConfig.uploadImgServer = 'http://120.78.186.139:8088/kg_imgsvr/upload';//配置服务器上传地址
+        editor.customConfig.uploadImgServer = 'http://120.78.186.139:8088/kgapi/image/upload';//配置服务器上传地址
         editor.customConfig.uploadFileName = 'file';
         editor.customConfig.uploadImgHooks = {
             before: function (xhr, editor, files) {

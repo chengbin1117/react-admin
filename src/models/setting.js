@@ -75,7 +75,6 @@ export default {
        
         if(match){
              const search =GetRequest(location.search);
-
               dispatch({
                 type:'getBaseinfoList',
                 payload:{
@@ -197,12 +196,6 @@ export default {
             console.log(data)
           if (data && data.code == 10000) {
              message.success('重置成功')
-             /*yield put({
-                type:'getSysUserListSuccess',
-                payload:{
-                    SysUserList:res
-                }
-             })*/
           } else {
             if(data.code ==10004){
              message.error(data.message,2);

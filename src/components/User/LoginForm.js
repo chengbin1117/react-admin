@@ -54,7 +54,11 @@ const UserLoginForm = ({
 	/*let logoimg = require("image!../../assets/images/logo1.png");
 	let userimg = require("image!../../assets/images/user.png");
 	let passwordimg = require("image!../../assets/images/password.png");*/
+	var footerHeight = document.body.clientHeight * 0.05;
+	var contentheight = document.body.clientHeight * 0.95;
+	var topheight = document.body.clientHeight * 0.1;
 	return (
+		<div className  = {stytes.loginContainer} >
 		<div className={stytes.login}>
 			<p className={stytes.p3}>KG.com</p>
 			<div className={stytes.loginform}>
@@ -63,14 +67,14 @@ const UserLoginForm = ({
 				  		{getFieldDecorator('username', {
 				  			rules:[{required: true, message: "请输入正确的用户名!"}],
 				  		})(
-				  			<Input prefix={<Icon type="user" style={{ fontSize: 13 }} />}   placeholder="请输入用户名" className={stytes.Input}/>
+				  			<Input prefix={<Icon type="user" style={{ fontSize: 14 }} />}   placeholder="请输入用户名" className={stytes.Input}/>
 				  		)}
 				  	</FormItem>
 				    <Form.Item>
 				  	    {getFieldDecorator('password', {
 				  			rules:[{required: true, message: "请输入密码!"}],
 				  		})(
-				  		    <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />}  type="password" placeholder="请输入密码"  onPressEnter={()=>onClick()} className={stytes.Input}/>
+				  		    <Input prefix={<Icon type="lock" style={{ fontSize: 14 }} />}  type="password" placeholder="请输入密码"  onPressEnter={()=>onClick()} className={stytes.Input}/>
 				  		)}
 				  	</Form.Item>
 				  	<Form.Item>		  			         		  		
@@ -80,7 +84,7 @@ const UserLoginForm = ({
 				  		</Form.Item>
 				  	</Form>
 			</div>
-			    
+			</div>
 			</div>
 	);
 };

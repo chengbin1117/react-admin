@@ -97,9 +97,19 @@ var ImgBox = React.createClass({
     },
 	crop(){
 	    // image in dataUrl
-	    // console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+	   // console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+	   /* this.refs.cropper.getData((data)=>{
+	    		this.setState({
+			      src:data
+			    })
+	    })*/
+	    /*this.setState({
+	      src:this.refs.cropper.getData().toDataURL()
+	    })*/
+	    var pevImg = this.refs.cropper.getCroppedCanvas();
+	    var reImg = pevImg.toDataURL('image/jpeg', 1.0);
 	    this.setState({
-	      src:this.refs.cropper.getCroppedCanvas().toDataURL()
+	      src:reImg
 	    })
 	},
     render: function() {
@@ -107,7 +117,7 @@ var ImgBox = React.createClass({
         return (
         	<div>
             <Row>
-            <Col span={15}>
+            <Col span={14}>
               <Cropper
 	              ref='cropper'
 	              src={activeImg}
@@ -115,11 +125,16 @@ var ImgBox = React.createClass({
 	              // Cropper.js options
 	              aspectRatio={16 / 9}
 	              guides={false}
-	              crop={this.crop} />
+	              crop={this.crop}
+	              canMove ={false} 
+	              />
+
 	        </Col>
-	        <Col span={9}>
-	              <div className={this.state.src!= "" ?styles.crpprt:''}>
-	              	<img src={this.state.src} className={styles.actieImg}/>
+	        <Col span={10}>
+	        	  <div className={styles.crpprtBox}>
+		              <div className={this.state.src!= "" ?styles.crpprt:''}>
+		              	<img src={this.state.src} className={styles.actieImg}/>
+		              </div>
 	              </div>
 	        </Col>
 	              
@@ -134,7 +149,7 @@ var ImgBox = React.createClass({
 	
 	return (
 			
-		<Modal {...modalOpts} width='40%'>
+		<Modal {...modalOpts} >
 			<ImgBox />
 			
 		</Modal>

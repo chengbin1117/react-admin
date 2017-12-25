@@ -168,3 +168,16 @@ export async function auditUserCert(params) {
 	     }
 	);
 }
+
+//就获取用户默认信息
+
+export async function getSiteInfo(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/getSiteInfo?data='+data+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}

@@ -1,15 +1,13 @@
 import fetch from 'dva/fetch';
 import pathToRegexp from 'path-to-regexp';
-
+import {urlprefix} from '../services/common';
 import {
   message
 } from 'antd';
 import {
   hashHistory,
 } from 'react-router';
-//let urlprefix = "http://172.16.1.108:8081/kgapi";
-let urlprefix = "http://120.78.186.139:8088/kgapi";
-//let urlprefix = "http://172.16.0.15";
+
 
 //let urlprefix = "kgapi";
 function parseJSON(response) {
