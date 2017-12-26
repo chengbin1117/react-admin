@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -20,6 +20,10 @@ const { TextArea } = Input;
 
 function UserInfo({dispatch,user}) {
 	const {SiteInfo} =user;
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	class Demo extends React.Component {
 		state={
 			dis:'0'

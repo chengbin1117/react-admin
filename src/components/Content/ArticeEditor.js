@@ -6,7 +6,8 @@ import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,D
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
-//import Editor from '../../editor/index';
+import Editor from '../../editor/index';
+import {options,uploadUrl,ImgUrl} from "../../services/common"
 import E from 'wangeditor';
 import WrappedEditorForm from './EditorForm';
 import RelationModal from '../Setting/RelationUser';
@@ -15,6 +16,8 @@ const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
+
+let AllTotal =0;
 const formItemLayout = {
       labelCol: {
         xs: { span: 2 },
@@ -47,6 +50,7 @@ function ArticleEditor({
   ColumnList,
   UserById,
   setting,
+  getBonusList,
   form: {
     getFieldDecorator,
     validateFields,
@@ -56,7 +60,7 @@ function ArticleEditor({
 }){
   let merId =localStorage.getItem("userId");
   const options = ColumnList;
-  console.log("setting",ArticleList)
+  //console.log("setting",imgUrl)
   const {RelationVisible} =setting
   class Editor extends Component {
       constructor(props, context) {
@@ -68,7 +72,7 @@ function ArticleEditor({
       componentDidMount() {
         const elem = this.refs.editorElem
         const editor = new E(elem)
-        editor.customConfig.uploadImgServer = 'http://120.78.186.139:8088/kg_imgsvr/upload';//配置服务器上传地址
+        editor.customConfig.uploadImgServer = ImgUrl;//配置服务器上传地址
         editor.customConfig.uploadFileName = 'file';
         editor.customConfig.uploadImgHooks = {
             before: function (xhr, editor, files) {
@@ -103,7 +107,7 @@ function ArticleEditor({
             customInsert: function (insertImg, result, editor) {
                 // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
                 // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
-                var url = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/" + result.data[0].filePath;
+                var url = uploadUrl + result.data[0].filePath;
                 // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
                 insertImg(url)
 
@@ -118,7 +122,7 @@ function ArticleEditor({
           })
          this.props.edtiorContent(editor.txt.html())
         }
-        console.log("编辑器内容",this.props.articleText)
+        //console.log("编辑器内容",this.props.articleText)
         
         editor.create();
         editor.txt.html(this.props.articleText!=undefined?this.props.articleText:'')
@@ -126,11 +130,9 @@ function ArticleEditor({
       
       render() {
         return (
-          <div >
-            <div  ref="editorElem" >
+      
+            <div  ref="editorElem" contentEditable="true">
             </div>
-            
-          </div>
         );
       }
     }
@@ -163,37 +165,7 @@ function ArticleEditor({
         }
       })
   }
-  function publishStatus (){
-    validateFields((errors) => {
-        if (errors) {
-          return;
-        }else{
-          const data = {...getFieldsValue()};
-          console.log(data)
-          dispatch({
-              type:'content/publishArticle',
-              payload:{
-                articleId:ArticleList.articleId,
-                articleTitle:data.articleTitle,
-                articleText:data.text,
-                articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
-                description:data.artic,
-                image:imgUrl,
-                type:parseInt(data.type),
-                columnId:parseInt(data.column[0]),
-                displayStatus:parseInt(data.radioT),
-                displayOrder:parseInt(data.sort),
-                commentSet:data.radioS == "true"?true:false,
-                publishSet:data.radioG == "true"?true:false,
-                createUser:parseInt(data.createUser),
-                sysUser:parseInt(merId),
-                bonusStatus:data.bonusStatus,
-                publishStatus:0
-              }
-          })
-        }
-      })
-  }
+  
   function showModal(){
       dispatch({
             type:'content/showBgModal'
@@ -218,6 +190,7 @@ function StatusonChange(e) {
     dispatch({
         type:"setting/showRelationModal"
       })
+
   }
   const RelationModalProps ={
     visible:RelationVisible,
@@ -230,7 +203,7 @@ function StatusonChange(e) {
       console.log(record,values)
       Modal.confirm({
         title:"确认关联前台用户吗？",
-        okText : '确定',
+        okText : '确',
           onOk() {
               dispatch({
                 type:"setting/setKgUser",
@@ -273,7 +246,9 @@ function StatusonChange(e) {
           callback()
         }*/
   }
-
+   function ImgHandle(src){
+    console.log("src",src)
+   }
   return(
       <Form onSubmit={handleSubmit}>
             <FormItem label="文章标题" {...formItemLayout}>
@@ -409,10 +384,12 @@ function StatusonChange(e) {
                    {getFieldDecorator('image',{
                     initialValue:ArticleList.articleImage,
                     rules: [{ required: false, message: '请选择图片!' },
-                    {type:"string",trigger:'hanlele'}
+                    {type:"string",}
+                    
                     ],
+
                    })(
-                    <img onClick ={showModal} src={'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+ArticleList.articleImage} className={styles.bgImg} />
+                    <img onClick ={showModal} src={imgUrl==""?uploadUrl+ArticleList.articleImage:uploadUrl+imgUrl} className={styles.bgImg} onChange={ImgHandle}/>
                     )}
               </FormItem>
               <FormItem
@@ -457,7 +434,7 @@ function StatusonChange(e) {
               <FormItem
                       {...formItemLayout}
                       label="选择栏目"
-                     
+     
                     >
                       {getFieldDecorator('column', {
                         initialValue:[ArticleList.columnId,ArticleList.secondColumn],
@@ -514,14 +491,29 @@ function StatusonChange(e) {
                         </RadioGroup>
                       )}
               </FormItem>
-              
+              <FormItem
+                      {...formItemLayout}
+                       label="发布人"
+                       extra='注：若该文章为用户发布，则此处不可更改'
+                    >
+                      {getFieldDecorator('createUser',{
+                        initialValue:ArticleList.createUser,
+                        rules: [
+                          { required: true,message:'请关联前台用户作为发布人显示' },
+                        ],
+                      })(
+                        <Input style={{width:'20%'}} disabled={ArticleList.sysUser ==null?true:false}/>
+
+                      )}
+                      
+              </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="文章打赏"
                       extra="提示：若您想设置阅读奖励规则，可用已关联的前台账号进入前台个人中心-我的专栏页面进行操作。"
                     >
                       {getFieldDecorator('bonusStatus',{
-                        initialValue:'true',
+                        initialValue:ArticleList.bonusStatus!=null?ArticleList.bonusStatus+'':'',
                         rules: [
                           { required: true,message:'请选择' },
                         ],
@@ -533,20 +525,30 @@ function StatusonChange(e) {
                         </RadioGroup>
                       )}
               </FormItem>
-              <FormItem label="阅读奖励">
-                     <Row>
-                        <Col span="8">
-                          xxxxxxx
+              {ArticleList.sysUser ==null?<FormItem label="阅读奖励" {...formItemLayout}  >
+                  {getBonusList&&getBonusList.map((item,index)=>{
+                      AllTotal += parseInt(item.total)*parseInt(item.value)
+                    return(
+                        <Row key={index}>
+                        <Col span="5">
+                          {item.name}
                         </Col>
                          <Col span="5">
-                          奖励钛值0.5个/人
+                          奖励钛值{item.value}个/人
                         </Col>
                          <Col span="5">
-                          奖励钛值0.5个/人
+                          最大奖励{item.max}人,合计发放:{item.total}人
                         </Col>
                      </Row>
-              </FormItem>
-              <FormItem
+                      )
+                  })}
+                  <Row className={styles.alltotal}>
+                      <Col>
+                          总计发放：{AllTotal}个
+                      </Col>
+                     </Row>   
+              </FormItem>:null}
+              {ArticleList.sysUser ==null?<FormItem
                       {...formItemLayout}
                       label="审核处理"
                     >
@@ -559,7 +561,8 @@ function StatusonChange(e) {
 
                         </RadioGroup>
                       )}
-              </FormItem>
+              </FormItem>:null}
+              
               {value == "2"? <FormItem>
               {getFieldDecorator('ref',{
                  rules: [{
@@ -570,7 +573,7 @@ function StatusonChange(e) {
               )}
               </FormItem>:null}
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="primary" onClick={handleSubmit}>保存</Button>
                
                 <RelationModal {...RelationModalProps} />
               </FormItem>

@@ -19,7 +19,11 @@ import ImgShowModal from '../components/Content/ImgShowModal';
 
 
 function ContentImage({dispatch,content}) {
-	let  userId = localStorage.getItem('userId')
+	let  userId = localStorage.getItem('userId');
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {selectList,ImageList,ImgShowVisible,addImageVisible,loading,currentItem,type,currentPage,totalNumber,EditorImageVisible} = content;
 	
 	const content_imageProps ={

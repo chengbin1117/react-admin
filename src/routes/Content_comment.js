@@ -21,7 +21,10 @@ function ContentComment({location,dispatch,router,content}) {
     
     const {CommentList,CommentSetVisible,showSetVisible,selectList,ExamineVisible,loading,totalNumber,currentPage} = content;
 
-	console.log("loading",location)
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 
 	const Content_CommentProps ={
 		data:CommentList,

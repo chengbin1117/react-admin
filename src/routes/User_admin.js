@@ -27,7 +27,10 @@ function UserAdmin({location,dispatch,user,router,}) {
 	const {ExmianVisible,userlist,userInfo,selectList,HotVisible,LockVisible,loading,totalNumber,currentPage}=user;
 	//console.log(loading)
 	let merId =localStorage.getItem("userId");
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const UseradminProps ={
 		userlist:userlist,
 		loading:loading,

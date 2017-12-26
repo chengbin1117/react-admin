@@ -22,29 +22,9 @@ const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 const Option = Select.Option;
 const Step = Steps.Step;
-const options = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
-    }],
-  }],
-}];
+
+let value = 0;
+
 const formItemLayout = {
 	labelCol: {
 		span: 6,
@@ -73,8 +53,18 @@ const ArticleModal = ({
 	//console.log(ColumnList)
 
 	function handleOk(value,text) {
-		
-			onOk(selectList,value,text);
+			validateFields((errors) => {
+			if (errors) {
+				return;
+			}
+
+			const data = {...getFieldsValue()
+
+			};
+			console.log(data)
+			onOk(data,selectList);
+		   })
+			//onOk(selectList,value,text);
 		
 		
 	}
@@ -88,95 +78,54 @@ const ArticleModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
-		footer:null
+		okText:"确定",
+		cancelText:"取消"
 	};
-	function onChange(value) {
-  console.log(value);
-}
-	class DynamicRule extends React.Component {
-	  state = {
-	    checkNick: false,
-	    text:'',
-	    value:1,
-	  };
-	  check = () => {
-	    this.props.form.validateFields(
-	      (err,value) => {
-	        if (!err) {
-	          console.info(value,this.state.text);
-	          handleOk(value,this.state.text)
-	        }
-	      },
-	    );
-	  }
-	  handleChange = (e) => {
-	    this.setState({
-	      checkNick: e.target.checked,
-	    }, () => {
-	      this.props.form.validateFields(['nickname'], { force: true });
-	    });
-	  }
-	  onChange = (e) => {
-	    //console.log('radio checked', e.target.value);
-	    this.setState({
-	      value: e.target.value,
-	    });
-	  }
-	  inputVaule =(e) => {
-	  	console.log(e.target.value)
-	  	this.setState({
-	  		text:e.target.value
-	  	})
-	  }
-	  render() {
-	    const { getFieldDecorator } = this.props.form;
-	    const {value,text}=this.state;
-	    return (
-	      <Form>
+	function onChange(e) {
+        value =e.target.value;
+    }
+	return (
+			
+		<Modal {...modalOpts} width='40%'>
+			
+		<Form>
 			<FormItem>
 				  	    {getFieldDecorator('radio', {
 				  			rules:[{required: true, message: "请选择!"}],
 				  		})(
-				  		    <RadioGroup onChange ={this.onChange} >
+				  		    <RadioGroup onChange ={onChange} >
 				              <Radio value="1">通过</Radio>
 				              
 				            </RadioGroup>
 				  		)}
 				</FormItem>
-				<FormItem>
+				<FormItem label="选择栏目">
 				  	    {getFieldDecorator('column', {
-				  			rules:[{required: false, message: "请选择!"}],
+				  			rules:[{required: value==1?true:false, message: "请选择!"}],
 				  		})(
-				  		    <Cascader options={ColumnList} onChange={onChange} placeholder="请选择" style={{width:300+'px'}}/>
+				  		    <Cascader options={ColumnList}  placeholder="请选择" style={{width:300+'px'}}/>
 				  		)}
 				</FormItem>
 				<FormItem>
 				  	    {getFieldDecorator('radio', {
 				  			rules:[{required: true, message: "请选择!"}],
 				  		})(
-				  		    <RadioGroup onChange ={this.onChange} >
+				  		    <RadioGroup onChange ={onChange} >
 				             
-				              <Radio value="2">不通过</Radio>
-				              {this.state.value ==2 ? <TextArea onChange={this.inputVaule} style={{ width: 200, marginLeft: 10 }} placeholder="不通过原因(选填)"/> : null}
+				              <Radio value="3">不通过</Radio> 
 				            </RadioGroup>
 				  		)}
 				</FormItem>
-				<FormItem>
-				  	    <div className={styles.abtn}>
-					  	    <Button onClick={onCancel} size="large">取消</Button>
-					  	    <Button type="primary" onClick={this.check} size="large">确定</Button>
-				  	    </div>
-				</FormItem>
+		        <FormItem>
+		          {getFieldDecorator('text',{
+		          	 rules: [{
+			              required: false, message: '请输入!',
+			            }], 
+		          })(
+		          <TextArea  style={{ width: "100%",minHeight:"100px"}} placeholder="不通过原因(选填)" disabled={value==3?false:true}/> 
+		          )}
+		        </FormItem>
 			</Form>
-	    );
-	  }
-	}
-	const WrappedDynamicRule = Form.create()(DynamicRule);
-	return (
-			
-		<Modal {...modalOpts} width='30%'>
-			
-			<WrappedDynamicRule />
 		</Modal>
 	);
 };

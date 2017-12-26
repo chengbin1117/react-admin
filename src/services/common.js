@@ -123,6 +123,16 @@ let options ={
   }
 }
 
+//Blob
+export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件形式
+                        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                        while(n--){
+                            u8arr[n] = bstr.charCodeAt(n);
+                        }
+                        return new Blob([u8arr], {type:mime});
+}
+
 
 let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload"; //开发
 //let ImgUrl = "http://172.16.0.15/image/upload"; //测试
@@ -131,7 +141,7 @@ let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
 
 
 //服务器
-//let urlprefix = "http://172.16.1.108:8081/kgapi";
+//let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 let urlprefix = "http://120.78.186.139:8088/kgapi";//开发
 //let urlprefix = "http://172.16.0.15"; //测试
 export {

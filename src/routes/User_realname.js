@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';

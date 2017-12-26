@@ -18,18 +18,11 @@ import FtModal from '../components/Content/FtModal';
 import Editor from '../editor/index';
 import RelesEditor from '../components/Content/RelesEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
-
+import {dataURLtoBlob,ImgUrl} from '../services/common'
 
 var imgUrl = ""
 
-function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件形式
-                        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-                            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-                        while(n--){
-                            u8arr[n] = bstr.charCodeAt(n);
-                        }
-                        return new Blob([u8arr], {type:mime});
-}
+
 function Release_article({dispatch,router,content,setting}) {
 	//let logoimg = require("image!../assets/images/lx4.png");
   let merId =localStorage.getItem("userId");
@@ -55,32 +48,14 @@ function Release_article({dispatch,router,content,setting}) {
         var Html = localStorage.getItem("html");
         var Text = localStorage.getItem("text");
         //console.log(Html)
-       onsole.log(imgUrl)
+       
         
         if(Text == '') {
           message.warn('请输入正文')
           return false
         }
        // console.log(values)
-         dispatch({
-            type:'content/publishArticle',
-            payload:{
-              articleTitle:values.articleTitle,
-              articleText:Html,
-              articleTag:values.tag1+','+values.tag2+','+values.tag3+','+values.tag4+','+values.tag5,
-              description:values.artic,
-              image:'https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=9101b1d4728da9775a228e79d138937c/1c950a7b02087bf4d140250ef3d3572c10dfcfad.jpg',
-              type:parseInt(values.type),
-              columnId:parseInt(values.column[0]),
-              displayStatus:parseInt(values.radioT),
-              displayOrder:parseInt(values.sort),
-              commentSet:values.radioS == "true"?true:false,
-              publishSet:values.radioG == "true"?true:false,
-              createUser:parseInt(values.createUser),
-              sysUser:parseInt(merId),
-              publishTime:new Date(values.time[0]).toLocaleDateString().split('/').join('-'),
-            }
-          })
+        
     },
     editorText(h,t){
         text  = t;
@@ -133,7 +108,7 @@ function Release_article({dispatch,router,content,setting}) {
                   'Content-Type': 'multipart/form-data'
                 }
             }
-      axios.post('http://120.78.186.139:8088/kgapi/image/upload', formData, config).then(res=>{
+      axios.post(ImgUrl, formData, config).then(res=>{
                res =res.data; 
               
                 if (res.errorCode == 10000) {

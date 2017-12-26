@@ -52,7 +52,7 @@ export async function auditArticle(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/article/auditArticle?data='+data+"&sign="+sign;
+	let url = '/admin/article/auditArticle?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"

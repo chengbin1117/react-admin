@@ -24,7 +24,10 @@ const Option = Select.Option;
 function Record({location,dispatch,finance,router,}) {
 	
 	let merId =localStorage.getItem("userId");
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {AccountList,currentPage,totalNumber,loading,BusinessType} =finance;
 	const TransactionProps = {
 			data:AccountList,

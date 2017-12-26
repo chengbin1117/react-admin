@@ -68,7 +68,7 @@ import {uploadUrl} from "../services/common"
           })
          this.props.edtiorContent(editor.txt.html())
         }
-        console.log("编辑器内容",this.props.articleText)
+        //console.log("编辑器内容",this.props.articleText)
         
         editor.create();
         editor.txt.html(this.props.articleText!=undefined?this.props.articleText:'')
@@ -76,11 +76,9 @@ import {uploadUrl} from "../services/common"
       
       render() {
         return (
-          <div >
-            <div  ref="editorElem" style={{textAlign: 'left',zIndex:100}}>
+         
+            <div ref="editorElem" style={{display:"block"}} contentEditable="true">
             </div>
-            
-          </div>
         );
       }
     }

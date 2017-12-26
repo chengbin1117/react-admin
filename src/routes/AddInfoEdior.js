@@ -8,7 +8,7 @@ import {
 import styles from './AboutUs.css'
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -25,8 +25,12 @@ const RadioGroup = Radio.Group;
 
 function AddinfoEditor({dispatch,setting,router}) {
 	let userId =localStorage.getItem("userId");
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	let data =JSON.parse(localStorage.getItem("kg_aboutEditor"));
-	console.log(data)
+	//console.log(data)
 	let txt='txt';
 	data[txt] =data.name+','+data.type;
 	console.log(data)

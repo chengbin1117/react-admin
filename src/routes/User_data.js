@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -19,6 +19,10 @@ const { TextArea } = Input;
 
 function UserAdmin({location,dispatch,user,router,}) {
 	let merId =localStorage.getItem("userId");
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {userInfo}=user;
 	 const formItemLayout = {
       labelCol: {

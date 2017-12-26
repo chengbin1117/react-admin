@@ -4,13 +4,7 @@ import stytes from './UserLoginPage.css';
 import { withRouter,browserHistory} from 'dva/router';
 import LoginForm from '../components/User/LoginForm';
 function LoginPage({location, dispatch, user, router}) {
-	// if (user && user.logged ) {
-	// 	// router.push('/merchant');
-	// 	dispatch({
-	// 		type:"user/redirect",
-	// 		router: router,			
-	// 	})
-	// 
+
 	console.log("location",location)
 
 	const loginProps = {

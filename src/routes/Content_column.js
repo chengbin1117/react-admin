@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -18,7 +18,10 @@ import Content_ColumnChild_Modal from '../components/Content/Content_ColumnChild
 
 import { message } from 'antd';
 function ContentColumn({dispatch,content,router}){
-
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {childCloum,ColumnAddVisbile,CList,current,type,loading,columnEditor} =content;
 	
 	const Content_ColumnProps ={

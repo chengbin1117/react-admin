@@ -8,7 +8,7 @@ import {
 import styles from './AboutUs.css'
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -24,7 +24,11 @@ import AddPostModal from '../components/Setting/AddPostModal';
 import EditorPostModal from '../components/Setting/EditorPostModal';
 import RelationModal from '../components/Setting/RelationUser';
 function AccountRule({location,dispatch,setting,router,}) {
-	let  userId = localStorage.getItem('userId')
+	let  userId = localStorage.getItem('userId');
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const { deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList}=setting;
 	//console.log('getAuthTree',getAuthTree)
 	//生成随机密码

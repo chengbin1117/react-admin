@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -23,6 +23,10 @@ const ButtonGroup = Button.Group;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
 function DataColumn({dispatch,center}) {
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {ChartColumn,ColumnUserList,size} = center;
 	const Chart = createG2(chart => {
 		

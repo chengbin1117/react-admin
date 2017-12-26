@@ -7,24 +7,28 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import createG2 from 'g2-react';
 import { Stat } from 'g2';
 import Layout from '../components/Layout';
-import { Table} from 'antd';
+import { Table,Pagination} from 'antd';
 import ArticleList from '../components/Log/Article';
 import AuditingModal from '../components/Log/AuditingModal';
 import ExamineModal from '../components/User/ExamineModal';
 import styles from './IndexPage.css';
-
+import style_pagination from '../components/pagination.css';
 function IndexPage({location,dispatch,user,router,content}) {
 	const {AuditVisible,userlist,ExmianVisible,selectList,loading,totalNumber}=user;
 	//const {ArticleList}=content
 	//console.log(content.ArticleList);
 	let merId =localStorage.getItem("userId");
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
+
 	const ExamineModalProps ={
 		visible:ExmianVisible,
 		selectList,
@@ -76,8 +80,8 @@ function IndexPage({location,dispatch,user,router,content}) {
 	    width: 100,
 	  }, {
 	    title: '用户名',
-	    dataIndex: 'Name',
-	    key: 'Name',
+	    dataIndex: 'userName',
+	    key: 'userName',
 	    width: 120,
 	  }, {
 	    title: '邮箱',
@@ -120,39 +124,74 @@ function IndexPage({location,dispatch,user,router,content}) {
 				)
 			}
 	  },];
-	  const pagination = {
+	  /*const pagination = {
 	    total: totalNumber,
 	    showSizeChanger: true,
 	    pageSize: 25,
-	    pageSizeOptions: ['25', '35', '45', '55'],
+	   
 	    onShowSizeChange: (current, pageSize) => {
 	      console.log('Current: ', current, '; PageSize: ', pageSize);
 	    },
 	    onChange: (current) => {
 	      console.log('Current: ', current);
 	    },
-	  };
+	  };*/
 	  
 	  
 	  const AuditingModalProps ={
-	  	visible:AuditVisible,
+	  	visible:content.AuditVisible,
+	  	selectList:content.selectList,
+	  	ColumnList:content.ColumnList,
 	  	onCancel:function(){
 	  		dispatch({
-				type: 'user/hideModal',
+				type: 'content/hideModal',
 				
 			});
+	  	},
+	  	onOk(data,selectList){
+	  		if(data.column ==undefined){
+	  			dispatch({
+					type:"content/auditArticle",
+					payload:{
+						articleId:selectList.articleId,
+						auditUser:merId,
+						refuseReason:data.text,
+					    auditStatus:parseInt(data.radio),
+					    Status:2
+					}
+				})
+	  		}else{
+	  			dispatch({
+					type:"content/auditArticle",
+					payload:{
+						articleId:selectList.articleId,
+						auditUser:merId,
+						refuseReason:data.text,
+						columnId:data.column[0],
+					    secondColumn:data.column[1],
+					    auditStatus:parseInt(data.radio),
+					    Status:2
+					}
+				})
+	  		}
+	  			
 	  	}
 	  }
 	  const ArticleListProps ={
 	  	data:content.ArticleList,
 	  	loading:content.loading,
 	  	total:content.ArticleListNumber,
-	  	onEditItem:function(){
+	  	onEditItem:function(record){
 	  		dispatch({
-				type: 'user/showModal',
-				
+				type: 'content/showModal',
+				payload:{
+					selectList:record
+				}
 			});
 	  	}
+	  }
+	  function onChange(page){
+	  	console.log(page)
 	  }
 	return (
 			<div>
@@ -161,10 +200,11 @@ function IndexPage({location,dispatch,user,router,content}) {
 			             pathname:"/user/user_admin", 
 			             query:{page: 1} 
 			         }}  className={styles.allUser}>查看全部用户</Link></h2>
-				    <Table bordered rowKey={record => record.userId} columns={columns}   pagination={pagination} dataSource={userlist} loading={loading}/>
+				    <Table bordered rowKey={record => record.userId} columns={columns}  pagination={false}  dataSource={userlist} loading={loading}/>
+				    
 				    <ExamineModal {...ExamineModalProps}/>
 				</div>
-				<div>
+				<div style={{marginTop:"100px"}}>
 				    <h2>待审核的专栏文章
 				    <Link to={{ 
 			             pathname:"/content/content_article", 

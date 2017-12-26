@@ -22,7 +22,10 @@ const confirm = Modal.confirm;
 let userId =localStorage.getItem("userId");
 function AboutUs({dispatch,router,setting}) {
 	const {BaseInfoList} =setting
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const ArticleListProps = {
 		BaseInfoList,
 		onEditItem:function(record){

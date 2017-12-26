@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -25,6 +25,10 @@ const monthFormat = 'YYYY/MM';
 
 function DataUser({dispatch,center}) {
 	const {ChartColumn,UserList,size} = center;
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const Chart = createG2(chart => {
 	
 		chart.line().position('time*value').color('name').size(2);

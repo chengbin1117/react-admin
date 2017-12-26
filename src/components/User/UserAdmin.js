@@ -15,6 +15,7 @@ import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
 import styles from './LoginForm.css';
+import {options} from "../../services/common"
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
@@ -56,8 +57,8 @@ const UserAdmin = ({
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '用户名',
-		  dataIndex: 'name',
-		  key: 'name',
+		  dataIndex: 'userName',
+		  key: 'userName',
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '邮箱',
@@ -139,7 +140,7 @@ const UserAdmin = ({
              pathname:"/user/user_data", 
              query:{userId: record.userId} 
          }}  style={{marginRight:10+"px"}}>查看</Link>
-         		{record.auditStatus != 1 ? <a style={{marginRight:10+"px"}} onClick={()=>Examine(record.userId)}>审核</a>:
+         		{(record.auditStatus == 0 && record.applyRole!=1)? <a style={{marginRight:10+"px"}} onClick={()=>Examine(record.userId)}>审核</a>:
          	<a style={{marginRight:10+"px"}} className={styles.audit}>审核</a>}
 			{record.lockStatus == 2 ?<Popconfirm title="是否确认解锁?" onConfirm={()=>confirm(record)}  okText="确认" cancelText="取消">
     <a style={{marginRight:10+"px"}} >解锁</a>
@@ -196,7 +197,7 @@ const UserAdmin = ({
 		         <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='注册时间'>
 		            {getFieldDecorator('time')(
-		              <RangePicker />
+		              <RangePicker locale={options}/>
 		            )}
 		          </FormItem>
 		        </Col>
@@ -214,7 +215,7 @@ const UserAdmin = ({
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='锁定状态'>
 		            {getFieldDecorator('lockStatus')(
-		               <Select placeholder="请选择">
+		               <Select placeholder="请选择" >
 		              	    <Option value="1">未锁定</Option>
 		              	    <Option value="2">已锁定</Option>
 		              	   
@@ -263,7 +264,7 @@ const UserAdmin = ({
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>LocksModal(selectedRows)}>批量锁定</Button>
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>deblocking(selectedRows)}>批量解锁</Button>
 		     </div>
-	      	<Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange} total={total} onChange={this.onChange} pageSize={20}/>
+	      	<Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange} total={total} onChange={this.onChange} pageSize={25}/>
 			          
 			      </div>
 			    );

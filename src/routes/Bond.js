@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -25,7 +25,10 @@ function Bond({location,dispatch,finance,router,}) {
 	
 	const {AccountDiposit,totalNumber,currentPage,loading} = finance;
 	let merId =localStorage.getItem("userId");
-
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const BondListProps ={
 		data:AccountDiposit,
 		total:totalNumber,

@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -18,7 +18,10 @@ const FormItem =Form.Item;
 
 
 function UserLogin({dispatch,user}) {
-
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	class PriceInput extends React.Component {
 		  constructor(props) {
 		    super(props);

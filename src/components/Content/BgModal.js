@@ -80,11 +80,9 @@ const BgModal = ({
         return {
             text: this.props.initialValue || 'placeholder',
             activeStatus:0,
-            Img:[{"Id":1,img:'logoimg'},{"Id":2,img:'logoimg'},{"Id":3,img:'logoimg'},{"Id":4,img:'logoimg'}],
             active:0,
             coverImg:[
 	          {"img":"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=9101b1d4728da9775a228e79d138937c/1c950a7b02087bf4d140250ef3d3572c10dfcfad.jpg"},
-	          {"img":"https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike272%2C5%2C5%2C272%2C90/sign=eff080687bcf3bc7fc0dc5beb069d1c4/80cb39dbb6fd526658ef4071a018972bd507368a.jpg"},
 	          {"img":"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=9101b1d4728da9775a228e79d138937c/1c950a7b02087bf4d140250ef3d3572c10dfcfad.jpg"},
 	        ],
 	        activeImg:"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=9101b1d4728da9775a228e79d138937c/1c950a7b02087bf4d140250ef3d3572c10dfcfad.jpg"

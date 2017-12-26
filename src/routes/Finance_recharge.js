@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -25,6 +25,10 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 	const {RechargeList,loading,totalNumber,currentPage}=finance;
 	//console.log(loading)
 	let merId =localStorage.getItem("userId");
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	console.log(merId)
 	/*if(merId == 'undefined'){
 		message.error('请重新登陆')

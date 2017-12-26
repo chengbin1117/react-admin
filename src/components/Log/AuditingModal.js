@@ -6,11 +6,13 @@ import {
 	Select,
 	Input,
 	Modal,
-	Radio
+	Radio,
+	Cascader
 } from 'antd';
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
+const FormItem = Form.Item;
 
 const formItemLayout = {
 	labelCol: {
@@ -20,15 +22,15 @@ const formItemLayout = {
 		span: 14,
 	},
 };
-
+let value =0;
 const AuditingModal = ({
 	visible,
 	item = {},
 	type,
 	onOk,
+	selectList,
+	ColumnList,
 	onCancel,
-	MaterialType,
-	fatherType,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -45,15 +47,11 @@ const AuditingModal = ({
 			}
 
 			const data = {
-				id: item.Id,
+				
 				...getFieldsValue(),
-				key: item.key
+				
 			}
-			setFieldsValue({
-				father: "0",
-				name: ''
-			});
-			onOk(data);
+			onOk(data,selectList);
 		});
 	}
 
@@ -73,7 +71,9 @@ const AuditingModal = ({
 
 	};
 	
-	
+	function onChange(e) {
+        value =e.target.value;
+    }
 	class App extends React.Component {
 		  state = {
 		    value: 1,
@@ -96,7 +96,8 @@ const AuditingModal = ({
 		        <Radio style={radioStyle} value={3}>通过</Radio>
 		        <Radio style={radioStyle} value={4}>
 		          不通过
-		           <Input style={{ width: 200, marginLeft: 10 }} disabled={this.state.value === 4 ?false:true} placeholder='请输入不通过原因（选填）'/>
+		          <br />
+		           <Input style={{ width: "100%", minHeight: 100 }} disabled={this.state.value === 4 ?false:true} placeholder='请输入不通过原因（选填）'/>
 		        </Radio>
 		      </RadioGroup>
 		    );
@@ -106,13 +107,42 @@ const AuditingModal = ({
 
 		<Modal {...modalOpts}>
 	       <Form>
-				<Form.Item 
-					
-					{...formItemLayout}
-				>
-					<App />
-				</Form.Item>		
-				
+			<FormItem>
+				  	    {getFieldDecorator('radio', {
+				  			rules:[{required: true, message: "请选择!"}],
+				  		})(
+				  		    <RadioGroup onChange ={onChange} >
+				              <Radio value="1">通过</Radio>
+				              
+				            </RadioGroup>
+				  		)}
+				</FormItem>
+				<FormItem label="选择栏目">
+				  	    {getFieldDecorator('column', {
+				  			rules:[{required: value==1?true:false, message: "请选择!"}],
+				  		})(
+				  		    <Cascader options={ColumnList}  placeholder="请选择" style={{width:300+'px'}}/>
+				  		)}
+				</FormItem>
+				<FormItem>
+				  	    {getFieldDecorator('radio', {
+				  			rules:[{required: true, message: "请选择!"}],
+				  		})(
+				  		    <RadioGroup onChange ={onChange} >
+				             
+				              <Radio value="3">不通过</Radio> 
+				            </RadioGroup>
+				  		)}
+				</FormItem>
+		        <FormItem>
+		          {getFieldDecorator('text',{
+		          	 rules: [{
+			              required: false, message: '请输入!',
+			            }], 
+		          })(
+		          <TextArea  style={{ width: "100%",minHeight:"100px"}} placeholder="不通过原因(选填)" disabled={value==3?false:true}/> 
+		          )}
+		        </FormItem>
 			</Form>
 		</Modal>
 	);

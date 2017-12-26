@@ -59,10 +59,7 @@ const SetHotModal = ({
 
 	function Cancel() {
 		onCancel()
-		setFieldsValue({
-			father: "0",
-			name: ''
-		});
+		
 	}
 	const modalOpts = {
 		title: '是否推荐为热门作者',
@@ -72,68 +69,7 @@ const SetHotModal = ({
 		maskClosable: false,
 	};
 	
-/*	class DynamicRule extends React.Component {
-	  state = {
-	    checkNick: false,
-	    text:''
-	  };
-	  check = () => {
-	    this.props.form.validateFields(
-	      (err) => {
-	        if (!err) {
-	          console.info('success');
-	        }
-	      },
-	    );
-	  }
-	  handleChange = (e) => {
-	    this.setState({
-	      checkNick: e.target.checked,
-	    }, () => {
-	      this.props.form.validateFields(['nickname'], { force: true });
-	    });
-	  }
-	  onChange = (e) => {
-	    console.log('radio checked', e.target.value);
-	    this.setState({
-	      value: e.target.value,
-	    });
-	  }
-	  inputVaule =(e) => {
-	  	console.log(e.target.value)
-	  	this.setState({
-	  		text:e.target.value
-	  	})
-	  }
-	  render() {
-	    const { getFieldDecorator } = this.props.form;
-	    const {value,text}=this.state;
-	    return (
-	      <Form>
-			<FormItem 
-		          label=""
-		          
-		        >
-		          {getFieldDecorator('radio-button')(
-		            <RadioGroup >
-		                <Radio  value={1}>是</Radio>
-				        <Radio  value={2}>
-				        否
-				          
-				        </Radio>
-		            </RadioGroup>
-		          )}
-		        </FormItem>
-		        <FormItem
-		          
-		        >
-		          <Button type="primary" onClick={()=>handleOk(value,text)}>保存</Button>
-		        </FormItem>
-			</Form>
-	    );
-	  }
-	}
-	const WrappedDynamicRule = Form.create()(DynamicRule);*/
+
 	return (
 			
 		<Modal {...modalOpts} width='400px'>
@@ -143,6 +79,7 @@ const SetHotModal = ({
 		          
 		        >
 		          {getFieldDecorator('radio',{
+		          	initialValue:selectList.hotUser==false?"2":"1",
 		          	 rules: [{
 			              required: true, message: '请选择!',
 			            }], 

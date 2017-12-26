@@ -14,7 +14,10 @@ import LayoutContainer from '../components/Layout';
 import Content_Opinion from '../components/Content/Content_Opinion';
 
 function ContentOpinion({dispatch,content,router}) {
-
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {FeedbackList,Listtotal} = content;
 	const Content_OpinionProps ={
 		data:FeedbackList,

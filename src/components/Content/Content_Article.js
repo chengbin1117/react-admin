@@ -5,6 +5,7 @@ import style_pagination from '../pagination.css';
 import { routerRedux } from 'dva/router';
 const FormItem = Form.Item;
 const Option = Select.Option;
+import {message} from 'antd';
 const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList}) => {
 	const options = ColumnList;
 	let userId =localStorage.getItem("userId");
@@ -76,7 +77,7 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 	  render: (text, record) => (
 	    <span>
 	      <a onClick={()=>editorItem(record)} className = "action_font" >编辑</a>
-	      <a onClick={()=>article(record)} className = "action_font" style={{marginLeft:10}}>审核</a>
+	      <a onClick={()=>article(record)} className = "action_font" style={{marginLeft:10}} disabled={record.publishStatus==2?false:true}>审核</a>
 	      <a onClick={()=>setShowModal(record)} style={{marginLeft:10}} className = "action_font">显示设置</a>
 	      <a onClick={()=>delArticle(record)} style={{marginLeft:10}} className = "action_font">删除</a>
 	    </span>

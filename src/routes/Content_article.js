@@ -10,7 +10,7 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { Modal } from 'antd';
+import { Modal,message} from 'antd';
 import LayoutContainer from '../components/Layout';
 import Content_Article from '../components/Content/Content_Article';
 import SetModal from '../components/Content/SetShow';
@@ -19,6 +19,11 @@ import {formatDate,tokenLogOut,GetRequest} from '../services/common'
 
 function ContentArticle({location,dispatch,router,content}) {
 	let merId =localStorage.getItem("userId");
+	let token =localStorage.getItem("Kgtoken");
+	console.log("location",location)
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {ArticleList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
 	
 	const Content_ArticleProps ={
@@ -137,7 +142,7 @@ function ContentArticle({location,dispatch,router,content}) {
 					articleId:selectList,
 					displayStatus:status.radio,
 					updateUser:merId,
-					query:location.query
+					search:location.search
 				}
 			})
 		}
@@ -153,24 +158,35 @@ function ContentArticle({location,dispatch,router,content}) {
 				
 			})
 		},
-		onOk(selectList,value,text){
-			console.log(value,text)
-			if(value.column==undefined){
-				message.error('请选择栏目')
+		onOk(data,selectList){
+			if(data.column==undefined){
+				dispatch({
+				type:"content/auditArticle",
+				payload:{
+					articleId:selectList.articleId,
+					auditUser:merId,
+					refuseReason:data.text,
+				    auditStatus:parseInt(data.radio),
+				    search:location.search
+				}
+			   })
 			}else{
 				dispatch({
 				type:"content/auditArticle",
 				payload:{
 					articleId:selectList.articleId,
 					auditUser:merId,
-					refuseReason:text,
-					columnId:value.column[0],
-					secondColumn:value.column[1],
-					auditStatus:parseInt(value.radio)
+					refuseReason:data.text,
+					columnId:data.column[0],
+					secondColumn:data.column[1],
+					auditStatus:parseInt(data.radio),
+					search:location.search
 				}
-			})
+			   })
 			}
-			/**/
+				
+			
+			
 		}
 	}
 	return (

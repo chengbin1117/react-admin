@@ -34,7 +34,7 @@ export default {
     editorList:{},
     imgUrl:'',
     UserById:{},
-    getBonus:[]
+    getBonuslist:[]
   },
 
   subscriptions: {
@@ -80,7 +80,7 @@ export default {
         match = pathToRegexp('/content/editor_article').exec(location.pathname);
         if(match){
          const search =GetRequest(location.search);
-         
+         // console.log("search",search.articleId)
             dispatch({
               type:'getArticleById',
               payload:{
@@ -157,9 +157,14 @@ export default {
                   type: 'getArticleList',
                   payload: {
                       publishStatus:2,
-                      pageSize:25,
                   }
                 });
+            dispatch({
+              type:'getColumnList',
+              payload:{
+                
+              }
+            })
           }
       })
     },
@@ -278,24 +283,49 @@ export default {
       }
     },
     *auditArticle({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-      yield put({
-        type: 'hideLoading',
-      });
-      const { data } = yield call(auditArticle, payload);
+      
+      let params ={
+        articleId:payload.articleId,
+        auditUser:payload.auditUser,
+        refuseReason:payload.refuseReason,
+        columnId:payload.columnId,
+        secondColumn:payload.secondColumn,
+        auditStatus:payload.auditStatus
+
+      }
+
+      const { data } = yield call(auditArticle, params);
       //console.log("11",data)
+      
       if (data && data.code == 10000) {
-         var res = data.responseBody;
-         console.log(res)
+         message.success('审核成功')
             yield put({
-              type: 'getArticleList',
+              type: 'hideArticeModal',
               payload:{
-                currentPage:1,
-                pageSIze:20,
+                
               }
             });
+            yield put({
+              type:'hideModal'
+            })
+            if(payload.Status == 2){
+              yield put({
+                type: 'getArticleList',
+                payload:{
+                  publishStatus:2,
+                }
+              });
+            }else{
+              const search =GetRequest(payload.search);
+              yield put({
+              type: 'getArticleList',
+              payload:{
+                currentPage:search.page,
+                pageSize:25,
+              }
+            });
+            }
+            
       } else {
          yield put({
             type: 'hideLoading',
@@ -341,11 +371,7 @@ export default {
         }
       }
     },
-    *getColumnList({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-     
+    *getColumnList({ payload }, {call , put}) {     
       const { data } = yield call(getColumnList, payload);
       //console.log("栏目",data)
       if (data && data.code == 10000) {
@@ -433,7 +459,7 @@ export default {
                 loading:false,
               }
             });
-            if(res.sysUser!=null||res.sysUser!=""){
+            if(res.sysUser==null||res.sysUser!=""){
                yield put({
                 type: 'getBonus',
                 payload:{
@@ -910,13 +936,14 @@ export default {
     *getBonus({ payload }, {call , put}) {
  
       const { data } = yield call(getBonus, payload);
-          console.log(data)
+          //console.log(data)
       if (data && data.code == 10000) {
             var res = data.responseBody;
+          console.log("res",res)
             yield put({
               type: 'getBonusSuccess',
               payload:{
-                  getBonus:res
+                  getBonusList:res
               }
 
            })
@@ -942,6 +969,18 @@ export default {
       return {...state,
         ...action.payload,
         loading: false
+      };
+    },
+    showModal(state, action) {
+      return {...state,
+         ...action.payload,
+        AuditVisible: true
+      };
+    },
+    hideModal(state, action) {
+      return {...state,
+         ...action.payload,
+        AuditVisible: false
       };
     },
     showBgModal(state, action) {

@@ -92,8 +92,8 @@ function RouterConfig({ history }) {
       <Route path="/" exact  component={UserRouter} />
       <Route path="/login" exact  component={UserRouter} />
       <LayoutContainer >
-          <Route path="/index" exact component={IndexPage} />
-          <Route path="/user/user_admin" exact component={UserAdmin}/>
+          <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
+          <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
           <Route path="/user/user_role" exact component={UserRole} />
           <Route path="/user/user_data" exact component={UserData}/>
           <Route path="/user/user_login" exact component={UserLogin} />

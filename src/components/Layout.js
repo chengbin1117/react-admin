@@ -285,7 +285,7 @@ class LayoutContainer extends React.Component {
           </Link>
         </Menu.Item>
           {nav&&nav.map((item,index)=>
-                   <SubMenu key={"sub"+index} title={<span><Icon type="user1" /><span>{item.menuName}</span></span>}>
+                   <SubMenu key={"sub"+index} title={<span><Icon type={item.menuIcon} /><span>{item.menuName}</span></span>}>
                     {item.children.map((c,inde)=>
                         <Menu.Item key={c.menuId+''} >
                         <Link   to = {"/"+c.menuLink+'?page=1'}>{c.menuName}</Link>
