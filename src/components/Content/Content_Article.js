@@ -6,7 +6,7 @@ import { routerRedux } from 'dva/router';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import {message} from 'antd';
-const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList}) => {
+const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList}) => {
 	const options = ColumnList;
 	let userId =localStorage.getItem("userId");
 	//console.log("loading",loading)
@@ -34,10 +34,6 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 	  title: '发布时间',
 	  dataIndex: 'createDate',
 	  key: 'createDate',
-	},{
-	  title: '发布人',
-	  dataIndex: '5address',
-	  key: '5address',
 	},{
 	  title: '更新人',
 	  dataIndex: 'updateUser',
@@ -67,6 +63,15 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 	  dataIndex: 'bowseNum',
 	  key: 'bowseNum',
 	},{
+	  title: '奖励规则状态',
+	  dataIndex: 'bonusStatus',
+	  key: 'bonusStatus',
+	  render:(text,record)=>(
+	  	<span>{record.sysUser==null?<span>
+	  		{record.bonusStatus ==0&&'未生效'}{record.bonusStatus ==1&&'已生效'}
+	  	</span>:<span>——</span>}</span>
+	  	)
+	},{
 	  title: '排序',
 	  dataIndex: 'displayOrder',
 	  key: 'displayOrder',
@@ -79,7 +84,7 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 	      <a onClick={()=>editorItem(record)} className = "action_font" >编辑</a>
 	      <a onClick={()=>article(record)} className = "action_font" style={{marginLeft:10}} disabled={record.publishStatus==2?false:true}>审核</a>
 	      <a onClick={()=>setShowModal(record)} style={{marginLeft:10}} className = "action_font">显示设置</a>
-	      <a onClick={()=>delArticle(record)} style={{marginLeft:10}} className = "action_font">删除</a>
+	      <a onClick={()=>delArticle(record,getBonusList)} style={{marginLeft:10}} className = "action_font">查看阅读奖励</a>
 	    </span>
 	  )
 	}];
@@ -117,7 +122,7 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 			          </FormItem>
 			        </Col>
 			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='状态'>
+			          <FormItem {...formItemLayout} label='状态' hasFeedback>
 			            {getFieldDecorator('status')(
 			              <Select placeholder="请选择">
 			              	<Option value="0">草稿</Option>
@@ -129,7 +134,7 @@ const Content_Article = ({dispatch,currentPage,delArticle,router,total,ArticleLi
 			          </FormItem>
 			        </Col>
 			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='显示状态'>
+			          <FormItem {...formItemLayout} label='显示状态' hasFeedback>
 			            {getFieldDecorator('displayStatus')(
 			              <Select placeholder="请选择" >
 			              	<Option value="1">正常显示</Option>

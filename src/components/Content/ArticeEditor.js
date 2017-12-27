@@ -2,6 +2,11 @@ import React, {
   Component,
   PropTypes
 } from 'react';
+import {
+
+  routerRedux,
+
+} from 'dva/router';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
@@ -17,7 +22,7 @@ const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 
-let AllTotal =0;
+
 const formItemLayout = {
       labelCol: {
         xs: { span: 2 },
@@ -60,9 +65,13 @@ function ArticleEditor({
 }){
   let merId =localStorage.getItem("userId");
   const options = ColumnList;
-  //console.log("setting",imgUrl)
-  const {RelationVisible} =setting
-  class Editor extends Component {
+  console.log("setting",ArticleList)
+  const {RelationVisible} =setting;
+  let AllTotal =0;
+ /* if(ArticleList.publishStatus!=undefined&&ArticleList.publishStatus==3){
+    value="3"
+  }*/
+  /*class Editor extends Component {
       constructor(props, context) {
           super(props, context);
           this.state = {
@@ -135,7 +144,7 @@ function ArticleEditor({
             </div>
         );
       }
-    }
+    }*/
   function handleSubmit (){
       validateFields((errors) => {
         if (errors) {
@@ -143,29 +152,68 @@ function ArticleEditor({
         }else{
           const data = {...getFieldsValue()};
           console.log(data)
-          dispatch({
+          if(data.publishStatus =="1"){
+              dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:ArticleList.articleId,
                 articleTitle:data.articleTitle,
                 articleText:data.text,
                 articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
                 description:data.artic,
-                image:imgUrl,
+                image:imgUrl==''?data.image:imgUrl,
                 type:parseInt(data.type),
                 columnId:parseInt(data.column[0]),
+                secondColumn:parseInt(data.column[1]),
                 displayStatus:parseInt(data.radioT),
                 displayOrder:parseInt(data.sort),
                 commentSet:data.radioS == "true"?true:false,
                 publishSet:data.radioG == "true"?true:false,
-                createUser:parseInt(data.createUser),
+                createUser:ArticleList.createUser,
                 sysUser:parseInt(merId),
-                bonusStatus:parseInt(data.bonusStatus)
+                bonusStatus:parseInt(data.bonusStatus),
+                articleSource:data.articleSource,
+                articleLink:data.articleLink,
+                publishStatus:parseInt(data.publishStatus),
               }
           })
+          }else{
+              dispatch({
+                type:'content/publishArticle',
+                payload:{
+                  articleId:ArticleList.articleId,
+                  articleTitle:data.articleTitle,
+                  articleText:data.text,
+                  articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
+                  description:data.artic,
+                  image:imgUrl==''?data.image:imgUrl,
+                  type:parseInt(data.type),
+                  columnId:parseInt(data.column[0]),
+                  secondColumn:parseInt(data.column[1]),
+                  displayStatus:parseInt(data.radioT),
+                  displayOrder:parseInt(data.sort),
+                  commentSet:data.radioS == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
+                  createUser:ArticleList.createUser,
+                  sysUser:parseInt(merId),
+                  bonusStatus:parseInt(data.bonusStatus),
+                  articleSource:data.articleSource,
+                  articleLink:data.articleLink,
+                  publishStatus:parseInt(data.publishStatus),
+                  refuseReason:data.refuseReason
+                }
+          })
+          }
+
+          
         }
       })
   }
   
+
+  function goBack() {
+    //dispatch(routerRedux.push("/content/content_article?page=1"))
+  }
   function showModal(){
       dispatch({
             type:'content/showBgModal'
@@ -277,7 +325,7 @@ function StatusonChange(e) {
                       ],
                       trigger:'edtiorContent'
                     })(
-                         <Editor edtiorContent={edtiorContent} articleText={ArticleList.articleText}/>
+                         <Editor articleText={ArticleList.articleText} edtiorContent={edtiorContent} />
                     )}
                   
               </FormItem>
@@ -413,7 +461,7 @@ function StatusonChange(e) {
                     >
                       {getFieldDecorator('articleSource',{
                         initialValue:ArticleList.articleSource,
-                        rules: [{ required: true, message: '请填写转载文章来源!' },
+                        rules: [{required: ArticleList.articleType==1?false:true, message: '请填写转载文章来源!' },
                        ],
                       })(
                         <Input />
@@ -425,7 +473,7 @@ function StatusonChange(e) {
                     >
                       {getFieldDecorator('articleLink',{
                         initialValue:ArticleList.articleLink,
-                        rules: [{ required: true, message: '请填写转载文章来源链接地址!' },
+                        rules: [{ required: ArticleList.articleType==1?false:true, message: '请填写转载文章来源链接地址!' },
                        ],
                       })(
                         <Input />
@@ -437,7 +485,7 @@ function StatusonChange(e) {
      
                     >
                       {getFieldDecorator('column', {
-                        initialValue:[ArticleList.columnId,ArticleList.secondColumn],
+                        initialValue:ArticleList.columnId!=null?[ArticleList.columnId,ArticleList.secondColumn]:[],
                         rules: [
                           { required: true, message: '请选择文章栏目!' },
                           {type: 'array'}
@@ -497,7 +545,7 @@ function StatusonChange(e) {
                        extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:ArticleList.createUser,
+                        initialValue:ArticleList.username,
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],
@@ -525,8 +573,9 @@ function StatusonChange(e) {
                         </RadioGroup>
                       )}
               </FormItem>
-              {ArticleList.sysUser ==null?<FormItem label="阅读奖励" {...formItemLayout}  >
-                  {getBonusList&&getBonusList.map((item,index)=>{
+              {ArticleList.sysUser ==null?(getBonusList!=undefined&&getBonusList.length!=0)?<FormItem label="阅读奖励" {...formItemLayout}>
+                  {getBonusList.map((item,index)=>{
+
                       AllTotal += parseInt(item.total)*parseInt(item.value)
                     return(
                         <Row key={index}>
@@ -547,34 +596,39 @@ function StatusonChange(e) {
                           总计发放：{AllTotal}个
                       </Col>
                      </Row>   
-              </FormItem>:null}
+              </FormItem>:<FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem>:null}
               {ArticleList.sysUser ==null?<FormItem
                       {...formItemLayout}
                       label="审核处理"
                     >
                       {getFieldDecorator('publishStatus',{
-                         
+                         initialValue:ArticleList.publishStatus!=undefined?ArticleList.publishStatus+"":'',
+                          rules: [
+                          { required: true,message:'请选择' },
+                        ],
                       })(
                         <RadioGroup onChange={StatusonChange}>
                           <Radio value="1">通过</Radio>
-                          <Radio value="2">不通过</Radio>
+                          <Radio value="3">不通过</Radio>
 
                         </RadioGroup>
                       )}
               </FormItem>:null}
               
-              {value == "2"? <FormItem>
-              {getFieldDecorator('ref',{
+              <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
+              {getFieldDecorator('refuseReason',{
+                initialValue:ArticleList.refuseReason!=undefined?ArticleList.refuseReason:'',
                  rules: [{
                     required: false, message: '请输入!',
                   }], 
               })(
-              <TextArea  style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)"/> 
+              <TextArea  style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={value==3?false:true
+              }/> 
               )}
-              </FormItem>:null}
-              <FormItem {...tailFormItemLayout}>
-                <Button type="primary" onClick={handleSubmit}>保存</Button>
-               
+              </FormItem>
+              <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
+                <Button type="primary" onClick={handleSubmit} size="large" style={{paddingLeft:20,paddingRight:20}}>保存</Button>
+                
                 <RelationModal {...RelationModalProps} />
               </FormItem>
               

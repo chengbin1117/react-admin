@@ -189,6 +189,9 @@ function UserAdmin({location,dispatch,user,router,}) {
 		changepage(page){
 			dispatch(routerRedux.push('/user/user_admin?page='+page))
 			
+		},
+		userData(record){
+			dispatch(routerRedux.push('/user/data?userId='+record.userId))
 		}
 	}
 	const ExamineModalProps ={

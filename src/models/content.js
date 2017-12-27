@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import {
   getArticleList,setDisplayStatus,articleservice,auditArticle,getColumnList,deleteArticle,publishArticle,getArticleById,siteimagelist,addImage,deleteImage,
   getFeedbackList,deleteFeedback,setStatus,replay,ImageSetStatus,getCommentList,commentSet,deleteComment,setcommentStatus,auditComment,addColumn,deleteColumn,
-  sendEmail,getSysUserById,getBonus
+  sendEmail,getSysUserById,getBonus,getArticleStat
 } from '../services/content';
 import {
   message
@@ -34,7 +34,10 @@ export default {
     editorList:{},
     imgUrl:'',
     UserById:{},
-    getBonuslist:[]
+    getBonusList:[],
+    artice:[],
+    currentArtice:{},
+    ArticleStat:{}
   },
 
   subscriptions: {
@@ -81,12 +84,12 @@ export default {
         if(match){
          const search =GetRequest(location.search);
          // console.log("search",search.articleId)
-            dispatch({
+            /*dispatch({
               type:'getArticleById',
               payload:{
                 articleId:search.articleId
               }
-            });
+            });*/
             dispatch({
               type:'getColumnList',
               payload:{
@@ -97,7 +100,7 @@ export default {
         match =pathToRegexp('/content/content_image').exec(location.pathname);
         if(match){
           const search =GetRequest(location.search);
-          console.log("tupian",search)
+          
           dispatch({
               type:'siteimagelist',
               payload:{
@@ -115,13 +118,14 @@ export default {
               }
             })
         }
-        match =pathToRegexp('/content/content_opinion/:id').exec(location.pathname);
+        match =pathToRegexp('/content/opinion').exec(location.pathname);
+         
         if(match){
-          
+          const search =GetRequest(location.search);
            dispatch({
               type:'setStatus',
               payload:{
-                feedbackId:parseInt(match[1])
+                feedbackId:search.id
               }
             })
           
@@ -217,7 +221,7 @@ export default {
       }
     },
     *setDisplayStatus({ payload }, {call , put}) {
-      const {articleId,displayStatus,updateUser,query} =payload;
+      const {articleId,displayStatus,updateUser,search} =payload;
       let params ={
         articleId:articleId,
         displayStatus:displayStatus,
@@ -225,13 +229,15 @@ export default {
       }
       const { data } = yield call(setDisplayStatus, params);
       //console.log("11",data)
+
       if (data && data.code == 10000) {
          var res = data.responseBody;
+         const sea =GetRequest(search)
             message.success('设置成功')
             yield put({
               type: 'getArticleList',
               payload:{
-                 currentPage:query.page,
+                 currentPage:sea.page,
                  pageSize:25,
               }
             }); 
@@ -345,7 +351,11 @@ export default {
       if (data && data.code == 10000) {
          var res = data.responseBody;
          if(payload.publishStatus!=undefined){
-            message.success('存草稿成功')
+          if(payload.articleId!=undefined){
+            message.success('编辑成功')
+          }else{
+             message.success('存草稿成功')
+          }
          }else{
            message.success('发布成功')
            window.location.reload()
@@ -451,7 +461,7 @@ export default {
       if (data && data.code == 10000) {
          var res = data.responseBody;
          var tags = "tags";
-         res[tags]=res.articleTags!=null?res.articleTags.split(","):'';
+         res[tags]=res.tagnames!=null?res.tagnames.split(","):'';
             yield put({
               type: 'getArticleListSuccess',
               payload:{
@@ -459,6 +469,7 @@ export default {
                 loading:false,
               }
             });
+
             if(res.sysUser==null||res.sysUser!=""){
                yield put({
                 type: 'getBonus',
@@ -467,6 +478,10 @@ export default {
                 }
               });
             } 
+            /*window.location.reload()*/
+            localStorage.setItem("articleText", res.articleText);
+            yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
+
       } else {
         if(data.code ==10004){
            message.error(data.message,3);
@@ -571,12 +586,15 @@ export default {
       const { data } = yield call(ImageSetStatus, payload);
       if (data && data.code == 10000) {
             message.success('设置成功')
-            /*yield put({
+            yield put({
+              type:"hideImageModal"
+            }) 
+            yield put({
               type: 'siteimagelist',
               payload:{
                 
               }
-            }); */
+            }); 
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -704,9 +722,7 @@ export default {
       }
     },
     *commentSet({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+      
       const { data } = yield call(commentSet, payload);
           
       if (data && data.code == 10000) {
@@ -754,7 +770,7 @@ export default {
       }
     },
     *setcommentStatus({ payload }, {call , put}) {
-      const {commentIds,displayStatus,query} =payload;
+      const {commentIds,displayStatus,search} =payload;
       let params ={
         commentIds:commentIds,
         displayStatus:displayStatus
@@ -762,12 +778,13 @@ export default {
       const { data } = yield call(setcommentStatus, params);
           
       if (data && data.code == 10000) {
+        const se = GetRequest(payload.search)
           message.success('设置成功')
          
            yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:query.page,
+                currentPage:se.page,
                 pageSize:25
               }
            })
@@ -786,10 +803,27 @@ export default {
     },
     *auditComment({ payload }, {call , put}) {
       
-      const {commentId,status,query} =payload;
-      const { data } = yield call(auditComment, payload);
+      const {commentId,status,search,refuseReason} =payload;
+
+      let params ={};
+      if(status == 1){
+         params ={
+          commentId:commentId,
+          status:status,
+
+        }
+      }else{
+        params ={
+          commentId:commentId,
+          status:status,
+          refuseReason:refuseReason
+        }
+      }
+      
+      const { data } = yield call(auditComment, params);
           
       if (data && data.code == 10000) {
+        const se = GetRequest(payload.search)
         message.success('审核成功')
           // var res = data.responseBody.data;
            yield put({
@@ -802,7 +836,8 @@ export default {
             yield put({
               type: 'getCommentList',
               payload:{
-              
+                currentPage:se.page,
+                pageSize:25
               }
 
            })
@@ -934,19 +969,50 @@ export default {
       }
     },
     *getBonus({ payload }, {call , put}) {
- 
-      const { data } = yield call(getBonus, payload);
+      let params ={
+        articleId:payload.articleId
+      }
+      const { data } = yield call(getBonus, params);
           //console.log(data)
       if (data && data.code == 10000) {
             var res = data.responseBody;
-          console.log("res",res)
             yield put({
               type: 'getBonusSuccess',
               payload:{
                   getBonusList:res
               }
-
-           })
+            })
+            /*yield put({
+              type:"showBonsModal",
+              payload:{
+                artice:res,
+                currentArtice:payload.record
+              }
+            })*/
+      } else {
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+      }
+    },
+    *getArticleStat({ payload }, {call , put}) {
+      let params ={
+        articleId:payload.articleId
+      }
+      const { data } = yield call(getArticleStat, params);
+          //console.log(data)
+      if (data && data.code == 10000) {
+            var res = data.responseBody;
+            yield put({
+              type: 'getArticleStatSuccess',
+              payload:{
+                  ArticleStat:res
+              }
+            })
+            
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -1192,6 +1258,23 @@ export default {
       return {...state,
         ...action.payload,
         childCloum: false
+      };
+    },
+    showBonsModal(state, action) {
+      return {...state,
+        ...action.payload,
+        BonsVisible: true
+      };
+    },
+    hideBonsModal(state, action) {
+      return {...state,
+        ...action.payload,
+        BonsVisible: false
+      };
+    },
+    getArticleStatSuccess(state, action) {
+      return {...state,
+        ...action.payload,
       };
     },
   },

@@ -20,6 +20,7 @@ const { TextArea } = Input;
 function UserAdmin({location,dispatch,user,router,}) {
 	let merId =localStorage.getItem("userId");
 	let token =localStorage.getItem("Kgtoken");
+	console.log(location)
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}

@@ -103,3 +103,30 @@
 .alltotal{
 	border-top:1px solid #000; 
 }
+.bons{
+	display: inline-block;
+	margin-left: 30px;
+}
+.bons span {
+	display: inline-block;
+	margin-left: 10px;
+	font-size:14px!important;
+	font-family: '微软雅黑';
+}
+.bonsList{
+	/*text-align: center;*/
+}
+.bonsTitle{
+	font-family: '微软雅黑';
+	color:#000;
+	text-align: center;
+}
+.bonsContent{
+	margin-top:20px; 
+	text-align: center;
+}
+.bonsFooter {
+	margin-top:20px; 
+	border-top:1px solid #e5e5e5;
+	padding-top: 10px;
+}

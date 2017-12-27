@@ -375,3 +375,14 @@ export async function getBonus(params) {
 	}
 	);
 }
+//获取奖励统计
+export async function getArticleStat(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/getArticleStat?data='+data+"&sign="+sign;
+
+	return request(url,{
+		method:"post"
+	}
+	);
+}

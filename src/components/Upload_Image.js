@@ -28,7 +28,7 @@ function beforeUpload(file) {
   }
   return isTrue && is2M
 }   
-    var url = "http://120.78.186.139:8088/kgapi/image/upload"
+    var url = ImgUrl;
     var token = localStorage.getItem("Kgtoken");
     var userId = localStorage.getItem("userId");
     const headers ={

@@ -132,6 +132,11 @@ const UserAdmin = ({
 		  key: 'hotUser',
 		  render: text => <span>{text==true?"是":'否'}</span>,
 		},{
+		  title: '排序',
+		  dataIndex: 'userOrder',
+		  key: 'userOrder',
+		  render: text => <span>{text}</span>,
+		},{
 		  title: '操作',
 		  key: 'action',
 		  render: (text, record) => (
@@ -148,7 +153,7 @@ const UserAdmin = ({
 				:
 		 <a style={{marginRight:10+"px"}} onClick={()=>LockModal(record)}>锁定</a>}
 		      	
-		      	<a style={{marginRight:10+"px"}} onClick={()=>openModal(record)}>推荐设置</a>
+		      	{record.userRole==1?<a style={{marginRight:10+"px"}} className={styles.audit}>推荐设置</a>:<a style={{marginRight:10+"px"}} onClick={()=>openModal(record)}>推荐设置</a>}
 		    </span>
 		  ),
 	}];

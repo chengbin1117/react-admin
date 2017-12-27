@@ -10,27 +10,29 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { Modal,message} from 'antd';
+import { Modal,message,Row,Col} from 'antd';
 import LayoutContainer from '../components/Layout';
 import Content_Article from '../components/Content/Content_Article';
 import SetModal from '../components/Content/SetShow';
 import ArticleModal from '../components/Content/AricleMoadl';
-import {formatDate,tokenLogOut,GetRequest} from '../services/common'
-
+import {formatDate,tokenLogOut,GetRequest} from '../services/common';
+import BonsModal from '../components/Content/BonsModal';
+import  styles from "./Common.css"
 function ContentArticle({location,dispatch,router,content}) {
 	let merId =localStorage.getItem("userId");
 	let token =localStorage.getItem("Kgtoken");
-	console.log("location",location)
+	//console.log("location",location)
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {ArticleList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
+	const {ArticleStat,artice,currentArtice,BonsVisible,ArticleList,getBonusList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
 	
 	const Content_ArticleProps ={
 		dispatch,
 		loading,
 		ArticleList,
 		ColumnList,
+		getBonusList,
 		total:ArticleListNumber,
 		currentPage:currentPage,
 		confirm(record){
@@ -94,8 +96,14 @@ function ContentArticle({location,dispatch,router,content}) {
 		            });	
 		},
 		editorItem(record){
-			dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
-			
+			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
+			//window.open('/#/content/editor_article?articleId='+record.articleId);
+			dispatch({
+				type:"content/getArticleById",
+				payload:{
+					articleId:record.articleId
+				}
+			})
 		},
 		changepage(page){
 			 dispatch(routerRedux.push('/content/content_article?page='+page))
@@ -103,26 +111,28 @@ function ContentArticle({location,dispatch,router,content}) {
 		},
 		delArticle(record){
 			/*console.log(location)*/
-			
-			Modal.confirm({
-				    title: '是否删除?',
-				    okText:"确定",
-				    cancelText:"取消",
-				    onOk() {
-				    	var search =GetRequest(location.search)
-					      dispatch({
-						       type: 'content/deleteArticle',
-						       payload:{
-						       		articleId:record.articleId,
-						       		search:search
-						       }
-			                });
-				    },
-				    onCancel() {
-				      console.log('Cancel');
-				    },
-				  });
-			
+
+			dispatch({
+				type:'content/showBonsModal',
+				payload:{
+					currentArtice:record
+				}
+			})
+
+
+			dispatch({
+				type:'content/getBonus',
+				payload:{
+					articleId:record.articleId,
+					record:record
+				}
+			})
+			dispatch({
+				type:'content/getArticleStat',
+				payload:{
+					articleId:record.articleId,
+				}
+			})
 		}
 	}
 	const SetModalProps = {
@@ -189,11 +199,23 @@ function ContentArticle({location,dispatch,router,content}) {
 			
 		}
 	}
+	const BonsMoadlProps ={
+		visible:BonsVisible,
+		currentArtice,
+		artice:getBonusList,
+		ArticleStat,
+		onCancel(){
+			dispatch({
+				type:"content/hideBonsModal"
+			})
+		}
+	}
 	return (
 			<div >
 				<Content_Article {...Content_ArticleProps}/>
 				<SetModal {...SetModalProps}/>
 				<ArticleModal {...ArticleModalProps}/>
+				<BonsModal {...BonsMoadlProps} />
 			</div>
 
 	);

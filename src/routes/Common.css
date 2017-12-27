@@ -23,3 +23,29 @@
 	width:100px;
 	height:100px;
 }
+.bons{
+	display: inline-block;
+	margin-left: 30px;
+}
+.bons span {
+	display: inline-block;
+	margin-left: 30px;
+	font-size:14px!important;
+	font-family: '微软雅黑';
+}
+.bonsList{
+	/*text-align: center;*/
+}
+.bonsTitle{
+	font-family: '微软雅黑';
+	color:#000;
+	text-align: center;
+}
+.bonsContent{
+	margin-top:20px; 
+	text-align: center;
+}
+.bonsFooter {
+	margin-top:10px; 
+	border-top:1px solid #e5e5e5;
+}

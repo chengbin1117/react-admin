@@ -23,6 +23,7 @@ const formItemLayout = {
 	},
 };
 
+var value = 0
 const ExamineModal = ({
 	visible,
 	item = {},
@@ -71,7 +72,9 @@ const ExamineModal = ({
 		okText:"确定",
 		cancelText:"取消"
 	};
-	
+	function onChange(e){
+		value = e.target.value
+	}
 	
 	return (
 			

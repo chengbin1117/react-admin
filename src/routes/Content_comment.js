@@ -71,7 +71,7 @@ function ContentComment({location,dispatch,router,content}) {
 			dispatch({
 				type:"content/showExamineModal",
 				payload:{
-					selectList:record
+					selectList:record.commentId
 				}
 
 			})
@@ -135,7 +135,7 @@ function ContentComment({location,dispatch,router,content}) {
 				payload:{
 					commentIds:String(selectList),
 					displayStatus:values.set =="public"?true:false,
-					query:location.query,
+					search:location.search,
 				}
 			})
 		},
@@ -156,22 +156,32 @@ function ContentComment({location,dispatch,router,content}) {
 				type:"content/hideExamineModal",
 			})
 		},
-		onOk(values,text,record){
-			if(values ==undefined){
-				message.warn("请选择")
-				console.log(values,text,record)
-			}else{
+		onOk(data,record){
+			console.log(record)
+			if(data.radio =="1"){
 				dispatch({
 					type:'content/auditComment',
 					payload:{
-						commentId:record.commentId,
-						status:parseInt(values),
-						refuseReason:text,
-						query:location.query
+						commentId:record,
+						status:parseInt(data.radio),
+						search:location.search
 					}
 				})
-			}
-		}
+			}else{
+
+				dispatch({
+					type:'content/auditComment',
+					payload:{
+						commentId:record,
+						status:parseInt(data.radio),
+						refuseReason:data.text,
+						search:location.search
+					}
+				})
+				
+			
+		    }
+	    }
 	}
 	return (
 			<div >

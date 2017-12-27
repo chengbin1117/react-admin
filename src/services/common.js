@@ -134,10 +134,10 @@ export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件
 }
 
 
-let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload"; //开发
-//let ImgUrl = "http://172.16.0.15/image/upload"; //测试
-let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
-//let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com"; //测试
+//let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload"; //开发
+let ImgUrl = "http://172.16.0.15/image/upload"; //测试
+//let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
+let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
 
 
 //服务器
