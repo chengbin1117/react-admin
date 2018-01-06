@@ -85,8 +85,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 			//console.log(selectList)
 			var Ids =""
 				for(var i in selectList){
-						if(selectList[i].auditStatus !=1){
-							console.log(selectList[i].userId)
+						if(selectList[i].auditStatus ==0&&selectList[i].applyRole!=1){
+							//console.log(selectList[i].userId)
 							Ids +=selectList[i].userId+","
 						}
 			}
@@ -191,7 +191,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 			
 		},
 		userData(record){
-			dispatch(routerRedux.push('/user/data?userId='+record.userId))
+			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
 		}
 	}
 	const ExamineModalProps ={

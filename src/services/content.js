@@ -9,7 +9,7 @@ let Base64 = require('js-base64').Base64;
 export async function getArticleList(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/article/getArticleList?data='+data+"&sign="+sign;
+	let url = '/admin/article/getArticleList?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -120,7 +120,7 @@ export async function siteimagelist(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/siteimage/list?data='+data+"&sign="+sign;
+	let url = '/admin/siteimage/list?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -133,7 +133,7 @@ export async function setimagiservice(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/seimagi/setimagiservice?data='+data+"&sign="+sign;
+	let url = '/admin/seimagi/setimagiservice?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -145,7 +145,7 @@ export async function addImage(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/siteimage/addImage?data='+data+"&sign="+sign;
+	let url = '/admin/siteimage/addImage?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -159,7 +159,7 @@ export async function deleteImage(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/siteimage/deleteImage?data='+data+"&sign="+sign;
+	let url = '/admin/siteimage/deleteImage?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -173,7 +173,7 @@ export async function ImageSetStatus(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/siteimage/setStatus?data='+data+"&sign="+sign;
+	let url = '/admin/siteimage/setStatus?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -186,7 +186,7 @@ export async function getFeedbackList(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/feedback/getFeedbackList?data='+data+"&sign="+sign;
+	let url = '/admin/feedback/getFeedbackList?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -199,7 +199,7 @@ export async function deleteFeedback(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/feedback/deleteFeedback?data='+data+"&sign="+sign;
+	let url = '/admin/feedback/deleteFeedback?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -212,7 +212,7 @@ export async function setStatus(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/feedback/setStatus?data='+data+"&sign="+sign;
+	let url = '/admin/feedback/setStatus?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -225,7 +225,7 @@ export async function replay(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/feedback/replay?data='+data+"&sign="+sign;
+	let url = '/admin/feedback/replay?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -238,7 +238,7 @@ export async function replay(params) {
 export async function getCommentList(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/comment/getCommentList?data='+data+"&sign="+sign;
+	let url = '/admin/comment/getCommentList?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -380,6 +380,19 @@ export async function getArticleStat(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
 	let url = '/admin/article/getArticleStat?data='+data+"&sign="+sign;
+
+	return request(url,{
+		method:"post"
+	}
+	);
+}
+
+//文章列表排序
+
+export async function setDisplayOrder(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/setDisplayOrder?data='+data+"&sign="+sign;
 
 	return request(url,{
 		method:"post"

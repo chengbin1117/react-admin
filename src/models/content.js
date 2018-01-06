@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import {
   getArticleList,setDisplayStatus,articleservice,auditArticle,getColumnList,deleteArticle,publishArticle,getArticleById,siteimagelist,addImage,deleteImage,
   getFeedbackList,deleteFeedback,setStatus,replay,ImageSetStatus,getCommentList,commentSet,deleteComment,setcommentStatus,auditComment,addColumn,deleteColumn,
-  sendEmail,getSysUserById,getBonus,getArticleStat
+  sendEmail,getSysUserById,getBonus,getArticleStat,setDisplayOrder
 } from '../services/content';
 import {
   message
@@ -37,7 +37,9 @@ export default {
     getBonusList:[],
     artice:[],
     currentArtice:{},
-    ArticleStat:{}
+    ArticleStat:{},
+    secondC:{},
+    firstC:[],
   },
 
   subscriptions: {
@@ -53,6 +55,13 @@ export default {
             type:'getArticleList',
             payload:{
               currentPage:search.page,
+              articleId:search.articleId!='undefined'?search.articleId:null,
+              articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+              articleTag:search.articleTag!='undefined'?search.articleTag:null,
+              publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+              displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+              columnId:search.columnId!='null'?parseInt(search.columnId):null,
+              secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
               pageSize:25,
 
             }
@@ -84,12 +93,12 @@ export default {
         if(match){
          const search =GetRequest(location.search);
          // console.log("search",search.articleId)
-            /*dispatch({
-              type:'getArticleById',
+            dispatch({
+              type:'getBonus',
               payload:{
                 articleId:search.articleId
               }
-            });*/
+            });
             dispatch({
               type:'getColumnList',
               payload:{
@@ -111,10 +120,12 @@ export default {
         }
         match =pathToRegexp('/content/content_opinion').exec(location.pathname);
         if(match){
+          const search =GetRequest(location.search);
           dispatch({
               type:'getFeedbackList',
               payload:{
-                
+                  currentPage:parseInt(search.page),
+                  pageSize:25,
               }
             })
         }
@@ -134,11 +145,16 @@ export default {
         if(match){
 
           const search =GetRequest(location.search);
-         
+        
           dispatch({
               type:'getCommentList',
               payload:{
                 currentPage:parseInt(search.page),
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25,
               }
             })
@@ -212,6 +228,33 @@ export default {
         });
         //message.error(data.message);
         //tokenLogOut(data)
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
+    *setDisplayOrder({ payload }, {call , put}) {
+      const {articleId,displayOrder} =payload;
+
+      let prams ={
+        articleId:articleId,
+        displayOrder:displayOrder
+      }
+      const { data } = yield call(setDisplayOrder, prams);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        const search =GetRequest(location.search);
+            yield put({
+              type: 'getArticleList',
+              payload:{
+                currentPage:search.page,
+                pageSize:25,
+              }
+            }); 
+      } else {
         if(data.code ==10004){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
@@ -353,12 +396,14 @@ export default {
          if(payload.publishStatus!=undefined){
           if(payload.articleId!=undefined){
             message.success('编辑成功')
+            yield put(routerRedux.push('/content/content_article?page=1'));
           }else{
              message.success('存草稿成功')
+             yield put(routerRedux.push('/content/content_article?page=1'));
           }
          }else{
            message.success('发布成功')
-           window.location.reload()
+           yield put(routerRedux.push('/content/content_article?page=1'));
          }
          
          /*console.log(res)
@@ -389,12 +434,32 @@ export default {
          var arr=[];
          let params ={};
          let chid ={};
+         let firstCloumn =[];
+         let first ={};
+         let second={};
+         let childColumn = {};
          let c= [];
+         let m ={}
          for (var i in res) {
             res[i].createDate =formatDate(res[i].createDate);
             for (var k in res[i].children){
               res[i].children[k].createDate =formatDate(res[i].children[k].createDate);
+              res[i].children[k]['partantNavigator']=res[i].navigatorDisplay;
+              res[i].children[k]['partentDisplayMode']=res[i].displayMode;
+              second ={
+                'value': res[i].children[k].id,
+                'label': res[i].children[k].name,
+              }
+              //c.push(second)
+             
             }
+            childColumn[res[i].id]=res[i].children.map((j)=>
+                     m={
+                      'value':j.id,
+                      'label':j.name,
+                    }
+                    )
+
             params={
               'value': res[i].id,
               'label': res[i].name,
@@ -405,12 +470,23 @@ export default {
                     }
                 )
             }
+
+            first ={
+              'value': res[i].id,
+              'label': res[i].name,
+            }
+            firstCloumn.push(first)
+            
+
             arr.push(params)
          }
+         //console.log(firstCloumn,childColumn)
             yield put({
               type: 'getColumnListSuccess',
               payload:{
                 ColumnList:arr,
+                firstC:firstCloumn,
+                secondC:childColumn,
                 CList:res,
                 loading:false,
               }
@@ -479,6 +555,7 @@ export default {
               });
             } 
             /*window.location.reload()*/
+            localStorage.setItem("articleList", JSON.stringify(res));
             localStorage.setItem("articleText", res.articleText);
             yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
 
@@ -524,7 +601,7 @@ export default {
       }
     },
     *addImage({ payload }, {call , put}) {
-    
+      console.log(payload)
       const { data } = yield call(addImage, payload);
      
       if (data && data.code == 10000) {
@@ -537,7 +614,8 @@ export default {
         yield put({
               type: 'siteimagelist',
               payload:{
-                
+                pageSize:25,
+                currentPage:1,
               }
             }); 
             yield put({
@@ -619,29 +697,9 @@ export default {
               type: 'getFeedbackListSuccess',
               payload:{
                 FeedbackList:res,
-                Listtotal:data.responseBody.totalNumber,
-              }
-            }); 
-      } else {
-       if(data.code ==10004){
-           message.error(data.message,2);
-          yield put(routerRedux.push('/'));
-        }else{
-          message.error(data.message,2);
-        }
-      }
-    },
-    *deleteFeedback({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-      const { data } = yield call(deleteFeedback, payload);
-      //console.log("图片",data)
-      if (data && data.code == 10000) {
-            message.success('删除成功'); 
-            yield put({
-              type: 'getFeedbackList',
-              payload:{
+                totalNumber:data.responseBody.totalNumber,
+                currentPage:res.currentPage,
+                loading:false,
 
               }
             }); 
@@ -654,10 +712,36 @@ export default {
         }
       }
     },
+    *deleteFeedback({ payload }, {call , put}) {
+      const {feedbackId,search} =payload;
+      let params ={
+        feedbackId:feedbackId
+      }
+      
+      const { data } = yield call(deleteFeedback, params);
+      //console.log("图片",data)
+      if (data && data.code == 10000) {
+           const sea = GetRequest(search)
+            message.success('删除成功'); 
+            yield put({
+              type: 'getFeedbackList',
+              payload:{
+                currentPage:sea.page,
+                pageSize:25
+              }
+            }); 
+      } else {
+       if(data.code ==10004){
+          
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+      }
+    },
     *setStatus({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+      
       const { data } = yield call(setStatus, payload);
       //console.log("图片",data)
       if (data && data.code == 10000) {
@@ -672,13 +756,12 @@ export default {
       }
     },
     *replay({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+     
       const { data } = yield call(replay, payload);
       //console.log("图片",data)
       if (data && data.code == 10000) {
            message.success('保存成功'); 
+           yield put(routerRedux.push('/content/content_opinion?page=1'))
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -884,13 +967,15 @@ export default {
 
            })
            
-            yield put({
+           /* yield put({
               type: 'getColumnList',
               payload:{
               
               }
 
-           })
+           })*/
+          //yield put(routerRedux.push('/content/content_column?page=1'))
+          window.location.reload()
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -1099,7 +1184,8 @@ export default {
     },
     getArticleListSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        imgUrl:""
       };
     },
     setDisplayStatusSuccess(state, action) {    

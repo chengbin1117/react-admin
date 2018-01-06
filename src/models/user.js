@@ -60,11 +60,11 @@ export default {
           }
           match = pathToRegexp('/user/user_data').exec(location.pathname);
           if(match){
-            const query =location.query
+            const search =GetRequest(location.search);
             dispatch({
                   type: 'getUserInfo',
                   payload: {
-                      userId:query.userId,
+                      userId:search.userId,
                   }
                 });
           }
@@ -136,6 +136,7 @@ export default {
           localStorage.setItem("nav", JSON.stringify(data.responseBody.menuList));
           localStorage.setItem("Kgtoken", data.responseBody.token.token);
           localStorage.setItem("userId", data.responseBody.token.userId);
+          localStorage.setItem("realname", data.responseBody.realname);
           
           //localStorage.setItem("userId", data.responseBody.userId);
           
@@ -147,7 +148,7 @@ export default {
               })*/
           
           dispatch(routerRedux.push('/index?userId='+data.responseBody.token.userId));
-          window.location.reload()
+          window.location.reload();
           
         
       } else {
@@ -212,7 +213,7 @@ export default {
       }
     },
     *auditUser({ payload }, {call , put}) {
-      const {userId,auditStatus,auditUserId,audit,refuseReason} =payload;
+      const {userId,auditStatus,auditUserId,audit,refuseReason,user_data} =payload;
       let params ={}
       if(auditStatus  ==1){
         params ={
@@ -235,7 +236,10 @@ export default {
       //console.log("11",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
-            message.success('设置成功')
+            message.success('审核成功')
+            if(user_data!=undefined){
+              yield put(routerRedux.push('/user/'));
+            }
             if(audit == 0){
               yield put({
               type: 'getUserList',
@@ -504,7 +508,7 @@ export default {
             for (var i in res.data){
                 res.data[i].createDate =formatDate(res.data[i].createDate)
                 res.data[i].auditDate =formatDate(res.data[i].auditDate)
-                res.data[i][address] =res.data[i].province+'-'+res.data[i].city
+                res.data[i][address] =res.data[i].province==null?"——":res.data[i].province+(res.data[i].city=null?"":('-'+res.data[i].city))
                 res.data[i][info] ={
                   'realname':res.data[i].realname,
                   'idcardNo':res.data[i].idcardNo,

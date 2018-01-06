@@ -12,7 +12,8 @@ import {
 	Tabs,
 	Steps,
 	Col,
-	Row
+	Row,
+	Badge
 } from 'antd';
 import styles from './Content_Opinion_Show.css'
 const TabPane = Tabs.TabPane;
@@ -43,7 +44,7 @@ const BonsModal = ({
 	
 }) => {
 	let total =0;
-	//console.log(ArticleStat)
+	console.log("artice",artice)
 	function handleOk(value,text) {
 			
 			//console.log(value,text)
@@ -57,9 +58,9 @@ const BonsModal = ({
 	}
 	const modalOpts = {
 		title: (<div>{currentArtice.articleTitle}
-				<span className={styles.bons}>
-					{currentArtice.sysUser==null?<span>阅读奖励:{currentArtice.bonusStatus==1?<span style={{color:"#02c874"}}>已生效</span>:<span style={{color:"#f00"}}>未生效</span>}</span>:null}
-				</span>
+				{/*<span className={styles.bons}>
+					{(currentArtice.sysUser==null&&artice.length!=0)?<span>阅读奖励:{currentArtice.bonusStatus==1?<span style={{color:"#02c874"}}>已生效</span>:<span style={{color:"#f00"}}>未生效</span>}</span>:null}
+				</span>*/}
 			</div>),
 		visible,
 		onOk: handleOk,
@@ -105,14 +106,21 @@ const BonsModal = ({
 				    			total += item.total
 				    			return(
 				    				<Row key={index}>
-				    					<Col span={8}>
+				    					<Col span={7}>
 				    						{item.name}
 				    					</Col>
-				    					<Col span={8}>
+				    					<Col span={7}>
 				    						奖励钛值{item.value}/人
 				    					</Col>
-				    					<Col span={8}>
+				    					<Col span={7}>
 				    						最大奖励人数{item.max}人
+				    					</Col>
+				    					<Col span={3}>
+				    						{item.status==0&&<Badge status="Default" text="未生效"/>}
+				    						{item.status==1&&<Badge status="success" text="已生效"/>}
+				    						{item.status==2&&<Badge status="processing" text="暂停中"/>}
+				    						{item.status==3&&<Badge status="warning" text="已终止"/>}
+				    						{item.status==4&&<Badge status="warning" text="已结束"/>}
 				    					</Col>
 				    				</Row>
 				    				)

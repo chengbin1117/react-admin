@@ -210,6 +210,9 @@ const Content_ImageEditor_Modal = ({
           <FormItem {...formItemLayout_radio} label="排序" className="collection-create-form_last-form-item">
             {getFieldDecorator('sort', {
               initialValue: item.imageOrder,
+              rules:[{
+                 required: false,message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/
+              }]
             })(
               <Input />
             )}

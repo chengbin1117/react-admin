@@ -131,10 +131,45 @@ class RuleList extends React.Component {
       autoExpandParent: false,
     });
   }
-  onCheck = (checkedKeys) => {
-    //console.log('onCheck', checkedKeys);
-    this.setState({ checkedKeys });
+  onCheck = (checkedKeys,e) => {
+    console.log(checkedKeys)
+    this.setState({ checkedKeys })
     this.props.checked(checkedKeys)
+   /* console.log(this.state.checkedKeys)
+    var checkList = e.checkedNodes;
+    var expandedKeys =e.node.props.root.props.expandedKeys;
+    var checkUrl = [];
+   console.log(checkList)
+    for (var i in checkList){
+      if(checkList[i].props.dataRef==undefined){
+        //console.log(1)
+        console.log("checkUrl",checkUrl)
+        //console.log(checkedKeys.checked)
+         checkUrl.push(checkList[i].key)
+          //checkedKeys.push(expandedKeys.join(','))
+          this.setState({ 
+            checkedKeys:checkUrl
+          });
+          console.log(this.state.checkedKeys)
+      }else{
+        console.log(2)
+      }
+    }*/
+    //var checkList =[];
+   /* if(e.halfCheckedKeys.length==0){
+      
+      checkList = checkedKeys;
+      //console.log('onCheck1', checkedKeys);
+    }else{
+      this.setState({ checkedKeys });
+      checkList = checkedKeys;
+     // checkList.push(e.halfCheckedKeys.join())
+      //console.log('onCheck2', checkedKeys);
+      
+    }*/
+     
+   // console.log(checkList)
+    //this.props.checked(checkedKeys,e.halfCheckedKeys)
   }
   onSelect = (selectedKeys, info) => {
     console.log('onSelect', info);
@@ -145,7 +180,7 @@ class RuleList extends React.Component {
     return data.map((item) => {
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
+          <TreeNode title={item.title} key={item.key} dataRef={item} selectable>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
@@ -165,7 +200,8 @@ class RuleList extends React.Component {
         checkedKeys={this.state.checkedKeys}
         onSelect={this.onSelect}
         selectedKeys={this.state.selectedKeys}
-        
+        checkStrictly={true}
+        multiple={true}
       >
         {this.renderTreeNodes(this.props.plainOptions)}
       </Tree>

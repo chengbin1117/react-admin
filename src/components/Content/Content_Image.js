@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select,Cascader} from 'antd';
+import { Form, Row, Col, Badge,Input, Button,Table,Pagination,Popconfirm,Select,Cascader} from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 
 import style_pagination from '../pagination.css';
@@ -33,8 +33,8 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  	)
 	},{
 	  title: '发布人',
-	  dataIndex: '1address',
-	  key: '1address',
+	  dataIndex: 'createUser',
+	  key: 'createUser',
 	},{
 	  title: '发布时间',
 	  dataIndex: 'createDate',
@@ -44,7 +44,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  dataIndex: 'imageStatus',
 	  key: 'imageStatus',
 	  render:(text,record)=> (
-	  	    <span>{record.imageStatus ==true?"显示":"隐藏"}</span>
+	  	    <span>{record.imageStatus ==true?<Badge status="success" text="显示" />:<Badge status="default" text="隐藏" />}</span>
 	  	)
 	},{
 	  title: '显示位置',
@@ -260,7 +260,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 			    const hasSelected = selectedRowKeys.length > 0;
 			    return (
 			      	<div>
-					      <Button type="primary" size = 'large' onClick={showModal}>添加图片</Button>
+					      <Button type="primary" size = 'large' onClick={showModal} style = {{marginBottom:20}}>添加图片</Button>
 					      <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} handlsearch ={handlsearch}/>
 					      <p >当前共有图片：{total}</p>
 					      <Table style ={{marginTop:20}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} rowKey={record => record.imageId+''} loading={loading} locale={{emptyText:"暂无数据"}}/>

@@ -6,6 +6,7 @@ import {
 	Select,
 	Input,
 	Modal,
+	message
 } from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -44,6 +45,7 @@ const RelationModal = ({
 			const data = {
 				...getFieldsValue(),
 			}
+			console.log(data)
 			if(deskUserId == ""){
 				message.warn('无此前台账户')
 			}else{
@@ -66,7 +68,8 @@ const RelationModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
-
+		okText:"确定",
+		cancel:"取消"
 	};
 	return (
 
@@ -76,7 +79,7 @@ const RelationModal = ({
 					label="手机号 "
 					{...formItemLayout}
 				>
-					{getFieldDecorator('kgUserId', {
+					{getFieldDecorator('kgId', {
 						initialValue: '',
 						rules: [
 							{required: true, message: '请输入正确手机号',pattern:/^1[3|4|5|8][0-9]\d{4,8}$/},

@@ -14,7 +14,7 @@ import LayoutContainer from '../components/Layout';
 import styles from './Common.css';
 import BgModal from '../components/Content/BgModal';
 import FtModal from '../components/Content/FtModal';ArticleEditor
-import {dataURLtoBlob,ImgUrl} from '../services/common'
+import {dataURLtoBlob,ImgUrl,uploadUrl} from '../services/common'
 import ArticleEditor from '../components/Content/ArticeEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import axios from 'axios';

@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import axios from 'axios';
@@ -20,22 +20,24 @@ import RelesEditor from '../components/Content/RelesEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import {dataURLtoBlob,ImgUrl} from '../services/common'
 
-var imgUrl = ""
 
 
+//var imgUrl = "";
 function Release_article({dispatch,router,content,setting}) {
 	//let logoimg = require("image!../assets/images/lx4.png");
   let merId =localStorage.getItem("userId");
-
+  
   var text = '';
   var html = '';
   let src = ""
-  const {BgVisible,FtVisible,activeImg,ColumnList,cruImage,imgUrl,UserById} =content;
+  const {BgVisible,FtVisible,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
   //console.log(ColumnList)
   const options = ColumnList;
 
   const ArticleEditorProps = {
     ColumnList,
+    firstC,
+    secondC,
     dispatch,
     router,
     imgUrl,
@@ -71,19 +73,29 @@ function Release_article({dispatch,router,content,setting}) {
   
   	},
   	showfpModal(activeImg){
-  		dispatch({
-  		    type:'content/hideBgModal',
-  		    payload:{
-  		    	activeImg:activeImg
-  		    }
-  	    })
-  	    dispatch({
-  		    type:'content/showfpModal',
-  		    payload:{
-  		    	
-  		    }
-  	    })
-  	}
+      //console.log(activeImg)
+      if(activeImg==""){
+        message.warning("请选择图片")
+      }else{
+        dispatch({
+          type:'content/hideBgModal',
+          payload:{
+            activeImg:activeImg
+          }
+        })
+        dispatch({
+          type:'content/showfpModal',
+          payload:{
+            
+          }
+        })
+      }
+  		/**/
+  	},
+    previewPage(){
+      console.log(1)
+     
+    }
   }
   const FtModalProps ={
   	visible:FtVisible,

@@ -14,7 +14,7 @@ import style_search from '../search.css';
 import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
-
+import {options} from "../../services/common";
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
@@ -46,14 +46,23 @@ const Manage = ({
 		  title: '邮箱',
 		  dataIndex: 'email',
 		  key: 'email',
+		  render:(text,record)=> (
+		  	<span>{record.email==null?"——":record.email}</span>
+		  	)
 		}, {
 		  title: '手机号',
 		  dataIndex: 'mobile',
 		  key: 'mobile',
+		  render:(text,record)=> (
+		  	<span>{record.mobile==null?"——":record.mobile}</span>
+		  	)
 		}, {
 		  title: '提现地址',
 		  dataIndex: 'toAddress',
 		  key: 'toAddress',
+		  render:(text,record)=> (
+		  	<span>{record.toAddress==null?"——":record.toAddress}</span>
+		  	)
 		}, {
 		  title: '提现数(个)',
 		  dataIndex: 'withdrawAmount',
@@ -70,6 +79,9 @@ const Manage = ({
 		  title: '到账时间',
 		  dataIndex: 'accountTime',
 		  key: 'accountTime',
+		  render:(text,record)=> (
+		  	<span>{record.accountTime==null?"——":record.accountTime}</span>
+		  	)
 		}, {
 		  title: '状态',
 		  dataIndex: 'statusDisplay',
@@ -102,7 +114,11 @@ const Manage = ({
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile')(
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
 		              <Input type="phone" placeholder="请输入手机号" />
 		            )}
 		          </FormItem>
@@ -110,7 +126,7 @@ const Manage = ({
 		         <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='提现时间'>
 		            {getFieldDecorator('time')(
-		              <RangePicker />
+		              <RangePicker locale={options}/>
 		            )}
 		          </FormItem>
 		        </Col>
@@ -118,11 +134,10 @@ const Manage = ({
 		          <FormItem {...formItemLayout} label='提现状态'>
 		            {getFieldDecorator('status')(
 		              <Select   placeholder="请选择">
-					      <Option value="0">提现中</Option>
-					      <Option value="3">审核中</Option>
-					      <Option value="1">提现成功</Option>
-					      <Option value="2">提现失败</Option>
-					    </Select>
+					      <Option value="0">审核中</Option>
+					      <Option value="1">已通过</Option>
+					      <Option value="2">已撤销</Option>
+					  </Select>
 		            )}
 		          </FormItem>
 		        </Col>
@@ -147,7 +162,7 @@ const Manage = ({
 			    return (
 			      <div>
 			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
-	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={1} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
+	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 			          
 			      </div>
 			    );

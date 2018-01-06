@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select,DatePicker} from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
-
+import {options} from "../../services/common";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
@@ -13,10 +13,18 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		  title: '评论内容',
 		  dataIndex: 'content',
 		  key: 'content',
+		  width:600,
+		  render:(text,record)=>(
+		  	<span>
+		  		<p>{text}</p>
+		  		<p>来自文章《<a>{record.articleTitle}</a>》</p>
+		  	</span>
+		  	)
 		}, {
 		  title: '评论人',
 		  dataIndex: 'user',
 		  key: 'user',
+		  width:100,
 		}, {
 		  title: '评论时间',
 		  dataIndex: 'createDate',
@@ -60,17 +68,17 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 			        <Col span={8} style = {{display:'block'}}>
 			          <FormItem {...formItemLayout} label='评论时间'>
 			            {getFieldDecorator('time')(
-			               <RangePicker />
+			               <RangePicker locale={options}/>
 			            )}
 			          </FormItem>
 			        </Col>
 			        <Col span={8} style = {{display:'block'}}>
 			          <FormItem {...formItemLayout} label='状态'>
 			            {getFieldDecorator('status')(
-			              <Select placeholder="请选择">
-			              	<Option value="0" >待审核</Option>
-			              	<Option value="1">已审核</Option>
-			              	<Option value="2">审核拒绝</Option>
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="0" >审核中</Option>
+			              	<Option value="1">已通过</Option>
+			              	<Option value="2">未通过</Option>
 			              </Select>
 			            )}
 			          </FormItem>
@@ -78,8 +86,8 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 			        <Col span={8} style = {{display:'block'}}>
 			          <FormItem {...formItemLayout} label='显示状态'>
 			            {getFieldDecorator('displayStatus')(
-			              <Select placeholder="请选择">
-			              	<Option value="1" >显示</Option>
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="1">显示</Option>
 			              	<Option value="2">隐藏</Option>
 			              </Select>
 			            )}

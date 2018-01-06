@@ -106,6 +106,7 @@ function UserRealName({location,dispatch,user,router,}) {
 				dispatch({
 					type:'user/getUserCert',
 					payload:{
+						userId:values.userId,
 						email:values.email,
 						mobile:values.mobile,
 						status:parseInt(values.status)
@@ -117,6 +118,7 @@ function UserRealName({location,dispatch,user,router,}) {
 				dispatch({
 					type:'user/getUserCert',
 					payload:{
+						userId:values.userId,
 						email:values.email,
 						mobile:values.mobile,
 						status:parseInt(values.status),

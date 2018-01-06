@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import {
   message
 } from 'antd';
@@ -11,8 +12,7 @@ import {
 import dva from 'dva';
 import md5 from 'js-md5';
 let Base64 = require('js-base64').Base64;
-import createBrowserHistory from 'history/createBrowserHistory';
-const history = createBrowserHistory()
+
 
 function p(s) {
         return s < 10 ? '0' + s: s;
@@ -43,6 +43,7 @@ export function timeFormat(date) {
  
   return [year, month, day].join('-');
 }
+
 
 //token失效
 export function tokenLogOut(data,dispatch) {
@@ -134,16 +135,21 @@ export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件
 }
 
 
-//let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload"; //开发
-let ImgUrl = "http://172.16.0.15/image/upload"; //测试
-//let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
-let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
 
+//上传图片
+let ImgUrl = "http://kg.btc123.com/kgapi/image/upload"; //开发
+//let ImgUrl = "http://172.16.0.15/image/upload"; //测试
+
+//下载图片
+let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
+//let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
 
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
-let urlprefix = "http://120.78.186.139:8088/kgapi";//开发
-//let urlprefix = "http://172.16.0.15"; //测试
+//let urlprefix = "http://kg.btc123.com/kgapi";//开发
+let urlprefix = "http://172.16.0.15"; //测试
+
+
 export {
   ImgUrl,
   uploadUrl,

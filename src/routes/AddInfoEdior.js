@@ -48,28 +48,24 @@ function AddinfoEditor({dispatch,setting,router}) {
 	    this.props.form.validateFields((err, values) => {
 	      if (!err) {
 	        console.log('Received values of form: ', values);
-	        console.log(this.state.html)
-	        var h = this.state.html;
-	        var t = this.state.text;
+	        
+	      // var cont = values.text.txt.html()
 	        var v = values.info;
 	        var type = v.split(',');
-	        if(t == ""){
-	        	message.warn('请输入正文')
-	        }else{
 	        	dispatch({
 	        		type:'setting/addBaseinfo',
 	        		payload:{
-	        			infoDetail:h+'',
+	        			infoId:data.id,
+	        			infoDetail:values.text,
 	        			infoOrder:parseInt(values.infoOrder),
 	        			infoType:type[1]+'',
 	        			createUser:parseInt(userId),
 	        			infoName:type[0]+'',
 	        			infoStatus:values.setshow == "a"?true:false,
-	        			router,
 	        			status:"editor"
 	        		}
 	        	})
-	        }
+	        
 
 	      }
 	    });
@@ -81,14 +77,45 @@ function AddinfoEditor({dispatch,setting,router}) {
 	    }
 	    return e && e.fileList;
 	  }
-	  edtiorContent=(editor) =>{
+	  edtiorContent=(value) =>{
 	  //	console.log(editor)
-	  	var html  = editor.txt.html()
+	  	/*var html  = editor.txt.html()
         var text  = editor.txt.text();
-        this.setState({
-        	html:html,
-        	text:text
-        })
+        console.log(typeof(text))*/
+        //console.log(value)
+
+         //return value
+	  }
+	  onChange=(rule, value, callback)=>{
+	  	//console.log(value)
+	  	var dd=value.replace(/<\/?.+?>/g,"");
+	      var dds=dd.replace(/ /g,"");//dds为得到后的内容
+	      console.log(dds.length)
+	      if(dds.length==0){
+	        callback("请输入正文")
+	      }else if(dds.length>20000){
+	        callback("正文内容不能超过20000个字符")
+	      }else{
+	        callback()
+	      }
+	  		 /*if(value ==undefined){
+		      
+		      callback()
+		    }else{
+		       var arr = [];
+		        arr.push(value.txt.html(),value.txt.text())
+		        
+		        if(arr[1].length==0){
+		          callback('请输入正文')
+		        }else if (arr[1].length>5000){
+		          callback('请输入1-5000个字符')
+		        }else{
+		          callback()
+		        }
+		    }*/
+	  }
+	  edtiorContentText(value){
+	  	//console.log(value)
 	  }
 	  render() {
 	    const { getFieldDecorator } = this.props.form;
@@ -118,7 +145,17 @@ function AddinfoEditor({dispatch,setting,router}) {
 	          )}
 	        </FormItem>
 	        <FormItem>
-	         	<Editor ref="editor" edtiorContent={this.edtiorContent} articleText={data.infoDetail}/>
+	        	{getFieldDecorator('text', {
+	        		  initialValue: data.infoDetail,
+                      rules: [
+                      { required: true, message: '请输入正文!' },
+                      
+                      { validator:this.onChange}],
+                      trigger:'edtiorContentText'
+                    })(
+                      <Editor  edtiorContent={this.edtiorContent} edtiorContentText={this.edtiorContentText}/>
+                    )}
+	         	
 	        </FormItem>
 			<FormItem
 	         {...formItemLayout}
@@ -139,17 +176,18 @@ function AddinfoEditor({dispatch,setting,router}) {
 	        <FormItem
 	         {...formItemLayout}
 	          label="排序"
-
+	          extra="同一显示位置，排序越小越靠前"
 	        >
 	          {getFieldDecorator('infoOrder',{
 	          	initialValue: data.infoOrder,
 	          	rules: [
-					{required: false, message: '请输入'},
+					{required: false, message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
+
 				],
 	          })(
 	            	<Input />
 	          )}
-	          <span className={styles.txt}>同一显示位置，排序越小越靠前</span>
+	          
 	        </FormItem>
 	        <FormItem
 	           style={{marginLeft:"100px"}}

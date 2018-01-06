@@ -23,7 +23,7 @@ function ContentColumn({dispatch,content,router}){
 		dispatch(routerRedux.push('/'))
 	}
 	const {childCloum,ColumnAddVisbile,CList,current,type,loading,columnEditor} =content;
-	
+	console.log(CList)
 	const Content_ColumnProps ={
 		data:CList,
 		loading,
@@ -99,6 +99,16 @@ function ContentColumn({dispatch,content,router}){
 					parentId:parseInt(record.parentId),
 				}
 			})
+		},
+		fixSort(record,e){
+			dispatch({
+				type:"content/addColumn",
+				payload:{
+					columnId:parseInt(record.id),
+					order:e.target.value,
+					parentId:parseInt(record.parentId),
+				}
+			})
 		}
 	}
 
@@ -164,7 +174,7 @@ function ContentColumn({dispatch,content,router}){
 				payload:{
 					columnId:parseInt(data.id),
 					parentId:parseInt(data.parentId),
-					name:data.name,
+					name:data.cname,
 					navigatorDisplay:parseInt(data.navigatorDisplay),
 					displayStatus:data.displayStatus=="public"?true:false,
 					order:parseInt(data.order),
@@ -190,9 +200,8 @@ function ContentColumn({dispatch,content,router}){
 			dispatch({
 				type:"content/addColumn",
 				payload:{
-					
-					parentId:parseInt(data.parentId),
-					name:data.name,
+					parentId:parseInt(data.id),
+					name:data.cname,
 					navigatorDisplay:parseInt(data.navigatorDisplay),
 					displayStatus:data.displayStatus=="public"?true:false,
 					order:parseInt(data.order),

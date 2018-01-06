@@ -16,6 +16,7 @@ import Content_Comment from '../components/Content/Content_Comment';
 import Content_CommentSet_Modal from '../components/Content/Content_CommentSet_Modal';
 import Content_CommentSetShow_Modal from '../components/Content/Content_CommentSetShow_Modal';
 import ExamineModal from '../components/Content/ExamineModal';
+import {timeFormat,GetRequest} from '../services/common';
 
 function ContentComment({location,dispatch,router,content}) {
     
@@ -78,29 +79,25 @@ function ContentComment({location,dispatch,router,content}) {
 		},
 		handlsearch(values){
 			if(values.time!=undefined){
-				dispatch({
-					type:'content/getCommentList',
-					payload:{
-						content:values.content,
-						status:parseInt(values.status),
-						displayStatus:values.displayStatus=="1"?true:false,
-						startDate:new Date(values.time[0]).toLocaleDateString().split('/').join('-'),
-						endDate:new Date(values.time[1]).toLocaleDateString().split('/').join('-'),
-					}
-				})
+				
+				dispatch(routerRedux.push('/content/content_comment?page=1'+
+					"&content="+values.content+"&status="+values.status+"&startDate="+timeFormat(values.time[0])+
+					"&endDate="+timeFormat(values.time[1])+"&displayStatus="+values.displayStatus
+					))
 			}else{
-				dispatch({
-					type:'content/getCommentList',
-					payload:{
-						content:values.content,
-						status:parseInt(values.status),
-						displayStatus:values.displayStatus=="1"?true:false,
-					}
-				})
+				dispatch(routerRedux.push('/content/content_comment?page=1'+
+					"&content="+values.content+"&status="+values.status+"&displayStatus="+values.displayStatus
+				))
+				
+				
 			}
 		},
 		changepage(page){
-			dispatch(routerRedux.push('/content/content_comment?page='+page))
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/content/content_comment?page='+page+
+				"&content="+search.content+"&status="+search.status+"&startDate="+search.startDate+
+					"&endDate="+search.endDate+"&displayStatus="+search.displayStatus
+				))
 		}
 	}
 

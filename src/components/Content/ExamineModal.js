@@ -83,7 +83,7 @@ const ExamineModal = ({
 			<FormItem  label="审核处理" >
 		          {getFieldDecorator('radio',{
 		          	 rules: [{
-			              required: true, message: '请选择!',
+			              required: true, message: '请选择栏目!',
 			            }], 
 		          })(
 		            <RadioGroup onChange={onChange} >

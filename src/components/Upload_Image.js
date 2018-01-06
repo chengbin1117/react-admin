@@ -15,16 +15,15 @@ function beforeUpload(file) {
       isTrue = true
     } else if (file.type === 'image/png') {
       isTrue = true
-    } else if (file.type === 'image/gif') {
-      isTrue = true
     } else {
-      message.error('图片格式不对')
+      message.error('图片仅支持jpg、png、jpeg')
       isTrue = false
+      return false
     }
   const is2M = file.size / 1024 / 1024 < 2;
   console.log('is2M', is2M)
   if (!is2M) {
-    message.error('图片太大');
+    message.error('图片大小不超过2M');
   }
   return isTrue && is2M
 }   

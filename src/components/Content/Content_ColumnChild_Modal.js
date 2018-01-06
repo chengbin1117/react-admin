@@ -37,7 +37,7 @@ const Content_ColumnChild_Modal = ({
 
 const FormItem = Form.Item;
 
-  console.log(item)
+  //console.log(item)
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
@@ -67,7 +67,9 @@ const FormItem = Form.Item;
     onOk: handleOk,
     onCancel: Cancel,
     maskClosable: false,
-    width:'670px'
+    width:'670px',
+    okText:"确定",
+    cancelText:"取消"
 
   };
 
@@ -82,7 +84,7 @@ const FormItem = Form.Item;
       },
     };
     
-        
+   //console.log(item)     
   return (
     
     <Modal {...modalOpts}>
@@ -102,10 +104,10 @@ const FormItem = Form.Item;
           </FormItem>
           <FormItem {...formItemLayout} label="栏目名称">
             {getFieldDecorator('cname', {
-              initialValue:'',
+              
               rules: [
                  { required: true, message: '请输入栏目名称!' },
-                 {type:'string',min:2,max:6,message:"2-6个字符,支持中英文"}
+                 {type:'string',min:2,max:6,message:"2-6个字符,支持中英文",pattern:/^[a-zA-Z\u4e00-\u9fa5]+$/}
               ],
             })(
               <Input />
@@ -113,15 +115,35 @@ const FormItem = Form.Item;
           </FormItem>
           <FormItem {...formItemLayout} label="导航栏显示">
             {getFieldDecorator('navigatorDisplay', {
-              initialValue:'2',
+              initialValue:item&&(item.navigatorDisplay+""),
               rules: [{ required: true, message: '请选择' }],
             })(
-              <Select >
-                  <Option value="2" >顶部导航</Option>
-                  <Option value="3" >首页主导航</Option>
-                  <Option value="1" >都显示</Option>
-                  <Option value="0" >都不显示</Option>
+              <Select>
+                  {item&&item.navigatorDisplay==1&&<Option value="1" >都显示</Option>}
+                  {item&&item.navigatorDisplay==3&&<Option value="3" >首页主导航</Option>}
+                  {item&&item.navigatorDisplay==2&&<Option value="2" >顶部导航</Option>}
+                  {item&&item.displayMode == 2?<Option value="4" >频道页主导航</Option>:null}
+                  <Option value="0">都不显示</Option>
               </Select>
+             /* <Select>
+                  
+                  {item&&item.navigatorDisplay==1&&<span>
+                    <Option value="1" >都显示</Option>
+                    <Option value="0" >都不显示</Option>
+                  </span>}
+                  {item&&item.navigatorDisplay==2&&<span>
+                    <Option value="2" >顶部导航</Option>
+                    <Option value="0" >都不显示</Option>
+                  </span>}
+                  {item&&item.navigatorDisplay==3&&<span>
+                    <Option value="3" >首页主导航</Option>
+                    <Option value="0" >都不显示</Option>
+                  </span>}
+                 
+                  
+                  
+                  
+              </Select>*/
             )}
           </FormItem>
           <FormItem {...formItemLayout_radio} label="前台是否显示" className="collection-create-form_last-form-item">
@@ -155,13 +177,13 @@ const FormItem = Form.Item;
             })(
               <Radio.Group>
                 <Radio value="public">按栏目列表页展示</Radio><span>注：选择这种方式，则前台按栏目列表展示该栏目下的文章</span><br />
-                <Radio value="private">按频道页展示</Radio><span>注：选择这种方式，则前台按频道页展示该栏目下的所有内容</span>
+                <Radio value="private" disabled>按频道页展示</Radio><span>注：选择这种方式，则前台按频道页展示该栏目下的所有内容</span>
               </Radio.Group>
             )}
           </FormItem>
           <h1>seo设置</h1>
           <FormItem {...formItemLayout} label="标题">
-            {getFieldDecorator('title', {
+            {getFieldDecorator('ctitle', {
               rules: [{ required: true, message: '请输入seo标题!' }],
             })(
               <Input />

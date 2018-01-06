@@ -7,7 +7,7 @@ import {
   routerRedux,
 
 } from 'dva/router';
-import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
+import { Form, Icon, Input, Button,Badge, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
@@ -22,7 +22,7 @@ const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 
-
+var n =0;
 const formItemLayout = {
       labelCol: {
         xs: { span: 2 },
@@ -64,119 +64,57 @@ function ArticleEditor({
   },
 }){
   let merId =localStorage.getItem("userId");
+  let articleList =JSON.parse(localStorage.getItem("articleList"));
+
   const options = ColumnList;
-  console.log("setting",ArticleList)
+  //console.log("setting",ArticleList)
   const {RelationVisible} =setting;
   let AllTotal =0;
- /* if(ArticleList.publishStatus!=undefined&&ArticleList.publishStatus==3){
-    value="3"
-  }*/
-  /*class Editor extends Component {
-      constructor(props, context) {
-          super(props, context);
-          this.state = {
-            editorContent: '',
-          }
-      }
-      componentDidMount() {
-        const elem = this.refs.editorElem
-        const editor = new E(elem)
-        editor.customConfig.uploadImgServer = ImgUrl;//配置服务器上传地址
-        editor.customConfig.uploadFileName = 'file';
-        editor.customConfig.uploadImgHooks = {
-            before: function (xhr, editor, files) {
-                // 图片上传之前触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，files 是选择的图片文件
-                
-                // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
-                // return {
-                //     prevent: true,
-                //     msg: '放弃上传'
-                // }
-            },
-            success: function (xhr, editor, result) {
-                // 图片上传并返回结果，图片插入成功之后触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-            },
-            fail: function (xhr, editor, result) {
-                // 图片上传并返回结果，但图片插入错误时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-            },
-            error: function (xhr, editor) {
-                // 图片上传出错时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
-            },
-            timeout: function (xhr, editor) {
-                // 图片上传超时时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
-            },
-
-            // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
-            // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
-            customInsert: function (insertImg, result, editor) {
-                // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
-                // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
-                var url = uploadUrl + result.data[0].filePath;
-                // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
-                insertImg(url)
-
-                // result 必须是一个 JSON 格式字符串！！！否则报错
-            }
-          
-        }
-        // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
-        editor.customConfig.onchange = html => {
-          this.setState({
-            editorContent: html
-          })
-         this.props.edtiorContent(editor.txt.html())
-        }
-        //console.log("编辑器内容",this.props.articleText)
-        
-        editor.create();
-        editor.txt.html(this.props.articleText!=undefined?this.props.articleText:'')
-      }
-      
-      render() {
-        return (
-      
-            <div  ref="editorElem" contentEditable="true">
-            </div>
-        );
-      }
-    }*/
+ 
   function handleSubmit (){
       validateFields((errors) => {
         if (errors) {
           return;
         }else{
           const data = {...getFieldsValue()};
-          console.log(data)
-          if(data.publishStatus =="1"){
+          //console.log(data.text);
+          var dd=(data.text).replace(/<\/?.+?>/g,"");
+          var dds=dd.replace(/ /g,"");//dds为得到后的内容
+          console.log(dds.lengthgvfdg)
+          var tagsName =""
+          if(data.tag4==undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3
+          }else if(data.tag4!=undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4
+          }else if(data.tag4!=undefined&&data.tag5!=undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
+          }
+          if(ArticleList.sysUser==null){
+            if(data.publishStatus =="1"){
               dispatch({
-              type:'content/publishArticle',
-              payload:{
-                articleId:ArticleList.articleId,
-                articleTitle:data.articleTitle,
-                articleText:data.text,
-                articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
-                description:data.artic,
-                image:imgUrl==''?data.image:imgUrl,
-                type:parseInt(data.type),
-                columnId:parseInt(data.column[0]),
-                secondColumn:parseInt(data.column[1]),
-                displayStatus:parseInt(data.radioT),
-                displayOrder:parseInt(data.sort),
-                commentSet:data.radioS == "true"?true:false,
-                publishSet:data.radioG == "true"?true:false,
-                createUser:ArticleList.createUser,
-                sysUser:parseInt(merId),
-                bonusStatus:parseInt(data.bonusStatus),
-                articleSource:data.articleSource,
-                articleLink:data.articleLink,
-                publishStatus:parseInt(data.publishStatus),
-              }
-          })
+                type:'content/publishArticle',
+                payload:{
+                  articleId:ArticleList.articleId,
+                  articleTitle:data.articleTitle,
+                  articleText:data.text,
+                  tagnames:tagsName,
+                  description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                  image:imgUrl==''?data.image:imgUrl,
+                  type:parseInt(data.type),
+                  columnId:parseInt(data.column[0]),
+                  secondColumn:parseInt(data.column[1]),
+                  displayStatus:parseInt(data.radioT),
+                  displayOrder:parseInt(data.sort),
+                  commentSet:data.radioS == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
+                  createUser:ArticleList.createUser,
+                  bonusStatus:parseInt(data.bonusStatus),
+                  articleSource:data.articleSource,
+                  articleLink:data.articleLink,
+                  publishStatus:parseInt(data.publishStatus),
+                  article_textnum:dds.length
+                }
+            })
           }else{
               dispatch({
                 type:'content/publishArticle',
@@ -184,7 +122,62 @@ function ArticleEditor({
                   articleId:ArticleList.articleId,
                   articleTitle:data.articleTitle,
                   articleText:data.text,
-                  articleTag:data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5,
+                  tagnames:tagsName,
+                  description:data.artic,
+                  image:imgUrl==''?data.image:imgUrl,
+                  type:parseInt(data.type),
+                  columnId:parseInt(data.column[0]),
+                  secondColumn:parseInt(data.column[1]),
+                  displayStatus:parseInt(data.radioT),
+                  displayOrder:parseInt(data.sort),
+                  commentSet:data.radioS == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
+                  createUser:ArticleList.createUser,
+                  bonusStatus:parseInt(data.bonusStatus),
+                  articleSource:data.articleSource,
+                  articleLink:data.articleLink,
+                  publishStatus:parseInt(data.publishStatus),
+                  refuseReason:data.refuseReason,
+                  article_textnum:dds.length
+                }
+          })
+          }
+
+          }else{
+            if(data.publishStatus =="1"){
+              dispatch({
+                type:'content/publishArticle',
+                payload:{
+                  articleId:ArticleList.articleId,
+                  articleTitle:data.articleTitle,
+                  articleText:data.text,
+                  tagnames:tagsName,
+                  description:data.artic,
+                  image:imgUrl==''?data.image:imgUrl,
+                  type:parseInt(data.type),
+                  columnId:parseInt(data.column[0]),
+                  secondColumn:parseInt(data.column[1]),
+                  displayStatus:parseInt(data.radioT),
+                  displayOrder:parseInt(data.sort),
+                  commentSet:data.radioS == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
+                  createUser:ArticleList.createUser,
+                  bonusStatus:parseInt(data.bonusStatus),
+                  articleSource:data.articleSource,
+                  articleLink:data.articleLink,
+                  sysUser:parseInt(merId),
+                  publishStatus:parseInt(data.publishStatus),
+                  article_textnum:dds.length
+                }
+            })
+          }else{
+              dispatch({
+                type:'content/publishArticle',
+                payload:{
+                  articleId:ArticleList.articleId,
+                  articleTitle:data.articleTitle,
+                  articleText:data.text,
+                  tagnames:tagsName,
                   description:data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
@@ -200,16 +193,23 @@ function ArticleEditor({
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   publishStatus:parseInt(data.publishStatus),
-                  refuseReason:data.refuseReason
+                  refuseReason:data.refuseReason,
+                  article_textnum:dds.length
                 }
           })
           }
-
+          }
+          
           
         }
       })
   }
   
+
+  function typeChange (e){
+    console.log(e.target.value)
+    ArticleList.articleType =parseInt(e.target.value)
+  }
 
   function goBack() {
     //dispatch(routerRedux.push("/content/content_article?page=1"))
@@ -219,11 +219,24 @@ function ArticleEditor({
             type:'content/showBgModal'
       })
   }
-  function edtiorContent (value){
-        
-        console.log(value)
-        return String(value)
+  function edtiorContent (html){
+        //console.log(editor.txt.html());
+        /*
+        var value  = editor.txt.text();*/
+        /*localStorage.setItem("text", text);
+        localStorage.setItem("html", html);*/
+       /* var arr = [];
+        arr.push(editor.txt.html(),editor.txt.text())*/
+        //console.log(arr.length)
+        //console.log(arr)
+        //console.log(editor)
+       
+        return html
     }
+  function edtiorContentText(html){
+      
+      return html
+  }
   function handleChange(imgUrl){
     console.log(imgUrl)
     return imgUrl
@@ -277,26 +290,25 @@ function StatusonChange(e) {
       })
     }
   }
-  function onChange(rule, value, callback) {
-    console.log(rule)
-    /*let n = 0;
-        for(var i in this.tag){
-            if (this.tag[i].value == '') {
-              // callback(new Error('请输入密码'));
-              n +=1
-            }else if(this.tag[i].value.length > 5 || this.tag[i].value.length < 2){
-              callback(new Error('每个tag：2-5个汉字'));
-            }
-        }
-        if(n > 2){
-          callback(new Error('至少输入3个tag'));
-        }else{
-          callback()
-        }*/
-  }
+
    function ImgHandle(src){
     console.log("src",src)
    }
+   function handlevaild(rule, value, callback){
+      
+      var dd=value.replace(/<\/?.+?>/g,"");
+      var dds=dd.replace(/ /g,"");//dds为得到后的内容
+      //console.log(dds)
+      if(dds.length==0){
+        callback("请输入正文")
+      }else if(dds.length>5000){
+        callback("正文内容不能超过5000个字符")
+      }else{
+        callback()
+      }
+      
+   }
+
   return(
       <Form onSubmit={handleSubmit}>
             <FormItem label="文章标题" {...formItemLayout}>
@@ -321,11 +333,11 @@ function StatusonChange(e) {
                       initialValue:ArticleList.articleText,
                       rules: [
                       { required: true, message: '请输入正文!' },
-                      {type:'string',min:1,max:5000,message:'请输入1-5000个字符'}
+                      {validator:handlevaild}
                       ],
-                      trigger:'edtiorContent'
+                      trigger:'edtiorContentText'
                     })(
-                         <Editor articleText={ArticleList.articleText} edtiorContent={edtiorContent} />
+                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText}/>
                     )}
                   
               </FormItem>
@@ -449,36 +461,38 @@ function StatusonChange(e) {
                         rules: [{ required: true, message: '请选择类别!' },
                        ],
                       })(
-                        <RadioGroup>
+                        <RadioGroup onChange={typeChange}>
                           <Radio value="1">原创</Radio>
                           <Radio value="2">转载</Radio>
                         </RadioGroup>
                       )}
               </FormItem>
-               <FormItem
+              {ArticleList&&ArticleList.articleType ==2?<FormItem
                       {...formItemLayout}
                       label="文章来源"
                     >
                       {getFieldDecorator('articleSource',{
                         initialValue:ArticleList.articleSource,
-                        rules: [{required: ArticleList.articleType==1?false:true, message: '请填写转载文章来源!' },
+                        rules: [{required: true, message: '请填写转载文章来源!' },
                        ],
                       })(
                         <Input />
                       )}
-              </FormItem>
-               <FormItem
+              
+              </FormItem>:null}
+              {ArticleList&&ArticleList.articleType ==2?<FormItem
                       {...formItemLayout}
                       label="原文链接"
                     >
                       {getFieldDecorator('articleLink',{
                         initialValue:ArticleList.articleLink,
-                        rules: [{ required: ArticleList.articleType==1?false:true, message: '请填写转载文章来源链接地址!' },
+                        rules: [{ required: true, message: '请填写转载文章来源链接地址!' },
                        ],
                       })(
                         <Input />
                       )}
-              </FormItem>
+              </FormItem>:null}
+               
               <FormItem
                       {...formItemLayout}
                       label="选择栏目"
@@ -576,7 +590,7 @@ function StatusonChange(e) {
               {ArticleList.sysUser ==null?(getBonusList!=undefined&&getBonusList.length!=0)?<FormItem label="阅读奖励" {...formItemLayout}>
                   {getBonusList.map((item,index)=>{
 
-                      AllTotal += parseInt(item.total)*parseInt(item.value)
+                      AllTotal += parseInt(item.total)
                     return(
                         <Row key={index}>
                         <Col span="5">
@@ -585,8 +599,15 @@ function StatusonChange(e) {
                          <Col span="5">
                           奖励钛值{item.value}个/人
                         </Col>
-                         <Col span="5">
+                        <Col span="5">
                           最大奖励{item.max}人,合计发放:{item.total}人
+                        </Col>
+                        <Col span="5">
+                          {item.status==0&&<Badge status="Default" text="未生效"/>}
+                          {item.status==1&&<Badge status="success" text="已生效"/>}
+                          {item.status==2&&<Badge status="processing" text="暂停中"/>}
+                          {item.status==3&&<Badge status="warning" text="已终止"/>}
+                          {item.status==4&&<Badge status="warning" text="已结束"/>}
                         </Col>
                      </Row>
                       )
@@ -597,12 +618,12 @@ function StatusonChange(e) {
                       </Col>
                      </Row>   
               </FormItem>:<FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem>:null}
-              {ArticleList.sysUser ==null?<FormItem
+              {(ArticleList.sysUser ==null&&ArticleList.publishStatus==2)?<FormItem
                       {...formItemLayout}
                       label="审核处理"
                     >
                       {getFieldDecorator('publishStatus',{
-                         initialValue:ArticleList.publishStatus!=undefined?ArticleList.publishStatus+"":'',
+                         initialValue:(ArticleList.publishStatus!=undefined&&ArticleList.publishStatus==0)?ArticleList.publishStatus+"":'1',
                           rules: [
                           { required: true,message:'请选择' },
                         ],
@@ -614,8 +635,7 @@ function StatusonChange(e) {
                         </RadioGroup>
                       )}
               </FormItem>:null}
-              
-              <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
+              {(ArticleList.sysUser ==null&&ArticleList.publishStatus==2)? <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
               {getFieldDecorator('refuseReason',{
                 initialValue:ArticleList.refuseReason!=undefined?ArticleList.refuseReason:'',
                  rules: [{
@@ -625,7 +645,8 @@ function StatusonChange(e) {
               <TextArea  style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={value==3?false:true
               }/> 
               )}
-              </FormItem>
+              </FormItem>:null}
+             
               <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
                 <Button type="primary" onClick={handleSubmit} size="large" style={{paddingLeft:20,paddingRight:20}}>保存</Button>
                 

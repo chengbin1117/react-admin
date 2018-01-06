@@ -5,7 +5,7 @@ import { withRouter,browserHistory} from 'dva/router';
 import LoginForm from '../components/User/LoginForm';
 function LoginPage({location, dispatch, user, router}) {
 
-	console.log("location",location)
+	//console.log("location",location)
 
 	const loginProps = {
 		onSubmit: function(data) {

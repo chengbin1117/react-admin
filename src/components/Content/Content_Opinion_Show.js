@@ -15,9 +15,9 @@ import Content_Opinion_Show_Modal  from './Content_Opinion_Show_Modal';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
-function Content_Opinion_Show({dispatch,router,content}){
+function Content_Opinion_Show({dispatch,router,content,onFeek}){
   let data =JSON.parse(localStorage.getItem("kg_opinionEditor"));
-  console.log(data)
+ // console.log(data)
   const {OpinionVisible} =content
  
   const Content_Opinion_Show_ModalProps ={
@@ -40,31 +40,45 @@ function Content_Opinion_Show({dispatch,router,content}){
       })
     }
   }
-
+  const formItemLayout = {
+          labelCol: { span: 2 },
+          wrapperCol: { span: 17 },
+        };
   function showModal(){
     dispatch({
       type:"content/showOpinionModal"
     })
   }
-  class Content extends React.Component{
-      constructor(){
+ 
+  class FormContent extends React.Component{
+    constructor(){
         super();
         this.state = {
           visible:false,
-          value:''
+          value:data.replayInfo!=null?data.replayInfo:''
         };
+    }
+     changeInput=(e)=>{
+        this.setState({
+          value:e.target.value
+        })
        
-      
       }
-      render(){ 
-        const formItemLayout = {
-          labelCol: { span: 2 },
-          wrapperCol: { span: 17 },
-        };
-        const {value} = this.state;
-      return (
-        <div className = "opinion_show">
-          <h1>查看反馈内容</h1>   
+    onFeekOk=(e)=>{
+      this.props.form.validateFields((err, values) => {
+      if (!err) {
+        //console.log('Received values of form: ', values.replayInfo.length);
+        values.id =data.id;
+        onFeek(values)
+        //const {data} ={...this.props.getFieldsValue()}
+       
+      }
+    });
+    }
+    render(){
+      const {getFieldDecorator} =this.props.form;
+      const {value} = this.state;
+      return(
           <Form>
               <FormItem {...formItemLayout}  label = "反馈内容" className="collection-create-form_last-form-item">
                     <span>{data.content}</span>
@@ -80,13 +94,48 @@ function Content_Opinion_Show({dispatch,router,content}){
                 <span>{data.createDate}</span>
               </FormItem>
               <FormItem {...formItemLayout}  label = "来源页面地址" className="collection-create-form_last-form-item">
-            <span>{data.fromUrl==null?"无":data.fromUrl}</span>
+                <span>{data.fromUrl==null?"无":data.fromUrl}</span>
               </FormItem>
               <FormItem {...formItemLayout}  label = "处理记录" className="collection-create-form_last-form-item">
-                  <Input.TextArea  onChange={this.changeInput}/>
+                  {getFieldDecorator("replayInfo",{
+                    initialValue:data.replayInfo||"",
+                     rules: [{ required: true, message: '请输入!' },{
+                      type:"string",min:1,max:2000,message:"最多输入2000个字符"
+                     }],
+                  })(
+                        <TextArea style={{minHeight:100}}>
+                        </TextArea>
+                    )}
+                  
+              </FormItem>
+              <FormItem  className="collection-create-form_last-form-item">
+                  <Button type="primary" size = 'large' onClick={this.onFeekOk}>保存</Button>
               </FormItem>
             </Form>
-          <Button type="primary" size = 'large' onClick={()=>onFeekOk(data.id,value)}>保存</Button>
+          
+        )
+    }
+
+  }
+  const FormParent = Form.create()(FormContent);
+  class Content extends React.Component{
+      constructor(){
+        super();
+        this.state = {
+          visible:false,
+          value:data.replayInfo!=null?data.replayInfo:''
+        };
+       
+      
+      }
+      
+      render(){ 
+        
+        
+      return (
+        <div className = "opinion_show">
+          <h1>查看反馈内容</h1>   
+          <FormParent />
           <Content_Opinion_Show_Modal 
             {...Content_Opinion_Show_ModalProps}
           />

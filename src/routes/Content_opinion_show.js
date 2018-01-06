@@ -23,12 +23,13 @@ function ContentOpinionShow({dispatch,content}) {
 	}
 	const Content_Opinion_ShowProps ={
 		data:FeedbackList,
-		onFeekOk(id,text){
+		onFeek(values){
+			
 			dispatch({
 				type:'content/replay',
 				payload:{
-					feedbackId:id,
-					replayInfo:text,
+					feedbackId:values.id,
+					replayInfo:values.replayInfo,
 				}
 			})
 		}

@@ -18,7 +18,8 @@ let selectItem = '';
 const MenuItemGroup = Menu.ItemGroup;
 let menuItems = []
 let nav = JSON.parse(localStorage.getItem("nav"))
-let userId  = localStorage.getItem("userId")
+let userId  = localStorage.getItem("userId");
+let realname = localStorage.getItem("realname")
 //console.log("nav",nav)
 let first = "";
 let second = "";
@@ -227,6 +228,10 @@ let third = "";
   }
 }*/
 
+function logout(){
+  localStorage.clear();
+}
+
 class LayoutContainer extends React.Component {
   rootSubmenuKeys:['sub0','sub1','sub2','sub3','sub4','sub5','sub6','sub7']
   state = {
@@ -254,14 +259,14 @@ class LayoutContainer extends React.Component {
     }*/
   }
   handleClick=(e)=>{
-    console.log('click ', e);
+   // console.log('click ', e);
     this.setState({
       current: e.key,
       openKeys:[e.keyPath[1]]
     });
   }
   render() {
-    console.log('openKeys',this.state.openKeys)
+    //console.log('openKeys',this.state.openKeys)
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
@@ -300,8 +305,8 @@ class LayoutContainer extends React.Component {
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
               <div className = {styles.header_right}>
-                <span>CB</span>
-                <Link to="/login" className={styles.logOut}>退出</Link>
+                <span className={styles.rename}>欢迎您，<span style={{color:"#FFA500"}}>{realname&&realname}</span></span>
+                <Link to="/login" className={styles.logOut} onClick={logout}>退出</Link>
               </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>
@@ -315,7 +320,7 @@ class LayoutContainer extends React.Component {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            KG ©2016 Created by Ant UED
+            KG ©2018 Created by Ant UED
           </Footer>
         </Layout>
       </Layout>

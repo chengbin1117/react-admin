@@ -1,0 +1,50 @@
+import React, {
+	Component,
+	PropTypes
+} from 'react';
+import {
+	connect
+} from 'dva';
+import {
+	withRouter,
+	routerRedux,
+	Link
+} from 'dva/router';
+import LayoutContainer from '../components/Layout';
+import Useradmin from '../components/User/UserAdmin';
+import ExamineModal from '../components/User/ExamineModal';
+import SetHotuser from '../components/User/SetHotuser';
+import LockModal from '../components/User/LockModal';
+import {timeFormat} from '../services/common';
+import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+const confirm = Modal.confirm;
+const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
+const Option = Select.Option;
+
+//console.log(merId)
+function ArticlePreview({}) {
+
+	return (
+			<div>
+				132145356
+			</div>
+
+	);
+}
+
+ArticlePreview.propTypes = {
+
+};
+
+function mapStateToProps({
+	user
+}) {
+	return {
+		user
+	};
+}
+
+
+
+export default connect(mapStateToProps)(withRouter(ArticlePreview));

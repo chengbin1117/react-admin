@@ -76,14 +76,22 @@ const BondList = ({
 	    	<div key="0">
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='用户ID'>
-		            {getFieldDecorator('userId')(
-		              <Input type="text"placeholder="请输入id" />
+		            {getFieldDecorator('userId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
+			            	]
+		            })(
+		              <Input type="text"placeholder="请输入Id" />
 		            )}
 		          </FormItem>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile')(
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
 		              <Input type="phone" placeholder="请输入手机号" />
 		            )}
 		          </FormItem>
@@ -121,7 +129,7 @@ const BondList = ({
 			    return (
 			      <div>
 			        <Table bordered columns={columns}locale={{emptyText:"暂无数据"}}  dataSource={data} pagination = {false} loading={loading} rowKey={record => record.userId} />
-	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={1}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
+	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 			          
 			      </div>
 			    );

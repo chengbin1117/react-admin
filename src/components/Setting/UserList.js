@@ -12,22 +12,25 @@ import {
   Pagination,
   Popconfirm 
 } from 'antd';
-
+import style_pagination from '../pagination.css';
 /*import styles from './purchaseList.css'*/
 
 
 function UserList({
   loading,
   total,
-  current,
+  currentPage,
   data,
   onSetItem,
   setStatus,
   reseatPaw,
   onEditItem,
-  setKgUser
+  setKgUser,
+  capage,
 }) {
  
+
+
   const columns = [{
     title: '用户名',
     dataIndex: 'username',
@@ -72,7 +75,10 @@ function UserList({
   },];
 
   return (
+    <div style={{paddingBottom:50}}>
     <Table bordered rowKey={record => record.id+''} columns={columns}  dataSource={data} pagination={false} loading={loading}/>
+    <Pagination className = {style_pagination.pagination} showQuickJumper  current={currentPage} onShowSizeChange={capage} total={total} onChange={capage}    pageSize={25}/>
+    </div>
   )
 }
 

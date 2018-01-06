@@ -73,6 +73,9 @@ function IndexPage({location,dispatch,user,router,content}) {
 			}
 		})
 	}
+	function toDatg(record){
+		dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
+	}
 	const columns = [{
 	    title: '用户ID',
 	    dataIndex: 'userId',
@@ -116,10 +119,7 @@ function IndexPage({location,dispatch,user,router,content}) {
 				return (
 					<div>
 	              <a data-key={i} onClick={() => onshowModal(record)} style = {{marginRight:10}}>审核</a>
-	              <Link to={{ 
-			             pathname:"/user/user_data", 
-			             query:{userId: record.userId} 
-			         }}  style={{marginRight:10+"px"}}>查看</Link>
+	              <a onClick={()=>toDatg(record)}  style={{marginRight:10+"px"}}>查看</a>
 	            </div>
 				)
 			}

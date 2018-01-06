@@ -41,7 +41,7 @@ import ContentOpinionShow from './routes/Content_opinion_show';
 import Content_Column_Editor from './routes/Content_Column_Editor';
 import Release_article from './routes/Release_article';
 import Editor_Article from './routes/Editor_Article';
-
+import ArticlePreview from './routes/ArticlePreview';
 //Seo
 import Seo from './routes/Seo';
 import SeoHot from './routes/Seo_hot';
@@ -91,6 +91,7 @@ function RouterConfig({ history }) {
     <Switch>
       <Route path="/" exact  component={UserRouter} />
       <Route path="/login" exact  component={UserRouter} />
+      <Route path="/preview" exact  component={ArticlePreview} />
       <LayoutContainer >
           <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
           <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>

@@ -44,10 +44,16 @@ const Recharge = ({
 		  title: '邮箱',
 		  dataIndex: 'email',
 		  key: 'email',
+		  render:(text,record)=> (
+		  	<span>{record.email==null?"——":record.email}</span>
+		  	)
 		}, {
 		  title: '手机号',
 		  dataIndex: 'mobile',
 		  key: 'mobile',
+		  render:(text,record)=> (
+		  	<span>{record.mobile==null?"——":record.mobile}</span>
+		  	)
 		}, {
 		  title: '充值数(TV)',
 		  dataIndex: 'amount',
@@ -64,6 +70,9 @@ const Recharge = ({
 		  title: '备注信息',
 		  dataIndex: 'remark',
 		  key: 'remark',
+		  render:(text,record)=> (
+		  	<span>{record.remark==null?"——":record.remark}</span>
+		  	)
 		}, {
 		  title: '状态',
 		  dataIndex: 'statusDisplay',
@@ -88,7 +97,11 @@ const Recharge = ({
 	    	<div key="0">
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='用户ID'>
-		            {getFieldDecorator('userId')(
+		            {getFieldDecorator('userId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
+			            	]
+		            })(
 		              <Input placeholder="请输入用户Id" />
 		            )}
 		          </FormItem>
@@ -102,7 +115,11 @@ const Recharge = ({
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile')(
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
 		              <Input type="mobile" placeholder="请输入手机号" />
 		            )}
 		          </FormItem>
@@ -146,7 +163,7 @@ const Recharge = ({
 			    return (
 			      <div>
 			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
-	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={1} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
+	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 			          
 			      </div>
 			    );

@@ -1,6 +1,8 @@
+import "babel-polyfill";
 import fetch from 'dva/fetch';
 import pathToRegexp from 'path-to-regexp';
 import {urlprefix} from '../services/common';
+import fetchJsonp from 'fetch-jsonp';
 import {
   message
 } from 'antd';
@@ -8,7 +10,7 @@ import {
   hashHistory,
 } from 'react-router';
 
-
+//window.Promise = Promise;
 //let urlprefix = "kgapi";
 function parseJSON(response) {
  
@@ -56,19 +58,24 @@ export default function request(url, options) {
       'token': userId+'_'+token
     }
     
-    options = {
+    let option = {
       ...options,
       'headers': headers,
       };
     //console.log("options",options)
-    return fetch(fullUrl, options)
+    return fetch(fullUrl, option)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => ({
       data
     }));
   }else{
-    return fetch(fullUrl, options)
+
+
+    let option= {
+      ...options,
+    }
+    return fetch(fullUrl, option)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => ({

@@ -14,7 +14,7 @@ import LayoutContainer from '../components/Layout';
 import Manage from '../components/Finance/Mange';
 import stytes from './UserLoginPage.css';
 import ExamineModal from '../components/Finance/ExamineModal';
-import {timeFormat} from '../services/common';
+import {timeFormat,GetRequest} from '../services/common';
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
@@ -39,16 +39,19 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		loading,
 		handlsearch(values){
 			if(values.time ==undefined){
-				dispatch({
+				/*dispatch({
 					type:'finance/getAccountWIthdraw',
 					payload:{
 						email:values.email,
 						mobile:values.mobile,
 						status:parseInt(values.status)
 					}
-				})
+				})*/
+			dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
+				"&mobile="+values.mobile+"&status="+values.status
+				))
 			}else{
-				dispatch({
+				/*dispatch({
 					type:'finance/getAccountWIthdraw',
 					payload:{
 						email:values.email,
@@ -57,20 +60,25 @@ function Withdrawals({location,dispatch,finance,router,}) {
 						startDate:timeFormat(new Date(values.time[0])),
 						endDate:timeFormat(new Date(values.time[1])),
 					}
-				})
+				})*/
+				dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
+				"&mobile="+values.mobile+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+
+				"&endDate="+timeFormat(new Date(values.time[1]))
+				))
 			}
 		},
 		Examine(reacord){
+			console.log(reacord)
 			Modal.info({
 			    title: (<div>流水号：{reacord.flowId}<span style={{paddingLeft:80+"px"}}>提币时间：{reacord.withdrawTime}</span></div>),
 			    content: (<table className={stytes.table}>
 			    			<tbody>
-				    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email}</td></tr>
+				    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 				    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 				    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>提币地址</td><td>{reacord.toAddress}</td></tr>
 				    			<tr><td>提币数量</td><td>{reacord.withdrawAmount}</td><td>手续费</td><td>{reacord.poundageAmount}</td></tr>
 				    			<tr><td>实际到账数量</td><td>{reacord.accountAmount}</td><td>当前状态</td><td>{reacord.statusDisplay}</td></tr>
-				    			<tr><td>到账时间</td><td>{reacord.accountTime}</td></tr>
+				    			<tr><td>到账时间</td><td>{reacord.accountTime==null?"——":reacord.accountTime}</td></tr>
 			    			</tbody>
 			    	      </table>
 			    	),
@@ -86,7 +94,12 @@ function Withdrawals({location,dispatch,finance,router,}) {
 			  });
 		},
 		changepage(page){
-			router.push('/finance/withdrawals?page='+page)
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/finance/withdrawals?page='+page+"&email="+search.email
+				+"&mobile="+search.mobile+"&status="+search.status+"&startDate="+search.startDate+
+				"&endDate="+search.endDate
+				))
+			//router.push('/finance/withdrawals?page='+page)
 		},
 		onEdit(record){
 			dispatch({

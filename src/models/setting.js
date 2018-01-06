@@ -25,7 +25,9 @@ export default {
    arr:[],
    item:{},
    loading:false,
-   deskUserId:''
+   deskUserId:'',
+   currentPage:0,
+   totalNumber:0
   },
 
   subscriptions: {
@@ -46,10 +48,15 @@ export default {
         }
         match = pathToRegexp('/setting/account').exec(location.pathname);
         if(match){
+          const search =GetRequest(location.search);
           dispatch({
             type: 'getSysUserList',
             payload: {
-              
+              currentPage:search.page,
+              pageSize:25,
+              username:search.username!="undefined"?search.username:null,
+              mobile:search.mobile!="undefined"?search.mobile:null,
+              postId:search.postId!="undefined"?search.postId:null,
             }
           })
           dispatch({
@@ -154,7 +161,9 @@ export default {
                 type:'getSysUserListSuccess',
                 payload:{
                     SysUserList:res,
-                    loading:false
+                    loading:false,
+                    currentPage:data.responseBody.currentPage,
+                    totalNumber:data.responseBody.totalNumber,
                 }
              })
           } else {
@@ -339,7 +348,7 @@ export default {
           }
         },
         *setKgUser({ payload }, {call , put}) {
-
+          let merId =localStorage.getItem("userId");
           const { data } = yield call(setKgUser, payload);
             console.log(data)
           if (data && data.code == 10000) {
@@ -356,6 +365,13 @@ export default {
                   
                 }
                })
+               yield put({
+                type:'content/getSysUserById',
+                payload:{
+                  userId:merId
+                }
+               })
+               //window.location.reload();
           } else {
             if(data.code ==10004){
              message.error(data.message,2);
@@ -367,8 +383,10 @@ export default {
         },
        *addBaseinfo({ payload }, {call , put}) {
           
-          const {router,infoDetail,infoOrder,infoType,createUser,infoName,infoStatus,status} =payload;
-          let params ={
+          const {router,infoDetail,infoOrder,infoType,createUser,infoName,infoStatus,status,infoId} =payload;
+          let params ={}
+          if(infoId ==undefined){
+            params ={
             infoDetail:infoDetail,
             infoOrder:infoOrder,
             infoType:infoType,
@@ -376,6 +394,17 @@ export default {
             infoName:infoName,
             infoStatus:infoStatus
           }
+        }else{
+            params ={
+            infoId:infoId,
+            infoDetail:infoDetail,
+            infoOrder:infoOrder,
+            infoType:infoType,
+            createUser:createUser,
+            infoName:infoName,
+            infoStatus:infoStatus
+          }
+        }
           const { data } = yield call(addBaseinfo, params);
             
           if (data && data.code == 10000) {
@@ -457,7 +486,7 @@ export default {
         },
         *getUserId({ payload }, {call , put}) {
           const { data } = yield call(getUserId, payload);
-          console.log("data",data)
+          //console.log("data",data)
           if (data && data.code == 10000) {
               var res =data.responseBody;
                yield put({
@@ -569,6 +598,7 @@ export default {
     showRelationModal(state, action) {
       return {...state,
         RelationVisible: true,
+        deskUserId:'',
         ...action.payload
       };
     },

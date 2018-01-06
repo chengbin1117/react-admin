@@ -1,7 +1,6 @@
-
+import 'babel-polyfill';
 import './index.css';
 import dva from 'dva';
-
 // 1. Initialize
 const app = dva();
 

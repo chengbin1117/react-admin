@@ -26,7 +26,7 @@ function ArticleList({
   data,
 }) {
 
-  console.log("total",total)
+  //console.log("total",total)
   const columns = [{
     title: '文章ID',
     dataIndex: 'articleId',

@@ -15,7 +15,7 @@ import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
 import styles from './LoginForm.css';
-import {uploadUrl} from '../../services/common'
+import {uploadUrl,options} from '../../services/common'
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
@@ -140,14 +140,14 @@ const RealName = ({
 		         <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='认证时间'>
 		            {getFieldDecorator('time')(
-		              <RangePicker />
+		              <RangePicker locale={options}/>
 		            )}
 		          </FormItem>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='审核状态'>
 		            {getFieldDecorator('status')(
-		              <Select   placeholder="请选择">
+		              <Select   placeholder="请选择" allowClear={true}>
 					      <Option value="2">审核中</Option>
 					      <Option value="1">已通过</Option>
 					      <Option value="0" >不通过</Option>
@@ -190,12 +190,12 @@ const RealName = ({
 			    const hasSelected = selectedRowKeys.length > 0;
 			    return (
 			      <div>
-			        <Table bordered columns={columns} dataSource={data} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} />
+			        <Table bordered columns={columns} dataSource={data} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} locale={{emptyText:"暂无数据"}}/>
 	      	      <div className="table-operations">
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)}>批量审核</Button>
 	
 		           </div>
-	      	 <Pagination className = {style_pagination.pagination} showQuickJumper   current={1}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
+	      	 <Pagination className = {style_pagination.pagination} showQuickJumper   current={1} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 			          
 			      </div>
 			    );

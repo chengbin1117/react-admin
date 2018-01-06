@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Input, Radio,Select,Row,Col,Cascader} from 'antd';
+import { Button, Modal, Form, Input, Radio,Select,Row,Col,Cascader,message} from 'antd';
 import Upload_Image from '../Upload_Image';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -133,8 +133,9 @@ const Content_ImageAdd_Modal = ({
     check = (text) => {
       this.props.form.validateFields(
         (err,value) => {
+          console.log(err)
           if (!err) {
-            value.imageDetail =text
+            
             handleOk(value)
 
           }
@@ -156,6 +157,11 @@ const Content_ImageAdd_Modal = ({
       //console.log(check)
         return check
     }
+    handeleSelectChange =(value)=>{
+      this.setState({
+        value:value,
+      });
+    }
     render() {
       const { getFieldDecorator } = this.props.form;
       const {value,text,Imgvalue}=this.state;
@@ -173,20 +179,47 @@ const Content_ImageAdd_Modal = ({
               <Upload_Image checkimg={this.checkimg}/>
             )}
           </FormItem>
-          <FormItem {...formItemLayout_radio} label="类型" className="collection-create-form_last-form-item">
-            {getFieldDecorator('type', {
-              initialValue: '1',
-               rules: [
-              { required: true, message: '请选择类型' },
-              ],
-            })(
-              <RadioGroup onChange={this.hanlechange} >
-                <Radio value="1">资讯</Radio><Input onChange={this.inputVaule} value={value=='1'?Imgvalue:''} placeholder="请输入文章Id" disabled={this.state.value!='1'?true:false}/>
-                <Radio value="2">广告</Radio><Input onChange={this.inputVaule} value={value=='2'?Imgvalue:""} placeholder="请输入链接地址" disabled={this.state.value!='2'?true:false}/>
-                <Radio value="3">其他</Radio><Input onChange={this.inputVaule} value={value=='3'?Imgvalue:""} placeholder="请输入链接地址"  disabled={this.state.value!='3'?true:false}/>
-              </RadioGroup>
-            )}
+          <FormItem {...formItemLayout_radio} label="类型" >
+              {getFieldDecorator('imgtype', {
+                initialValue: '1',
+                 rules: [
+                { required: true, message: '请选择类型' },
+                ],
+              })(
+                <Select onChange={this.handeleSelectChange}>
+                    <Option value="1">资讯</Option>
+                    <Option value="2">广告</Option>
+                    <Option value="3">其他</Option>
+                </Select>
+               
+          )}
           </FormItem>
+          {this.state.value=="1"?<FormItem {...formItemLayout_radio} label="文章ID" >
+              {getFieldDecorator('imageDetail', {
+                initialValue: '',
+                 rules: [
+                { required: true, message: "请输入文章ID" },
+                { type:"string",min:1,message:"文章ID必须为数字",pattern:/^[0-9]*$/ }
+                ],
+              })(
+               <Input placeholder= "请输入文章ID"
+                />
+          )}
+          </FormItem>:<FormItem {...formItemLayout_radio} label="链接地址">
+              {getFieldDecorator('imageDetail', {
+                initialValue: '',
+                 rules: [
+                { required: true, message: "请输入链接地址" },
+                { type:"string",}
+                ],
+              })(
+              <Input placeholder="请输入链接地址" addonBefore="Http://"
+
+                />
+          )}
+          </FormItem>}
+          
+         
           <FormItem
                     {...formItemLayout_radio}
                     label="显示位置"
@@ -214,6 +247,9 @@ const Content_ImageAdd_Modal = ({
           <FormItem {...formItemLayout_radio} label="排序" className="collection-create-form_last-form-item">
             {getFieldDecorator('sort', {
               initialValue: '',
+              rules:[{
+                 required: false,message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/
+              }]
             })(
               <Input />
             )}
@@ -237,4 +273,21 @@ const Content_ImageAdd_Modal = ({
 
 export default Form.create()(Content_ImageAdd_Modal);
 
+
+
+ //<FormItem {...formItemLayout_radio} label="类型" >
+    //        {getFieldDecorator('type', {
+    //          initialValue: '1',
+    //           rules: [
+     //         { required: true, message: '请选择类型' },
+     //         ],
+      //      })(
+
+       //       <RadioGroup onChange={this.hanlechange} >
+        //        <Radio value="1">资讯</Radio> <Input onChange={this.inputVaule} value={value=='1'?Imgvalue:''} placeholder="请输入文章Id" disabled={this.state.value!='1'?true:false} id="error"/>
+       //         <Radio value="2">广告</Radio><Input onChange={this.inputVaule} value={value=='2'?Imgvalue:""} placeholder="请输入链接地址" disabled={this.state.value!='2'?true:false}/>
+         //       <Radio value="3">其他</Radio><Input onChange={this.inputVaule} value={value=='3'?Imgvalue:""} placeholder="请输入链接地址"  disabled={this.state.value!='3'?true:false}/>
+         //     </RadioGroup>
+         //   )}
+//</FormItem>
 

@@ -20,6 +20,7 @@ const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 17, offset: 10 },
     };
+let myKey =Math.random();
 const Content_ColumnAdd_Modal = ({
   visible,
   item={},
@@ -68,7 +69,10 @@ const FormItem = Form.Item;
     onOk: handleOk,
     onCancel: Cancel,
     maskClosable: false,
-    width:'670px'
+    width:'670px',
+    okText:"确定",
+    cancelText:"取消",
+    key : myKey,
 
   };
 
@@ -102,14 +106,14 @@ const FormItem = Form.Item;
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="栏目名称">
-            {getFieldDecorator('name', {
+            {getFieldDecorator('cname', {
               initialValue:'',
               rules: [
                  { required: true, message: '请输入栏目名称!' },
-                 {type:'string',min:2,max:6,message:"2-6个字符,支持中英文"}
+                 {type:'string',min:2,max:6,message:"2-6个字符,支持中英文",pattern:/^[a-zA-Z\u4e00-\u9fa5]+$/}
               ],
             })(
-              <Input />
+              <Input autocomplete="off"/>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="导航栏显示">
@@ -141,8 +145,9 @@ const FormItem = Form.Item;
           <FormItem {...formItemLayout} label="同级栏目排序">
             {getFieldDecorator('order', {
               initialValue: '',
-              rules: [{ required: false, message: '请输入排序' },
-              {message:'只能输入数字'}],
+              rules: [
+                { required: false,message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
+                        ],
             })(
               <Input />
             )}
@@ -163,6 +168,7 @@ const FormItem = Form.Item;
           <h1>seo设置</h1>
           <FormItem {...formItemLayout} label="标题">
             {getFieldDecorator('title', {
+              initialValue:'',
               rules: [{ required: true, message: '请输入seo标题!' }],
             })(
               <Input />

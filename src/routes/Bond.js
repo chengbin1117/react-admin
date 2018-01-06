@@ -13,7 +13,7 @@ import {
 import LayoutContainer from '../components/Layout';
 import BondList from '../components/Finance/BondList';
 import stytes from './UserLoginPage.css';
-import {timeFormat} from '../services/common';
+import {timeFormat,GetRequest} from '../services/common';
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
@@ -42,7 +42,7 @@ function Bond({location,dispatch,finance,router,}) {
 			    			<tbody>
 				    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>手机号</td><td>{reacord.mobile}</td></tr>
 				    			<tr><td>用户角色</td><td>{reacord.userRoleDisplay}</td><td>用户级别</td><td>{reacord.levelDisplay}</td></tr>
-				    			<tr><td>充值地址</td><td>{reacord.toAddress}</td><td>应缴纳保证金数额</td><td>{reacord.depositAmount}</td></tr>
+				    			<tr><td>充值地址</td><td>TVJv1pNo5ge5SB6QpX12CgGc7Ev8QDnYH8h</td><td>应缴纳保证金数额</td><td>{reacord.depositAmount}</td></tr>
 				    			<tr><td>实际缴纳数额</td><td>{reacord.accountAmount}</td><td>到账时间</td><td>{reacord.accountTime}</td></tr>
 				    			<tr><td>备注信息</td><td>{reacord.accountAmount}</td></tr>
 			    			</tbody>
@@ -62,15 +62,16 @@ function Bond({location,dispatch,finance,router,}) {
 		handlsearch(values){
 			console.log(values)
 			if(values.time ==undefined){
-				dispatch({
+				/*dispatch({
 					type:'finance/getAccountDiposit',
 					payload:{
 						userId:values.userId,
 						mobile:values.mobile,
 					}
-				})
+				})*/
+				dispatch(routerRedux.push('/finance/bond?page=1'+"&userId="+values.userId+"&mobile="+values.mobile))
 			}else{
-				dispatch({
+				/*dispatch({
 					type:'finance/getAccountDiposit',
 					payload:{
 						userId:values.userId,
@@ -78,8 +79,16 @@ function Bond({location,dispatch,finance,router,}) {
 						startDate:timeFormat(new Date(values.time[0])),
 						endDate:timeFormat(new Date(values.time[1])),
 					}
-				})
+				})*/
+				dispatch(routerRedux.push('/finance/bond?page=1'+"&userId="+values.userId+"&mobile="+values.mobile+
+				"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
+					))
 			}
+		},
+		changepage(page){
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/finance/bond?page='+page+"&userId="+search.userId
+				+"&mobile="+search.mobile+"&startDate="+search.startDate+"&endDate="+search.endDate))
 		}
 	}
 	return (
