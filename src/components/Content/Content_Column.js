@@ -3,7 +3,7 @@ import {Link} from 'react-router'
 import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select} from 'antd';
 
 const Option = Select.Option;
-function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,handleChange,fixName,fix}){
+function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,handleChange,fixSort,fixName,fix}){
 
 
 	
@@ -20,13 +20,18 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 		  key: 'name',
 		  render(text,record){
 		  	return(
-		  		<Input defaultValue={text} onPressEnter={(text)=>fixName(record,text)}style={{width:100}} onBlur={(text)=>fix(record,text)}/>
+		  		<Input defaultValue={text} onPressEnter={(text)=>fixName(record,text)}style={{width:110}} onBlur={(text)=>fix(record,text)}/>
 		  		)
 		  }
 		}, {
 		  title: '排序',
-		  dataIndex: '1name',
-		  key: '1name',
+		  dataIndex: 'columnOrder',
+		  key: 'columnOrder',
+		  render(text,record){
+		  	return(
+		  		<Input defaultValue={text} onPressEnter={(text)=>fixSort(record,text)}style={{width:100}} onBlur={(text)=>fixSort(record,text)}/>
+		  		)
+		  }
 		}, {
 		  title: '栏目级别',
 		  dataIndex: 'columnLevel',
@@ -52,12 +57,24 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 		  key: 'navigatorDisplay',
 		  render(text,record) {
 		  	return(
+		  			<span>
+		  			{record.columnLevel==1&&
 		  			<Select style={{width:150}} defaultValue={String(record.navigatorDisplay)} onChange={(text)=>handleChange(record,text)}>
+		  			  
 	                  <Option value="2" >顶部导航</Option>
 	                  <Option value="3" >首页主导航</Option>
 	                  <Option value="1" >都显示</Option>
 	                  <Option value="0" >都不显示</Option>
-	                </Select>
+	                </Select>}
+		  			{record.columnLevel==2&&
+		  			<Select style={{width:150}} defaultValue={String(record.navigatorDisplay)} onChange={(text)=>handleChange(record,text)}>
+		  			  {record&&record.partantNavigator==1&&<Option value="1" >都显示</Option>}
+	                  {record&&record.partantNavigator==3&&<Option value="3" >首页主导航</Option>}
+	                  {record&&record.partantNavigator==2&&<Option value="2" >顶部导航</Option>}
+	                  {record.partentDisplayMode&&record.partentDisplayMode==2?<Option value="4" >频道页主导航</Option>:null}
+	                  <Option value="0" >都不显示</Option>
+	                </Select>}
+	                </span>
 		  		)
 		  }
 		}, {

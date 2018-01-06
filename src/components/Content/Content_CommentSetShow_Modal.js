@@ -59,7 +59,7 @@ const Content_CommentSetShow_Modal = ({
         
       }
       
-      onOk(data,selectList.commentId);
+      onOk(data,selectList);
     });
     
     
@@ -70,7 +70,8 @@ const Content_CommentSetShow_Modal = ({
     visible,
     onOk: handleOk,
     onCancel: onCancel,
-
+    okText:"确定",
+    cancelText:"取消"
   };
   
   

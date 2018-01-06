@@ -14,6 +14,7 @@ import style_search from '../search.css';
 import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
+import {options} from "../../services/common"
 
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
@@ -62,8 +63,11 @@ const Transaction = ({
 		  title: '交易人邮箱',
 		  dataIndex: 'email',
 		  key: 'email',
+		  render:(text,record)=> (
+		  	<span>{record.email==null?"——":record.email}</span>
+		  	)
 		}, {
-		  title: '交易状态',
+		  title: '状态',
 		  dataIndex: 'status',
 		  key: 'status',
 		}, {
@@ -83,7 +87,11 @@ const Transaction = ({
 	    	<div key="0">
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='流水号'>
-		            {getFieldDecorator('flowId')(
+		            {getFieldDecorator('flowId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
 		              <Input placeholder="请输入流水号" />
 		            )}
 		          </FormItem>
@@ -104,7 +112,7 @@ const Transaction = ({
 		         <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='交易时间'>
 		            {getFieldDecorator('time')(
-		              <RangePicker />
+		              <RangePicker locale={options}/>
 		            )}
 		          </FormItem>
 		        </Col>
@@ -112,7 +120,7 @@ const Transaction = ({
 		          <Col span={12} style={{paddingLeft:68+"px"}}>
 		          	<FormItem {...formItemLayout} label='钛值'>
 		            {getFieldDecorator('minAmount')(
-		              		<Input style={{ textAlign: 'center' }} placeholder="minAmount" />
+		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
 		              	
 		            )}
 		          </FormItem>
@@ -123,14 +131,18 @@ const Transaction = ({
 		          <Col span={10}>
 		          		<FormItem {...formItemLayout}>
 				            {getFieldDecorator('maxAmount')(
-				              	<Input style={{ textAlign: 'center'}} placeholder="maxAmount" />
+				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
 				            )}
 				          </FormItem>
 		         </Col>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile')(
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
 		              <Input placeholder="手机号" />
 		            )}
 		          </FormItem>
@@ -138,7 +150,7 @@ const Transaction = ({
 		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='邮箱'>
 		            {getFieldDecorator('email')(
-		              <Input placeholder="邮箱" />
+		              <Input type="email" placeholder="邮箱" />
 		            )}
 		          </FormItem>
 		        </Col>
@@ -161,7 +173,7 @@ const Transaction = ({
 			      <div>
 			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false}  loading={loading} rowKey={record => record.flowId} />
 	      	  
-	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={20}/>
+	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 			          
 			      </div>
 			    );

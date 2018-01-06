@@ -66,6 +66,8 @@ const ExamineModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
+		okText:"确定",
+		cancelText:"取消"
 	};
 	
 	function onChange(e) {
@@ -73,7 +75,7 @@ const ExamineModal = ({
 		value =e.target.value;
 		
 	}
-	console.log(value)
+	//console.log(value)
 	return (
 			
 		<Modal {...modalOpts} width='400px'>
@@ -103,7 +105,7 @@ const ExamineModal = ({
 			              required: false, message: '请输入!',
 			            }], 
 		          })(
-		          <TextArea  style={{ width: 300, marginLeft: 10 }} placeholder="不通过原因(选填)"/> 
+		          <TextArea  style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)"/> 
 		          )}
 		        </FormItem>:null}
 		       

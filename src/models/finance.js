@@ -7,7 +7,9 @@ import {formatDate,GetRequest} from '../services/common'
 import {
   message
 } from 'antd';
-
+import {
+  routerRedux,
+} from 'dva/router';
 export default {
 
   namespace: 'finance',
@@ -33,13 +35,21 @@ export default {
         history.listen(location => {
         let match = pathToRegexp('/finance/recharge').exec(location.pathname);
         
-            const search =GetRequest(location.search);
+            
             if (match) {
-
+                const search =GetRequest(location.search);
                 dispatch({
                   type: 'getAccountRecharge',
                   payload: {
-                    currentPage:search.page
+                    currentPage:search.page,
+                    userId:search.userId!="undefined"?search.userId:null,
+                    email:search.email!="undefined"?search.email:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    status:search.status!="undefined"?parseInt(search.status):null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
+                    pageSize:25,
+
                   }
                 });
                
@@ -50,17 +60,35 @@ export default {
                 dispatch({
                   type: 'getAccountWIthdraw',
                   payload: {
-                    currentPage:search.page
+                    currentPage:search.page,
+                    email:search.email!="undefined"?search.email:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    status:search.status!="undefined"?parseInt(search.status):null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
+                    pageSize:25,
                   }
                 });
                
             }
             match = pathToRegexp('/finance/record').exec(location.pathname);
+
             if (match) {
+              const search =GetRequest(location.search);
+              console.log(search)
                 dispatch({
                   type: 'getAccount',
                   payload: {
-                    currentPage:search.page
+                    currentPage:search.page,
+                    flowId:search.flowId!="undefined"?search.flowId:null,
+                    businessTypeId:search.businessTypeId!="undefined"?parseInt(search.businessTypeId):null,
+                    email:search.email!="undefined"?search.email:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
+                    minAmount:search.minAmount!="undefined"?parseInt(search.minAmount):null,
+                    maxAmount:search.maxAmount!="undefined"?parseInt(search.maxAmount):null,
+                    pageSize:25,
                   }
                 });
                 dispatch({
@@ -72,10 +100,16 @@ export default {
             }
             match = pathToRegexp('/finance/bond').exec(location.pathname);
             if (match) {
+                const search =GetRequest(location.search);
                 dispatch({
                   type: 'getAccountDiposit',
                   payload: {
-                    currentPage:search.page
+                    currentPage:search.page,
+                    userId:search.userId!="undefined"?search.userId:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
+                    pageSize:25,
                   }
                 });
             }
@@ -133,7 +167,10 @@ export default {
              for (var i in res.data){
             
               res.data[i].withdrawTime = formatDate(res.data[i].withdrawTime)
-              res.data[i].accountTime = formatDate(res.data[i].accountTime)
+              if(res.data[i].accountTime!=null){
+                res.data[i].accountTime = formatDate(res.data[i].accountTime)
+              }
+              
             }
             yield put({
               type: 'getAccountWIthdrawSuccess',

@@ -8,11 +8,11 @@ import {
 import styles from './AboutUs.css'
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
-import { Form ,Button, Upload, Icon,Input,Select,Col,Modal} from 'antd';
+import { Form ,Button, Upload, Icon,Input,Select,Col,Modal,message} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import UserList from '../components/Setting/UserList';
@@ -23,32 +23,55 @@ import ManageModal from '../components/Setting/ManageModal';
 import AddPostModal from '../components/Setting/AddPostModal';
 import EditorPostModal from '../components/Setting/EditorPostModal';
 import RelationModal from '../components/Setting/RelationUser';
+
+import {formatDate,tokenLogOut,GetRequest} from '../services/common'
 function AccountRule({location,dispatch,setting,router,}) {
-	let  userId = localStorage.getItem('userId')
-	const { deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList}=setting;
+	let  userId = localStorage.getItem('userId');
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
+	const { deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
 	//console.log('getAuthTree',getAuthTree)
 	//生成随机密码
-	function randomString(len, charSet) {
-		  charSet = charSet || 'abcdefghijklmnopqrstxyz0123456789';
+	function upsetArr(arr){
+        return arr.sort(function(){ return Math.random() - 0.5});
+		}
+		//可以这样使用
+   
+	function randomString(len, charSet,num,capital) {
+		  charSet = charSet || 'abcdefghijklmnopqrstxyz';
+		  num = num || '0123456789';
+		  capital = capital || "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		  var randomString = '';
+		  var numString ="";
+		  var cap = ""
 		  for (var i = 0; i < len; i++) {
 		   var randomPoz = Math.floor(Math.random() * charSet.length);
+		   var random = Math.floor(Math.random() * num.length);
+		   var ran = Math.floor(Math.random() * capital.length);
 		   randomString += charSet.substring(randomPoz,randomPoz+1);
+		   numString += num.substring(random,random+1);
+		   cap +=capital.substring(ran,ran+1);
 		  }
-		  return randomString;
+
+		  var total = upsetArr((randomString+numString+cap).split("")).join("");
+
+		  return total;
 	}
 
 	//搜索
 	function handlsearch(values) {
 			
-			dispatch({
+			/*dispatch({
 				type:'setting/getSysUserList',
 				payload:{
 					username:values.username,
 					mobile:values.mobile,
 					postId:parseInt(values.postId)
 				}
-			})
+			})*/
+			dispatch(routerRedux.push('/setting/account?page=1'+"&username="+values.username+"&mobile="+values.mobile+"&postId="+values.postId))
 	}
 	function getFields(getFieldDecorator,formItemLayout){
 		const children = [];
@@ -240,15 +263,21 @@ function AccountRule({location,dispatch,setting,router,}) {
 			
 		    });
 		},
-		onOk(values){
-			dispatch({
+		onOk(values,list){
+			if(list.length==0||list==undefined){
+				message.warning('请选择权限')
+			}else{
+				
+				dispatch({
 					type: 'setting/addPost',
 					payload: {
 						name:values.name,
-						authIds:values.rules.join(','),
+						authIds:list.join(','),
 						userId:userId,
 					},
 			    });
+			}
+			
 		}
 	}
 
@@ -278,7 +307,9 @@ function AccountRule({location,dispatch,setting,router,}) {
 	}
 	const UserListProps ={
 		data:SysUserList,
-		loading,
+		loading:loading,
+		total:totalNumber,
+		currentPage:currentPage,
 		onEditItem:function(record){
 			dispatch({
 				type: 'setting/showEditorListModal',
@@ -308,9 +339,13 @@ function AccountRule({location,dispatch,setting,router,}) {
 			
 			})
 		},
+		capage(page){
+			const search =GetRequest(location.search)
+			dispatch(routerRedux.push('/setting/account?page=1'+"&username="+search.username+"&mobile="+search.mobile+"&postId="+search.postId))
+		},
 		reseatPaw(record){
-			var paw = randomString(6)
-			//console.log(paw)
+			var paw = randomString(2)
+			console.log(paw)
 			Modal.confirm({
 				title: "确认重置密码吗？",
 				okText:"确定",

@@ -22,11 +22,15 @@ const confirm = Modal.confirm;
 let userId =localStorage.getItem("userId");
 function AboutUs({dispatch,router,setting}) {
 	const {BaseInfoList} =setting
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const ArticleListProps = {
 		BaseInfoList,
 		onEditItem:function(record){
 			localStorage.setItem('kg_aboutEditor',JSON.stringify(record));
+			localStorage.setItem('articleText',record.infoDetail);
 			dispatch(routerRedux.push('/setting/addinfoEditor?id='+record.id))
 		
 		},
@@ -41,6 +45,8 @@ function AboutUs({dispatch,router,setting}) {
 		handeShow(record){
 				confirm({
 				    title: record.infoStatus ==true?'是否设置成隐藏?':'是否设置成显示?',
+				    okText:"确定",
+				    cancelText:"取消",
 				    onOk() {
 				      dispatch({
 				      	type:'setting/setInfoStatus',
@@ -57,12 +63,13 @@ function AboutUs({dispatch,router,setting}) {
 				}
 	}
 	function addInfo (){
+		localStorage.removeItem('articleText');
 		dispatch(routerRedux.push('/setting/addinfo'))
 		//router.push('setting/addinfo')
 	}
 	return (
 			<div className={styles.Indexbox}>
-				<div className={styles.addbtn}><Button type="primary" size="large" onClick={()=>addInfo()}>添加信息</Button></div>				
+				
 				<ArticleList {...ArticleListProps}/>
 				
 			</div>
@@ -85,3 +92,7 @@ function mapStateToProps({
 
 
 export default connect(mapStateToProps)(withRouter(AboutUs));
+
+//<div className={styles.addbtn}>
+//<Button type="primary" size="large" onClick={()=>addInfo()}>添加信息</Button>
+//</div>				

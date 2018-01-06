@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -18,7 +18,10 @@ import stytes from './UserLoginPage.css';
 
 function UserRole({location,dispatch,user,router,}) {
 	
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {UserVisible,userRoleList,RoleProfile,currentItem} =user;
 	const data =[{
 		'Id':1,

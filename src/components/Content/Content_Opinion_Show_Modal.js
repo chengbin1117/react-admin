@@ -51,6 +51,8 @@ const formItemLayout = {
     onOk: handleOk,
     onCancel: Cancel,
     maskClosable: false,
+    okText:"确定",
+    cancelText:"取消"
   };
   function onChange(value) {
   console.log(value);
@@ -69,7 +71,7 @@ const formItemLayout = {
                   </FormItem>
                   <FormItem {...formItemLayout}  label = "主题" className="collection-create-form_last-form-item">
                     {getFieldDecorator('title',{
-                      rules:[{required: true, message: "请输入标题!"}],
+                      rules:[{required: true, message: "请输入主题!"}],
                     })(
                       <Input />
                     )}

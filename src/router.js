@@ -41,7 +41,7 @@ import ContentOpinionShow from './routes/Content_opinion_show';
 import Content_Column_Editor from './routes/Content_Column_Editor';
 import Release_article from './routes/Release_article';
 import Editor_Article from './routes/Editor_Article';
-
+import ArticlePreview from './routes/ArticlePreview';
 //Seo
 import Seo from './routes/Seo';
 import SeoHot from './routes/Seo_hot';
@@ -69,11 +69,12 @@ import Record from './routes/Record';
 import Bond from './routes/Bond';
 function requireAuth(nextState, replace, callback) {
   let token = localStorage.getItem('Kgtoken');
- 
+  console.log(token)
   if (!token)
     replace({
        pathname: '/'
     })
+   localStorage.clear();
   callback();
 }
 
@@ -82,13 +83,18 @@ function requireAuth(nextState, replace, callback) {
 
 
 function RouterConfig({ history }) {
+
+
+
   return (
     <Router history={history}>
     <Switch>
       <Route path="/" exact  component={UserRouter} />
+      <Route path="/login" exact  component={UserRouter} />
+      <Route path="/preview" exact  component={ArticlePreview} />
       <LayoutContainer >
-          <Route path="/index" exact component={IndexPage} />
-          <Route path="/user/user_admin" exact component={UserAdmin}/>
+          <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
+          <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
           <Route path="/user/user_role" exact component={UserRole} />
           <Route path="/user/user_data" exact component={UserData}/>
           <Route path="/user/user_login" exact component={UserLogin} />
@@ -108,15 +114,15 @@ function RouterConfig({ history }) {
           <Route path="/seo/link" component={SeoLink} />
           <Route path="/seo/top_search" component={SeoTopSearch} />
           <Route path="/content/content_column" strict component={ContentColumn} />
-          <Route path = '/content/content/content_column/:id' strict component={Content_Column_Editor}/>
+          <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
       
         <Route path="/content/content_article" strict component={ContentArticle}/>
         <Route path="/content/content_image" strict component={ContentImage}/>
         <Route path="/content/content_comment" strict component={ContentComment}/>
         <Route path="/content/release_article" strict component={Release_article}/>
         <Route path="/content/editor_article" strict component={Editor_Article}/>
-        <Route path="/content/content_opinion" strict component={ContentOpinion} />
-        <Route path ='/content/content/content_opinion/:id' strict component={ContentOpinionShow}/>
+        <Route path="/content/content_opinion"  component={ContentOpinion} />
+        <Route path ='/content/opinion'  component={ContentOpinionShow}/>
         <Route path="/finance/recharge" strict component={FinanceRecharge}/>
         <Route path="/finance/withdrawals"   strict component={Withdrawals} />
         <Route path="/finance/record" strict component={Record} />

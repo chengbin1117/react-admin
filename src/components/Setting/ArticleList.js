@@ -54,8 +54,8 @@ function ArticleList({
     key: 'infoStatusDisplay',
     width: 120,
   }, {title: '排序',
-    dataIndex: 'sort',
-    key: 'sort',
+    dataIndex: 'infoOrder',
+    key: 'infoOrder',
     width: 120,
   }, {title: '操作',
     dataIndex: 'action',
@@ -66,9 +66,7 @@ function ArticleList({
 				<div>
               <a data-key={i} onClick={() => onEditItem(record)} style = {{marginRight:10}}>编辑</a>
               <a data-key={i} style = {{marginRight:10}} onClick={()=>handeShow(record)}>显示状态</a>
-              <Popconfirm title="确定要删除吗？" onConfirm={() => handleDel(record)}>
-                <a>删除</a>
-              </Popconfirm>
+              
             </div>
 			)
 		}

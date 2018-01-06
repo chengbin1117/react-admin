@@ -27,7 +27,10 @@ function UserAdmin({location,dispatch,user,router,}) {
 	const {ExmianVisible,userlist,userInfo,selectList,HotVisible,LockVisible,loading,totalNumber,currentPage}=user;
 	//console.log(loading)
 	let merId =localStorage.getItem("userId");
-	
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const UseradminProps ={
 		userlist:userlist,
 		loading:loading,
@@ -82,8 +85,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 			//console.log(selectList)
 			var Ids =""
 				for(var i in selectList){
-						if(selectList[i].auditStatus !=1){
-							console.log(selectList[i].userId)
+						if(selectList[i].auditStatus ==0&&selectList[i].applyRole!=1){
+							//console.log(selectList[i].userId)
 							Ids +=selectList[i].userId+","
 						}
 			}
@@ -186,6 +189,9 @@ function UserAdmin({location,dispatch,user,router,}) {
 		changepage(page){
 			dispatch(routerRedux.push('/user/user_admin?page='+page))
 			
+		},
+		userData(record){
+			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
 		}
 	}
 	const ExamineModalProps ={

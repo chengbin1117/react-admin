@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import {
   getArticleList,setDisplayStatus,articleservice,auditArticle,getColumnList,deleteArticle,publishArticle,getArticleById,siteimagelist,addImage,deleteImage,
   getFeedbackList,deleteFeedback,setStatus,replay,ImageSetStatus,getCommentList,commentSet,deleteComment,setcommentStatus,auditComment,addColumn,deleteColumn,
-  sendEmail,getSysUserById,getBonus
+  sendEmail,getSysUserById,getBonus,getArticleStat,setDisplayOrder
 } from '../services/content';
 import {
   message
@@ -34,7 +34,12 @@ export default {
     editorList:{},
     imgUrl:'',
     UserById:{},
-    getBonus:[]
+    getBonusList:[],
+    artice:[],
+    currentArtice:{},
+    ArticleStat:{},
+    secondC:{},
+    firstC:[],
   },
 
   subscriptions: {
@@ -50,6 +55,13 @@ export default {
             type:'getArticleList',
             payload:{
               currentPage:search.page,
+              articleId:search.articleId!='undefined'?search.articleId:null,
+              articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+              articleTag:search.articleTag!='undefined'?search.articleTag:null,
+              publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+              displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+              columnId:search.columnId!='null'?parseInt(search.columnId):null,
+              secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
               pageSize:25,
 
             }
@@ -80,9 +92,9 @@ export default {
         match = pathToRegexp('/content/editor_article').exec(location.pathname);
         if(match){
          const search =GetRequest(location.search);
-         
+         // console.log("search",search.articleId)
             dispatch({
-              type:'getArticleById',
+              type:'getBonus',
               payload:{
                 articleId:search.articleId
               }
@@ -97,7 +109,7 @@ export default {
         match =pathToRegexp('/content/content_image').exec(location.pathname);
         if(match){
           const search =GetRequest(location.search);
-          console.log("tupian",search)
+          
           dispatch({
               type:'siteimagelist',
               payload:{
@@ -108,20 +120,23 @@ export default {
         }
         match =pathToRegexp('/content/content_opinion').exec(location.pathname);
         if(match){
+          const search =GetRequest(location.search);
           dispatch({
               type:'getFeedbackList',
               payload:{
-                
+                  currentPage:parseInt(search.page),
+                  pageSize:25,
               }
             })
         }
-        match =pathToRegexp('/content/content_opinion/:id').exec(location.pathname);
+        match =pathToRegexp('/content/opinion').exec(location.pathname);
+         
         if(match){
-          
+          const search =GetRequest(location.search);
            dispatch({
               type:'setStatus',
               payload:{
-                feedbackId:parseInt(match[1])
+                feedbackId:search.id
               }
             })
           
@@ -130,11 +145,16 @@ export default {
         if(match){
 
           const search =GetRequest(location.search);
-         
+        
           dispatch({
               type:'getCommentList',
               payload:{
                 currentPage:parseInt(search.page),
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25,
               }
             })
@@ -157,9 +177,14 @@ export default {
                   type: 'getArticleList',
                   payload: {
                       publishStatus:2,
-                      pageSize:25,
                   }
                 });
+            dispatch({
+              type:'getColumnList',
+              payload:{
+                
+              }
+            })
           }
       })
     },
@@ -211,8 +236,35 @@ export default {
         }
       }
     },
+    *setDisplayOrder({ payload }, {call , put}) {
+      const {articleId,displayOrder} =payload;
+
+      let prams ={
+        articleId:articleId,
+        displayOrder:displayOrder
+      }
+      const { data } = yield call(setDisplayOrder, prams);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        const search =GetRequest(location.search);
+            yield put({
+              type: 'getArticleList',
+              payload:{
+                currentPage:search.page,
+                pageSize:25,
+              }
+            }); 
+      } else {
+        if(data.code ==10004){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
     *setDisplayStatus({ payload }, {call , put}) {
-      const {articleId,displayStatus,updateUser,query} =payload;
+      const {articleId,displayStatus,updateUser,search} =payload;
       let params ={
         articleId:articleId,
         displayStatus:displayStatus,
@@ -220,13 +272,15 @@ export default {
       }
       const { data } = yield call(setDisplayStatus, params);
       //console.log("11",data)
+
       if (data && data.code == 10000) {
          var res = data.responseBody;
+         const sea =GetRequest(search)
             message.success('设置成功')
             yield put({
               type: 'getArticleList',
               payload:{
-                 currentPage:query.page,
+                 currentPage:sea.page,
                  pageSize:25,
               }
             }); 
@@ -278,24 +332,49 @@ export default {
       }
     },
     *auditArticle({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-      yield put({
-        type: 'hideLoading',
-      });
-      const { data } = yield call(auditArticle, payload);
+      
+      let params ={
+        articleId:payload.articleId,
+        auditUser:payload.auditUser,
+        refuseReason:payload.refuseReason,
+        columnId:payload.columnId,
+        secondColumn:payload.secondColumn,
+        auditStatus:payload.auditStatus
+
+      }
+
+      const { data } = yield call(auditArticle, params);
       //console.log("11",data)
+      
       if (data && data.code == 10000) {
-         var res = data.responseBody;
-         console.log(res)
+         message.success('审核成功')
             yield put({
-              type: 'getArticleList',
+              type: 'hideArticeModal',
               payload:{
-                currentPage:1,
-                pageSIze:20,
+                
               }
             });
+            yield put({
+              type:'hideModal'
+            })
+            if(payload.Status == 2){
+              yield put({
+                type: 'getArticleList',
+                payload:{
+                  publishStatus:2,
+                }
+              });
+            }else{
+              const search =GetRequest(payload.search);
+              yield put({
+              type: 'getArticleList',
+              payload:{
+                currentPage:search.page,
+                pageSize:25,
+              }
+            });
+            }
+            
       } else {
          yield put({
             type: 'hideLoading',
@@ -315,9 +394,16 @@ export default {
       if (data && data.code == 10000) {
          var res = data.responseBody;
          if(payload.publishStatus!=undefined){
-            message.success('存草稿成功')
+          if(payload.articleId!=undefined){
+            message.success('编辑成功')
+            yield put(routerRedux.push('/content/content_article?page=1'));
+          }else{
+             message.success('存草稿成功')
+             yield put(routerRedux.push('/content/content_article?page=1'));
+          }
          }else{
            message.success('发布成功')
+           yield put(routerRedux.push('/content/content_article?page=1'));
          }
          
          /*console.log(res)
@@ -340,11 +426,7 @@ export default {
         }
       }
     },
-    *getColumnList({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-     
+    *getColumnList({ payload }, {call , put}) {     
       const { data } = yield call(getColumnList, payload);
       //console.log("栏目",data)
       if (data && data.code == 10000) {
@@ -352,12 +434,32 @@ export default {
          var arr=[];
          let params ={};
          let chid ={};
+         let firstCloumn =[];
+         let first ={};
+         let second={};
+         let childColumn = {};
          let c= [];
+         let m ={}
          for (var i in res) {
             res[i].createDate =formatDate(res[i].createDate);
             for (var k in res[i].children){
               res[i].children[k].createDate =formatDate(res[i].children[k].createDate);
+              res[i].children[k]['partantNavigator']=res[i].navigatorDisplay;
+              res[i].children[k]['partentDisplayMode']=res[i].displayMode;
+              second ={
+                'value': res[i].children[k].id,
+                'label': res[i].children[k].name,
+              }
+              //c.push(second)
+             
             }
+            childColumn[res[i].id]=res[i].children.map((j)=>
+                     m={
+                      'value':j.id,
+                      'label':j.name,
+                    }
+                    )
+
             params={
               'value': res[i].id,
               'label': res[i].name,
@@ -368,12 +470,23 @@ export default {
                     }
                 )
             }
+
+            first ={
+              'value': res[i].id,
+              'label': res[i].name,
+            }
+            firstCloumn.push(first)
+            
+
             arr.push(params)
          }
+         //console.log(firstCloumn,childColumn)
             yield put({
               type: 'getColumnListSuccess',
               payload:{
                 ColumnList:arr,
+                firstC:firstCloumn,
+                secondC:childColumn,
                 CList:res,
                 loading:false,
               }
@@ -424,7 +537,7 @@ export default {
       if (data && data.code == 10000) {
          var res = data.responseBody;
          var tags = "tags";
-         res[tags]=res.articleTags!=null?res.articleTags.split(","):'';
+         res[tags]=res.tagnames!=null?res.tagnames.split(","):'';
             yield put({
               type: 'getArticleListSuccess',
               payload:{
@@ -432,7 +545,8 @@ export default {
                 loading:false,
               }
             });
-            if(res.sysUser!=null||res.sysUser!=""){
+
+            if(res.sysUser==null||res.sysUser!=""){
                yield put({
                 type: 'getBonus',
                 payload:{
@@ -440,6 +554,11 @@ export default {
                 }
               });
             } 
+            /*window.location.reload()*/
+            localStorage.setItem("articleList", JSON.stringify(res));
+            localStorage.setItem("articleText", res.articleText);
+            yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
+
       } else {
         if(data.code ==10004){
            message.error(data.message,3);
@@ -482,7 +601,7 @@ export default {
       }
     },
     *addImage({ payload }, {call , put}) {
-    
+      console.log(payload)
       const { data } = yield call(addImage, payload);
      
       if (data && data.code == 10000) {
@@ -495,7 +614,8 @@ export default {
         yield put({
               type: 'siteimagelist',
               payload:{
-                
+                pageSize:25,
+                currentPage:1,
               }
             }); 
             yield put({
@@ -544,12 +664,15 @@ export default {
       const { data } = yield call(ImageSetStatus, payload);
       if (data && data.code == 10000) {
             message.success('设置成功')
-            /*yield put({
+            yield put({
+              type:"hideImageModal"
+            }) 
+            yield put({
               type: 'siteimagelist',
               payload:{
                 
               }
-            }); */
+            }); 
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -574,29 +697,9 @@ export default {
               type: 'getFeedbackListSuccess',
               payload:{
                 FeedbackList:res,
-                Listtotal:data.responseBody.totalNumber,
-              }
-            }); 
-      } else {
-       if(data.code ==10004){
-           message.error(data.message,2);
-          yield put(routerRedux.push('/'));
-        }else{
-          message.error(data.message,2);
-        }
-      }
-    },
-    *deleteFeedback({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
-      const { data } = yield call(deleteFeedback, payload);
-      //console.log("图片",data)
-      if (data && data.code == 10000) {
-            message.success('删除成功'); 
-            yield put({
-              type: 'getFeedbackList',
-              payload:{
+                totalNumber:data.responseBody.totalNumber,
+                currentPage:res.currentPage,
+                loading:false,
 
               }
             }); 
@@ -609,10 +712,36 @@ export default {
         }
       }
     },
+    *deleteFeedback({ payload }, {call , put}) {
+      const {feedbackId,search} =payload;
+      let params ={
+        feedbackId:feedbackId
+      }
+      
+      const { data } = yield call(deleteFeedback, params);
+      //console.log("图片",data)
+      if (data && data.code == 10000) {
+           const sea = GetRequest(search)
+            message.success('删除成功'); 
+            yield put({
+              type: 'getFeedbackList',
+              payload:{
+                currentPage:sea.page,
+                pageSize:25
+              }
+            }); 
+      } else {
+       if(data.code ==10004){
+          
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+      }
+    },
     *setStatus({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+      
       const { data } = yield call(setStatus, payload);
       //console.log("图片",data)
       if (data && data.code == 10000) {
@@ -627,13 +756,12 @@ export default {
       }
     },
     *replay({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+     
       const { data } = yield call(replay, payload);
       //console.log("图片",data)
       if (data && data.code == 10000) {
            message.success('保存成功'); 
+           yield put(routerRedux.push('/content/content_opinion?page=1'))
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -677,9 +805,7 @@ export default {
       }
     },
     *commentSet({ payload }, {call , put}) {
-      yield put({
-        type: 'showLoading',
-      });
+      
       const { data } = yield call(commentSet, payload);
           
       if (data && data.code == 10000) {
@@ -727,7 +853,7 @@ export default {
       }
     },
     *setcommentStatus({ payload }, {call , put}) {
-      const {commentIds,displayStatus,query} =payload;
+      const {commentIds,displayStatus,search} =payload;
       let params ={
         commentIds:commentIds,
         displayStatus:displayStatus
@@ -735,12 +861,13 @@ export default {
       const { data } = yield call(setcommentStatus, params);
           
       if (data && data.code == 10000) {
+        const se = GetRequest(payload.search)
           message.success('设置成功')
          
            yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:query.page,
+                currentPage:se.page,
                 pageSize:25
               }
            })
@@ -759,10 +886,27 @@ export default {
     },
     *auditComment({ payload }, {call , put}) {
       
-      const {commentId,status,query} =payload;
-      const { data } = yield call(auditComment, payload);
+      const {commentId,status,search,refuseReason} =payload;
+
+      let params ={};
+      if(status == 1){
+         params ={
+          commentId:commentId,
+          status:status,
+
+        }
+      }else{
+        params ={
+          commentId:commentId,
+          status:status,
+          refuseReason:refuseReason
+        }
+      }
+      
+      const { data } = yield call(auditComment, params);
           
       if (data && data.code == 10000) {
+        const se = GetRequest(payload.search)
         message.success('审核成功')
           // var res = data.responseBody.data;
            yield put({
@@ -775,7 +919,8 @@ export default {
             yield put({
               type: 'getCommentList',
               payload:{
-              
+                currentPage:se.page,
+                pageSize:25
               }
 
            })
@@ -822,13 +967,15 @@ export default {
 
            })
            
-            yield put({
+           /* yield put({
               type: 'getColumnList',
               payload:{
               
               }
 
-           })
+           })*/
+          //yield put(routerRedux.push('/content/content_column?page=1'))
+          window.location.reload()
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -907,18 +1054,50 @@ export default {
       }
     },
     *getBonus({ payload }, {call , put}) {
- 
-      const { data } = yield call(getBonus, payload);
-          console.log(data)
+      let params ={
+        articleId:payload.articleId
+      }
+      const { data } = yield call(getBonus, params);
+          //console.log(data)
       if (data && data.code == 10000) {
             var res = data.responseBody;
             yield put({
               type: 'getBonusSuccess',
               payload:{
-                  getBonus:res
+                  getBonusList:res
               }
-
-           })
+            })
+            /*yield put({
+              type:"showBonsModal",
+              payload:{
+                artice:res,
+                currentArtice:payload.record
+              }
+            })*/
+      } else {
+        if(data.code ==10004){
+           message.error(data.message,2);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+      }
+    },
+    *getArticleStat({ payload }, {call , put}) {
+      let params ={
+        articleId:payload.articleId
+      }
+      const { data } = yield call(getArticleStat, params);
+          //console.log(data)
+      if (data && data.code == 10000) {
+            var res = data.responseBody;
+            yield put({
+              type: 'getArticleStatSuccess',
+              payload:{
+                  ArticleStat:res
+              }
+            })
+            
       } else {
         if(data.code ==10004){
            message.error(data.message,2);
@@ -941,6 +1120,18 @@ export default {
       return {...state,
         ...action.payload,
         loading: false
+      };
+    },
+    showModal(state, action) {
+      return {...state,
+         ...action.payload,
+        AuditVisible: true
+      };
+    },
+    hideModal(state, action) {
+      return {...state,
+         ...action.payload,
+        AuditVisible: false
       };
     },
     showBgModal(state, action) {
@@ -993,7 +1184,8 @@ export default {
     },
     getArticleListSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        imgUrl:""
       };
     },
     setDisplayStatusSuccess(state, action) {    
@@ -1152,6 +1344,23 @@ export default {
       return {...state,
         ...action.payload,
         childCloum: false
+      };
+    },
+    showBonsModal(state, action) {
+      return {...state,
+        ...action.payload,
+        BonsVisible: true
+      };
+    },
+    hideBonsModal(state, action) {
+      return {...state,
+        ...action.payload,
+        BonsVisible: false
+      };
+    },
+    getArticleStatSuccess(state, action) {
+      return {...state,
+        ...action.payload,
       };
     },
   },

@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -19,7 +19,11 @@ const RadioGroup = Radio.Group
 const { TextArea } = Input;
 
 function UserInfo({dispatch,user}) {
-
+	const {SiteInfo} =user;
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	class Demo extends React.Component {
 		state={
 			dis:'0'
@@ -60,7 +64,7 @@ function UserInfo({dispatch,user}) {
 	          label="个人简介默认设置"
 	        >
 	          {getFieldDecorator('status',{
-	          	initialValue:'0',
+	          	initialValue:SiteInfo.personalInfoStatus === false?"1":"0",
 	          })(
 	            <RadioGroup   onChange={this.onChange} value={this.state.value}>
 	              <Radio value="0">启用默认值</Radio>
@@ -74,7 +78,7 @@ function UserInfo({dispatch,user}) {
 	          label="默认值"
 	        >
 	          {getFieldDecorator('info',{
-	          	initialValue:'',
+	          	initialValue:SiteInfo.personalInfo,
 	          })(
 	            	<TextArea style={{ width:'40%',minHeight:"100px" }} disabled={this.state.dis=="0"?false:true}
 	            	placeholder="请输入"

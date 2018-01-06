@@ -7,28 +7,32 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import styles from './Common.css';
 import BgModal from '../components/Content/BgModal';
 import FtModal from '../components/Content/FtModal';ArticleEditor
-import Editor from '../editor/index';
+import {dataURLtoBlob,ImgUrl,uploadUrl} from '../services/common'
 import ArticleEditor from '../components/Content/ArticeEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
-
+import axios from 'axios';
 function Editor_article({dispatch,router,content,setting}) {
 	//let logoimg = require("image!../assets/images/lx4.png");
   let merId =localStorage.getItem("userId");
+  let token =localStorage.getItem("Kgtoken");
+  if(!token) {
+    dispatch(routerRedux.push('/'))
+  }
 
-  var text = '';
   var html = '';
-  let src = ""
-  const {ArticleList,BgVisible,FtVisible,activeImg,ColumnList,cruImage,editorList} =content;
-  //console.log(ArticleList)
-  const options = ColumnList;
+  let src = "";
+  
+  const {ArticleList,BgVisible,FtVisible,activeImg,ColumnList,cruImage,editorList,getBonusList,imgUrl} =content;
 
+  const options = ColumnList;
+console.log("imgUrl",imgUrl)
   const ArticleEditorProps = {
     ColumnList,
     dispatch,
@@ -36,40 +40,12 @@ function Editor_article({dispatch,router,content,setting}) {
     router,
     cruImage,
     setting,
+    getBonusList,
+    imgUrl,
     handlsearch(values){
        
-        var ImgSrc = localStorage.getItem("img");
-        var Html = localStorage.getItem("html");
-        var Text = localStorage.getItem("text");
-        //console.log(Html)
-       // console.log(ImgSrc)
-        if(ImgSrc= ''){
-          message.warn('请上传图像')
-          return false
-        }
-        if(Text == '') {
-          message.warn('请输入正文')
-          return false
-        }
-        dispatch({
-          type:'content/publishArticle',
-          payload:{
-            articleId:ArticleList[0].articleId,
-            articleTitle:values.articleTitle,
-            articleText:Html,
-            articleTag:values.tag1+','+values.tag2+','+values.tag3+','+values.tag4+','+values.tag5,
-            description:values.artic,
-            image:String(ImgSrc),
-            type:parseInt(values.type),
-            columnId:parseInt(values.column[0]),
-            displayStatus:parseInt(values.radioT),
-            displayOrder:parseInt(values.sort),
-            commentSet:values.radioS == "true"?true:false,
-            publishSet:values.radioG == "true"?true:false,
-            createUser:parseInt(values.createUser),
-            sysUser:parseInt(merId),
-          }
-        })
+    
+      
     },
     editorText(h,t){
         text  = t;
@@ -112,21 +88,30 @@ function Editor_article({dispatch,router,content,setting}) {
       
   	},
   	oncroup(src){
-  		//console.log(src)
-      dispatch({
-          type:'content/hidefpModal',
-          payload:{
-            cruImage:src
-          }
-      })
-      var binary = atob(src.split(',')[1]);  
-      var array = [];  
-      for(var i = 0; i < binary.length; i++) {  
-        array.push(binary.charCodeAt(i));  
-      }  
-      let a =  new Blob([new Uint8Array(array)], {type:'image/png' });  
-      console.log(a)
-      localStorage.setItem("img", src);
+  		var s = dataURLtoBlob(src)
+      //console.log(s)
+      let formData = new FormData();
+            formData.append('name', 'file');
+            formData.append('file', s);
+            let config = {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+            }
+      axios.post(ImgUrl, formData, config).then(res=>{
+               res =res.data; 
+              
+                if (res.errorCode == 10000) {
+                    console.log(res) 
+                   //imgUrl =res.data[0].filePath;
+                    dispatch({
+                      type:'content/hidefpModal',
+                      payload:{
+                        imgUrl:res.data[0].filePath
+                      }
+                    })    
+                }
+            })
   	}
   }
   

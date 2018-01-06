@@ -46,8 +46,8 @@ const FormItem = Form.Item;
 			}
 
 			//const data = {...getFieldsValue()}
-			console.log(values)
-			onOk(values);
+			//console.log(values)
+			onOk(values,list);
 		});
 	}
 
@@ -57,8 +57,21 @@ const FormItem = Form.Item;
 	}
 	function checked(checked){
 		console.log(checked)
-		//list = checked.join(",");
-		return checked
+		//console.log(checked,arr)
+		/*if(arr.length==0){
+      
+		      //return checked
+		      //console.log('onCheck1', checked);
+		      list = checked
+		    }else{
+		    	//console.log(checked)
+		    	list = checked.concat(arr)
+		    // console.log('onCheck1', checked);	
+		      //return checked.push(arr.join())
+		      //console.log('onCheck2', list);
+		    }*/
+		list = checked.checked
+		
 	}
 	const modalOpts = {
 		title: '添加岗位',
@@ -120,9 +133,9 @@ const FormItem = Form.Item;
 			    </FormItem>
 			    <FormItem>
 			    	{getFieldDecorator('rules', {
-			    		rules: [{ required: true, message: '请填写选择权限!' },
+			    		rules: [{ required: false, message: '请填写选择权限!' },
 			    		{ type: 'array', message: '请填写选择权限!' }],
-			    		trigger:'checked',
+			    		
 			        })(<RuleList plainOptions = {TreeItem(TreeList)}  checked={checked}/>)}
 			     </FormItem>
 			    

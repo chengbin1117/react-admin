@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import {
   message
 } from 'antd';
@@ -11,8 +12,7 @@ import {
 import dva from 'dva';
 import md5 from 'js-md5';
 let Base64 = require('js-base64').Base64;
-import createBrowserHistory from 'history/createBrowserHistory';
-const history = createBrowserHistory()
+
 
 function p(s) {
         return s < 10 ? '0' + s: s;
@@ -43,6 +43,7 @@ export function timeFormat(date) {
  
   return [year, month, day].join('-');
 }
+
 
 //token失效
 export function tokenLogOut(data,dispatch) {
@@ -84,11 +85,74 @@ export function SignUrl (data){
     return sign
 }
 
-let ImgUrl = "http://120.78.186.139:8088/kgapi/image/upload";
-//let ImgUrl = "http://172.16.0.15/image/upload";
-let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";
-//let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com";
+let options ={
+  "lang": {
+    "placeholder": "选择时间",
+    "rangePlaceholder": [
+      "开始日期",
+      "结束日期"
+    ],
+    "today": "今天",
+    "now": "当前时间",
+    "backToToday": "Back to today",
+    "ok": "确定",
+    "clear": "Clear",
+    "month": "Month",
+    "year": "Year",
+    "timeSelect": "选择时间",
+    "dateSelect": "选择日期",
+    "monthSelect": "Choose a month",
+    "yearSelect": "Choose a year",
+    "decadeSelect": "Choose a decade",
+    "yearFormat": "YYYY",
+    "dateFormat": "M/D/YYYY",
+    "dayFormat": "D",
+    "dateTimeFormat": "M/D/YYYY HH:mm:ss",
+    "monthFormat": "MMMM",
+    "monthBeforeYear": true,
+    "previousMonth": "Previous month (PageUp)",
+    "nextMonth": "Next month (PageDown)",
+    "previousYear": "Last year (Control + left)",
+    "nextYear": "Next year (Control + right)",
+    "previousDecade": "Last decade",
+    "nextDecade": "Next decade",
+    "previousCentury": "Last century",
+    "nextCentury": "Next century"
+  },
+  "timePickerLocale": {
+    "placeholder": "选择时间"
+  }
+}
+
+//Blob
+export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件形式
+                        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                        while(n--){
+                            u8arr[n] = bstr.charCodeAt(n);
+                        }
+                        return new Blob([u8arr], {type:mime});
+}
+
+
+
+//上传图片
+let ImgUrl = "http://kg.btc123.com/kgapi/image/upload"; //开发
+//let ImgUrl = "http://172.16.0.15/image/upload"; //测试
+
+//下载图片
+let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
+//let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
+
+//服务器
+//let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
+//let urlprefix = "http://kg.btc123.com/kgapi";//开发
+let urlprefix = "http://172.16.0.15"; //测试
+
+
 export {
   ImgUrl,
-  uploadUrl
+  uploadUrl,
+  options,
+  urlprefix
 }

@@ -35,7 +35,7 @@ const Content_ColumnEditor_Modal = ({
 }) => {
 
 const FormItem = Form.Item;
-  console.log(item)
+ console.log(item)
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
@@ -103,17 +103,22 @@ const FormItem = Form.Item;
             {getFieldDecorator('cname', {
               id:item.id,
               initialValue:item&&item.name,
-              rules: [{ required: true, message: '请输入栏目名称!' }],
+              rules: [
+                 { required: true, message: '请输入栏目名称!' },
+                 {type:'string',min:2,max:6,message:"2-6个字符,支持中英文",pattern:/^[a-zA-Z\u4e00-\u9fa5]+$/}
+              ],
             })(
               <Input type="text"/>
             )}
           </FormItem>
-          <FormItem {...formItemLayout} label="导航栏显示">
+          {item&&item.columnLevel==1&&
+             <FormItem {...formItemLayout} label="导航栏显示">
+
             {getFieldDecorator('navigatorDisplay', {
               initialValue:item!={}?String(item.navigatorDisplay):'',
               rules: [{ required: true, message: '请选择' }],
             })(
-              <Select >
+              <Select>
                   <Option value="2" >顶部导航</Option>
                   <Option value="3" >首页主导航</Option>
                   <Option value="1" >都显示</Option>
@@ -121,6 +126,24 @@ const FormItem = Form.Item;
               </Select>
             )}
           </FormItem>
+          }
+          {item&&item.columnLevel==2&&
+             <FormItem {...formItemLayout} label="导航栏显示">
+
+            {getFieldDecorator('navigatorDisplay', {
+              initialValue:item!={}?String(item.navigatorDisplay):'',
+              rules: [{ required: true, message: '请选择' }],
+            })(
+              <Select>
+                  {item&&item.partantNavigator==1&&<Option value="1" >都显示</Option>}
+                  {item&&item.partantNavigator==3&&<Option value="3" >首页主导航</Option>}
+                  {item&&item.partantNavigator==2&&<Option value="2" >顶部导航</Option>}
+                  {item&&item.partentDisplayMode == 2?<Option value="4" >频道页主导航</Option>:null}
+                  <Option value="0">都不显示</Option>
+              </Select>
+            )}
+          </FormItem>
+          }
           <FormItem {...formItemLayout_radio} label="前台是否显示" className="collection-create-form_last-form-item">
             {getFieldDecorator('displayStatus', {
               initialValue: 'public',
@@ -134,7 +157,7 @@ const FormItem = Form.Item;
           </FormItem>
           <FormItem {...formItemLayout} label="同级栏目排序">
             {getFieldDecorator('order', {
-              initialValue: '',
+              initialValue: item&&item.columnOrder,
               rules: [{ required: false, message: '请输入排序' }],
             })(
               <Input />
@@ -144,7 +167,7 @@ const FormItem = Form.Item;
           
           <FormItem {...formItemLayout_radio} label="展示方式" className="collection-create-form_last-form-item">
             {getFieldDecorator('displayMode', {
-              initialValue: 'public',
+              initialValue: (item&&item.displayMode==1)?"public":"private",
               rules: [{ required: true, message: '请选择展示方式!' }],
             })(
               <Radio.Group>
@@ -156,7 +179,7 @@ const FormItem = Form.Item;
           <h1>seo设置</h1>
           <FormItem {...formItemLayout} label="标题">
             {getFieldDecorator('title', {
-              initialValue:"",
+              initialValue:item&&item.title,
               rules: [{ required: true, message: '请输入seo标题!' }],
             })(
               <Input />
@@ -164,6 +187,7 @@ const FormItem = Form.Item;
           </FormItem>
           <FormItem {...formItemLayout} label="关键词">
             {getFieldDecorator('keyword', {
+              initialValue:item&&item.keyword,
               rules: [{ required: false, message: 'Please input the title of collection!' }],
             })(
               <Input />
@@ -171,7 +195,9 @@ const FormItem = Form.Item;
             <span>多个关键词请用","隔开</span>
           </FormItem>
           <FormItem {...formItemLayout} label="描述">
-            {getFieldDecorator('description')(<Input type="textarea" />)}
+            {getFieldDecorator('description',{
+              initialValue:item&&item.description,
+            })(<Input type="textarea" />)}
           </FormItem>
         </Form>
     </Modal>

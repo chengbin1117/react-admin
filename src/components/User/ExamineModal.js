@@ -71,6 +71,8 @@ const ExamineModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
+		okText:"确定",
+		cancelText:"取消"
 	};
 	
 	return (

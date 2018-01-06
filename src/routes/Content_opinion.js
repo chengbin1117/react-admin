@@ -7,63 +7,108 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import Content_Opinion from '../components/Content/Content_Opinion';
-
-function ContentOpinion({dispatch,content,router}) {
-
-	const {FeedbackList,Listtotal} = content;
+import { Modal,message,Row,Col} from 'antd';
+import {timeFormat,uploadUrl} from '../services/common';
+function ContentOpinion({dispatch,content,router,location}) {
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
+	const {FeedbackList,totalNumber,currentPage,loading} = content;
 	const Content_OpinionProps ={
 		data:FeedbackList,
-		total:Listtotal,
+		total:totalNumber,
+		currentPage:currentPage,
+		loading:loading,
 		confirm(record){
 			dispatch({
 				type:'content/deleteFeedback',
 				payload:{
-					feedbackId:record.id
+					feedbackId:record.id,
+					search:location.search
 				}
 			})
 		},
 		handlsearch(values){
-			console.log(values)
+			//console.log(values)
 			if(values.time!=undefined){
-				dispatch({
+
+				if(values.status==undefined){
+					dispatch({
 					type:"content/getFeedbackList",
 					payload:{
 						content:values.content,
-						startDate:new Date(values.time[0]).toLocaleDateString().split('/').join('-'),
-						endDate:new Date(values.time[1]).toLocaleDateString().split('/').join('-'),
+						startDate:timeFormat(values.time[0]),
+						endDate:timeFormat(values.time[1]),
+					}
+				})
+				}else{
+
+					dispatch({
+					type:"content/getFeedbackList",
+					payload:{
+						content:values.content,
+						startDate:timeFormat(values.time[0]),
+						endDate:timeFormat(values.time[1]),
 						status:values.status =="true"?true:false
 					}
 				})
+				}
+				
 			}else{
-				dispatch({
+				if(values.status==undefined){
+					dispatch({
+					type:"content/getFeedbackList",
+					payload:{
+						content:values.content,
+						
+					}
+				})
+				}else{
+					dispatch({
 					type:"content/getFeedbackList",
 					payload:{
 						content:values.content,
 						status:values.status =="true"?true:false,
 					}
 				})
+				}
+
+				
 			}
         },
         delFeeks(list){
-        	var Ids ="";
+        	var Ids =[];
         	for (var i in list){
-        		Ids +=list[i].id+","
+        		Ids.push(list[i].id)
         	}
-        	dispatch({
-        		type:"content/deleteFeedback",
-        		payload:{
-        			feedbackId:Ids
+        	var FeeksIds = Ids.join(',')
+        	//console.log(FeeksIds)
+        	Modal.confirm({
+        		"title":"是否批量删除",
+        		onOk(){
+        			dispatch({
+		        		type:"content/deleteFeedback",
+		        		payload:{
+		        			feedbackId:FeeksIds,
+		        			search:location.search
+		        		}
+		        	})
         		}
         	})
+        	
         },
         onEditor(record){
         	localStorage.setItem('kg_opinionEditor',JSON.stringify(record));
-        	router.push('/content/content_opinion/'+record.id)
+        	dispatch(routerRedux.push('/content/opinion?id='+record.id))
+        },
+        changepage(page){
+        	dispatch(routerRedux.push('/content/content_opinion?page='+page))
         }
 	}
 

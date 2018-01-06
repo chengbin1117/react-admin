@@ -39,6 +39,7 @@ export async function addBaseinfo(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
+   
 	let url = '/admin/about/addBaseinfo?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{

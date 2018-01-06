@@ -18,8 +18,12 @@ import Content_ImageEditor_Modal from '../components/Content/Content_ImageEditor
 import ImgShowModal from '../components/Content/ImgShowModal';
 
 
-function ContentImage({dispatch,content}) {
-	let  userId = localStorage.getItem('userId')
+function ContentImage({dispatch,content,location}) {
+	let  userId = localStorage.getItem('userId');
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const {selectList,ImageList,ImgShowVisible,addImageVisible,loading,currentItem,type,currentPage,totalNumber,EditorImageVisible} = content;
 	
 	const content_imageProps ={
@@ -49,21 +53,26 @@ function ContentImage({dispatch,content}) {
 				dispatch({
 					type:"content/siteimagelist",
 					payload:{
-						image_type:parseInt(values.type),
-						image_status:parseInt(values.showStatus),
-						navigator_pos:parseInt(values.residence[0]),
-						image_pos:parseInt(values.residence[1])
+						imageType:parseInt(values.type),
+						imageStatus:parseInt(values.showStatus),
+						navigatorPos:parseInt(values.residence[0]),
+						imagePos:parseInt(values.residence[1]),
+						pageSize:25,
+
 					}
 			   })
+
+
 			}else{
 				dispatch({
 					type:"content/siteimagelist",
 					payload:{
-						image_type:parseInt(values.type),
-						image_status:parseInt(values.showStatus),
+						imageType:parseInt(values.type),
+						imageStatus:parseInt(values.showStatus),
+						pageSize:25,
 					}
 			   })
-			}	
+			}
 		},
 		editorItem(record){
 			dispatch({
@@ -106,7 +115,8 @@ function ContentImage({dispatch,content}) {
 			
 		},
 		changepage(page){
-				dispatch(routerRedux.push('/content/content_image?page='+page))
+			console.log(location)
+		    dispatch(routerRedux.push('/content/content_image?page='+page))
 		}
 
 	}
@@ -123,18 +133,18 @@ function ContentImage({dispatch,content}) {
 		},
 
 		onCheckOk(value){
-			//alert(value.imageDetail)
-			if(value.type == "1"){
+			//console.log(value.type)
+			if(value.imgtype == "1"){
 					dispatch({
 						type:"content/addImage",
 						payload:{
-							imageType:parseInt(value.type),
-							imageDetail:value.imageDetail,
+							imageType:parseInt(value.imgtype),
+							imageDetail:parseInt(value.imageDetail),
 							navigatorPos:parseInt(value.residence[0]),
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),
 							createUser:userId,
-							image_order:parseInt(value.sort),
+							imageOrder:parseInt(value.sort),
 							imageAddress:value.imageAddress
 						}
 					})
@@ -143,13 +153,13 @@ function ContentImage({dispatch,content}) {
 					type:"content/addImage",
 					payload:{
 						imageAddress:value.imageAddress,
-						imageType:parseInt(value.type),
+						imageType:parseInt(value.imgtype),
 						imageDetail:value.imageDetail,
 						navigatorPos:parseInt(value.residence[0]),
 						imagePos:parseInt(value.residence[1]),
 						imageStatus:parseInt(value.showStatus),
 						createUser:userId,
-						iimage_order:parseInt(value.sort),
+						imageOrder:parseInt(value.sort),
 					}
 				})
 			}
@@ -178,7 +188,7 @@ function ContentImage({dispatch,content}) {
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),
 							createUser:userId,
-							image_order:parseInt(value.sort),
+							imageOrder:parseInt(value.sort),
 							imageAddress:value.imageAddress
 						}
 					})
@@ -194,7 +204,7 @@ function ContentImage({dispatch,content}) {
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),
 							createUser:userId,
-							iimage_order:parseInt(value.sort),
+							imageOrder:parseInt(value.sort),
 						}
 					})
 			}

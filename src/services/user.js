@@ -25,7 +25,7 @@ export async function getUserList(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
    
-	let url = '/admin/user/getUserList?data='+data+"&sign="+sign;
+	let url = '/admin/user/getUserList?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -36,7 +36,7 @@ export async function getUserList(params) {
 export async function getUserInfo(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/getUserInfo?data='+data+"&sign="+sign;
+	let url = '/admin/user/getUserInfo?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -47,7 +47,7 @@ export async function getUserInfo(params) {
 export async function auditUser(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/auditUser?data='+data+"&sign="+sign;
+	let url = '/admin/user/auditUser?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -58,7 +58,7 @@ export async function auditUser(params) {
 export async function setHotUser(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/setHotUser?data='+data+"&sign="+sign;
+	let url = '/admin/user/setHotUser?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -69,7 +69,7 @@ export async function setHotUser(params) {
 export async function lockUser(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/lockUser?data='+data+"&sign="+sign;
+	let url = '/admin/user/lockUser?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -81,7 +81,7 @@ export async function lockUser(params) {
 export async function loginSet(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/loginSet?data='+data+"&sign="+sign;
+	let url = '/admin/user/loginSet?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
 		method:"post"
 	}
@@ -92,7 +92,7 @@ export async function loginSet(params) {
 export async function getRoleList(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/role/getRoleList?data='+data+"&sign="+sign;
+	let url = '/admin/role/getRoleList?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -104,7 +104,7 @@ export async function getRoleList(params) {
 export async function roleSetStatus(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/role/setStatus?data='+data+"&sign="+sign;
+	let url = '/admin/role/setStatus?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -115,7 +115,7 @@ export async function roleSetStatus(params) {
 export async function getRoleProfile(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/role/getRoleProfile?data='+data+"&sign="+sign;
+	let url = '/admin/role/getRoleProfile?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -127,7 +127,7 @@ export async function getRoleProfile(params) {
 export async function userInfoSet(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/userInfoSet?data='+data+"&sign="+sign;
+	let url = '/admin/user/userInfoSet?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -139,7 +139,7 @@ export async function userInfoSet(params) {
 export async function getSysMenu(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/login/getSysMenu?data='+data+"&sign="+sign;
+	let url = '/admin/login/getSysMenu?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
 		method:"post"
 	}
@@ -149,7 +149,7 @@ export async function getSysMenu(params) {
 export async function getUserCert(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/getUserCert?data='+data+"&sign="+sign;
+	let url = '/admin/user/getUserCert?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"
@@ -161,7 +161,20 @@ export async function getUserCert(params) {
 export async function auditUserCert(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/user/auditUserCert?data='+data+"&sign="+sign;
+	let url = '/admin/user/auditUserCert?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//就获取用户默认信息
+
+export async function getSiteInfo(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/getSiteInfo?data='+encodeURIComponent(data)+"&sign="+sign;
 	
 	return request(url,{
 		method:"post"

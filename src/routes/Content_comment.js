@@ -16,12 +16,16 @@ import Content_Comment from '../components/Content/Content_Comment';
 import Content_CommentSet_Modal from '../components/Content/Content_CommentSet_Modal';
 import Content_CommentSetShow_Modal from '../components/Content/Content_CommentSetShow_Modal';
 import ExamineModal from '../components/Content/ExamineModal';
+import {timeFormat,GetRequest} from '../services/common';
 
 function ContentComment({location,dispatch,router,content}) {
     
     const {CommentList,CommentSetVisible,showSetVisible,selectList,ExamineVisible,loading,totalNumber,currentPage} = content;
 
-	console.log("loading",location)
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 
 	const Content_CommentProps ={
 		data:CommentList,
@@ -68,36 +72,32 @@ function ContentComment({location,dispatch,router,content}) {
 			dispatch({
 				type:"content/showExamineModal",
 				payload:{
-					selectList:record
+					selectList:record.commentId
 				}
 
 			})
 		},
 		handlsearch(values){
 			if(values.time!=undefined){
-				dispatch({
-					type:'content/getCommentList',
-					payload:{
-						content:values.content,
-						status:parseInt(values.status),
-						displayStatus:values.displayStatus=="1"?true:false,
-						startDate:new Date(values.time[0]).toLocaleDateString().split('/').join('-'),
-						endDate:new Date(values.time[1]).toLocaleDateString().split('/').join('-'),
-					}
-				})
+				
+				dispatch(routerRedux.push('/content/content_comment?page=1'+
+					"&content="+values.content+"&status="+values.status+"&startDate="+timeFormat(values.time[0])+
+					"&endDate="+timeFormat(values.time[1])+"&displayStatus="+values.displayStatus
+					))
 			}else{
-				dispatch({
-					type:'content/getCommentList',
-					payload:{
-						content:values.content,
-						status:parseInt(values.status),
-						displayStatus:values.displayStatus=="1"?true:false,
-					}
-				})
+				dispatch(routerRedux.push('/content/content_comment?page=1'+
+					"&content="+values.content+"&status="+values.status+"&displayStatus="+values.displayStatus
+				))
+				
+				
 			}
 		},
 		changepage(page){
-			dispatch(routerRedux.push('/content/content_comment?page='+page))
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/content/content_comment?page='+page+
+				"&content="+search.content+"&status="+search.status+"&startDate="+search.startDate+
+					"&endDate="+search.endDate+"&displayStatus="+search.displayStatus
+				))
 		}
 	}
 
@@ -132,7 +132,7 @@ function ContentComment({location,dispatch,router,content}) {
 				payload:{
 					commentIds:String(selectList),
 					displayStatus:values.set =="public"?true:false,
-					query:location.query,
+					search:location.search,
 				}
 			})
 		},
@@ -153,22 +153,32 @@ function ContentComment({location,dispatch,router,content}) {
 				type:"content/hideExamineModal",
 			})
 		},
-		onOk(values,text,record){
-			if(values ==undefined){
-				message.warn("请选择")
-				console.log(values,text,record)
-			}else{
+		onOk(data,record){
+			console.log(record)
+			if(data.radio =="1"){
 				dispatch({
 					type:'content/auditComment',
 					payload:{
-						commentId:record.commentId,
-						status:parseInt(values),
-						refuseReason:text,
-						query:location.query
+						commentId:record,
+						status:parseInt(data.radio),
+						search:location.search
 					}
 				})
-			}
-		}
+			}else{
+
+				dispatch({
+					type:'content/auditComment',
+					payload:{
+						commentId:record,
+						status:parseInt(data.radio),
+						refuseReason:data.text,
+						search:location.search
+					}
+				})
+				
+			
+		    }
+	    }
 	}
 	return (
 			<div >

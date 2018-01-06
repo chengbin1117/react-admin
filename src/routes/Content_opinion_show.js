@@ -7,7 +7,7 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
@@ -17,23 +17,28 @@ import Content_Opinion_Show from '../components/Content/Content_Opinion_Show';
 
 function ContentOpinionShow({dispatch,content}) {
 	const {FeedbackList} = content;
+	let token =localStorage.getItem("Kgtoken");
+	if(!token) {
+		dispatch(routerRedux.push('/'))
+	}
 	const Content_Opinion_ShowProps ={
 		data:FeedbackList,
-		onFeekOk(id,text){
+		onFeek(values){
+			
 			dispatch({
 				type:'content/replay',
 				payload:{
-					feedbackId:id,
-					replayInfo:text,
+					feedbackId:values.id,
+					replayInfo:values.replayInfo,
 				}
 			})
 		}
 	}
 	
 	return (
-			<LayoutContainer >
+			<div >
 				<Content_Opinion_Show {...Content_Opinion_ShowProps}/>
-			</LayoutContainer>
+			</div>
 
 	);
 }

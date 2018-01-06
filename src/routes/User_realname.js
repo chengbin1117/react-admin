@@ -7,14 +7,14 @@ import {
 } from 'dva';
 import {
 	withRouter,
-	browserHistory,
+	routerRedux,
 	Link
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import RealName from '../components/User/RealName';
 import RealNameModal from '../components/User/RealNameModal';
 import RealsModal from '../components/User/RealsModal';
-import {timeFormat} from '../services/common';
+import {timeFormat,uploadUrl} from '../services/common';
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
@@ -43,17 +43,17 @@ function UserRealName({location,dispatch,user,router,}) {
 			    title: (<div>身份证照片</div>),
 			    content: (<div><Row>
 			    			<Col span={12} style={{textAlign:'center',width:'50%'}}>
-			    				<img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardFront} style={{width:300,height:300}}/>
+			    				<img src= {uploadUrl+record.idcardFront} style={{width:300,height:300}}/>
 			    				<p  style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>正面</p>
 			    			</Col>
 			    			<Col span={12} style={{textAlign:'center',width:'50%'}} >
-			    			    <img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardBack} style={{width:300,height:300}}/>
+			    			    <img src= {uploadUrl+record.idcardBack} style={{width:300,height:300}}/>
 			    			    <p style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>反面</p>
 			    			</Col>
 			    			</Row>
 			    			<Row>
 			    				<Col span={12} style={{textAlign:'center',width:'50%'}}>
-			    			    <img src= {'http://kgcom.oss-cn-shenzhen.aliyuncs.com/'+record.idcardBack} style={{width:300,height:300}}/>
+			    			    <img src= {uploadUrl+record.idcardBack} style={{width:300,height:300}}/>
 			    			    <p  style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>手持正面</p>
 			    			    </Col>
 			    			</Row>
@@ -106,6 +106,7 @@ function UserRealName({location,dispatch,user,router,}) {
 				dispatch({
 					type:'user/getUserCert',
 					payload:{
+						userId:values.userId,
 						email:values.email,
 						mobile:values.mobile,
 						status:parseInt(values.status)
@@ -117,6 +118,7 @@ function UserRealName({location,dispatch,user,router,}) {
 				dispatch({
 					type:'user/getUserCert',
 					payload:{
+						userId:values.userId,
 						email:values.email,
 						mobile:values.mobile,
 						status:parseInt(values.status),

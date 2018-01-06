@@ -23,6 +23,7 @@ const formItemLayout = {
 	},
 };
 
+var value = 0
 const ExamineModal = ({
 	visible,
 	item = {},
@@ -41,9 +42,17 @@ const ExamineModal = ({
 
 
 	function handleOk(value,text) {
-		
-			//console.log(value,text)
-			onOk(value,text,selectList);
+			validateFields((errors) => {
+			if (errors) {
+				return;
+			}
+
+			const data = {...getFieldsValue()
+
+			};
+			
+			onOk(data,selectList);
+		   })
 		
 	}
 
@@ -60,78 +69,43 @@ const ExamineModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
-		footer:null
-
+		okText:"确定",
+		cancelText:"取消"
 	};
+	function onChange(e){
+		value = e.target.value
+	}
 	
-	class DynamicRule extends React.Component {
-	  state = {
-	    checkNick: false,
-	    text:''
-	  };
-	  check = () => {
-	    this.props.form.validateFields(
-	      (err) => {
-	        if (!err) {
-	          console.info('success');
-	        }
-	      },
-	    );
-	  }
-	  handleChange = (e) => {
-	    this.setState({
-	      checkNick: e.target.checked,
-	    }, () => {
-	      this.props.form.validateFields(['nickname'], { force: true });
-	    });
-	  }
-	  onChange = (e) => {
-	    console.log('radio checked', e.target.value);
-	    this.setState({
-	      value: e.target.value,
-	    });
-	  }
-	  inputVaule =(e) => {
-	  	console.log(e.target.value)
-	  	this.setState({
-	  		text:e.target.value
-	  	})
-	  }
-	  render() {
-	    const { getFieldDecorator } = this.props.form;
-	    const {value,text}=this.state;
-	    return (
-	      <Form>
-			<FormItem 
-		          label="审核处理"
-		          
-		        >
-		          {getFieldDecorator('radio-button')(
-		            <RadioGroup onChange={this.onChange} value={this.state.value}>
-		                <Radio  value={1}>通过</Radio>
+	return (
+			
+		<Modal {...modalOpts} width='400px'>
+	    <Form>
+			<FormItem  label="审核处理" >
+		          {getFieldDecorator('radio',{
+		          	 rules: [{
+			              required: true, message: '请选择栏目!',
+			            }], 
+		          })(
+		            <RadioGroup onChange={onChange} >
+		                <Radio  value='1'>通过</Radio>
 		                <br />
-				        <Radio  value={2}>
+				        <Radio  value='2'>
 				          不通过
-				          {this.state.value === 2 ? <TextArea onChange={this.inputVaule} style={{ width: 100, marginLeft: 10 }} /> : null}
+				          
 				        </Radio>
 		            </RadioGroup>
 		          )}
 		        </FormItem>
-		        <FormItem
-		          
-		        >
-		          <Button type="primary" onClick={()=>handleOk(value,text)}>保存</Button>
-		        </FormItem>
+		        {value == "2"? <FormItem>
+		          {getFieldDecorator('text',{
+		          	 rules: [{
+			              required: false, message: '请输入!',
+			            }], 
+		          })(
+		          <TextArea  style={{ width: "100%",minHeight:"100px"}} placeholder="不通过原因(选填)"/> 
+		          )}
+		        </FormItem>:null}
 			</Form>
-	    );
-	  }
-	}
-	const WrappedDynamicRule = Form.create()(DynamicRule);
-	return (
-			
-		<Modal {...modalOpts} width='400px'>
-		<WrappedDynamicRule />
-				
 		</Modal>
 	);
 };

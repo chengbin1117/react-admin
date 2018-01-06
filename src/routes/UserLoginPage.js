@@ -4,13 +4,9 @@ import stytes from './UserLoginPage.css';
 import { withRouter,browserHistory} from 'dva/router';
 import LoginForm from '../components/User/LoginForm';
 function LoginPage({location, dispatch, user, router}) {
-	// if (user && user.logged ) {
-	// 	// router.push('/merchant');
-	// 	dispatch({
-	// 		type:"user/redirect",
-	// 		router: router,			
-	// 	})
-	// }	
+
+	//console.log("location",location)
+
 	const loginProps = {
 		onSubmit: function(data) {
 			//console.log("login:", data);
@@ -21,13 +17,6 @@ function LoginPage({location, dispatch, user, router}) {
 				},
 			})
 		},
-		router,
-		forget: function() {
-			dispatch({
-				type:'user/forgetBox',
-				
-			})
-		}
 	};
 
  
