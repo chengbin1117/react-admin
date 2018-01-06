@@ -397,7 +397,7 @@
 .container{
 	margin: 0 auto;
 	width:60%;
-	height:900px;
+	padding-bottom:50px;
 }
 .text{
 	text-align: center!important;
@@ -412,6 +412,7 @@
   flex-direction: column;
   overflow: hidden;
 }
+
 .container_left .title{
   font-size:26px;
   margin-top: 10px;

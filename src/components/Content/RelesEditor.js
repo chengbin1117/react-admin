@@ -111,7 +111,11 @@ function RelesEditor({
       })
   }
   function publishStatus (){
-  
+          validateFields('articleTitle',(errors) => {
+              if(errors){
+                return
+              }
+          })
           const data = {...getFieldsValue()};
            var tagsName ="";
           if(data.tag1==undefined){
@@ -207,6 +211,7 @@ function RelesEditor({
   function handleProvinceChange(value){
     //console.log(value)
     sec=parseInt(value)
+    secondCity=parseInt(value)
   }
   function showUser(){
     dispatch({

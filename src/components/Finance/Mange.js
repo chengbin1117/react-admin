@@ -91,7 +91,8 @@ const Manage = ({
 		  key: 'action',
 		  render: (text, record) => (
 		    <span>
-		    <a style={{marginRight:10+"px"}} onClick={()=>onEdit(record)}>审核</a>
+		    {record.status==0?<a style={{marginRight:10+"px"}} onClick={()=>onEdit(record)}>审核</a>:
+		    <a style={{marginRight:10+"px",color:"#e5e5e5"}} >审核</a>}
 		    <a style={{marginRight:10+"px"}} onClick={()=>Examine(record)}>详情</a>
          	
 		    </span>

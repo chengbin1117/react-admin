@@ -41,7 +41,7 @@ function ContentComment({location,dispatch,router,content}) {
 			dispatch({
 				type:"content/showSetModal",
 				payload:{
-					selectList:record.commentId
+					selectList:record
 				}
 			})
 		},

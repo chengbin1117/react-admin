@@ -168,7 +168,7 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		      </div>
 		      <Table style = {{marginTop:90}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId} locale={{emptyText:"暂无数据"}}/>
 		      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange} total={total} onChange={this.onChange} pageSize={20}/>
-		      <Button type="primary" size = 'large' disabled={!hasSelected} onClick={()=>showSets(selectedRows)}>批量设置显示状态</Button>
+		      
 		     
 		    </div>
 		  );
@@ -186,3 +186,5 @@ Content_Comment.propTypes = {
 };
 
 export default Content_Comment;
+
+{/*<Button type="primary" size = 'large' disabled={!hasSelected} onClick={()=>showSets(selectedRows)}>批量设置显示状态</Button>*/}

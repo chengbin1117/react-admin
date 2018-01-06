@@ -32,6 +32,7 @@ const RelationModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -57,10 +58,10 @@ const RelationModal = ({
 
 	function Cancel() {
 		onCancel()
-		setFieldsValue({
-			father: "0",
-			name: ''
-		});
+		
+	}
+	function afterClose(){
+			resetFields()
 	}
 	const modalOpts = {
 		title: "关联前台账号",
@@ -69,7 +70,9 @@ const RelationModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		okText:"确定",
-		cancel:"取消"
+		cancelText:"取消",
+		destroyOnClose:true,
+		afterClose:afterClose
 	};
 	return (
 
