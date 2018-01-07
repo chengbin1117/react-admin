@@ -93,7 +93,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -121,7 +121,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -148,7 +148,7 @@ export default {
             }); 
       } else {
         message.error(data.message);
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{

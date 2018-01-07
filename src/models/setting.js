@@ -113,7 +113,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
                 message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -137,7 +137,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -167,7 +167,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -191,7 +191,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -206,7 +206,7 @@ export default {
           if (data && data.code == 10000) {
              message.success('重置成功')
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -228,7 +228,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -249,7 +249,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -274,7 +274,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -296,7 +296,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -339,7 +339,7 @@ export default {
                 }
              })
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -373,7 +373,7 @@ export default {
                })
                //window.location.reload();
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -416,7 +416,7 @@ export default {
               yield put(routerRedux.push('/setting/about'))
               //router.push('/setting/about') 
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -456,7 +456,7 @@ export default {
               })
           
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -476,7 +476,7 @@ export default {
                })
                
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{
@@ -497,7 +497,7 @@ export default {
                })
                
           } else {
-            if(data.code ==10004){
+            if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
             }else{

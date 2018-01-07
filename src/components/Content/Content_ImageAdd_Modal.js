@@ -29,10 +29,11 @@ const Content_ImageAdd_Modal = ({
     validateFields,
     getFieldsValue,
     setFieldsValue,
+    resetFields
   },
 }) => {
 
-  console.log(type,currentItem)
+  //console.log(type,currentItem)
   function handleOk(value,text) {
     
       onCheckOk(value,text);
@@ -42,10 +43,10 @@ const Content_ImageAdd_Modal = ({
 
   function Cancel() {
     onCancel()
-    setFieldsValue({
-      father: "0",
-      name: ''
-    });
+   
+  }
+   function afterClose(){
+      resetFields()
   }
   const modalOpts = {
     title: "添加图片",
@@ -53,7 +54,9 @@ const Content_ImageAdd_Modal = ({
     onOk: handleOk,
     onCancel: Cancel,
     maskClosable: false,
-    footer:null
+    footer:null,
+    afterClose:afterClose,
+
   };
   function onChange(value) {
   console.log(value);
@@ -213,7 +216,7 @@ const Content_ImageAdd_Modal = ({
                 { type:"string",}
                 ],
               })(
-              <Input placeholder="请输入链接地址" addonBefore="Http://"
+              <Input placeholder="请输入链接地址" 
 
                 />
           )}
@@ -255,7 +258,8 @@ const Content_ImageAdd_Modal = ({
             )}
           </FormItem>
           <FormItem  style={{marginLeft:120+'px'}} className="collection-create-form_last-form-item">
-              <Button type="primary" size="large" onClick={()=>this.check(this.state.Imgvalue)} style={{paddingLeft:20+"px",paddingRight:20+"px"}}> 保存</Button>
+          <Button  type="default" size="large" onClick={()=>Cancel()} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}> 取消</Button>
+              <Button type="primary" size="large" onClick={()=>this.check(this.state.Imgvalue)} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}}> 保存</Button>
           </FormItem>
         </Form>
       );

@@ -8,7 +8,7 @@ const Option = Select.Option;
 import {uploadUrl} from "../../services/common"
 let X = 0; //出事选中父选择器的
 function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loading,editorItem,setStatus,changepage}) {
-	console.log('loading',loading)
+	//console.log('loading',loading)
 	const columns = [{
 	  title: '类型',
 	  dataIndex: 'imageType',

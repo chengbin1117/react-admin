@@ -39,7 +39,7 @@ const Content_ColumnAdd_Modal = ({
 
 const FormItem = Form.Item;
 
-  console.log(item)
+  //console.log(item)
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
@@ -58,10 +58,10 @@ const FormItem = Form.Item;
 
   function Cancel() {
     onCancel()
-    setFieldsValue({
-      father: "0",
-      name: ''
-    });
+    
+  }
+  function afterClose(){
+    resetFields()
   }
   const modalOpts = {
     title:"添加一级栏目",
@@ -73,7 +73,7 @@ const FormItem = Form.Item;
     okText:"确定",
     cancelText:"取消",
     key : myKey,
-
+    afterClose:afterClose
   };
 
    const formItemLayout = {

@@ -30,11 +30,11 @@ function UserInfo({dispatch,user}) {
 		}
 	  handleSubmit = (e) => {
 	    e.preventDefault();
-	    this.props.form.validateFields((err) => {
+	    this.props.form.validateFields((err,values) => {
 	      if (!err) {
 	        
-	        const values ={...this.props.getFieldDecorator}
-	        console.log(values)
+	        //const values ={...(this.props.getFieldsValue())}
+	        //console.log(values)
 	        dispatch({
 	        	type:"user/userInfoSet",
 	        	payload:{

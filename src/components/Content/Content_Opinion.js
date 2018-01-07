@@ -19,6 +19,11 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 	  title: '反馈内容',
 	  dataIndex: 'content',
 	  key: 'content',
+	  width:500,
+	  className:"conten",
+	  render:(text,record)=>(
+	  	<p className={style_pagination.contentText}>{text}</p>
+	  	)
 	}, {
 	  title: '邮箱',
 	  dataIndex: 'email',
@@ -136,7 +141,7 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 			      <div>
 			      	<p >当前共有反馈数：{total}</p>
 			      </div>
-			      <Table style ={{marginTop:20}} bordered columns={columns} rowKey={record => record.id+''} rowSelection={rowSelection} dataSource={data} pagination = {false} locale={{emptyText:"暂无数据"}} loading={loading}/>
+			      <Table style ={{marginTop:20, tableLayout: 'fixed'}} bordered columns={columns} rowKey={record => record.id+''} rowSelection={rowSelection} dataSource={data} pagination = {false} locale={{emptyText:"暂无数据"}} loading={loading}/>
 			      <Pagination className = {style_pagination.pagination} current={currentPage} showQuickJumper onShowSizeChange={this.onShowSizeChange}  pageSize={25} total={total} onChange={this.onChange} />
 			      <Button type="primary" size = 'large' disabled={!hasSelected} onClick={()=>delFeeks(selectedRows)} style ={{marginTop:20}} >删除</Button>
 			    </div>

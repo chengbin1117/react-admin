@@ -25,10 +25,11 @@ const Content_ImageEditor_Modal = ({
     validateFields,
     getFieldsValue,
     setFieldsValue,
+    resetFields
   },
 }) => {
 
-    console.log(item)
+   // console.log(item)
   function handleOk(value,text,id) {
     
       onCheckOk(value,text,id);
@@ -38,10 +39,10 @@ const Content_ImageEditor_Modal = ({
 
   function Cancel() {
     onCancel()
-    setFieldsValue({
-      father: "0",
-      name: ''
-    });
+   
+  }
+  function afterClose(){
+      resetFields()
   }
   const modalOpts = {
     title:"编辑图片",
@@ -49,7 +50,8 @@ const Content_ImageEditor_Modal = ({
     onOk: handleOk,
     onCancel: Cancel,
     maskClosable: false,
-    footer:null
+    footer:null,
+    afterClose:afterClose
   };
   function onChange(value) {
   console.log(value);
@@ -152,6 +154,11 @@ const Content_ImageEditor_Modal = ({
       //console.log(check)
         return check
     }
+    handeleSelectChange =(value)=>{
+        this.setState({
+        value:value,
+      });
+    }
     render() {
       const { getFieldDecorator } = this.props.form;
       const {value,text,Imgvalue}=this.state;
@@ -176,13 +183,37 @@ const Content_ImageEditor_Modal = ({
               { required: true, message: '请选择类型' },
               ],
             })(
-              <RadioGroup onChange={this.hanlechange} >
-                <Radio value="1">资讯</Radio><Input onChange={this.inputVaule} value={value=='1'?Imgvalue:''} placeholder="请输入文章Id" disabled={this.state.value!='1'?true:false}/>
-                <Radio value="2">广告</Radio><Input onChange={this.inputVaule} value={value=='2'?Imgvalue:""} placeholder="请输入链接地址" disabled={this.state.value!='2'?true:false}/>
-                <Radio value="3">其他</Radio><Input onChange={this.inputVaule} value={value=='3'?Imgvalue:""} placeholder="请输入链接地址"  disabled={this.state.value!='3'?true:false}/>
-              </RadioGroup>
+              <Select onChange={this.handeleSelectChange}>
+                    <Option value="1">资讯</Option>
+                    <Option value="2">广告</Option>
+                    <Option value="3">其他</Option>
+              </Select>
             )}
           </FormItem>
+          {this.state.value=="1"?<FormItem {...formItemLayout_radio} label="文章ID" >
+              {getFieldDecorator('imageDetail', {
+                initialValue: item.imageDetail||"",
+                 rules: [
+                { required: true, message: "请输入文章ID" },
+                { type:"string",min:1,message:"文章ID必须为数字",pattern:/^[0-9]*$/ }
+                ],
+              })(
+               <Input placeholder= "请输入文章ID"
+                />
+          )}
+          </FormItem>:<FormItem {...formItemLayout_radio} label="链接地址">
+              {getFieldDecorator('imageDetail', {
+                initialValue: item.imageDetail||"",
+                 rules: [
+                { required: true, message: "请输入链接地址" },
+                { type:"string",}
+                ],
+              })(
+              <Input placeholder="请输入链接地址" 
+
+                />
+          )}
+          </FormItem>}
           <FormItem
                     {...formItemLayout_radio}
                     label="显示位置"
@@ -218,7 +249,8 @@ const Content_ImageEditor_Modal = ({
             )}
           </FormItem>
           <FormItem  style={{marginLeft:120+'px'}} className="collection-create-form_last-form-item">
-              <Button type="primary" size="large" onClick={()=>this.check(this.state.Imgvalue)} style={{paddingLeft:20+"px",paddingRight:20+"px"}}> 保存</Button>
+              <Button  type="default" size="large" onClick={()=>Cancel()} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}> 取消</Button>
+              <Button type="primary" size="large" onClick={()=>this.check(this.state.Imgvalue)} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}}> 保存</Button>
           </FormItem>
         </Form>
       );

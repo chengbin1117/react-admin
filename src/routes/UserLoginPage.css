@@ -171,6 +171,11 @@
 	font-size:14px;
 	color:#000;
 }
+.idcardBack{
+	display: inline-block;
+	width:150px;
+	
+}
 @media only screen and (max-width: 1280px){
 	.loginImg{
 		width:235px;

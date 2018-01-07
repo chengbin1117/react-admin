@@ -64,7 +64,8 @@ const BgModal = ({
 		visible,
 		onOk: handleOk,
 		onCancel: Cancel,
-		footer:null
+		footer:null,
+		zIndex:2000,
 	};
 	
 	//let logoimg = require("image!../../assets/images/lx4.png");

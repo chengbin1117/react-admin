@@ -16,7 +16,7 @@ import Content_Image from '../components/Content/Content_Image';
 import Content_ImageAdd_Modal from '../components/Content/Content_ImageAdd_Modal';
 import Content_ImageEditor_Modal from '../components/Content/Content_ImageEditor_Modal';
 import ImgShowModal from '../components/Content/ImgShowModal';
-
+import {GetRequest} from '../services/common'
 
 function ContentImage({dispatch,content,location}) {
 	let  userId = localStorage.getItem('userId');
@@ -50,7 +50,7 @@ function ContentImage({dispatch,content,location}) {
 		handlsearch(values){
 			console.log(values)
 			if(values.residence!=undefined){
-				dispatch({
+				/*dispatch({
 					type:"content/siteimagelist",
 					payload:{
 						imageType:parseInt(values.type),
@@ -60,18 +60,25 @@ function ContentImage({dispatch,content,location}) {
 						pageSize:25,
 
 					}
-			   })
+			   })*/
+			dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
+				"&imageStatus="+values.showStatus+"&navigatorPos="+values.residence[0]+"&imagePos="+values.residence[1]
 
+				))
 
 			}else{
-				dispatch({
+				/*dispatch({
 					type:"content/siteimagelist",
 					payload:{
 						imageType:parseInt(values.type),
 						imageStatus:parseInt(values.showStatus),
 						pageSize:25,
 					}
-			   })
+			   })*/
+				dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
+				"&imageStatus="+values.showStatus
+
+				))
 			}
 		},
 		editorItem(record){
@@ -115,8 +122,11 @@ function ContentImage({dispatch,content,location}) {
 			
 		},
 		changepage(page){
-			console.log(location)
-		    dispatch(routerRedux.push('/content/content_image?page='+page))
+			const search =GetRequest(location.search);
+		    dispatch(routerRedux.push('/content/content_image?page='+page+
+		    	"&imageType="+search.imageType+"&imageStatus="+search.imageStatus+"&navigatorPos="+search.navigatorPos+
+		    	"&imagePos="+search.imagePos
+		    	))
 		}
 
 	}
@@ -183,7 +193,7 @@ function ContentImage({dispatch,content,location}) {
 						payload:{
 							imageId:id,
 							imageType:parseInt(value.type),
-							imageDetail:text,
+							imageDetail:value.imageDetail,
 							navigatorPos:parseInt(value.residence[0]),
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),
@@ -199,7 +209,7 @@ function ContentImage({dispatch,content,location}) {
 							imageId:id,
 							imageAddress:value.imageAddress,
 							imageType:parseInt(value.type),
-							imageDetail:text,
+							imageDetail:value.imageDetail,
 							navigatorPos:parseInt(value.residence[0]),
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),

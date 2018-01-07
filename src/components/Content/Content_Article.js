@@ -102,7 +102,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	    <span>
 	      <a onClick={()=>editorItem(record)} className = "action_font" >编辑</a>
 	      <a onClick={()=>article(record)} className = "action_font" style={{marginLeft:10}} disabled={record.publishStatus==2?false:true}>审核</a>
-	      <a onClick={()=>setShowModal(record)} style={{marginLeft:10}} className = "action_font">显示设置</a>
+	      <a onClick={()=>setShowModal(record)} style={{marginLeft:10}} className = "action_font" disabled={record.publishStatus==1?false:true}>显示设置</a>
 	      <a onClick={()=>delArticle(record,getBonusList)} style={{marginLeft:10}} className = "action_font">查看阅读奖励</a>
 	    </span>
 	  )

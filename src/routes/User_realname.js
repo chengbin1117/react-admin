@@ -14,7 +14,7 @@ import LayoutContainer from '../components/Layout';
 import RealName from '../components/User/RealName';
 import RealNameModal from '../components/User/RealNameModal';
 import RealsModal from '../components/User/RealsModal';
-import {timeFormat,uploadUrl} from '../services/common';
+import {timeFormat,uploadUrl,GetRequest} from '../services/common';
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
@@ -112,6 +112,9 @@ function UserRealName({location,dispatch,user,router,}) {
 						status:parseInt(values.status)
 					}
 				})
+				dispatch(routerRedux.push('/user/realName?page=1'+"&userId="+values.userId+
+		         	"&email="+values.email+"&mobile="+values.mobile+"&status="+values.status
+		         	))	
 			}else{
 				
 				
@@ -126,10 +129,18 @@ function UserRealName({location,dispatch,user,router,}) {
 						endDate:timeFormat(new Date(values.time[1]))
 					}
 				})
+				dispatch(routerRedux.push('/user/realName?page=1'+"&userId="+values.userId+
+		         	"&email="+values.email+"&mobile="+values.mobile+"&status="+values.status+
+		         	"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
+		         	))	
 			}
 	    },
 	    changepage(page){
-
+	    	const search =GetRequest(location.search);
+	    	dispatch(routerRedux.push('/user/realName?page='+page+"&userId="+search.userId+
+		         	"&email="+search.email+"&mobile="+search.mobile+"&status="+search.status+
+		         	"&startDate="+search.startDate+"&endDate="+search.endDate
+		         	))	
 	    }
 	}
 

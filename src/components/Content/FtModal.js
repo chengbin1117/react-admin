@@ -73,7 +73,8 @@ const FtModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		width:1200,
-		footer:null
+		footer:null,
+		zIndex:2000,
 	};
 	
 	//let logoimg = require("image!../../assets/images/lx4.png");

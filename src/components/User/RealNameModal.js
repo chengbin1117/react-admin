@@ -10,7 +10,7 @@ import {
 	message,
 	Button
 } from 'antd';
-var value ='1'
+var value ='0';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const TextArea = Input.TextArea
@@ -35,6 +35,7 @@ const RealNameModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields,
 	},
 }) => {
 
@@ -63,6 +64,9 @@ const RealNameModal = ({
 		value =e.target.value;
 		
 	}
+	function afterClose(){
+		resetFields()
+	}
 	const modalOpts = {
 		title: selectList.status!=1?'审核处理':"取消通过",
 		visible,
@@ -70,6 +74,9 @@ const RealNameModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		width:600,
+		afterClose:afterClose,
+		okText:"确定",
+		cancelText:"取消"
 	};
 	
 	return (
@@ -80,6 +87,7 @@ const RealNameModal = ({
 		   		<div>
 		   	    <FormItem label="审核处理">
 		          {getFieldDecorator('radio',{
+		          	initialValue:'0',
 		          	 rules: [{
 			              required: false, message: '请选择!',
 			            }], 

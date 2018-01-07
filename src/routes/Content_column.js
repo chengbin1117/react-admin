@@ -23,7 +23,7 @@ function ContentColumn({dispatch,content,router}){
 		dispatch(routerRedux.push('/'))
 	}
 	const {childCloum,ColumnAddVisbile,CList,current,type,loading,columnEditor} =content;
-	console.log(CList)
+	//console.log(CList)
 	const Content_ColumnProps ={
 		data:CList,
 		loading,
