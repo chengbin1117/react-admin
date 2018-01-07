@@ -35,7 +35,7 @@ const Content_ColumnEditor_Modal = ({
 }) => {
 
 const FormItem = Form.Item;
- console.log(item)
+ //console.log(item)
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
@@ -54,10 +54,10 @@ const FormItem = Form.Item;
 
   function Cancel() {
     onCancel()
-    setFieldsValue({
-      father: "0",
-      name: ''
-    });
+    
+  }
+  function afterClose(){
+      resetFields()
   }
   const modalOpts = {
     title:item.columnLevel==1?"编辑一级栏目":"编辑二级栏目",
@@ -67,7 +67,8 @@ const FormItem = Form.Item;
     maskClosable: false,
     width:'670px',
     okText:"确定",
-    cancelText:"取消"
+    cancelText:"取消",
+    afterClose:afterClose
   };
 
    const formItemLayout = {
@@ -89,12 +90,12 @@ const FormItem = Form.Item;
           <FormItem {...formItemLayout} label="上级栏目">
 
             {getFieldDecorator('parentId', {
-              initialValue:item.columnLevel==1?'0':item.id+'',
+              initialValue:item.columnLevel==1?'0':item.partentId+'',
               rules: [{ required: true, message: '请选择' }],
             })(
               <Select disabled>
                   <Option value="0">首页</Option>
-                  <Option value={item.id+''}>{item.name}</Option>
+                  <Option value={item.partentId+''}>{item.partentName}</Option>
               </Select>
               
             )}
@@ -172,7 +173,7 @@ const FormItem = Form.Item;
             })(
               <Radio.Group>
                 <Radio value="public">按栏目列表页展示</Radio><span>注：选择这种方式，则前台按栏目列表展示该栏目下的文章</span><br />
-                <Radio value="private">按频道页展示</Radio><span>注：选择这种方式，则前台按频道页展示该栏目下的所有内容</span>
+                <Radio value="private" disabled={(item&&item.columnLevel==1)?false:true}>按频道页展示</Radio><span>注：选择这种方式，则前台按频道页展示该栏目下的所有内容</span>
               </Radio.Group>
             )}
           </FormItem>

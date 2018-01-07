@@ -21,8 +21,8 @@ const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 const formItemLayout = {
       labelCol: {
-        xs: { span: 2 },
-        sm: { span: 2 },
+        xs: { span: 1 },
+        sm: { span: 1 },
       },
       wrapperCol: {
         xs: { span: 16 },
@@ -100,19 +100,23 @@ function RelesEditor({
                 articleLink:data.articleLink,
                 commentSet:data.commentSet == "true"?true:false,
                 publishSet:data.radioG == "true"?true:false,
-                createUser:parseInt(data.createUser),
-                sysUser:parseInt(merId),
+                createUser:data.createUser,
+                sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 article_textnum:data.text.txt.text().length,
                 publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
+                publishStatus:1,
               }
           })
         }
       })
   }
   function publishStatus (){
-  
-          const data = {...getFieldsValue()};
+          validateFields(['articleTitle'],(errors) => {
+              if(errors){
+                return
+              }
+              const data = {...getFieldsValue()};
            var tagsName ="";
           if(data.tag1==undefined){
              tagsName ="";
@@ -139,16 +143,16 @@ function RelesEditor({
                 description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
                 image:imgUrl,
                 type:parseInt(data.type),
-                columnId:data.column[0]!=undefined?parseInt(data.column[0]):null,
-                secondColumn:data.column[1]!=undefined?parseInt(data.column[1]):null,
+                columnId:data.column!=undefined?parseInt(data.column[0]):null,
+                secondColumn:data.column!=undefined?parseInt(data.column[1]):null,
                 displayStatus:parseInt(data.radioT),
                 displayOrder:parseInt(data.sort),
                 articleSource:data.articleSource,
                 articleLink:data.articleLink,
                 commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
                 publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
-                createUser:parseInt(data.createUser),
-                sysUser:parseInt(merId),
+                createUser:data.createUser,
+                sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
                 article_textnum:data.text.txt.text().length
@@ -172,14 +176,16 @@ function RelesEditor({
                 articleLink:data.articleLink,
                 commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
                 publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
-                createUser:parseInt(data.createUser),
-                sysUser:parseInt(merId),
+                createUser:data.createUser,
+                sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
                 article_textnum:0
               }
           })
           }
+          
+          })
           
       
   }
@@ -207,6 +213,7 @@ function RelesEditor({
   function handleProvinceChange(value){
     //console.log(value)
     sec=parseInt(value)
+    secondCity=parseInt(value)
   }
   function showUser(){
     dispatch({
@@ -236,7 +243,7 @@ function RelesEditor({
                 type:"setting/setKgUser",
                 payload:{
                   userId:merId,
-                  kgUserId:parseInt(deskUserId)
+                  kgUserId:deskUserId
                 }
                   })
           },
@@ -371,12 +378,12 @@ function RelesEditor({
                       ],
                       trigger:'edtiorContent'
                     })(
-                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText}/>
+                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left'}}/>
                     )}
                   
               </FormItem>
               <Row  key='2'>
-              <Col span={4} style={{marginLeft:'65px'}}>
+              <Col span={4} >
                   <FormItem label="Tag标签 " labelCol={{ span: 6 }}
                       wrapperCol={{ span: 14 }}>
                       {getFieldDecorator('tag1', {
@@ -532,46 +539,20 @@ function RelesEditor({
                       label="选择栏目"
                      
                     >
-                     <Row >
-                      <Col span={6}>
-                        {getFieldDecorator('column', {
+                    {getFieldDecorator('column', {
                         rules: [
                           { required: true, message: '请选择文章栏目!' },
                         ],
                       })(
-                      <Cascader options={options}  placeholder="请选择文章栏目" />
-                        /*<Select placeholder="请选择" onChange={handleProvinceChange}>
-                          {firstC&&firstC.map((item,index)=>{
-                            return(
-                                <Option value={item.value+""} key={index}>{item.label}</Option>
-                              )
-                          })}
-                        </Select>*/
-                      )}
-                      </Col>
-                      {/*<Col span={6}>
-                         {getFieldDecorator('secondColumn', {
-
-                          rules: [
-                            { required: false, message: '请选择文章栏目!' },
-                          ],
-                        })(
-                          <Select placeholder="请选择">
-                            {(secondC&&secondC[sec]!=undefined)&&secondC[sec].map((item,index)=>{
-                            return(
-                                <Option value={item.value+""} key={index}>{item.label}</Option>
-                              )
-                          })}
-                          
-                          </Select>
-                          )}
-                      </Col>*/}
-                    </Row>
+                      <Cascader options={options}  placeholder="请选择文章栏目" style={{width:"20%"}}/>
+                       )}
+                  
                       
               </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="显示设置"
+                      colon={true}
                     >
                       {getFieldDecorator('radioT',{
                         initialValue:'1',
@@ -660,10 +641,10 @@ function RelesEditor({
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],
                       })(
-                        <Input style={{width:'20%'}} disabled={(UserById.kgUserId!=null&&UserById.kgUserId!="")?true:false}/>
+                        <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
 
                       )}
-                      {(UserById.kgUserId ==null||UserById.kgUserId=="")?<a style={{maginLeft:30+'px'}} onClick={showUser} >关联前台用户</a>:null}
+                      {(UserById.kgUserId ==null||UserById.kgUserId=="")?<a style={{marginRight:40+'px'}} onClick={showUser} >关联前台用户</a>:null}
               </FormItem>
               <FormItem
                       {...formItemLayout}

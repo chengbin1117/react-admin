@@ -388,8 +388,15 @@ function AccountRule({location,dispatch,setting,router,}) {
 						      </div>
 						   ),
 					okText : '修改',
+					cancelText:"取消",
 					onOk() {
-					    
+					    dispatch({
+					    	type:"setting/showRelationModal",
+					    	payload:{
+					    		item:record
+					    	}
+					    })
+
 					},
 					onCancel() {
 					      console.log('Cancel');
@@ -433,7 +440,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 					    type:"setting/setKgUser",
 					    	payload:{
 					    		userId:record.id,
-					    		kgUserId:parseInt(deskUserId)
+					    		kgUserId:deskUserId
 					    	}
 			            })
 					},

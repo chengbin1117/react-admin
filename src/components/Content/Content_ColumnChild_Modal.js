@@ -56,10 +56,10 @@ const FormItem = Form.Item;
 
   function Cancel() {
     onCancel()
-    setFieldsValue({
-      father: "0",
-      name: ''
-    });
+    
+  }
+   function afterClose(){
+    resetFields()
   }
   const modalOpts = {
     title:"添加子栏目",
@@ -69,8 +69,8 @@ const FormItem = Form.Item;
     maskClosable: false,
     width:'670px',
     okText:"确定",
-    cancelText:"取消"
-
+    cancelText:"取消",
+    afterClose:afterClose
   };
 
    const formItemLayout = {

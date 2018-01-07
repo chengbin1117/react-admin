@@ -10,7 +10,7 @@ import {
 	message,
 	Button
 } from 'antd';
-var value ='1'
+var value ='0'
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const TextArea = Input.TextArea
@@ -90,7 +90,7 @@ const ExamineModal = ({
 			            }], 
 		          })(
 		            <RadioGroup onChange={onChange} >
-		                <Radio  value='0'>通过</Radio>
+		                <Radio  value='1'>通过</Radio>
 		                <br />
 				        <Radio  value='2'>
 				          不通过

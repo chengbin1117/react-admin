@@ -46,7 +46,7 @@ const Content_CommentSetShow_Modal = ({
   },
 }) => {
 
-  console.log("selectList",selectList)
+  //console.log("selectList",selectList)
   function handleOk(value,text) {
       validateFields((errors) => {
       if (errors) {
@@ -59,7 +59,7 @@ const Content_CommentSetShow_Modal = ({
         
       }
       
-      onOk(data,selectList);
+      onOk(data,selectList.commentId);
     });
     
     

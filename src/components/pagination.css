@@ -2,3 +2,17 @@
 	float:right;
 	margin-top:20px;
 }
+.contentText{
+	
+	overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.conten{
+	width:500px;
+	white-space: nowrap;
+　　overflow: hidden;
+　　text-overflow: ellipsis;
+}

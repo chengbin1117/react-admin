@@ -114,6 +114,10 @@ export default {
               type:'siteimagelist',
               payload:{
                   currentPage:parseInt(search.page),
+                  imageType:search.imageType!="undefined"?parseInt(search.imageType):null,
+                  imageStatus:search.imageStatus!="undefined"?parseInt(search.imageStatus):null,
+                  navigatorPos:search.navigatorPos!="undefined"?parseInt(search.navigatorPos):null,
+                  imagePos:search.imagePos!="undefined"?parseInt(search.imagePos):null,
                   pageSize:25,
               }
             })
@@ -228,7 +232,7 @@ export default {
         });
         //message.error(data.message);
         //tokenLogOut(data)
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -255,7 +259,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -291,7 +295,7 @@ export default {
               }
             });
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -323,7 +327,7 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -379,7 +383,7 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -393,18 +397,20 @@ export default {
       //console.log("11",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
-         if(payload.publishStatus!=undefined){
-          if(payload.articleId!=undefined){
+         if(payload.articleId!=undefined){
             message.success('编辑成功')
             yield put(routerRedux.push('/content/content_article?page=1'));
-          }else{
-             message.success('存草稿成功')
-             yield put(routerRedux.push('/content/content_article?page=1'));
-          }
          }else{
-           message.success('发布成功')
+           if(payload.publishStatus==1){
+              message.success('发布成功')
+           }else{
+            message.success('存草稿成功')
+           }
            yield put(routerRedux.push('/content/content_article?page=1'));
+           
+            
          }
+         
          
          /*console.log(res)
             yield put({
@@ -418,7 +424,7 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -446,6 +452,8 @@ export default {
               res[i].children[k].createDate =formatDate(res[i].children[k].createDate);
               res[i].children[k]['partantNavigator']=res[i].navigatorDisplay;
               res[i].children[k]['partentDisplayMode']=res[i].displayMode;
+              res[i].children[k]['partentId']=res[i].id;
+              res[i].children[k]['partentName']=res[i].name;
               second ={
                 'value': res[i].children[k].id,
                 'label': res[i].children[k].name,
@@ -495,7 +503,7 @@ export default {
          yield put({
             type: 'hideLoading',
          });
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -522,7 +530,7 @@ export default {
             });
       } else {
          
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -560,7 +568,7 @@ export default {
             yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
         }else{
@@ -589,7 +597,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -628,7 +636,7 @@ export default {
             });  
       
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -651,7 +659,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -674,7 +682,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -704,7 +712,7 @@ export default {
               }
             }); 
       } else {
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -731,7 +739,7 @@ export default {
               }
             }); 
       } else {
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
           
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
@@ -747,7 +755,7 @@ export default {
       if (data && data.code == 10000) {
             
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -763,7 +771,7 @@ export default {
            message.success('保存成功'); 
            yield put(routerRedux.push('/content/content_opinion?page=1'))
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -796,7 +804,7 @@ export default {
           yield put({
             type: 'hideLoading',
           });
-          if(data.code ==10004){
+          if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -815,7 +823,7 @@ export default {
            })
       
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -844,7 +852,7 @@ export default {
 
            })
       } else {
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -876,7 +884,7 @@ export default {
               
            })
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -925,7 +933,7 @@ export default {
 
            })
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -967,17 +975,15 @@ export default {
 
            })
            
-           /* yield put({
+            yield put({
               type: 'getColumnList',
-              payload:{
-              
-              }
-
-           })*/
+                payload:{
+                }
+           })
           //yield put(routerRedux.push('/content/content_column?page=1'))
-          window.location.reload()
+          //window.location.reload()
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -1001,7 +1007,7 @@ export default {
 
            })
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -1023,7 +1029,7 @@ export default {
 
            })
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -1045,7 +1051,7 @@ export default {
 
            })
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -1075,7 +1081,7 @@ export default {
               }
             })*/
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -1099,7 +1105,7 @@ export default {
             })
             
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{

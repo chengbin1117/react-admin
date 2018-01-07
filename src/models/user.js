@@ -43,6 +43,14 @@ export default {
                   type: 'getUserList',
                   payload: {
                     currentPage:parseInt(search.page),
+                    userId:search.userId!="undefined"?search.userId:null,
+                    userEmail:search.userEmail!="undefined"?search.userEmail:null,
+                    userMobile:search.userMobile!="undefined"?search.userMobile:null,
+                    userRole:search.userRole!="undefined"?parseInt(search.userRole):null,
+                    auditStatus:search.auditStatus!="undefined"?parseInt(search.auditStatus):null,
+                    lockStatus:search.lockStatus!="undefined"?parseInt(search.lockStatus):null,
+                    createDateStart:search.createDateStart!="undefined"?search.createDateStart:null,
+                    createDateEnd:search.createDateStart!="undefined"?search.createDateEnd:null,
                     pageSize:25,
                   }
                 });
@@ -54,6 +62,12 @@ export default {
                   type: 'getUserCert',
                   payload: {
                     currentPage:search.page,
+                    userId:search.userId!="undefined"?search.userId:null,
+                    email:search.email!="undefined"?search.email:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    status:search.status!="undefined"?parseInt(search.status):null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
                     pageSize:25,
                   }
                 });
@@ -175,7 +189,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -204,7 +218,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -263,7 +277,7 @@ export default {
               }
             }); 
       } else {
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -294,7 +308,7 @@ export default {
               }
             });
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -327,7 +341,7 @@ export default {
               }
             }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -346,7 +360,7 @@ export default {
           message.success('设置成功')
          
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -372,7 +386,7 @@ export default {
             }); 
          
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -396,7 +410,7 @@ export default {
               }
           }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -420,7 +434,7 @@ export default {
               }
           }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -442,7 +456,7 @@ export default {
               }
           }); */
       } else {
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -459,15 +473,15 @@ export default {
 
       if (data && data.code == 10000) {
         message.success('设置成功')
-          /*var res = data.responseBody;
+          //var res = data.responseBody;
           yield put({
-              type: 'getRoleProfileSuccess',
+              type: 'getSiteInfo',
               payload:{
-                RoleProfile:res
+               
               }
-          }); */
+          }); 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -483,7 +497,7 @@ export default {
           // window.location.reload()
 
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -526,7 +540,7 @@ export default {
               }
           });
       } else {
-       if(data.code ==10004){
+       if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -566,7 +580,7 @@ export default {
               }
           });  
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{
@@ -590,7 +604,7 @@ export default {
           }
         })
       } else {
-        if(data.code ==10004){
+        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
           yield put(routerRedux.push('/'));
         }else{

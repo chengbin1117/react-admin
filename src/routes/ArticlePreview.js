@@ -32,7 +32,7 @@ function ArticlePreview({location,dispatch,user,router,}) {
 	//var H = document.body.clientHeight + 'px'
 	console.log(previewTitle,previewartic)
 	return (
-			<div >
+			<div style={{minHeight:"100%"}}>
 				
 			    <div className={styles.topNav}>
 			     	<div className={styles.grid_content} >

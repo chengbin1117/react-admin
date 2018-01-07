@@ -15,7 +15,7 @@ import Useradmin from '../components/User/UserAdmin';
 import ExamineModal from '../components/User/ExamineModal';
 import SetHotuser from '../components/User/SetHotuser';
 import LockModal from '../components/User/LockModal';
-import {timeFormat} from '../services/common';
+import {timeFormat,GetRequest} from '../services/common';
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
@@ -38,10 +38,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 		currentPage,
 		handlsearch:function(values){
 				//console.log(values.time)
-				
                 if(values.time !=undefined){
-                		
-                	dispatch({
+                	/*dispatch({
 				       type: 'user/getUserList',
 				       payload:{
 				       	userId:values.Id,
@@ -53,20 +51,18 @@ function UserAdmin({location,dispatch,user,router,}) {
 				       	createDateStart:timeFormat(new Date(values.time[0])),
 				       	createDateEnd:timeFormat(new Date(values.time[1]))
 				       }
-		            });	
+		            });*/
+		         dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
+		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.userRole+
+		         	"&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus+
+		         	"&createDateStart="+timeFormat(new Date(values.time[0]))+
+		         	"&createDateEnd="+timeFormat(new Date(values.time[1]))
+		         	))	
                 }else{
-                	dispatch({
-				       type: 'user/getUserList',
-				       payload:{
-				       	userId:values.Id,
-				       	userEmail:values.email,
-				       	userMobile:values.phone,
-				       	userRole:parseInt(values.role),
-				       	auditStatus:parseInt(values.auditStatus),
-				       	lockStatus:parseInt(values.lockStatus),
-				       	
-				       }
-		            });	
+		            dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
+		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.userRole+
+		         	"&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus 	
+		         	))	
                 }
                 
 				
@@ -187,7 +183,12 @@ function UserAdmin({location,dispatch,user,router,}) {
 
 		},
 		changepage(page){
-			dispatch(routerRedux.push('/user/user_admin?page='+page))
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/user/user_admin?page='+page+
+				"&userId="+search.userId+"&userEmail="+search.userEmail+"&userMobile="+search.userMobile+
+				"&userRole="+search.userRole+"&auditStatus="+search.auditStatus+"&lockStatus="+search.lockStatus+
+				"&createDateStart="+search.createDateStart+"&createDateEnd="+search.createDateEnd
+				))
 			
 		},
 		userData(record){

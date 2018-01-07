@@ -3,6 +3,7 @@ import fetch from 'dva/fetch';
 import pathToRegexp from 'path-to-regexp';
 import {urlprefix} from '../services/common';
 import fetchJsonp from 'fetch-jsonp';
+import { routerRedux } from 'dva/router';
 import {
   message
 } from 'antd';
@@ -13,7 +14,7 @@ import {
 //window.Promise = Promise;
 //let urlprefix = "kgapi";
 function parseJSON(response) {
- 
+    
     return response.json();
 }
 
@@ -23,6 +24,9 @@ function checkStatus(response) {
     message.error('访问不存在')
     return false;
   }
+  /*if(response.status == 200){
+    console.log("response",response)
+  }*/
   if(response.status == 500){
     message.error('服务器内部出错')
      return false;

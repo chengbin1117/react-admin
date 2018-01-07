@@ -48,6 +48,7 @@ const ArticleModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 	//console.log(ColumnList)
@@ -72,6 +73,9 @@ const ArticleModal = ({
 	function Cancel() {
 		onCancel()
 	}
+	function afterClose(){
+    resetFields()
+  }
 	const modalOpts = {
 		title: "审核处理",
 		visible,
@@ -79,7 +83,8 @@ const ArticleModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		okText:"确定",
-		cancelText:"取消"
+		cancelText:"取消",
+		 afterClose:afterClose
 	};
 	function onChange(e) {
         value =e.target.value;
@@ -101,7 +106,7 @@ const ArticleModal = ({
 				</FormItem>
 				<FormItem label="选择栏目">
 				  	    {getFieldDecorator('column', {
-				  			rules:[{required: value==1?true:false, message: "请选择!"}],
+				  			rules:[{required: value==1?true:false, message: "请选择栏目!"}],
 				  		})(
 				  		    <Cascader options={ColumnList}  placeholder="请选择" style={{width:300+'px'}}/>
 				  		)}

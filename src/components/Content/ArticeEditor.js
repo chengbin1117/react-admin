@@ -47,7 +47,7 @@ const tailFormItemLayout = {
     };
 
 //编辑器
- var value ='1'  
+ var value ='1'; 
 function ArticleEditor({
   dispatch,
   imgUrl,
@@ -70,7 +70,7 @@ function ArticleEditor({
   //console.log("setting",ArticleList)
   const {RelationVisible} =setting;
   let AllTotal =0;
- 
+  
   function handleSubmit (){
       validateFields((errors) => {
         if (errors) {
@@ -80,7 +80,7 @@ function ArticleEditor({
           //console.log(data.text);
           var dd=(data.text).replace(/<\/?.+?>/g,"");
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
-          console.log(dds.lengthgvfdg)
+          //console.log(dds.lengthgvfdg)
           var tagsName =""
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -88,6 +88,9 @@ function ArticleEditor({
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4
           }else if(data.tag4!=undefined&&data.tag5!=undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
+          }
+          if(data.publishStatus==undefined){
+            data.publishStatus=ArticleList.publishStatus
           }
           if(ArticleList.sysUser==null){
             if(data.publishStatus =="1"){
@@ -105,8 +108,8 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioS == "true"?true:false,
-                  publishSet:data.radioG == "true"?true:false,
+                  commentSet:data.radioG == "true"?true:false,
+                  publishSet:data.radioS == "true"?true:false,
                   createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
@@ -130,8 +133,8 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioS == "true"?true:false,
-                  publishSet:data.radioG == "true"?true:false,
+                  commentSet:data.radioG == "true"?true:false,
+                  publishSet:data.radioS == "true"?true:false,
                   createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
@@ -159,13 +162,13 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioS == "true"?true:false,
-                  publishSet:data.radioG == "true"?true:false,
+                  commentSet:data.radioG == "true"?true:false,
+                  publishSet:data.radioS == "true"?true:false,
                   createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
-                  sysUser:parseInt(merId),
+                  sysUser:merId,
                   publishStatus:parseInt(data.publishStatus),
                   article_textnum:dds.length
                 }
@@ -185,10 +188,10 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioS == "true"?true:false,
-                  publishSet:data.radioG == "true"?true:false,
+                  commentSet:data.radioG == "true"?true:false,
+                  publishSet:data.radioS == "true"?true:false,
                   createUser:ArticleList.createUser,
-                  sysUser:parseInt(merId),
+                  sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -449,7 +452,11 @@ function StatusonChange(e) {
                     ],
 
                    })(
-                    <img onClick ={showModal} src={imgUrl==""?uploadUrl+ArticleList.articleImage:uploadUrl+imgUrl} className={styles.bgImg} onChange={ImgHandle}/>
+                    <div>
+                        {articleList.articleImage==""?<div className={styles.bgImg} onClick ={showModal}> <Icon type="plus"/></div>:
+                        <img onClick ={showModal} src={imgUrl==""?uploadUrl+ArticleList.articleImage:uploadUrl+imgUrl} className={styles.bgImg} onChange={ImgHandle}/>
+                      }
+                    </div>
                     )}
               </FormItem>
               <FormItem
@@ -545,7 +552,7 @@ function StatusonChange(e) {
                       label="评论设置"
                     >
                       {getFieldDecorator('radioG',{
-                         initialValue:ArticleList.publishSet==true?"true":'false',
+                         initialValue:ArticleList.commentSet==true?"true":'false',
                       })(
                         <RadioGroup >
                           <Radio value="true">开启评论</Radio>
@@ -559,12 +566,12 @@ function StatusonChange(e) {
                        extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:ArticleList.username,
+                        initialValue:ArticleList.createUser,
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],
                       })(
-                        <Input style={{width:'20%'}} disabled={ArticleList.sysUser ==null?true:false}/>
+                        <Input style={{width:'20%'}} disabled={true}/>
 
                       )}
                       
