@@ -160,7 +160,7 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 			};
 		  const hasSelected = selectedRowKeys.length > 0;
 		  return (
-		    <div>
+		    <div style={{paddingBottom:50}}>
 		      <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} handlsearch={handlsearch}/>
 		      <div>
 		      	<p style = {{float:"left",margin:10}}>当前共有评论：{total}</p>

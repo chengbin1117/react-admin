@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon,Modal, Input, Button, Select,Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
+import { Form, Icon,Modal, Input, Button, InputNumber,Select,Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import {
   withRouter,
@@ -23,6 +23,7 @@ const formItemLayout = {
       labelCol: {
         xs: { span: 1 },
         sm: { span: 1 },
+        xl: { span: 1 },
       },
       wrapperCol: {
         xs: { span: 16 },
@@ -42,7 +43,7 @@ const tailFormItemLayout = {
       },
     };
 
-let artSorce =1;
+let artSorce =2;
 let timeDis =true;
 let sec=0;
 function RelesEditor({
@@ -58,11 +59,12 @@ function RelesEditor({
     validateFields,
     getFieldsValue,
     setFieldsValue,
+    getFieldValue
   },
 }){
   let merId =localStorage.getItem("userId");
   const options = ColumnList;
-  console.log("setting",imgUrl)
+  //console.log("setting",imgUrl)
   const {RelationVisible} =setting
   function handleSubmit (){
       validateFields((errors) => {
@@ -89,7 +91,7 @@ function RelesEditor({
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
-                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
                 image:imgUrl,
                 type:parseInt(data.type),
                 columnId:parseInt(data.column[0]),
@@ -140,7 +142,7 @@ function RelesEditor({
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
-                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
                 image:imgUrl,
                 type:parseInt(data.type),
                 columnId:data.column!=undefined?parseInt(data.column[0]):null,
@@ -349,8 +351,33 @@ function RelesEditor({
        
        window.open('/#/preview')
   }
-  console.log(secondC[sec])
+  //console.log(secondC[sec])
   var Item =['1','2','3','4','5']
+
+  function onChangeTag(rule, value, callback){
+    const data = {...getFieldsValue(['tag2'])}
+    if(data.tag2==undefined||data.tag2==""){
+      callback("请至少输入三个标签")
+    }else{
+      callback()
+    }
+    //console.log(data)
+    //console.log(getFieldValue())
+    //console.log(this.form.getFieldValue('password'))
+    /*if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }*/
+    
+  }
+  function handleNumberChange(e){
+     const number = parseInt(e.target.value || 0, 10);
+     console.log(number)
+      if (isNaN(number)) {
+        return;
+      }
+  }
   return(
       <Form onSubmit={handleSubmit}>
             <FormItem label="文章标题" {...formItemLayout}>
@@ -368,6 +395,7 @@ function RelesEditor({
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'60%'}}/>
                     )}
+                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -378,7 +406,7 @@ function RelesEditor({
                       ],
                       trigger:'edtiorContent'
                     })(
-                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left'}}/>
+                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left',minHeight:800}}/>
                     )}
                   
               </FormItem>
@@ -396,6 +424,8 @@ function RelesEditor({
                             min:2,
                             max:5,
                             message: '请输入2-5个字符!',
+                        },{
+                          validator:onChangeTag
                         }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
@@ -454,7 +484,7 @@ function RelesEditor({
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col span={6} style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag5', {
                         
@@ -462,11 +492,12 @@ function RelesEditor({
                             max:5,
                             message: '请输入2-5个字符!',}],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
-                      
+                      <span style={{color:"#ddd"}}> 至少3个tag，每个tag：2-5个汉字</span>
                   </FormItem>
               </Col>
+              
            </Row> 
              
               <FormItem label="摘要" {...formItemLayout}>
@@ -474,7 +505,7 @@ function RelesEditor({
                      
                       rules: [{ required: false,min:10,max:100,message: '摘要10-100字,支持中英文,数字，符号，不区分大小写!' }],
                     })(
-                      <TextArea style={{minHeight:"100px"}}></TextArea>
+                      <TextArea style={{minHeight:"100px"}} placeholder="选填，若未填写会默认抓取正文前100字"></TextArea>
                     )}
               </FormItem>
               <FormItem
@@ -499,7 +530,7 @@ function RelesEditor({
                       label="类别"
                     >
                       {getFieldDecorator('type',{
-                        initialValue:'1',
+                        initialValue:'2',
                         rules: [{ required: true, message: '请选择类别!' },
                        ],
                       })(
@@ -516,9 +547,10 @@ function RelesEditor({
                       {getFieldDecorator('articleSource',{
                         initialValue:"",
                         rules: [{required: true, message: '请填写转载文章来源!' },
+                         {min:1,max:500,message:"不超过500字符"}
                        ],
                       })(
-                        <Input />
+                        <Input style={{width:"60%"}}/>
                       )}
               
               </FormItem>:null}
@@ -528,10 +560,11 @@ function RelesEditor({
                     >
                       {getFieldDecorator('articleLink',{
                         initialValue:"",
-                        rules: [{ required: true, message: '请填写转载文章来源链接地址!' },
+                        rules: [{ required: true, message: '请填写转载文章来源链接地址!', },
+                        {min:1,max:500,message:"不超过500字符"}
                        ],
                       })(
-                        <Input />
+                        <Input style={{width:"60%"}}/>
                       )}
               </FormItem>:null}
               <FormItem
@@ -581,13 +614,69 @@ function RelesEditor({
                         <Input style={{width:'10%'}}/>
                           
                       )}
+                      <span style={{color:"#d9d9d9",marginLeft:20}}>越小越靠前</span>
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="原文链接"
+                    >
+                      {getFieldDecorator('articleLink',{
+                        initialValue:"",
+                        rules: [{ required: true, message: '请填写转载文章来源链接地址!', },
+                        {min:1,max:500,message:"不超过500字符"}
+                       ],
+                      })(
+                        <Input style={{width:"60%"}}/>
+                      )}
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="浏览量"
+                    >
+                      {getFieldDecorator('num1',{
+                        initialValue:0,
+                        rules: [{ required: false, message: '请输入浏览量!', },
+                        
+                       ],
+                      })(
+                        <Input style={{width:"20%"}} onChange={handleNumberChange}/>
+                      )}
+                      <span>输入限制:0-500万</span>
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="点赞量"
+                    >
+                      {getFieldDecorator('num2',{
+                        initialValue:0,
+                        rules: [{ required: false, message: '请输入浏览量!', },
+                        
+                       ],
+                      })(
+                        <InputNumber style={{width:"20%"}}/>
+                      )}
+                      <span>输入限制:0-50万</span>
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="收藏量"
+                    >
+                      {getFieldDecorator('num3',{
+                        initialValue:0,
+                        rules: [{ required: false, message: '请填写转载文章来源链接地址!', },
+                        {min:1,max:500,message:"不超过500字符"}
+                       ],
+                      })(
+                        <InputNumber style={{width:"20%"}} />
+                      )}
+                      <span>输入限制:0-50万</span>
               </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="评论设置"
                     >
                       {getFieldDecorator('commentSet',{
-                         initialValue:'false',
+                         initialValue:'true',
                       })(
                         <RadioGroup >
                           <Radio value="true">开启</Radio>

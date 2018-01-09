@@ -35,10 +35,11 @@ const EditorPostModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
-console.log("selectlist",item)
+//console.log("selectlist",item)
 const FormItem = Form.Item;
 	function handleOk() {
 		validateFields((errors,values) => {
@@ -62,6 +63,9 @@ const FormItem = Form.Item;
 		console.log("checked",checked)
 		return checked
 	}
+	function afterClose(){
+      resetFields()
+    }
 	const modalOpts = {
 		title: "编辑岗位",
 		visible,
@@ -70,7 +74,8 @@ const FormItem = Form.Item;
 		maskClosable: false,
 		width:'800px',
 		okText:"确定",
-		cancelText:"取消"
+		cancelText:"取消",
+		afterClose:afterClose
 
 	};
 

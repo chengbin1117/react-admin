@@ -65,25 +65,30 @@ function UserLogin({dispatch,user}) {
 		  render() {
 		    const { size } = this.props;
 		    const state = this.state;
+		    const selectAfter = (
+				  <Select
+			          value={state.currency}
+			          size={size}
+			          
+			          onChange={this.handleCurrencyChange}
+			        >
+			          <Option value="1">小时</Option>
+			          <Option value="2">天</Option>
+			          
+			        </Select>
+				); 
 		    return (
 		      <span>
+		      
 		        <Input
 		          type="text"
 		          size={size}
 		          value={state.number}
 		          onChange={this.handleNumberChange}
-		          style={{ width: '10%'}}
-		        />
-		        <Select
-		          value={state.currency}
-		          size={size}
-		          style={{ width: '10%' }}
-		          onChange={this.handleCurrencyChange}
-		        >
-		          <Option value="1">小时</Option>
-		          <Option value="2">天</Option>
 		          
-		        </Select>
+		          addonAfter={selectAfter}
+		        />
+		       
 		      </span>
 		    );
 		  }
@@ -125,16 +130,35 @@ function UserLogin({dispatch,user}) {
 			  }
 			  render() {
 			    const { getFieldDecorator } = this.props.form;
+			     const formItemLayout = {
+				      labelCol: {
+				        xs: { span: 2 },
+				        sm: { span: 2 },
+				        md:{ span: 4 },
+				        lg:{ span: 2 },
+				        xl:{ span: 4 },
+				        xxl:{ span: 2}
+				      },
+				      wrapperCol: {
+				        xs: { span: 2 },
+				        sm: { span: 2 },
+				        md:{ span: 4 },
+				        lg:{ span: 2 },
+				        xl:{ span: 4 },
+				        xxl:{ span: 2}
+				      },
+				    };		
+
 			    return (
 			      <Form  onSubmit={this.handleSubmit}>
-			        <FormItem>
+			        <FormItem label="用户登录状态保存时长" {...formItemLayout}>
 			          {getFieldDecorator('tmie', {
 			            initialValue: { number: 0, currency: '小时' },
 			            rules: [{ validator: this.checkPrice }],
 			          })(<PriceInput />)}
 			        </FormItem>
 			        <FormItem >
-			          <Button type="primary" onClick={this.handleSubmit} size="large">确定</Button>
+			          <Button type="primary" onClick={this.handleSubmit} size="large" style={{paddingLeft:40,paddingRight:40}}>保存</Button>
 			          
 			        </FormItem>
 			      </Form>

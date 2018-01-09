@@ -24,9 +24,10 @@ const RangePicker = DatePicker.RangePicker;
 
 var n =0;
 const formItemLayout = {
-      labelCol: {
-        xs: { span: 2 },
-        sm: { span: 2 },
+        labelCol: {
+        xs: { span: 1 },
+        sm: { span: 1 },
+        xl: { span: 1 },
       },
       wrapperCol: {
         xs: { span: 16 },
@@ -330,6 +331,7 @@ function StatusonChange(e) {
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'60%'}}/>
                     )}
+                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -345,7 +347,7 @@ function StatusonChange(e) {
                   
               </FormItem>
               <Row  key='2'>
-              <Col span={4} style={{marginLeft:'65px'}}>
+              <Col span={4} style={{marginLeft:'0px'}}>
                   <FormItem label="Tag标签 " labelCol={{ span: 6 }}
                       wrapperCol={{ span: 14 }}>
                       {getFieldDecorator('tag1', {
@@ -416,7 +418,7 @@ function StatusonChange(e) {
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col span={6} style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag5', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
@@ -424,9 +426,9 @@ function StatusonChange(e) {
                             max:5,
                             message: '请输入2-5个字符!',}],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
-                      
+                      <span style={{color:"#ddd"}}> 至少3个tag，每个tag：2-5个汉字</span>
                   </FormItem>
               </Col>
            </Row> 

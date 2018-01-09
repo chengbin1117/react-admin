@@ -9,8 +9,9 @@ import {
 	Button,
 	Table,
 	Tabs,
-	Checkbox
+	
 } from 'antd';
+
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 import RuleList from './Rule';
@@ -35,6 +36,7 @@ const AddPostModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -56,23 +58,13 @@ const FormItem = Form.Item;
 		
 	}
 	function checked(checked){
-		console.log(checked)
-		//console.log(checked,arr)
-		/*if(arr.length==0){
-      
-		      //return checked
-		      //console.log('onCheck1', checked);
-		      list = checked
-		    }else{
-		    	//console.log(checked)
-		    	list = checked.concat(arr)
-		    // console.log('onCheck1', checked);	
-		      //return checked.push(arr.join())
-		      //console.log('onCheck2', list);
-		    }*/
-		list = checked.checked
+		
+		return checked
 		
 	}
+	function afterClose(){
+      resetFields()
+    }
 	const modalOpts = {
 		title: '添加岗位',
 		visible,
@@ -81,7 +73,8 @@ const FormItem = Form.Item;
 		maskClosable: false,
 		width:'800px',
 		okText:"确定",
-		cancelText:"取消"
+		cancelText:"取消",
+		afterClose:afterClose
 
 	};
 
@@ -101,21 +94,36 @@ const FormItem = Form.Item;
   
 
     function TreeItem(list) {
-    	console.log("list",list)
+    	//sconsole.log("list",list)
     	var arr =[];
     	let params ={};
     	let chid ={};
     	for (var i in list) {
  
             params={
-              'key': list[i].id,
-              'title': list[i].name,
+              'value': list[i].id,
+              'label': list[i].name,
                children:list[i].children.map((j)=>
                      chid ={
-                      'key':j.id,
-                      'title':j.name,
+                      'value':j.id,
+                      'label':j.name,
                     }
                 )
+            }
+            arr.push(params)
+        }  
+        return arr
+    }
+    function getChild(list){
+    	var arr =[];
+    	let params ={};
+    	let chid ={};
+    	for (var i in list) {
+ 
+            params={
+              'value': list[i].id,
+              'label': list[i].name,
+               
             }
             arr.push(params)
         }  
@@ -130,13 +138,19 @@ const FormItem = Form.Item;
 			        	initialValue:'',
 			            rules: [{ required: true, message: '请填写岗位名称!' }],
 			        })(<Input />)}
+
 			    </FormItem>
 			    <FormItem>
 			    	{getFieldDecorator('rules', {
 			    		rules: [{ required: false, message: '请填写选择权限!' },
-			    		{ type: 'array', message: '请填写选择权限!' }],
+			    		{ type: 'array', message: '请填写选择权限!' },
+
+			    		],
+			    		trigger:checked
 			    		
-			        })(<RuleList plainOptions = {TreeItem(TreeList)}  checked={checked}/>)}
+			        })(<div>{TreeList&&TreeItem(TreeList).map((item,index)=>
+			        	<RuleList key={index} item = {item} child={item.children}  checked={checked}/>
+			        	)}</div>)}
 			     </FormItem>
 			    
 			</Form>

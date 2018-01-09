@@ -20,6 +20,16 @@
   float: left;
 
 }
+.trigger{
+	font-size:26px;
+	margin-left: 40px;
+	cursor: pointer;
+
+}
+.trigger:hover{
+	color:#1890ff;
+
+}
 .rename{
 	font-family: "微软雅黑"
 }

@@ -33,8 +33,8 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  	)
 	},{
 	  title: '发布人',
-	  dataIndex: 'createUser',
-	  key: 'createUser',
+	  dataIndex: 'user',
+	  key: 'user',
 	},{
 	  title: '发布时间',
 	  dataIndex: 'createDate',
@@ -259,7 +259,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 			    };
 			    const hasSelected = selectedRowKeys.length > 0;
 			    return (
-			      	<div>
+			      	<div style={{paddingBottom:50}}>
 					      <Button type="primary" size = 'large' onClick={showModal} style = {{marginBottom:20}}>添加图片</Button>
 					      <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} handlsearch ={handlsearch}/>
 					      <p >当前共有图片：{total}</p>

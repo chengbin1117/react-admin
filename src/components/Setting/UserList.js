@@ -76,8 +76,8 @@ function UserList({
 
   return (
     <div style={{paddingBottom:50}}>
-    <Table bordered rowKey={record => record.id+''} columns={columns}  dataSource={data} pagination={false} loading={loading}/>
-    <Pagination className = {style_pagination.pagination} showQuickJumper  current={currentPage} onShowSizeChange={capage} total={total} onChange={capage}    pageSize={25}/>
+    <Table bordered rowKey={record => record.id+''} columns={columns}  dataSource={data} pagination={false} loading={loading} locale={{emptyText:"暂无数据"}}/>
+    <Pagination className = {style_pagination.pagination} showQuickJumper  current={currentPage} onShowSizeChange={capage} total={total} onChange={capage} pageSize={25} />
     </div>
   )
 }

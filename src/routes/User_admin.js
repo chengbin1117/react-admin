@@ -53,14 +53,14 @@ function UserAdmin({location,dispatch,user,router,}) {
 				       }
 		            });*/
 		         dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
-		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.userRole+
+		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.role+
 		         	"&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus+
 		         	"&createDateStart="+timeFormat(new Date(values.time[0]))+
 		         	"&createDateEnd="+timeFormat(new Date(values.time[1]))
 		         	))	
                 }else{
 		            dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
-		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.userRole+
+		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.role+
 		         	"&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus 	
 		         	))	
                 }

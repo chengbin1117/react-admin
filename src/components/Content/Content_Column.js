@@ -58,22 +58,12 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 		  render(text,record) {
 		  	return(
 		  			<span>
-		  			{record.columnLevel==1&&
-		  			<Select style={{width:150}} defaultValue={String(record.navigatorDisplay)} onChange={(text)=>handleChange(record,text)}>
-		  			  
-	                  <Option value="2" >顶部导航</Option>
-	                  <Option value="3" >首页主导航</Option>
-	                  <Option value="1" >都显示</Option>
-	                  <Option value="0" >都不显示</Option>
-	                </Select>}
-		  			{record.columnLevel==2&&
-		  			<Select style={{width:150}} defaultValue={String(record.navigatorDisplay)} onChange={(text)=>handleChange(record,text)}>
-		  			  {record&&record.partantNavigator==1&&<Option value="1" >都显示</Option>}
-	                  {record&&record.partantNavigator==3&&<Option value="3" >首页主导航</Option>}
-	                  {record&&record.partantNavigator==2&&<Option value="2" >顶部导航</Option>}
-	                  {record.partentDisplayMode&&record.partentDisplayMode==2?<Option value="4" >频道页主导航</Option>:null}
-	                  <Option value="0" >都不显示</Option>
-	                </Select>}
+		  			{text==2&&"顶部导航"}
+		  			{text==1&&"都显示"}
+		  			{text==3&&"首页主导航"}
+		  			{text==4&&"频道页主导航"}
+		  			{text==0&&"都不显示"}
+		  			
 	                </span>
 		  		)
 		  }
@@ -89,10 +79,10 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 		  	return(
 		  		<span>
 		  		  <a className = "action_font" onClick = {()=>editor(record)}>编辑</a>
-		  		  {record.columnLevel ==2?null:<a className = "action_font" onClick = {()=>addChildColumn(record)} style={{marginLeft:10}}>添加子栏目</a>}
+		  		  
 			      
 			      <Popconfirm title="确定删除吗？" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
-				  <a  className = "action_font" style={{marginLeft:10}}>删除</a>
+				  {/*<a  className = "action_font" style={{marginLeft:10}}>删除</a>*/}
 				  </Popconfirm>
 			    </span>
 		  	)
@@ -100,8 +90,8 @@ function Content_Column({addColumn,data,confirm,editor,addChildColumn,loading,ha
 		}];
 	  return (
 	    <div>
-	      <Button type="primary" size = 'large' onClick = {()=>addColumn()}>添加一级栏目</Button>
-	      <p>同级栏目排序越小越靠前</p>
+	     
+	      
 	      <Table bordered columns={columns} dataSource={data} pagination = {false} rowKey={record => record.id} indentSize={100} loading={loading} locale={{emptyText:"暂无数据"}}/>
 	      
 	    </div>
@@ -120,3 +110,23 @@ Content_Column.propTypes = {
 };
 
 export default Content_Column;
+
+ {/*<Button type="primary" size = 'large' onClick = {()=>addColumn()}>添加一级栏目</Button>*/}
+ {/*<p>同级栏目排序越小越靠前</p>*/}
+/* {record.columnLevel==1&&
+		  			<Select style={{width:150}} defaultValue={String(record.navigatorDisplay)} onChange={(text)=>handleChange(record,text)}>
+		  			  
+	                  <Option value="2" >顶部导航</Option>
+	                  <Option value="3" >首页主导航</Option>
+	                  <Option value="1" >都显示</Option>
+	                  <Option value="0" >都不显示</Option>
+	                </Select>}
+		  			{record.columnLevel==2&&
+		  			<Select style={{width:150}} defaultValue={String(record.navigatorDisplay)} onChange={(text)=>handleChange(record,text)}>
+		  			  {record&&record.partantNavigator==1&&<Option value="1" >都显示</Option>}
+	                  {record&&record.partantNavigator==3&&<Option value="3" >首页主导航</Option>}
+	                  {record&&record.partantNavigator==2&&<Option value="2" >顶部导航</Option>}
+	                  {record.partentDisplayMode&&record.partentDisplayMode==2?<Option value="4" >频道页主导航</Option>:null}
+	                  <Option value="0" >都不显示</Option>
+	                </Select>}*/
+	                /*{record.columnLevel ==2?null:<a className = "action_font" onClick = {()=>addChildColumn(record)} style={{marginLeft:10}}>添加子栏目</a>}*/

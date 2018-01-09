@@ -30,6 +30,7 @@ const EditoruserModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 	function handleOk() {
@@ -50,6 +51,9 @@ const EditoruserModal = ({
 		onCancel()
 		
 	}
+	function afterClose(){
+      resetFields()
+    }
 	const modalOpts = {
 		title: '编辑账号',
 		visible,
@@ -57,13 +61,14 @@ const EditoruserModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		okText:"提交",
-		cancelText:"取消"
+		cancelText:"取消",
+		afterClose:afterClose
 
 	};
 	return (
 
 		<Modal {...modalOpts}>
-	<Form>
+		     <Form>
 				<Form.Item 
 					label="用户名 "
 					{...formItemLayout}

@@ -37,6 +37,7 @@ const ManageModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -48,6 +49,9 @@ const ManageModal = ({
 		onCancel()
 		
 	}
+	function afterClose(){
+			resetFields()
+	}
 	const modalOpts = {
 		title: '管理岗位',
 		visible,
@@ -55,6 +59,7 @@ const ManageModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		width:1000,
+		afterClose:afterClose
 
 	};
 	

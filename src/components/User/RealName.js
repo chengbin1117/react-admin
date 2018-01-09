@@ -191,7 +191,7 @@ const RealName = ({
 			    return (
 			      <div>
 			        <Table bordered columns={columns} dataSource={data} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} locale={{emptyText:"暂无数据"}}/>
-	      	      <div className="table-operations">
+	      	      <div className="table-operations" style={{marginTop:20}}>
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)}>批量审核</Button>
 	
 		           </div>

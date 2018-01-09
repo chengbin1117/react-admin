@@ -6,6 +6,9 @@
 .contentDiv{
     width:100%;
 }
+.editorBox{
+   
+}
 @media only screen and (max-width:1366px){
     .sideBar{
         width:180px;

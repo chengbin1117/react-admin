@@ -27,7 +27,7 @@ let third = "";
 //console.log("hashHistory",history)
 //let location=history.location
 //let path = location.pathname
-
+/*console.log(window)*/
 /*function hasPermission(permission) {
   const resourceList = session.get(resourceSessionKey) // 获取登录用户的所有权限
   resourceList || redirectLoginPage()
@@ -63,82 +63,8 @@ let third = "";
   menuItems = getMenus(nav)*/
 
 
-   /* if(path =="/index"){
-          first ="";
-          second = "";
-      }else if(path =="/user/user_admin"){
-          first= "首页";
-          second= "用户管理";
-          third=""
-      }else if(path =="/user/user_role"){
-          first= "首页";
-          second= "用户角色管理";
-          third=""
-      }else if(path =="/user/user_login"){
-          first= "首页";
-          second= "用户登陆管理";
-          third=""
-      }else if(path =="/user/user_info"){
-          first= "首页";
-          second= "用户默认信息设置";
-          third=""
-      }else if(path =="/user/realName"){
-          first= "首页";
-          second= "实名认证管理";
-          third=""
-      }else if(path =="/content/content_column"){
-          first= "首页";
-          second= "栏目管理";
-          third=""
-      }else if(path =="/content/content_article"){
-          first= "首页";
-          second= "文章管理";
-          third=""
-      }else if(path =="/content/content_comment"){
-          first= "首页";
-          second= "评论管理";
-          third=""
-      }else if(path =="/content/release_article"){
-          first= "首页";
-          second= "文章管理",
-          third= "发布文章"
-      }else if(path =="/content/content_opinion"){
-          first= "首页";
-          second= "意见反馈";
-          third=""
-      }else if(path =="/content/content_image"){
-          first= "首页";
-          second= "图片管理";
-          third=""
-      }else if(path =="/setting/about"){
-          first= "首页";
-          second= "关于我们";
-          third=""
-      }else if(path =="/setting/base"){
-          first= "首页";
-          second= "网站基本信息"
-      }else if(path =="/setting/account"){
-          first= "首页";
-          second= "系统账号管理";
-          third=""
-      }else if(path =="/finance/recharge"){
-          first= "首页";
-          second= "充值管理";
-          third=""
-      }else if(path =="/finance/withdrawals"){
-          first= "首页";
-          second= "提现管理";
-          third=""
-      }else if(path =="/finance/record"){
-          first= "首页";
-          second= "交易记录";
-          third=""
-      }else if(path =="/finance/bond"){
-          first= "首页";
-          second= "保证金记录";
-          third=""
-      }
-*/
+   
+
   
 
 /*class LayoutContainer extends React.Component {
@@ -243,6 +169,11 @@ class LayoutContainer extends React.Component {
     console.log(collapsed);
     this.setState({ collapsed });
   }
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  }
   onOpenChange =(openKeys) => {
     //console.log(openKeys)
     const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
@@ -266,11 +197,100 @@ class LayoutContainer extends React.Component {
     });
   }
   render() {
-    //console.log('openKeys',this.state.openKeys)
+   // console.log('openKeys',this.props.location)
+    const path =this.props.location.pathname;
+    if(path =="/index"){
+          first ="首页";
+          second = "";
+      }else if(path =="/user/user_admin"){
+          first= "首页";
+          second= "用户管理";
+          third=""
+      }else if(path =="/user/user_role"){
+          first= "首页";
+          second= "用户角色管理";
+          third=""
+      }else if(path =="/user/user_login"){
+          first= "首页";
+          second= "用户登陆管理";
+          third=""
+      }else if(path =="/user/user_info"){
+          first= "首页";
+          second= "用户默认信息设置";
+          third=""
+      }else if(path =="/user/realName"){
+          first= "首页";
+          second= "实名认证管理";
+          third=""
+      }else if(path =="/user/user_data"){
+          first= "首页";
+          second= "用户管理";
+          third="查看用户信息"
+      }else if(path =="/content/content_column"){
+          first= "首页";
+          second= "栏目管理";
+          third=""
+      }else if(path =="/content/content_article"){
+          first= "首页";
+          second= "文章管理";
+          third=""
+      }else if(path =="/content/content_comment"){
+          first= "首页";
+          second= "评论管理";
+          third=""
+      }else if(path =="/content/release_article"){
+          first= "首页";
+          second= "文章管理",
+          third= "发布文章"
+      }else if(path =="/content/editor_article"){
+          first= "首页";
+          second= "文章管理",
+          third= "编辑文章"
+      }else if(path =="/content/content_opinion"){
+          first= "首页";
+          second= "意见反馈";
+          third=""
+      }else if(path =="/content/opinion"){
+          first= "首页";
+          second= "意见反馈";
+          third="反馈内容"
+      }else if(path =="/content/content_image"){
+          first= "首页";
+          second= "图片管理";
+          third=""
+      }else if(path =="/setting/about"){
+          first= "首页";
+          second= "关于我们";
+          third=""
+      }else if(path =="/setting/base"){
+          first= "首页";
+          second= "网站基本信息"
+      }else if(path =="/setting/account"){
+          first= "首页";
+          second= "系统账号管理";
+          third=""
+      }else if(path =="/finance/recharge"){
+          first= "首页";
+          second= "充值管理";
+          third=""
+      }else if(path =="/finance/withdrawals"){
+          first= "首页";
+          second= "提现管理";
+          third=""
+      }else if(path =="/finance/record"){
+          first= "首页";
+          second= "交易记录";
+          third=""
+      }else if(path =="/finance/bond"){
+          first= "首页";
+          second= "保证金记录";
+          third=""
+      }
+
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
-          collapsible
+          
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
@@ -304,6 +324,11 @@ class LayoutContainer extends React.Component {
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
+              <Icon
+              className={styles.trigger}
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+             />
               <div className = {styles.header_right}>
                 <span className={styles.rename}>欢迎您，<span style={{color:"#FFA500"}}>{realname&&realname}</span></span>
                 <Link to="/login" className={styles.logOut} onClick={logout}>退出</Link>

@@ -115,7 +115,7 @@ const TreeNode = Tree.TreeNode;
 
 
 
-class RuleList extends React.Component {
+/*class RuleList extends React.Component {
   state = {
     expandedKeys: this.props.defavalue!=undefined?this.props.defavalue:[],
     autoExpandParent: true,
@@ -156,7 +156,7 @@ class RuleList extends React.Component {
       }
     }*/
     //var checkList =[];
-   /* if(e.halfCheckedKeys.length==0){
+    /*if(e.halfCheckedKeys.length==0){
       
       checkList = checkedKeys;
       //console.log('onCheck1', checkedKeys);
@@ -166,7 +166,7 @@ class RuleList extends React.Component {
      // checkList.push(e.halfCheckedKeys.join())
       //console.log('onCheck2', checkedKeys);
       
-    }*/
+    }
      
    // console.log(checkList)
     //this.props.checked(checkedKeys,e.halfCheckedKeys)
@@ -190,7 +190,7 @@ class RuleList extends React.Component {
   }
   render() {
     /*console.log("props",this.props.defavalue)*/
-    return (
+   /* return (
       <Tree
         checkable
         onExpand={this.onExpand}
@@ -207,14 +207,14 @@ class RuleList extends React.Component {
       </Tree>
     );
   }
-}
+}*/
 
 
 
 
 
 
-   /*const defaultCheckedList = [];
+   const defaultCheckedList = [];
     const chList =[]; //选中的条数
     class RuleList extends React.Component {
     state = {
@@ -239,67 +239,80 @@ class RuleList extends React.Component {
     }
     render() {
        const plainOptions =this.props.plainOptions;
-       //console.log(this.props.defValue.split(','))
+       //console.log(this.props.item)
        const key = this.props.key;
       return (
         <div>
-          <div style={{ borderBottom: '1px solid #E9E9E9' }}>
+
+          
             <Checkbox
-              indeterminate={this.state.indeterminate}
+              
               onChange={this.onCheckAllChange}
               checked={this.state.checkAll}
             >
-              全选
+            {this.props.item.label}            
             </Checkbox>
-          </div>
+         
           <br />
-          <CheckboxGroup options={plainOptions} value={this.state.checkedList} onChange={this.onChange} />
+          <div style={{ borderBottom: '1px solid #E9E9E9',paddingBottom:20 }}>
+          <CheckboxGroup options={this.props.child} value={this.state.checkedList} onChange={this.onChange} />
+           </div>
         </div>
       );
     }
     onChange = (checkedList) => {
       this.setState({
         checkedList,
-        indeterminate: !!checkedList.length && (checkedList.length < this.props.plainOptions.length),
-        checkAll: checkedList.length === this.props.plainOptions.length,
+        
+        checkAll: checkedList.length>0,
       });
-      /*var arr =this.state.arrs;
+      var arr =this.state.arrs;
       checkedList&&checkedList.map(item=>{
             arr.push(item)
-      })*/
-      /*this.setState({
+      })
+      this.setState({
         arrs:arr
-      })*/
-     /* console.log(checkedList)*/
-     /*  for(var i in checkedList){
-            for(var j in this.props.plainOptions){
-                if(this.props.plainOptions[j].value == checkedList[i]){
-                    arr.push(checkedList[i])
+      })
+      //console.log(this.props.item)
+      console.log(checkedList)
+       for(var i in checkedList){
+            for(var j in this.props.item.children){
+                if(this.props.item.children[j].value == checkedList[i]){
+                    /*console.log(1)*/
+                    if(this.props.item.value==checkedList[i]){
+                      break
+                    }else{
+                      checkedList.push(this.props.item.value);
+                      break
+                    }
                 }
             }
         }
-      this.props.onChecked(checkedList,this.props.plainOptions)*/
+      this.props.checked(checkedList,this.props.item)
       
-   // }
-    /*onCheckAllChange = (e) => {
+    }
+    onCheckAllChange = (e) => {
      
       var arr=[];
       var params =[];
-      for(var i in this.props.plainOptions){
+      console.log(this.props.item)
+      console.log(this.state.checkedList)
+      /*for(var i in this.props.item){
           arr.push(this.props.plainOptions[i].value)
-      }
+      }*/
+      
       this.setState({
         checkedList: e.target.checked ==true? arr : [],
         indeterminate: false,
         checkAll: e.target.checked,
       });
-      if(e.target.checked) {
+      /*if(e.target.checked) {
         this.props.onChecked(arr)
       }else{
         this.props.onChecked(params)
-      }
+      }*/
     }
-  }*/
+  }
  
 
 export default RuleList;

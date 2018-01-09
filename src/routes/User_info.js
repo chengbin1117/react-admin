@@ -89,7 +89,7 @@ function UserInfo({dispatch,user}) {
 	        </FormItem>
 	        <FormItem
 	        >
-	          <Button type="primary" onClick={this.handleSubmit}>保存</Button>
+	          <Button type="primary" onClick={this.handleSubmit} style={{paddingLeft:40,paddingRight:40}}>保存</Button>
 	        </FormItem>
 	      </Form>
 	    );

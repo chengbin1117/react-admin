@@ -144,9 +144,10 @@ const BgModal = ({
             <div>
                <div className={styles.upBox}>
                <input type="file" onChange={this.file} id="upImg" name="coverImg" multiple="multiple" className={styles.upFile} accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" />
-               
+               <Button type="primary" size="large" className={styles.upLoadBtn} style={{paddingLeft:30,paddingRight:30}}> 上传 </Button>
+               <span className={styles.infoSize}>建议尺寸：660*420</span>
                </div>
-			   <Row>
+			   <Row style={{minHeight:200}}>
 			   		{ImgX}
 			   </Row>
 			   <div className={styles.upBtn}>

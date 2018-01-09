@@ -30,6 +30,7 @@ const AdduserModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields,
 	},
 }) => {
 	function handleOk() {
@@ -50,6 +51,9 @@ const AdduserModal = ({
 		onCancel()
 		
 	}
+	function afterClose(){
+		resetFields()
+	}
 	const modalOpts = {
 		title: '添加账号',
 		visible,
@@ -57,7 +61,8 @@ const AdduserModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		okText:"提交",
-		cancelText:"取消"
+		cancelText:"取消",
+		afterClose:afterClose
 
 	};
 	return (

@@ -6,7 +6,8 @@ import { Modal, Button,Input } from 'antd';
 import Uploader from './upload';
 import E from 'wangeditor';
 const { TextArea } = Input;
-import {uploadUrl,ImgUrl} from "../services/common"
+import {uploadUrl,ImgUrl} from "../services/common";
+import styles from '../components/common.css';
 //编辑器
 
    class Editor extends Component {
@@ -32,6 +33,8 @@ import {uploadUrl,ImgUrl} from "../services/common"
             
           
         }
+         editor.customConfig.zIndex = 10;
+         //editor.customConfig.height = 1000
          editor.customConfig.colors = [
         '#000000',
         '#eeece0',
@@ -75,7 +78,7 @@ import {uploadUrl,ImgUrl} from "../services/common"
       render() {
         return (
            
-            <div ref="editorElem" style={{display:"block",width:"100%"}} >
+            <div ref="editorElem" style={{display:"block",width:"100%",}} className={styles.editorBox}>
             </div>
             
         );

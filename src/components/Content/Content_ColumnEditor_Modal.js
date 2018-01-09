@@ -119,7 +119,7 @@ const FormItem = Form.Item;
               initialValue:item!={}?String(item.navigatorDisplay):'',
               rules: [{ required: true, message: '请选择' }],
             })(
-              <Select>
+              <Select disabled>
                   <Option value="2" >顶部导航</Option>
                   <Option value="3" >首页主导航</Option>
                   <Option value="1" >都显示</Option>
@@ -135,7 +135,7 @@ const FormItem = Form.Item;
               initialValue:item!={}?String(item.navigatorDisplay):'',
               rules: [{ required: true, message: '请选择' }],
             })(
-              <Select>
+              <Select disabled>
                   {item&&item.partantNavigator==1&&<Option value="1" >都显示</Option>}
                   {item&&item.partantNavigator==3&&<Option value="3" >首页主导航</Option>}
                   {item&&item.partantNavigator==2&&<Option value="2" >顶部导航</Option>}

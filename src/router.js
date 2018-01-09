@@ -84,7 +84,7 @@ function requireAuth(nextState, replace, callback) {
 
 function RouterConfig({ history }) {
 
-
+//console.log(history)
 
   return (
     <Router history={history}>
@@ -92,7 +92,7 @@ function RouterConfig({ history }) {
       <Route path="/" exact  component={UserRouter} />
       <Route path="/login" exact  component={UserRouter} />
       <Route path="/preview" exact  component={ArticlePreview} />
-      <LayoutContainer >
+      <LayoutContainer location={history.location}>
           <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
           <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
           <Route path="/user/user_role" exact component={UserRole} />

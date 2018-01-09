@@ -24,6 +24,7 @@
     "image-webpack-loader": "^3.4.2",
     "js-base64": "^2.4.0",
     "js-md5": "^0.7.3",
+    "re-checkbox": "^1.0.5",
     "react": "^15.4.0",
     "react-cropper": "^1.0.1",
     "react-dom": "^15.4.0",

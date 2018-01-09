@@ -178,14 +178,20 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份证号</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.idcard!=null&&userInfo.profile.idcard!="")?userInfo.profile.idcard:"——"}</span></p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份件扫描</span>
 						<span className={stytes.span2}>
-						    {(userInfo.profile&&userInfo.profile.idcardBack!=null)?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
-						    {(userInfo.profile&&userInfo.profile.idcardFront!=null)?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardFront}/>:"——"}
+						    {(userInfo.profile&&userInfo.profile.idcardBack!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardFront!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardFront}/>:"——"}
 						<br />
 						{(userInfo.profile&&(userInfo.profile.idcardPic!=null||userInfo.profile.idcardPic!=""))?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardPic}/>:"——"}
 						</span>
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>相关网站链接</span><span className={stytes.span2}>{(userInfo.profile&&(userInfo.profile.siteLink!=""))?userInfo.profile.siteLink:"——"}</span></p>
-						<p className={stytes.dataBox}><span className={stytes.span1}>其他资质</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.otherPic!=null&&JSON.parse(userInfo.profile.otherPic).length!=0)?<img style={{width:100,height:100}} src={uploadUrl+((JSON.parse(userInfo.profile.otherPic))[0])}/>:"——"}</span></p>
+						<p className={stytes.dataBox}>
+						<span className={stytes.span2}>
+						{(userInfo.profile&&userInfo.profile.otherPic!=null&&((userInfo.profile.otherPic).split(',')).length!=0)?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
+							return(
+								<img src={uploadUrl+item} style={{width:200,marginLeft:20}} key={index}/>
+								)
+						})}</span>:""}</span></p>
 						
 							</div>
 						}
@@ -196,7 +202,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 						    </p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>组织机构代码证/营业执照</span><span className={stytes.span2}>
 						{(userInfo.profile&&userInfo.profile.licensePic!=null)?
-							<img src={uploadUrl+userInfo.profile.licensePic} style={{width:100,height:100}}/>
+							<img src={uploadUrl+userInfo.profile.licensePic} style={{width:200}}/>
 							:"——"}
 							</span>
 							</p>
@@ -204,11 +210,20 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份证号</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.idcard!=null&&userInfo.profile.idcard!="")?userInfo.profile.idcard:"——"}</span></p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份件扫描</span>
 						<span className={stytes.span2}>
-						{(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardPic}/>:"——"}
+						{(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardPic}/>:"——"}
 						</span>
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>相关网站链接</span><span className={stytes.span2}>{(userInfo.profile&&(userInfo.profile.siteLink!=""))?userInfo.profile.siteLink:"——"}</span></p>
-						<p className={stytes.dataBox}><span className={stytes.span1}>其他资质</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.otherPic!=null&&JSON.parse(userInfo.profile.otherPic).length!=0)?<img style={{width:100,height:100}} src={uploadUrl+((JSON.parse(userInfo.profile.otherPic))[0])}/>:"——"}</span></p>
+						<p className={stytes.dataBox}>
+						<span className={stytes.span1}>其他资质</span>
+						<span className={stytes.span2}>
+						{(userInfo.profile&&userInfo.profile.otherPic!=null&&((userInfo.profile.otherPic).split(',')).length!=0)?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
+							return(
+								<img src={uploadUrl+item} style={{width:200,marginLeft:20}} key={index}/>
+								)
+						})}</span>:""}
+						</span>
+						</p>
 						
 							</div>:null
 						}
@@ -220,7 +235,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 						        </p>
 								<p className={stytes.dataBox}><span className={stytes.span1}>企业机构代码证/营业执照</span><span className={stytes.span2}>
 								{(userInfo.profile&&userInfo.profile.licensePic!=null)?
-									<img src={uploadUrl+userInfo.profile.licensePic} style={{width:100,height:100}}/>
+									<img src={uploadUrl+userInfo.profile.licensePic} style={{width:200}}/>
 									:"——"}
 									</span>
 								</p>
@@ -229,22 +244,22 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<div className={stytes.dataBox}>
 						<span className={stytes.span1}>管理员身份件扫描</span>
 						<span className={stytes.span2}>
-						    {(userInfo.profile&&userInfo.profile.idcardBack!=null)?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
-						    {(userInfo.profile&&userInfo.profile.idcardFront!=null)?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardFront}/>:<span className={stytes.idcardBack}>暂无上传身份反面</span>}
-						    
-						      {(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardPic}/>:<span className={stytes.idcardBack}>暂无上传手持身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardBack!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardFront!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardFront}/>:<span className={stytes.idcardBack}>暂无上传身份反面</span>} 
+						    {(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardPic}/>:<span className={stytes.idcardBack}>暂无上传手持身份正面</span>}
 						</span>
 						</div>
 						<p className={stytes.dataBox}><span className={stytes.span1}>相关网站链接</span><span className={stytes.span2}>{(userInfo.profile&&(userInfo.profile.siteLink!=""))?userInfo.profile.siteLink:"——"}</span></p>
 						<p className={stytes.dataBox}>
 						<span className={stytes.span1}>其他资质</span>
 						<span className={stytes.span2}>
-						{(userInfo.profile&&userInfo.profile.otherPic!=null&&JSON.parse(userInfo.profile.otherPic).length!=0)?<span>{JSON.parse(userInfo.profile.otherPic).map((item,index)=>{
+						{(userInfo.profile&&userInfo.profile.otherPic!=null&&((userInfo.profile.otherPic).split(',')).length!=0)?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
 							return(
-								<img src={uploadUrl+item} style={{width:100,height:100,marginLeft:20}} />
+								<img src={uploadUrl+item} style={{width:200,marginLeft:20}} key={index}/>
 								)
 						})}</span>:""}
-						</span></p>
+						</span>
+						</p>
 						</div>
 							
 					      }
