@@ -371,12 +371,21 @@ function RelesEditor({
     }*/
     
   }
-  function handleNumberChange(e){
+  /*function handleNumberChange(e){
      const number = parseInt(e.target.value || 0, 10);
      console.log(number)
       if (isNaN(number)) {
         return;
       }
+  }*/
+  function handleNumberChange(e){
+    const { value } = e.target;
+   
+    const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+    if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
+        console.log(value)
+        return 
+    }
   }
   return(
       <Form onSubmit={handleSubmit}>
@@ -615,19 +624,6 @@ function RelesEditor({
                           
                       )}
                       <span style={{color:"#d9d9d9",marginLeft:20}}>越小越靠前</span>
-              </FormItem>
-              <FormItem
-                      {...formItemLayout}
-                      label="原文链接"
-                    >
-                      {getFieldDecorator('articleLink',{
-                        initialValue:"",
-                        rules: [{ required: true, message: '请填写转载文章来源链接地址!', },
-                        {min:1,max:500,message:"不超过500字符"}
-                       ],
-                      })(
-                        <Input style={{width:"60%"}}/>
-                      )}
               </FormItem>
               <FormItem
                       {...formItemLayout}

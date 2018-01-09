@@ -149,7 +149,7 @@ function ContentImage({dispatch,content,location}) {
 						type:"content/addImage",
 						payload:{
 							imageType:parseInt(value.imgtype),
-							imageDetail:parseInt(value.imageDetail),
+							imageDetail:value.imageDetail,
 							navigatorPos:parseInt(value.residence[0]),
 							imagePos:parseInt(value.residence[1]),
 							imageStatus:parseInt(value.showStatus),

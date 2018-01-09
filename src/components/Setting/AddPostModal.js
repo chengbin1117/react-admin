@@ -42,6 +42,9 @@ const AddPostModal = ({
 
 const FormItem = Form.Item;
 	function handleOk() {
+		var CX = document.getElementById('checkList');
+		console.log(CX)
+		console.log(document.getElementsByTagName('input')[5].value)
 		validateFields((errors,values) => {
 			if (errors) {
 				return;
@@ -141,16 +144,10 @@ const FormItem = Form.Item;
 
 			    </FormItem>
 			    <FormItem>
-			    	{getFieldDecorator('rules', {
-			    		rules: [{ required: false, message: '请填写选择权限!' },
-			    		{ type: 'array', message: '请填写选择权限!' },
-
-			    		],
-			    		trigger:checked
-			    		
-			        })(<div>{TreeList&&TreeItem(TreeList).map((item,index)=>
+			       <div id="checkList">{TreeList&&TreeItem(TreeList).map((item,index)=>
 			        	<RuleList key={index} item = {item} child={item.children}  checked={checked}/>
-			        	)}</div>)}
+			        	)}
+			       </div>
 			     </FormItem>
 			    
 			</Form>

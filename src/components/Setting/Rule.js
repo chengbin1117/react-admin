@@ -245,40 +245,51 @@ const TreeNode = Tree.TreeNode;
         <div>
 
           
-            <Checkbox
-              
+            <input
+              type="checkbox"
               onChange={this.onCheckAllChange}
-              checked={this.state.checkAll}
+              checked  ={this.state.checkAll}
+             /
             >
             {this.props.item.label}            
-            </Checkbox>
+           
          
           <br />
           <div style={{ borderBottom: '1px solid #E9E9E9',paddingBottom:20 }}>
-          <CheckboxGroup options={this.props.child} value={this.state.checkedList} onChange={this.onChange} />
+          {this.props.child.map((x,index)=>
+            <span>
+              <input type="checkbox"  value={x.value}  onChange={this.onChange}/>{x.label}
+            </span>
+            )}
+          
            </div>
         </div>
       );
     }
-    onChange = (checkedList) => {
+    onChange = (e) => {
+      console.log(e.target.checked)
+      var arr=[];
+      if(e.target.checked){
+        arr.push(e.target.value)
+      }
+      console.log(arr)
       this.setState({
-        checkedList,
         
-        checkAll: checkedList.length>0,
+        checkAll: e.target.checked,
       });
-      var arr =this.state.arrs;
+    /*  var arr =this.state.arrs;
       checkedList&&checkedList.map(item=>{
             arr.push(item)
       })
       this.setState({
         arrs:arr
-      })
+      })*/
       //console.log(this.props.item)
-      console.log(checkedList)
+      /*console.log(checkedList)
        for(var i in checkedList){
             for(var j in this.props.item.children){
                 if(this.props.item.children[j].value == checkedList[i]){
-                    /*console.log(1)*/
+                    
                     if(this.props.item.value==checkedList[i]){
                       break
                     }else{
@@ -288,7 +299,7 @@ const TreeNode = Tree.TreeNode;
                 }
             }
         }
-      this.props.checked(checkedList,this.props.item)
+      this.props.checked(checkedList,this.props.item)*/
       
     }
     onCheckAllChange = (e) => {
