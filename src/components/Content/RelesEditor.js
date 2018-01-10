@@ -46,6 +46,10 @@ const tailFormItemLayout = {
 let artSorce =2;
 let timeDis =true;
 let sec=0;
+let titleNum=0;
+var n =5000;
+var x = 5000;
+
 function RelesEditor({
   dispatch,
   imgUrl,
@@ -204,7 +208,10 @@ function RelesEditor({
         localStorage.setItem("html", html);*/
         var arr = [];
         arr.push(editor.txt.html(),editor.txt.text())
-       
+        console.log(editor.txt.text())
+        var l = editor.txt.text().length;
+        console.log(l)
+        x = n-l
         return arr
     }
   function handleChange(imgUrl){
@@ -387,6 +394,12 @@ function RelesEditor({
         return 
     }
   }
+  function titleValue(e){
+    //console.log((e.target.value).length);
+
+    titleNum = (e.target.value).length
+    // /console.log(titleValue)
+  }
   return(
       <Form onSubmit={handleSubmit}>
             <FormItem label="文章标题" {...formItemLayout}>
@@ -402,9 +415,9 @@ function RelesEditor({
                         }
                         ],
                     })(
-                      <Input  type="text" placeholder="输入标题" style={{width:'60%'}}/>
+                      <Input  type="text" placeholder="输入标题" style={{width:'60%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>}/>
                     )}
-                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
+                    <span style={{marginLeft:20}} className={styles.pre}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -417,7 +430,7 @@ function RelesEditor({
                     })(
                          <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left',minHeight:800}}/>
                     )}
-                  
+                  <span>限制字数{x}/5000</span>
               </FormItem>
               <Row  key='2'>
               <Col span={4} >
@@ -433,8 +446,6 @@ function RelesEditor({
                             min:2,
                             max:5,
                             message: '请输入2-5个字符!',
-                        },{
-                          validator:onChangeTag
                         }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
@@ -503,7 +514,7 @@ function RelesEditor({
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
-                      <span style={{color:"#ddd"}}> 至少3个tag，每个tag：2-5个汉字</span>
+                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个汉字</span>
                   </FormItem>
               </Col>
               
@@ -623,9 +634,9 @@ function RelesEditor({
                         <Input style={{width:'10%'}}/>
                           
                       )}
-                      <span style={{color:"#d9d9d9",marginLeft:20}}>越小越靠前</span>
+                      <span style={{marginLeft:20}} className={styles.pre}>越小越靠前</span>
               </FormItem>
-              <FormItem
+              {/*<FormItem
                       {...formItemLayout}
                       label="浏览量"
                     >
@@ -666,7 +677,7 @@ function RelesEditor({
                         <InputNumber style={{width:"20%"}} />
                       )}
                       <span>输入限制:0-50万</span>
-              </FormItem>
+              </FormItem>*/}
               <FormItem
                       {...formItemLayout}
                       label="评论设置"

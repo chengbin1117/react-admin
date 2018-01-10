@@ -147,7 +147,7 @@ const BgModal = ({
                <Button type="primary" size="large" className={styles.upLoadBtn} style={{paddingLeft:30,paddingRight:30}}> 上传 </Button>
                <span className={styles.infoSize}>建议尺寸：660*420</span>
                </div>
-			   <Row style={{minHeight:200}}>
+			   <Row >
 			   		{ImgX}
 			   </Row>
 			   <div className={styles.upBtn}>

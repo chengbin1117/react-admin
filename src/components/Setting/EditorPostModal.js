@@ -9,10 +9,12 @@ import {
 	Button,
 	Table,
 	Tabs,
-	Checkbox
+	Checkbox,
+	message
 } from 'antd';
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
+import $ from 'jquery';
 import RuleList from './Rule';
 const formItemLayout = {
 	labelCol: {
@@ -42,6 +44,16 @@ const EditorPostModal = ({
 //console.log("selectlist",item)
 const FormItem = Form.Item;
 	function handleOk() {
+		var CX = $("input[name^='parentBox']")  
+		var arry= [];    
+		//var CX = document.getElementsByTagName('input');
+			//console.log(CX)
+			for(var i in CX){  
+			   if(CX[i].checked){
+			   	//console.log(CX[i].value)
+			   	arry.push(CX[i].value)
+			   }
+			}
 		validateFields((errors,values) => {
 		
 
@@ -49,9 +61,12 @@ const FormItem = Form.Item;
 
 				return;
 			}
-
+			if(arry.length==0){
+				message.warn('请选择权限')
+				return;
+			}
 			
-			onOk(values,item.postId);
+			onOk(values,item.postId,arry);
 		});
 	}
 
@@ -95,19 +110,19 @@ const FormItem = Form.Item;
   
 
     function TreeItem(list) {
-
+    	//console.log("list",list)
     	var arr =[];
     	let params ={};
     	let chid ={};
     	for (var i in list) {
  
             params={
-              'key': list[i].id,
-              'title': list[i].name,
+              'value': list[i].id,
+              'label': list[i].name,
                children:list[i].children.map((j)=>
                      chid ={
-                      'key':j.id,
-                      'title':j.name,
+                      'value':j.id,
+                      'label':j.name,
                     }
                 )
             }
@@ -126,13 +141,10 @@ const FormItem = Form.Item;
 			        })(<Input />)}
 			    </FormItem>
 			    <FormItem>
-			        {getFieldDecorator('rules', {
-			        	initialValue:item.authIds!=undefined?item.authIds.split(','):[],
-			    		rules: [{ required: true, message: '请填写选择权限!' },
-			    		{ type: 'array', message: '请填写选择权限!' }],
-			    		trigger:'checked',
-			        })(<RuleList plainOptions = {TreeItem(TreeList)} defavalue={checked(item.authIds!=undefined?item.authIds.split(','):[])} checked={checked}/>)}
-			    	
+			       <div id="checkList">{TreeList&&TreeItem(TreeList).map((t,index)=>
+			        	<RuleList key={index} item = {t} defValue ={item.authIds} child={t.children} value={t.value}/>
+			        	)}
+			       </div>
 			     </FormItem>
 			    
 			</Form>

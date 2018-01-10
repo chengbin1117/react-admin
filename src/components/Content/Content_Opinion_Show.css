@@ -26,20 +26,19 @@
 }
 .upImg {
 	width: 220px!important;
-	height:144px;
+	
 	margin-right: 20px;
     margin-top: 20px;
 }
 .selImg{
-	width: 200px!important;
-	height:200px;
+	width: 220px!important;
+	margin-right: 20px;
 	margin-right: 20px;
     margin-top: 20px;
 	border:2px solid #f00;
 }
 .selImg img {
 	width:100%!important;
-	
 	border-radius: 5px;
 	cursor: pointer;
 }
@@ -68,8 +67,10 @@
 }
 .upBox input{
   opacity: 0;
+  height:40px!important;
   position: absolute;
   z-index: 2;
+  cursor: pointer;
 }
 .upBtn{
 	margin-top: 40px;
@@ -153,4 +154,7 @@
 	margin-top:20px; 
 	border-top:1px solid #e5e5e5;
 	padding-top: 10px;
+}
+.pre{
+	color:rgba(0, 0, 0, 0.35);
 }
