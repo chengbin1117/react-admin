@@ -226,9 +226,9 @@ import styles from '../common.css'
     };
     componentDidMount(){
       if(this.props.defValue!=undefined){
-         var defout = (this.props.defValue).split(",");
+         var defout = [...(this.props.defValue).split(",")];
        
-        ///console.log(defout)
+        console.log(defout)
        for(var i in defout){
           var CX =$("input[name=parentBox"+defout[i]+"]")
           //console.log(CX)
@@ -242,6 +242,9 @@ import styles from '../common.css'
       
        
         
+    }
+    componentWillUnmount(){
+      console.log("jieshu")
     }
     defaultV(value){
            // console.log("value",value);

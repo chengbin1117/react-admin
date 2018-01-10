@@ -7,22 +7,28 @@ import {
   routerRedux,
 
 } from 'dva/router';
-import { Form, Icon, Input, Button,Badge, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
+import { Form, Icon, Input, Button,Badge, Checkbox,Tag,Row,Col,Upload,InputNumber,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
 import Editor from '../../editor/index';
-import {options,uploadUrl,ImgUrl} from "../../services/common"
+import {options,uploadUrl,ImgUrl,formatDate} from "../../services/common"
 import E from 'wangeditor';
 import WrappedEditorForm from './EditorForm';
 import RelationModal from '../Setting/RelationUser';
+import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 
-var n =0;
+let artSorce =2;
+let timeDis =true;
+let sec=0;
+let titleNum=0;
+var n =5000;
+var x = 5000;
 const formItemLayout = {
         labelCol: {
         xs: { span: 1 },
@@ -109,14 +115,17 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioG == "true"?true:false,
-                  publishSet:data.radioS == "true"?true:false,
+                  commentSet:data.commentSet == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
                   createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   publishStatus:parseInt(data.publishStatus),
-                  article_textnum:dds.length
+                  textnum:dds.length,
+                  browseNum:data.browseNum,
+                  thumbupNum:data.thumbupNum,
+                  collectNum:data.collectNum,
                 }
             })
           }else{
@@ -134,15 +143,18 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioG == "true"?true:false,
-                  publishSet:data.radioS == "true"?true:false,
+                  commentSet:data.commentSet == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
                   createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   publishStatus:parseInt(data.publishStatus),
                   refuseReason:data.refuseReason,
-                  article_textnum:dds.length
+                  textnum:dds.length,
+                  browseNum:data.browseNum,
+                  thumbupNum:data.thumbupNum,
+                  collectNum:data.collectNum,
                 }
           })
           }
@@ -163,15 +175,19 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioG == "true"?true:false,
-                  publishSet:data.radioS == "true"?true:false,
+                  commentSet:data.commentSet == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
                   createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   sysUser:merId,
                   publishStatus:parseInt(data.publishStatus),
-                  article_textnum:dds.length
+                  publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
+                  textnum:dds.length,
+                  browseNum:data.browseNum,
+                  thumbupNum:data.thumbupNum,
+                  collectNum:data.collectNum,
                 }
             })
           }else{
@@ -189,16 +205,20 @@ function ArticleEditor({
                   secondColumn:parseInt(data.column[1]),
                   displayStatus:parseInt(data.radioT),
                   displayOrder:parseInt(data.sort),
-                  commentSet:data.radioG == "true"?true:false,
-                  publishSet:data.radioS == "true"?true:false,
+                  commentSet:data.commentSet == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
                   createUser:ArticleList.createUser,
                   sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   publishStatus:parseInt(data.publishStatus),
+                  publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
                   refuseReason:data.refuseReason,
-                  article_textnum:dds.length
+                  textnum:dds.length,
+                  browseNum:data.browseNum,
+                  thumbupNum:data.thumbupNum,
+                  collectNum:data.collectNum,
                 }
           })
           }
@@ -214,7 +234,24 @@ function ArticleEditor({
     console.log(e.target.value)
     ArticleList.articleType =parseInt(e.target.value)
   }
-
+  function range(start, end) {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+  }
+  function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current.valueOf() <= Date.now();
+  }
+  function disabledDateTime() {
+    return {
+      disabledHours: () => range(0, 24).splice(4, 20),
+      disabledMinutes: () => range(30, 60),
+      disabledSeconds: () => [55, 56],
+    };
+  }
   function goBack() {
     //dispatch(routerRedux.push("/content/content_article?page=1"))
   }
@@ -240,6 +277,15 @@ function ArticleEditor({
   function edtiorContentText(html){
       
       return html
+  }
+  function handleTime(e){
+    console.log(e.target.value)
+    if(e.target.value=="false"){
+      ArticleList.publishSet=false;
+    }else{
+      ArticleList.publishSet=true;
+    }
+    
   }
   function handleChange(imgUrl){
     console.log(imgUrl)
@@ -428,7 +474,7 @@ function StatusonChange(e) {
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
-                      <span style={{color:"#ddd"}}> 至少3个tag，每个tag：2-5个汉字</span>
+                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个汉字</span>
                   </FormItem>
               </Col>
            </Row> 
@@ -485,7 +531,7 @@ function StatusonChange(e) {
                         rules: [{required: true, message: '请填写转载文章来源!' },
                        ],
                       })(
-                        <Input />
+                        <Input style={{width:"60%"}}/>
                       )}
               
               </FormItem>:null}
@@ -498,7 +544,7 @@ function StatusonChange(e) {
                         rules: [{ required: true, message: '请填写转载文章来源链接地址!' },
                        ],
                       })(
-                        <Input />
+                        <Input style={{width:"60%"}}/>
                       )}
               </FormItem>:null}
                
@@ -548,12 +594,58 @@ function StatusonChange(e) {
                         <Input style={{width:'10%'}}/>
                           
                       )}
+                      <span style={{marginLeft:20}} className={styles.pre}>越小越靠前</span>
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="浏览量"
+                    >
+                      {getFieldDecorator('browseNum',{
+                        initialValue:ArticleList.browseNum||0,
+                        rules: [{ required: false, message: '请输入浏览量!', },
+                        
+                       ],
+                      })(
+                        <InputNumber style={{width:"20%"}} min={0}
+                          max={5000000}/>
+                      )}
+                      <span className={styles.pre}>输入限制:0-500万</span>
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="点赞量"
+                    >
+                      {getFieldDecorator('thumbupNum',{
+                        initialValue:ArticleList.thumbupNum||0,
+                        rules: [{ required: false, message: '请输入点赞量!', },
+                        
+                       ],
+                      })(
+                        <InputNumber style={{width:"20%"}} min={0}
+                         max={500000}/>
+                      )}
+                      <span className={styles.pre}>输入限制:0-50万</span>
+              </FormItem>
+              <FormItem
+                      {...formItemLayout}
+                      label="收藏量"
+                    >
+                      {getFieldDecorator('collectNum',{
+                        initialValue:ArticleList.collectNum||0,
+                        rules: [{ required: false, message: '请输入收藏量!', },
+                        
+                       ],
+                      })(
+                        <InputNumber style={{width:"20%"}} min={0}
+                         max={500000}/>
+                      )}
+                      <span className={styles.pre}>输入限制:0-50万</span>
               </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="评论设置"
                     >
-                      {getFieldDecorator('radioG',{
+                      {getFieldDecorator('commentSet',{
                          initialValue:ArticleList.commentSet==true?"true":'false',
                       })(
                         <RadioGroup >
@@ -562,6 +654,42 @@ function StatusonChange(e) {
                         </RadioGroup>
                       )}
               </FormItem>
+              {ArticleList.sysUser !=null?<FormItem
+                      {...formItemLayout}
+                      label="定时发布"
+                    >
+                      {getFieldDecorator('radioG',{
+                         initialValue:ArticleList.publishSet==true?"true":"false",
+                         rules: [{ required: true, }],
+                      })(
+                        <RadioGroup onChange={handleTime}>
+                          <Radio value="true">开启定时发布</Radio>
+                          <Radio value="false">不开启</Radio>
+                        </RadioGroup>
+                      )}
+              </FormItem>:null}
+              {(ArticleList&&ArticleList.publishSet==true)&& <FormItem
+                      {...formItemLayout}
+                      label=" " colon ={false}
+                      extra ="定时范围：从当前时间点开始至未来7天内，按自然日计算"
+                    >
+                      {getFieldDecorator('time',{
+                         initialValue:moment(formatDate(ArticleList.publishTime),"YYYY-MM-DD HH:mm:ss"),
+                         rules: [
+                          { required: true,message:"请选择时间",},
+                        ],
+                      })(
+                         <DatePicker
+                            format="YYYY-MM-DD HH:mm:ss"
+                            disabledDate={disabledDate}
+                            disabledTime={disabledDateTime}
+                            showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                            locale={options}
+                            size="large"
+                            /*disabled={timeDis}*/
+                          />
+                      )}
+              </FormItem>}
               <FormItem
                       {...formItemLayout}
                        label="发布人"
