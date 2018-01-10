@@ -32,10 +32,11 @@
 }
 .selImg{
 	width: 220px!important;
-	margin-right: 20px;
+	
 	margin-right: 20px;
     margin-top: 20px;
 	border:2px solid #f00;
+
 }
 .selImg img {
 	width:100%!important;
