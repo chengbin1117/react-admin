@@ -611,13 +611,15 @@ export default {
     showEditorPostModal(state, action) {
       return {...state,
         EditorPostVisible: true,
-        ...action.payload
+        ...action.payload,
+
       };
     },
     hideEditorPostModal(state, action) {
       return {...state,
         EditorPostVisible: false,
-        ...action.payload
+        ...action.payload,
+        currentItem:{}
       };
     },
     getUserIdSuccess(state, action) {

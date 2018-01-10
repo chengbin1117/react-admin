@@ -109,9 +109,12 @@ function RelesEditor({
                 createUser:data.createUser,
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
-                article_textnum:data.text.txt.text().length,
+                textnum:data.text.txt.text().length,
                 publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
                 publishStatus:1,
+                browseNum:data.browseNum,
+                thumbupNum:data.thumbupNum,
+                collectNum:data.collectNum,
               }
           })
         }
@@ -122,7 +125,7 @@ function RelesEditor({
               if(errors){
                 return
               }
-              const data = {...getFieldsValue()};
+           const data = {...getFieldsValue()};
            var tagsName ="";
           if(data.tag1==undefined){
              tagsName ="";
@@ -138,7 +141,7 @@ function RelesEditor({
           }else if(data.tag4!=undefined&&data.tag5!=undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
           }
-          console.log(data)
+          //console.log(data)
           if(data.text!=undefined){
             dispatch({
               type:'content/publishArticle',
@@ -161,7 +164,10 @@ function RelesEditor({
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
-                article_textnum:data.text.txt.text().length
+                textnum:data.text.txt.text().length,
+                browseNum:data.browseNum,
+                thumbupNum:data.thumbupNum,
+                collectNum:data.collectNum,
               }
           })
           }else{
@@ -186,7 +192,10 @@ function RelesEditor({
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
-                article_textnum:0
+                textnum:0,
+                browseNum:data.browseNum,
+                thumbupNum:data.thumbupNum,
+                collectNum:data.collectNum,
               }
           })
           }
@@ -636,54 +645,58 @@ function RelesEditor({
                       )}
                       <span style={{marginLeft:20}} className={styles.pre}>越小越靠前</span>
               </FormItem>
-              {/*<FormItem
+              <FormItem
                       {...formItemLayout}
                       label="浏览量"
                     >
-                      {getFieldDecorator('num1',{
+                      {getFieldDecorator('browseNum',{
                         initialValue:0,
                         rules: [{ required: false, message: '请输入浏览量!', },
                         
                        ],
                       })(
-                        <Input style={{width:"20%"}} onChange={handleNumberChange}/>
+                        <InputNumber style={{width:"20%"}} min={0}
+                          max={5000000}/>
                       )}
-                      <span>输入限制:0-500万</span>
+                      <span className={styles.pre}>输入限制:0-500万</span>
               </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="点赞量"
                     >
-                      {getFieldDecorator('num2',{
+                      {getFieldDecorator('thumbupNum',{
                         initialValue:0,
-                        rules: [{ required: false, message: '请输入浏览量!', },
+                        rules: [{ required: false, message: '请输入点赞量!', },
                         
                        ],
                       })(
-                        <InputNumber style={{width:"20%"}}/>
+                        <InputNumber style={{width:"20%"}} min={0}
+                         max={500000}/>
                       )}
-                      <span>输入限制:0-50万</span>
+                      <span className={styles.pre}>输入限制:0-50万</span>
               </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="收藏量"
                     >
-                      {getFieldDecorator('num3',{
+                      {getFieldDecorator('collectNum',{
                         initialValue:0,
-                        rules: [{ required: false, message: '请填写转载文章来源链接地址!', },
-                        {min:1,max:500,message:"不超过500字符"}
+                        rules: [{ required: false, message: '请输入收藏量!', },
+                        
                        ],
                       })(
-                        <InputNumber style={{width:"20%"}} />
+                        <InputNumber style={{width:"20%"}} min={0}
+                         max={500000}/>
                       )}
-                      <span>输入限制:0-50万</span>
-              </FormItem>*/}
+                      <span className={styles.pre}>输入限制:0-50万</span>
+              </FormItem>
               <FormItem
                       {...formItemLayout}
                       label="评论设置"
                     >
                       {getFieldDecorator('commentSet',{
                          initialValue:'true',
+                         rules: [{ required: true, }],
                       })(
                         <RadioGroup >
                           <Radio value="true">开启</Radio>
@@ -697,6 +710,7 @@ function RelesEditor({
                     >
                       {getFieldDecorator('radioG',{
                          initialValue:'false',
+                         rules: [{ required: true, }],
                       })(
                         <RadioGroup onChange={handleTime}>
                           <Radio value="true">开启定时发布</Radio>
@@ -719,7 +733,7 @@ function RelesEditor({
                             disabledDate={disabledDate}
                             disabledTime={disabledDateTime}
                             showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                            locale ={options}
+                            locale={options}
                             size="large"
                             /*disabled={timeDis}*/
                           />

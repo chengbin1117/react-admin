@@ -36,7 +36,7 @@ const RelationModal = ({
 	},
 }) => {
 
-	console.log("type",item)
+	//console.log("type",item)
 	function handleOk() {
 		validateFields((errors) => {
 			if (errors) {
