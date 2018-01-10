@@ -98,8 +98,8 @@ function DataUser({dispatch,center}) {
 		  title: '粘性数据',
 			  children: [{
 			    title: '评论数',
-			    dataIndex: 'age',
-			    key: 'age',
+			    dataIndex: 'commentNum',
+			    key: 'commentNum',
 			  }, {
 			    title: '收藏数',
 		        dataIndex: 'collectNum',

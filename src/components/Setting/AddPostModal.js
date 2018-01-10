@@ -9,9 +9,9 @@ import {
 	Button,
 	Table,
 	Tabs,
-	
+	message
 } from 'antd';
-
+import $ from 'jquery';
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 import RuleList from './Rule';
@@ -42,14 +42,29 @@ const AddPostModal = ({
 
 const FormItem = Form.Item;
 	function handleOk() {
-		validateFields((errors,values) => {
+		var CX = $("input[name^='parentBox']")  
+		var arry= [];    
+		//var CX = document.getElementsByTagName('input');
+			//console.log(CX)
+			for(var i in CX){  
+			   if(CX[i].checked){
+			   	//console.log(CX[i].value)
+			   	arry.push(CX[i].value)
+			   }
+			}
+			//console.log(arry)
+
+		    validateFields((errors,values) => {
 			if (errors) {
 				return;
 			}
-
+			if(arry.length==0){
+				message.warn('请选择权限')
+				return;
+			}
 			//const data = {...getFieldsValue()}
 			//console.log(values)
-			onOk(values,list);
+			onOk(values,arry);
 		});
 	}
 
@@ -94,7 +109,7 @@ const FormItem = Form.Item;
   
 
     function TreeItem(list) {
-    	//sconsole.log("list",list)
+    	//console.log("list",list)
     	var arr =[];
     	let params ={};
     	let chid ={};
@@ -141,16 +156,10 @@ const FormItem = Form.Item;
 
 			    </FormItem>
 			    <FormItem>
-			    	{getFieldDecorator('rules', {
-			    		rules: [{ required: false, message: '请填写选择权限!' },
-			    		{ type: 'array', message: '请填写选择权限!' },
-
-			    		],
-			    		trigger:checked
-			    		
-			        })(<div>{TreeList&&TreeItem(TreeList).map((item,index)=>
-			        	<RuleList key={index} item = {item} child={item.children}  checked={checked}/>
-			        	)}</div>)}
+			       <div id="checkList">{TreeList&&TreeItem(TreeList).map((item,index)=>
+			        	<RuleList  item = {item} child={item.children}  checked={checked} value={item.value} key={index}/>
+			        	)}
+			       </div>
 			     </FormItem>
 			    
 			</Form>

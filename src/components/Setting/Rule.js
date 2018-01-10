@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Row, Col, Input, Button, Icon,Checkbox,Tree} from 'antd';
-
+import $ from 'jquery';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 const TreeNode = Tree.TreeNode; 
-    
+import styles from '../common.css'    
 
   /*var RuleList =Form.create() (React.createClass({
     getInitialState() {
@@ -221,10 +221,30 @@ const TreeNode = Tree.TreeNode;
       checkedList: this.defaultV(this.props.defValue),
       indeterminate: true,
       checkAll: false,
-      arrs:[]
+      arrs:[],
+      childCheck:false,
     };
+    componentDidMount(){
+      if(this.props.defValue!=undefined){
+         var defout = (this.props.defValue).split(",");
+       
+        ///console.log(defout)
+       for(var i in defout){
+          var CX =$("input[name=parentBox"+defout[i]+"]")
+          //console.log(CX)
+          CX[0].checked=true;
+          if(CX[1]!=undefined){
+            CX[1].checked=true;
+          }
+          
+       }
+      }
+      
+       
+        
+    }
     defaultV(value){
-            console.log("value",value);
+           // console.log("value",value);
             if(value!=undefined){
                 var de = value.split(',')
                     for (var i in de){
@@ -238,47 +258,66 @@ const TreeNode = Tree.TreeNode;
             
     }
     render() {
-       const plainOptions =this.props.plainOptions;
-       //console.log(this.props.item)
-       const key = this.props.key;
+      // console.log(this.props.item)
       return (
-        <div>
+        <div className={styles.checkAll}>
 
           
-            <Checkbox
-              
+            <input
+              type="checkbox"
               onChange={this.onCheckAllChange}
-              checked={this.state.checkAll}
+              checked  ={this.state.checkAll}
+              name={"parentBox"+this.props.item.value}
+              value={this.props.item.value}
+              className="regularCheckbox"
+             /
             >
             {this.props.item.label}            
-            </Checkbox>
+           
          
           <br />
           <div style={{ borderBottom: '1px solid #E9E9E9',paddingBottom:20 }}>
-          <CheckboxGroup options={this.props.child} value={this.state.checkedList} onChange={this.onChange} />
+          {this.props.child.map((x,index)=>
+            <span key={x.value}>
+              <input  type="checkbox"  className="regularCheckbox" value={x.value} name={"parentBox"+x.value} onChange={this.onChange}/>{x.label}
+            </span>
+            )}
+          
            </div>
         </div>
       );
     }
-    onChange = (checkedList) => {
-      this.setState({
-        checkedList,
+    onChange = (e) => {
+     // console.log(e.target.checked)
+      let arrs= this.state.arrs
+      if(e.target.checked){
+        arrs.push(e.target.value)
         
-        checkAll: checkedList.length>0,
+      }else{
+        for(var i in arrs){
+          if(e.target.value == arrs[i]){
+            arrs.splice(i,1)
+          }
+        }
+      }
+      //console.log(this.state.arrs)
+      this.setState({
+        childCheck:e.target.checked,
+        checkAll: (this.state.arrs.length)>0?true:false,
       });
-      var arr =this.state.arrs;
+    /*  var arr =this.state.arrs;
       checkedList&&checkedList.map(item=>{
             arr.push(item)
       })
       this.setState({
         arrs:arr
-      })
+      })*/
       //console.log(this.props.item)
-      console.log(checkedList)
+      /*console.log(checkedList)
        for(var i in checkedList){
             for(var j in this.props.item.children){
                 if(this.props.item.children[j].value == checkedList[i]){
-                    /*console.log(1)*/
+                    
                     if(this.props.item.value==checkedList[i]){
                       break
                     }else{
@@ -288,29 +327,26 @@ const TreeNode = Tree.TreeNode;
                 }
             }
         }
-      this.props.checked(checkedList,this.props.item)
+      this.props.checked(checkedList,this.props.item)*/
       
     }
     onCheckAllChange = (e) => {
-     
+     //console.log(e.target.value)
       var arr=[];
       var params =[];
-      console.log(this.props.item)
-      console.log(this.state.checkedList)
-      /*for(var i in this.props.item){
-          arr.push(this.props.plainOptions[i].value)
-      }*/
-      
+      if(!e.target.checked){
+        var CX =$("input[name=parentBox"+e.target.value+"]").nextAll()[1].children
+       // console.log(CX)
+        for(var i in CX){
+           CX[i].childNodes[0].checked=false
+        }
+      }
       this.setState({
         checkedList: e.target.checked ==true? arr : [],
-        indeterminate: false,
+        childCheck: e.target.checked,
         checkAll: e.target.checked,
       });
-      /*if(e.target.checked) {
-        this.props.onChecked(arr)
-      }else{
-        this.props.onChecked(params)
-      }*/
+      
     }
   }
  

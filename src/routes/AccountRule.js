@@ -264,10 +264,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 		    });
 		},
 		onOk(values,list){
-			if(list.length==0||list==undefined){
-				message.warning('请选择权限')
-			}else{
-				
+			console.log(list.join(','))
 				dispatch({
 					type: 'setting/addPost',
 					payload: {
@@ -276,7 +273,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 						userId:userId,
 					},
 			    });
-			}
+			
 			
 		}
 	}
@@ -293,13 +290,13 @@ function AccountRule({location,dispatch,setting,router,}) {
 		    });
 		     //window.location.reload()
 		},
-		onOk(values,id){
+		onOk(values,id,list){
 			dispatch({
 					type: 'setting/addPost',
 					payload: {
 						name:values.name,
 						postId:id,
-						authIds:values.rules.join(','),
+						authIds:list.join(','),
 						userId:userId,
 					},
 			    });

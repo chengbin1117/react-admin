@@ -427,7 +427,7 @@ export default {
         *addPost({ payload }, {call , put}) {
         
           
-          const { data } = yield call(addPost, payload);
+            const { data } = yield call(addPost, payload);
             console.log(data)
           if (data && data.code == 10000) {
               if(payload.postId!=undefined){
@@ -454,7 +454,7 @@ export default {
               yield put({
                   type:'hideEditorPostModal'
               })
-          
+              window.location.reload()
           } else {
             if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
