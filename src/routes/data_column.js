@@ -16,7 +16,8 @@ import createG2 from 'g2-react';
 import { Stat } from 'g2';
 import { Button,DatePicker,Radio,Table} from 'antd';
 import moment from 'moment';
-import {getDay} from '../services/data'
+import {getDay} from '../services/data';
+import {options} from '../services/common';
 const { MonthPicker, RangePicker } = DatePicker;
 const ButtonGroup = Button.Group;
 
@@ -56,7 +57,7 @@ function DataColumn({dispatch,center}) {
 	    	}
 	    })
 	    dispatch({
-                  type:"getColumnUserList",
+                  type:"center/getColumnUserList",
                   payload:{
                     startDate:getDay(-(parseInt(e.target.value)-1)),
                     endDate:getDay(0),
@@ -74,7 +75,7 @@ function DataColumn({dispatch,center}) {
 		    	}
 		    })
 		    dispatch({
-                  type:"getColumnUserList",
+                  type:"center/getColumnUserList",
                   payload:{
                     startDate:dateStrings[0].split('/').join('-'),
                     endDate:dateStrings[1].split('/').join('-'),
@@ -131,6 +132,7 @@ function DataColumn({dispatch,center}) {
 						      onChange ={this.handlechange}
 						      format={dateFormat}
 						      disabledDate={this.disabledDate}
+						      locale={options}
 						    />
 				    </div>
 			      <Chart
@@ -141,7 +143,7 @@ function DataColumn({dispatch,center}) {
 			        forceFit={this.state.forceFit}
 			      />
 			      <div>
-			      	<Table columns={columns} bordered dataSource={ColumnUserList}/>
+			      	<Table columns={columns} bordered dataSource={ColumnUserList} rowKey={record => record.uid} pagination={false}/>
 			      </div>
 	    </div>
 	  }

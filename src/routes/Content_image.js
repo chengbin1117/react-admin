@@ -43,12 +43,13 @@ function ContentImage({dispatch,content,location}) {
 			dispatch({
 				type:"content/deleteImage",
 				payload:{
-					imageId:record.imageId
+					imageId:record.imageId,
+					search:location.search
 				}
 			})
 		},
 		handlsearch(values){
-			console.log(values)
+			//console.log(values)
 			if(values.residence!=undefined){
 				/*dispatch({
 					type:"content/siteimagelist",
@@ -155,7 +156,8 @@ function ContentImage({dispatch,content,location}) {
 							imageStatus:parseInt(value.showStatus),
 							createUser:userId,
 							imageOrder:parseInt(value.sort),
-							imageAddress:value.imageAddress
+							imageAddress:value.imageAddress,
+							search:location.search
 						}
 					})
 			}else{
@@ -170,6 +172,7 @@ function ContentImage({dispatch,content,location}) {
 						imageStatus:parseInt(value.showStatus),
 						createUser:userId,
 						imageOrder:parseInt(value.sort),
+						search:location.search
 					}
 				})
 			}
@@ -186,7 +189,7 @@ function ContentImage({dispatch,content,location}) {
 		},
 
 		onCheckOk(value,text,id){
-			console.log(value,text,id)
+			//console.log(value,text,id)
 			if(value.type == "1"){
 					dispatch({
 						type:"content/addImage",
@@ -199,7 +202,8 @@ function ContentImage({dispatch,content,location}) {
 							imageStatus:parseInt(value.showStatus),
 							createUser:userId,
 							imageOrder:parseInt(value.sort),
-							imageAddress:value.imageAddress
+							imageAddress:value.imageAddress,
+							search:location.search
 						}
 					})
 			}else{
@@ -215,6 +219,7 @@ function ContentImage({dispatch,content,location}) {
 							imageStatus:parseInt(value.showStatus),
 							createUser:userId,
 							imageOrder:parseInt(value.sort),
+							search:location.search
 						}
 					})
 			}

@@ -34,7 +34,7 @@ function DataUser({dispatch,center}) {
 		chart.line().position('time*value').color('name').size(2);
 		chart.render();
 	});
-	console.log(size)
+	//console.log(size)
 	class MyComponent extends Component {
 	  state = {
 	    shape: 'line',
@@ -54,7 +54,7 @@ function DataUser({dispatch,center}) {
 	    	}
 	    })
 	    dispatch({
-                  type:"getNormalUserList",
+                  type:"center/getNormalUserList",
                   payload:{
                     startDate:getDay(-(parseInt(e.target.value)-1)),
                     endDate:getDay(0),
@@ -62,7 +62,7 @@ function DataUser({dispatch,center}) {
         })
 	  }
 	  handlechange = (dates,dateStrings) =>{
-	  		console.log(dates,dateStrings)
+	  		//console.log(dates,dateStrings)
 	  		dispatch({
 		  		type:"center/getDataStatChart",
 		    	payload:{
@@ -72,7 +72,7 @@ function DataUser({dispatch,center}) {
 		    	}
 		    })
 	  		 dispatch({
-                  type:"getNormalUserList",
+                  type:"center/getNormalUserList",
                   payload:{
                     startDate:dateStrings[0].split('/').join('-'),
                     endDate:dateStrings[1].split('/').join('-'),
@@ -138,7 +138,7 @@ function DataUser({dispatch,center}) {
 			        forceFit={this.state.forceFit}
 			      />
 			      <div>
-			      	<Table columns={columns} bordered dataSource={UserList}/>
+			      	<Table columns={columns} bordered dataSource={UserList} pagination={false}/>
 			      </div>
 	    </div>
 	  }

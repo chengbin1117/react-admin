@@ -33,7 +33,7 @@ function ArticlePreview({location,dispatch,user,router,}) {
 	console.log(previewTitle,previewartic)
 	return (
 			<div style={{minHeight:"100%"}}>
-				
+				<div className={styles.topBox}>
 			    <div className={styles.topNav}>
 			     	<div className={styles.grid_content} >
 				        <ul className = {styles.topNav_r}>
@@ -74,9 +74,12 @@ function ArticlePreview({location,dispatch,user,router,}) {
 			          </div>
 			        </div>
                 </div>
-                 <div className = {styles.previewMask}></div>
+                </div>
+                 <div className = {styles.previewMask}>
+                 <Alert message="这是预览页面，不支持任何操作" type="warning"  className={styles.text}/>
+                 </div>
               	<div className={styles.container} >
-              	<Alert message="这是预览页面，不支持任何操作" type="warning"  className={styles.text}/>
+              	
               	<div className={styles.container_left}>
 	                <p className={styles.title}>{previewTitle=='undefined'?"":previewTitle}</p>
 	              	<div className={styles.abstract}>

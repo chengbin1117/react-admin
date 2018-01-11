@@ -285,6 +285,13 @@ export default {
               type: 'getArticleList',
               payload:{
                  currentPage:sea.page,
+                 articleId:sea.articleId!='undefined'?sea.articleId:null,
+                 articleTitle:sea.articleTitle!='undefined'?sea.articleTitle:null,
+                 articleTag:sea.articleTag!='undefined'?sea.articleTag:null,
+                 publishStatus:sea.publishStatus!='undefined'?parseInt(sea.publishStatus):null,
+                 displayStatus:sea.displayStatus!='undefined'?parseInt(sea.displayStatus):null,
+                 columnId:sea.columnId!='null'?parseInt(sea.columnId):null,
+                 secondColumn:sea.secondColumn!='null'?parseInt(sea.secondColumn):null,
                  pageSize:25,
               }
             }); 
@@ -374,6 +381,13 @@ export default {
               type: 'getArticleList',
               payload:{
                 currentPage:search.page,
+                articleId:search.articleId!='undefined'?search.articleId:null,
+                articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+                articleTag:search.articleTag!='undefined'?search.articleTag:null,
+                publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+                displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+                columnId:search.columnId!='null'?parseInt(search.columnId):null,
+                secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
                 pageSize:25,
               }
             });
@@ -609,8 +623,36 @@ export default {
       }
     },
     *addImage({ payload }, {call , put}) {
-      console.log(payload)
-      const { data } = yield call(addImage, payload);
+     // console.log(payload)
+      const {imageType,imageDetail,navigatorPos,imagePos,imageStatus,createUser,imageOrder,imageAddress,imageId}=payload;
+      let params={};
+      if(imageId!=undefined){
+        params={
+          imageType:imageType,
+          imageDetail:imageDetail,
+          navigatorPos:navigatorPos,
+          imagePos:imagePos,
+          imageStatus:imageStatus,
+          createUser:createUser,
+          imageOrder:imageOrder,
+          imageAddress:imageAddress,
+          imageId:imageId
+        }
+        
+      }else{
+        params={
+          imageType:imageType,
+          imageDetail:imageDetail,
+          navigatorPos:navigatorPos,
+          imagePos:imagePos,
+          imageStatus:imageStatus,
+          createUser:createUser,
+          imageOrder:imageOrder,
+          imageAddress:imageAddress,
+        }
+      }
+
+      const { data } = yield call(addImage, params);
      
       if (data && data.code == 10000) {
         if(payload.imageId !=undefined){
@@ -618,12 +660,16 @@ export default {
         }else{
           message.success('图片添加成功');
         }
-          
+        const search =GetRequest(payload.search);  
         yield put({
               type: 'siteimagelist',
               payload:{
                 pageSize:25,
-                currentPage:1,
+                currentPage:parseInt(search.page),
+                imageType:search.imageType!="undefined"?parseInt(search.imageType):null,
+                imageStatus:search.imageStatus!="undefined"?parseInt(search.imageStatus):null,
+                navigatorPos:search.navigatorPos!="undefined"?parseInt(search.navigatorPos):null,
+                imagePos:search.imagePos!="undefined"?parseInt(search.imagePos):null,
               }
             }); 
             yield put({
@@ -649,13 +695,19 @@ export default {
         type: 'showLoading',
       });
       const { data } = yield call(deleteImage, payload);
-      console.log("图片",data)
+      //console.log("图片",data)
       if (data && data.code == 10000) {
           message.success('图片删除成功');
+           const search =GetRequest(payload.search);
             yield put({
               type: 'siteimagelist',
               payload:{
-                
+                pageSize:25,
+                currentPage:parseInt(search.page),
+                imageType:search.imageType!="undefined"?parseInt(search.imageType):null,
+                imageStatus:search.imageStatus!="undefined"?parseInt(search.imageStatus):null,
+                navigatorPos:search.navigatorPos!="undefined"?parseInt(search.navigatorPos):null,
+                imagePos:search.imagePos!="undefined"?parseInt(search.imagePos):null,  
               }
             }); 
       } else {

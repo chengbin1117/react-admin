@@ -228,8 +228,67 @@ function ArticleEditor({
         }
       })
   }
-  
+  if(imgUrl!=""){
+      articleList.articleImage =imgUrl
+  }
 
+  function pubsubmit(){
+      validateFields((errors) => {
+        if (errors) {
+          return;
+        }else{
+          const data = {...getFieldsValue()};
+          //console.log(data.text);
+          var dd=(data.text).replace(/<\/?.+?>/g,"");
+          var dds=dd.replace(/ /g,"");//dds为得到后的内容
+          //console.log(dds.lengthgvfdg)
+          var tagsName =""
+          if(data.tag4==undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3
+          }else if(data.tag4!=undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4
+          }else if(data.tag4!=undefined&&data.tag5!=undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
+          }
+          if(imgUrl == ""&&data.image==""){
+            message.error('请上传封面图')
+            return true
+          }
+          /*if(data.publishStatus==undefined){
+            data.publishStatus=ArticleList.publishStatus
+          }*/
+          
+            dispatch({
+                type:'content/publishArticle',
+                payload:{
+                  articleId:ArticleList.articleId,
+                  articleTitle:data.articleTitle,
+                  articleText:data.text,
+                  tagnames:tagsName,
+                  description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                  image:imgUrl==''?data.image:imgUrl,
+                  type:parseInt(data.type),
+                  columnId:parseInt(data.column[0]),
+                  secondColumn:parseInt(data.column[1]),
+                  displayStatus:parseInt(data.radioT),
+                  displayOrder:parseInt(data.sort),
+                  commentSet:data.commentSet == "true"?true:false,
+                  publishSet:data.radioG == "true"?true:false,
+                  createUser:ArticleList.createUser,
+                  sysUser:merId,
+                  bonusStatus:parseInt(data.bonusStatus),
+                  articleSource:data.articleSource,
+                  articleLink:data.articleLink,
+                  publishStatus:1,
+                  textnum:dds.length,
+                  browseNum:data.browseNum,
+                  thumbupNum:data.thumbupNum,
+                  collectNum:data.collectNum,
+                }
+            })
+          }
+       })   
+  }
   function typeChange (e){
     console.log(e.target.value)
     ArticleList.articleType =parseInt(e.target.value)
@@ -331,7 +390,7 @@ function StatusonChange(e) {
       
     },
     handleBlur(e){
-      console.log(e.target.value)
+      //console.log(e.target.value)
       dispatch({
         type:"setting/getUserId",
         payload:{
@@ -342,7 +401,7 @@ function StatusonChange(e) {
   }
 
    function ImgHandle(src){
-    console.log("src",src)
+    //console.log("src",src)
    }
    function handlevaild(rule, value, callback){
       
@@ -358,7 +417,9 @@ function StatusonChange(e) {
       }
       
    }
+   function checkout(){
 
+   }
   return(
       <Form onSubmit={handleSubmit}>
             <FormItem label="文章标题" {...formItemLayout}>
@@ -388,7 +449,7 @@ function StatusonChange(e) {
                       ],
                       trigger:'edtiorContentText'
                     })(
-                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText}/>
+                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} checkout={checkout}/>
                     )}
                   
               </FormItem>
@@ -786,7 +847,9 @@ function StatusonChange(e) {
              
               <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
                 <Button type="primary" onClick={handleSubmit} size="large" style={{paddingLeft:20,paddingRight:20}}>保存</Button>
-                
+                {(ArticleList&&ArticleList.publishStatus==0)&&
+                  <Button type="primary" onClick={pubsubmit} size="large" style={{paddingLeft:20,paddingRight:20,marginLeft:30}}>发布</Button>
+                }
                 <RelationModal {...RelationModalProps} />
               </FormItem>
               

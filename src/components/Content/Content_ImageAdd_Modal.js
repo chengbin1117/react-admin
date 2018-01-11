@@ -93,22 +93,6 @@ const Content_ImageAdd_Modal = ({
           "label":"tag列表右侧top排行上方宽幅图片"
         }]
     },{
-      value: '3',
-      label: '频道页',
-      children: [{
-            "value":'31',
-            "label":"频道页banner",
-           },{
-            "value":'32',
-            "label":"频道页banner下方小幅图片",
-           },{"value":'33',
-            "label":"频道页资讯列表横幅",
-           },{"value":'34',
-            "label":"频道页右侧热门资讯上方宽幅图片",
-           },{"value":'35',
-            "label":"频道页右侧热门作者上方小横幅",
-      }],
-    },{
       value: '4',
       label: '资讯详情',
       children: [{
@@ -125,6 +109,23 @@ const Content_ImageAdd_Modal = ({
          },]
     }];
    
+   /*,{
+      value: '3',
+      label: '频道页',
+      children: [{
+            "value":'31',
+            "label":"频道页banner",
+           },{
+            "value":'32',
+            "label":"频道页banner下方小幅图片",
+           },{"value":'33',
+            "label":"频道页资讯列表横幅",
+           },{"value":'34',
+            "label":"频道页右侧热门资讯上方宽幅图片",
+           },{"value":'35',
+            "label":"频道页右侧热门作者上方小横幅",
+      }],
+    },*/
   class DynamicRule extends React.Component {
     state = {
       checkNick: false,

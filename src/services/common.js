@@ -141,10 +141,10 @@ export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件
 let ImgUrl = "https://kg.com/image/upload"; //生产&&测试
 
 //下载图片
-
 // let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
 //let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
 let uploadUrl = "https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/"; //生产
+
 
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠

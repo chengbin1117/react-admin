@@ -23,11 +23,14 @@ const formItemLayout = {
       labelCol: {
         xs: { span: 1 },
         sm: { span: 1 },
-        xl: { span: 1 },
+        xl: { span: 2 },
+        xxl:{span:1}
       },
       wrapperCol: {
         xs: { span: 16 },
         sm: { span: 16 },
+        xl: { span: 22 },
+        xxl:{span:23}
       },
     };
 const tailFormItemLayout = {
@@ -106,7 +109,7 @@ function RelesEditor({
                 articleLink:data.articleLink,
                 commentSet:data.commentSet == "true"?true:false,
                 publishSet:data.radioG == "true"?true:false,
-                createUser:data.createUser,
+                createUser:UserById.kgUserId,
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 textnum:data.text.txt.text().length,
@@ -160,7 +163,7 @@ function RelesEditor({
                 articleLink:data.articleLink,
                 commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
                 publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
-                createUser:data.createUser,
+                createUser:UserById.kgUserId,
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
@@ -188,7 +191,7 @@ function RelesEditor({
                 articleLink:data.articleLink,
                 commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
                 publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
-                createUser:data.createUser,
+                createUser:UserById.kgUserId,
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
@@ -204,6 +207,11 @@ function RelesEditor({
           
       
   }
+
+  function publish (){
+        const data = {...getFieldsValue(["articleTitle","text"])};
+        console.log(data)
+  }
   function showModal(){
       dispatch({
             type:'content/showBgModal'
@@ -217,9 +225,11 @@ function RelesEditor({
         localStorage.setItem("html", html);*/
         var arr = [];
         arr.push(editor.txt.html(),editor.txt.text())
-        console.log(editor.txt.text())
-        var l = editor.txt.text().length;
-        console.log(l)
+        //console.log(editor.txt.text())
+        var lg = editor.txt.text();
+        let CX = lg.split('&nbsp;')
+        lg = CX.join('');
+        var l =lg.length
         x = n-l
         return arr
     }
@@ -292,7 +302,9 @@ function RelesEditor({
   }
   function disabledDate(current) {
   // Can not select days before today and today
-  return current && current.valueOf() <= Date.now();
+  console.log(current)
+  //console.log(moment())
+  return current && current <= moment()
   }
 
   function disabledDateTime() {
@@ -403,6 +415,16 @@ function RelesEditor({
         return 
     }
   }
+  // var time1 = setInterval(publish(),60000)
+  //var time2 =setInterval(publish(),10000)
+  function handleFocus(){
+      //publish()
+     // time1()
+  }
+  function checkout(){
+       //clearInterval(time1)
+       
+  }
   function titleValue(e){
     //console.log((e.target.value).length);
 
@@ -424,7 +446,7 @@ function RelesEditor({
                         }
                         ],
                     })(
-                      <Input  type="text" placeholder="输入标题" style={{width:'60%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>}/>
+                      <Input  type="text" placeholder="输入标题" style={{width:'50%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>} onBlur={handleFocus}/>
                     )}
                     <span style={{marginLeft:20}} className={styles.pre}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
               </FormItem>
@@ -437,7 +459,7 @@ function RelesEditor({
                       ],
                       trigger:'edtiorContent'
                     })(
-                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left',minHeight:800}}/>
+                         <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left'}} checkout={checkout}/>
                     )}
                   <span>限制字数{x}/5000</span>
               </FormItem>
@@ -451,10 +473,12 @@ function RelesEditor({
                           {
                             required: true, 
                             message: '请输入标签!',
+
                            },{
                             min:2,
                             max:5,
-                            message: '请输入2-5个字符!',
+                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
+                            message: '请输入2-5个汉字!',
                         }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
@@ -473,7 +497,8 @@ function RelesEditor({
                            },{
                             min:2,
                             max:5,
-                            message: '请输入2-5个字符!',
+                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
+                            message: '请输入2-5个汉字!',
                         }],
                       })(
                         <Input style={{width:'100%'}}/>
@@ -487,12 +512,14 @@ function RelesEditor({
                         
                          rules: [
                           {
-                            required: true, 
+                            required: true,
+                            
                             message: '请输入标签!',
                            },{
                             min:2,
                             max:5,
-                            message: '请输入2-5个字符!',
+                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
+                            message: '请输入2-5个汉字!',
                         }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
@@ -506,7 +533,8 @@ function RelesEditor({
                         
                         rules: [{ required: false, min:2,
                             max:5,
-                            message: '请输入2-5个字符!', }],
+                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
+                            message: '请输入2-5个汉字!', }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -519,7 +547,8 @@ function RelesEditor({
                         
                         rules: [{ required: false, min:2,
                             max:5,
-                            message: '请输入2-5个字符!',}],
+                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
+                            message: '请输入2-5个汉字!',}],
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
@@ -534,7 +563,7 @@ function RelesEditor({
                      
                       rules: [{ required: false,min:10,max:100,message: '摘要10-100字,支持中英文,数字，符号，不区分大小写!' }],
                     })(
-                      <TextArea style={{minHeight:"100px"}} placeholder="选填，若未填写会默认抓取正文前100字"></TextArea>
+                      <TextArea style={{minHeight:"200px",width:"80%"}} placeholder="选填，若未填写会默认抓取正文前100字"></TextArea>
                     )}
               </FormItem>
               <FormItem
@@ -731,7 +760,7 @@ function RelesEditor({
                          <DatePicker
                             format="YYYY-MM-DD HH:mm:ss"
                             disabledDate={disabledDate}
-                            disabledTime={disabledDateTime}
+                            /*disabledTime={disabledDateTime}*/
                             showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                             locale={options}
                             size="large"
@@ -746,7 +775,7 @@ function RelesEditor({
                        extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:(UserById.kgUserId!=null&&UserById.kgUserId!="")?UserById.kgUserId:'',
+                        initialValue:(UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:'',
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],

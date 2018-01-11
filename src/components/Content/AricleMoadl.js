@@ -27,7 +27,7 @@ let value = 0;
 
 const formItemLayout = {
 	labelCol: {
-		span: 6,
+		span: 4,
 	},
 	wrapperCol: {
 		span: 14,
@@ -75,7 +75,7 @@ const ArticleModal = ({
 	}
 	function afterClose(){
     resetFields()
-  }
+    }
 	const modalOpts = {
 		title: "审核处理",
 		visible,
@@ -84,14 +84,14 @@ const ArticleModal = ({
 		maskClosable: false,
 		okText:"确定",
 		cancelText:"取消",
-		 afterClose:afterClose
+		afterClose:afterClose
 	};
 	function onChange(e) {
         value =e.target.value;
     }
 	return (
 			
-		<Modal {...modalOpts} width='40%'>
+		<Modal {...modalOpts} width='20%'>
 			
 		<Form>
 			<FormItem>
@@ -104,11 +104,11 @@ const ArticleModal = ({
 				            </RadioGroup>
 				  		)}
 				</FormItem>
-				<FormItem label="选择栏目">
+				<FormItem label="选择栏目" {...formItemLayout}>
 				  	    {getFieldDecorator('column', {
 				  			rules:[{required: value==1?true:false, message: "请选择栏目!"}],
 				  		})(
-				  		    <Cascader options={ColumnList}  placeholder="请选择" style={{width:300+'px'}}/>
+				  		    <Cascader options={ColumnList}  placeholder="请选择" style={{width:'80%'}}/>
 				  		)}
 				</FormItem>
 				<FormItem>

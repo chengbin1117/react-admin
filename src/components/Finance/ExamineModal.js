@@ -36,6 +36,7 @@ const ExamineModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -60,6 +61,9 @@ const ExamineModal = ({
 		onCancel()
 		
 	}
+	function afterClose(){
+    resetFields()
+    }
 	const modalOpts = {
 		title: '审核处理',
 		visible,
@@ -67,7 +71,8 @@ const ExamineModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		okText:"确定",
-		cancelText:"取消"
+		cancelText:"取消",
+		afterClose:afterClose
 	};
 	
 	function onChange(e) {
