@@ -40,6 +40,7 @@ export default {
     ArticleStat:{},
     secondC:{},
     firstC:[],
+    saveId:0,
   },
 
   subscriptions: {
@@ -75,6 +76,7 @@ export default {
         }
         match = pathToRegexp('/content/release_article').exec(location.pathname);
         if(match){
+
          const search =GetRequest(location.search);
             dispatch({
               type:'getColumnList',
@@ -92,6 +94,7 @@ export default {
         match = pathToRegexp('/content/editor_article').exec(location.pathname);
         if(match){
          const search =GetRequest(location.search);
+          let merId =localStorage.getItem("userId"); 
          // console.log("search",search.articleId)
             dispatch({
               type:'getBonus',
@@ -99,6 +102,12 @@ export default {
                 articleId:search.articleId
               }
             });
+            dispatch({
+              type:'getSysUserById',
+              payload:{
+                userId:merId
+              }
+            })
             dispatch({
               type:'getColumnList',
               payload:{
@@ -411,19 +420,10 @@ export default {
       //console.log("11",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
-         if(payload.articleId!=undefined){
-            message.success('编辑成功')
-            yield put(routerRedux.push('/content/content_article?page=1'));
-         }else{
-           if(payload.publishStatus==1){
-              message.success('发布成功')
-           }else{
-            message.success('存草稿成功')
-           }
+         
+            message.success('成功')
            yield put(routerRedux.push('/content/content_article?page=1'));
            
-            
-         }
          
          
          /*console.log(res)
@@ -1111,6 +1111,95 @@ export default {
         }
       }
     },
+    *publishSave({ payload }, {call , put}) {
+      const {list,aoSave,autoSaveInterval}=payload;
+      window.clearInterval(autoSaveInterval);
+      let params= {};
+      if(list.articleId ==""){
+         params={
+          articleTitle:list.articleTitle,
+          articleText:list.articleText,
+          publishStatus:0,
+          tagnames:list.tagnames,
+          description:list.description,
+          image:list.image,
+          type:list.type,
+          columnId:list.columnId,
+          secondColumn:list.columnId,
+          displayStatus:list.displayStatus,
+          displayOrder:list.displayOrder,
+          articleSource:list.articleSource,
+          articleLink:list.articleLink,
+          commentSet:list.commentSet,
+          publishSet:list.publishSet,
+          createUser:list.createUser,
+          sysUser:list.sysUser,
+          bonusStatus:list.bonusStatus,
+          textnum:list.textnum,
+          browseNum:list.browseNum,
+          thumbupNum:list.thumbupNum,
+          collectNum:list.collectNum
+
+        }
+      }else{
+        params={
+          articleTitle:list.articleTitle,
+          articleText:list.articleText,
+          publishStatus:0,
+          articleId:list.articleId,
+          tagnames:list.tagnames,
+          description:list.description,
+          image:list.image,
+          type:list.type,
+          columnId:list.columnId,
+          secondColumn:list.columnId,
+          displayStatus:list.displayStatus,
+          displayOrder:list.displayOrder,
+          articleSource:list.articleSource,
+          articleLink:list.articleLink,
+          commentSet:list.commentSet,
+          publishSet:list.publishSet,
+          createUser:list.createUser,
+          sysUser:list.sysUser,
+          bonusStatus:list.bonusStatus,
+          textnum:list.textnum,
+          browseNum:list.browseNum,
+          thumbupNum:list.thumbupNum,
+          collectNum:list.collectNum
+
+        }
+      }
+   
+      const { data } = yield call(publishArticle, params);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+         var id = data.responseBody;
+         list.articleId = id;
+         
+         yield put({
+             type:"saveSuccess",
+             payload:{
+              saveId:id
+             }
+         })
+         window.clearInterval(autoSaveInterval);
+        /* payload.autoSaveInterval = window.setInterval(function() {
+                
+               // aoSave(list.articleId)
+              }, 10000);*/
+
+         
+         
+      } else {
+         
+        if(data.code ==10004||data.code ==10011){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
     *getBonus({ payload }, {call , put}) {
       let params ={
         articleId:payload.articleId
@@ -1243,44 +1332,57 @@ export default {
     getArticleListSuccess(state, action) {    
       return {...state,
         ...action.payload,
-        imgUrl:""
+        imgUrl:"",
+        saveId:0
       };
     },
     setDisplayStatusSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        saveId:0
       };
     },
     getColumnListSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        saveId:0
+      };
+    },
+    saveSuccess(state, action) {    
+      return {...state,
+        ...action.payload,
       };
     },
     siteimagelistSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        saveId:0
       };
     },
     showAddImgModal(state, action) {
       return {...state,
         ...action.payload,
-        addImageVisible: true
+        addImageVisible: true,
+        saveId:0
       };
     },
     hideAddImgModal(state, action) {
       return {...state,
         ...action.payload,
-        addImageVisible: false
+        addImageVisible: false,
+        saveId:0
       };
     },
     getFeedbackListSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
     getCommentListSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
     showCommentSet(state, action) {
@@ -1363,6 +1465,7 @@ export default {
     getBonusSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
     showImageModal(state, action) {
@@ -1381,7 +1484,8 @@ export default {
       
       return {...state,
         ...action.payload,
-        columnEditor: true
+        columnEditor: true,
+        saveId:0
       };
     },
     hideColumnEditorModal(state, action) {
@@ -1419,6 +1523,7 @@ export default {
     getArticleStatSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
   },

@@ -87,6 +87,8 @@ function ArticleEditor({
           //console.log(data.text);
           var dd=(data.text).replace(/<\/?.+?>/g,"");
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
+          let CX = dds.split('&nbsp;')
+          var lg = CX.join('');
           //console.log(dds.lengthgvfdg)
           var tagsName =""
           if(data.tag4==undefined&&data.tag5==undefined){
@@ -108,7 +110,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -122,7 +124,7 @@ function ArticleEditor({
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   publishStatus:parseInt(data.publishStatus),
-                  textnum:dds.length,
+                  textnum:lg.length,
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
@@ -136,7 +138,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -151,7 +153,7 @@ function ArticleEditor({
                   articleLink:data.articleLink,
                   publishStatus:parseInt(data.publishStatus),
                   refuseReason:data.refuseReason,
-                  textnum:dds.length,
+                  textnum:lg.length,
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
@@ -168,7 +170,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -184,7 +186,7 @@ function ArticleEditor({
                   sysUser:merId,
                   publishStatus:parseInt(data.publishStatus),
                   publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
-                  textnum:dds.length,
+                  textnum:lg.length,
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
@@ -198,7 +200,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -215,7 +217,7 @@ function ArticleEditor({
                   publishStatus:parseInt(data.publishStatus),
                   publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
                   refuseReason:data.refuseReason,
-                  textnum:dds.length,
+                  textnum:lg.length,
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
@@ -242,6 +244,9 @@ function ArticleEditor({
           var dd=(data.text).replace(/<\/?.+?>/g,"");
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
           //console.log(dds.lengthgvfdg)
+          let CX = dds.split('&nbsp;')
+        
+          var lg = CX.join('');
           var tagsName =""
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -265,7 +270,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -280,7 +285,7 @@ function ArticleEditor({
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
                   publishStatus:1,
-                  textnum:dds.length,
+                  textnum:lg.length,
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
@@ -408,9 +413,12 @@ function StatusonChange(e) {
       var dd=value.replace(/<\/?.+?>/g,"");
       var dds=dd.replace(/ /g,"");//dds为得到后的内容
       //console.log(dds)
-      if(dds.length==0){
+      let CX = dds.split('&nbsp;')
+        
+      var lg = CX.join('');
+      if(lg.length==0){
         callback("请输入正文")
-      }else if(dds.length>5000){
+      }else if(lg.length>5000){
         callback("正文内容不能超过5000个字符")
       }else{
         callback()
@@ -420,6 +428,91 @@ function StatusonChange(e) {
    function checkout(){
 
    }
+   function tagValue1(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
+      arr.push(data.tag2,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue2(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
+      arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue3(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
+      arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue4(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue5(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
   return(
       <Form onSubmit={handleSubmit}>
             <FormItem label="文章标题" {...formItemLayout}>
@@ -467,6 +560,8 @@ function StatusonChange(e) {
                             min:2,
                             max:5,
                             message: '请输入2-5个字符!',
+                        },{
+                          validator:tagValue1
                         }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
@@ -486,6 +581,8 @@ function StatusonChange(e) {
                             min:2,
                             max:5,
                             message: '请输入2-5个字符!',
+                        },{
+                          validator:tagValue2
                         }],
                       })(
                         <Input style={{width:'100%'}}/>
@@ -505,6 +602,8 @@ function StatusonChange(e) {
                             min:2,
                             max:5,
                             message: '请输入2-5个字符!',
+                        },{
+                          validator:tagValue3
                         }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
@@ -518,7 +617,9 @@ function StatusonChange(e) {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[3]:'',
                         rules: [{ required: false, min:2,
                             max:5,
-                            message: '请输入2-5个字符!', }],
+                            message: '请输入2-5个字符!', },{
+                            validator:tagValue4
+                        }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -531,7 +632,9 @@ function StatusonChange(e) {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
                         rules: [{ required: false, min:2,
                             max:5,
-                            message: '请输入2-5个字符!',}],
+                            message: '请输入2-5个字符!',},{
+                            validator:tagValue5
+                        }],
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
@@ -757,7 +860,7 @@ function StatusonChange(e) {
                        extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:ArticleList.createUser,
+                        initialValue:(UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:'',
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],

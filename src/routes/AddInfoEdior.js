@@ -90,10 +90,14 @@ function AddinfoEditor({dispatch,setting,router}) {
 	  	//console.log(value)
 	  	var dd=value.replace(/<\/?.+?>/g,"");
 	      var dds=dd.replace(/ /g,"");//dds为得到后的内容
-	      console.log(dds.length)
-	      if(dds.length==0){
+	      //console.log(dds)
+	     
+          let CX = dds.split('&nbsp;');
+          var lg = CX.join('');
+          console.log(lg.length)
+	      if(lg.length==0){
 	        callback("请输入正文")
-	      }else if(dds.length>20000){
+	      }else if(lg.length>20000){
 	        callback("正文内容不能超过20000个字符")
 	      }else{
 	        callback()
@@ -116,6 +120,9 @@ function AddinfoEditor({dispatch,setting,router}) {
 	  }
 	  edtiorContentText(value){
 	  	//console.log(value)
+	  }
+	  checkout(value){
+
 	  }
 	  render() {
 	    const { getFieldDecorator } = this.props.form;
@@ -153,7 +160,7 @@ function AddinfoEditor({dispatch,setting,router}) {
                       { validator:this.onChange}],
                       trigger:'edtiorContentText'
                     })(
-                      <Editor  edtiorContent={this.edtiorContent} edtiorContentText={this.edtiorContentText}/>
+                      <Editor  checkout={this.checkout} edtiorContent={this.edtiorContent} edtiorContentText={this.edtiorContentText}/>
                     )}
 	         	
 	        </FormItem>
@@ -185,14 +192,14 @@ function AddinfoEditor({dispatch,setting,router}) {
 
 				],
 	          })(
-	            	<Input />
+	            	<Input style={{width:"30%"}}/>
 	          )}
 	          
 	        </FormItem>
 	        <FormItem
 	           style={{marginLeft:"100px"}}
 	        >
-	          <Button type="primary" onClick={this.handleSubmit}>保存</Button>
+	          <Button type="primary" onClick={this.handleSubmit}  style={{paddingLeft:"40px",paddingRight:"40px"}}>保存</Button>
 	        </FormItem>
 	      </Form>
 	    );

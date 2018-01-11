@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import { routerRedux,hashHistory } from 'dva/router';
 import {
   login,getUserList,getUserInfo,auditUser,setHotUser,lockUser,siteinfoservice,getRoleList,roleSetStatus,getRoleProfile,loginSet,
-  userInfoSet,getSysMenu,getUserCert,auditUserCert,getSiteInfo
+  userInfoSet,getSysMenu,getUserCert,auditUserCert,getSiteInfo,logOut
 } from '../services/user';
 import {formatDate,GetRequest} from '../services/common'
 import {
@@ -610,6 +610,17 @@ export default {
         }else{
           message.error(data.message,2);
         }
+      }
+    },
+    *logOut({ payload }, {call , put}) {
+        const { data } = yield call(logOut, payload);
+      
+      if (data && data.code == 10000) {
+         message.success('退出成功')
+         localStorage.clear()
+        yield put(routerRedux.push('/'))
+      } else {
+        message.error(data.message,2);
       }
     },
   },

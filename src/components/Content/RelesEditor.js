@@ -52,15 +52,19 @@ let sec=0;
 let titleNum=0;
 var n =5000;
 var x = 5000;
+let autoSaveInterval  = null;
+
 
 function RelesEditor({
   dispatch,
+  location,
   imgUrl,
   ColumnList,
   UserById,
   setting,
   firstC,
   secondC,
+  saveId,
   form: {
     getFieldDecorator,
     validateFields,
@@ -70,8 +74,14 @@ function RelesEditor({
   },
 }){
   let merId =localStorage.getItem("userId");
+  
   const options = ColumnList;
-  //console.log("setting",imgUrl)
+  //console.log("setting",location)
+  /*if(location.pathname!="/content/release_article"){
+    alert(1)
+    window.clearInterval(autoSaveInterval)
+    console.log(autoSaveInterval)
+  }*/
   const {RelationVisible} =setting
   function handleSubmit (){
       validateFields((errors) => {
@@ -95,6 +105,7 @@ function RelesEditor({
          dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:saveId,
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
@@ -112,7 +123,7 @@ function RelesEditor({
                 createUser:UserById.kgUserId,
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
-                textnum:data.text.txt.text().length,
+                textnum:data.text.txt.text().split('&nbsp;').join('').length,
                 publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
                 publishStatus:1,
                 browseNum:data.browseNum,
@@ -149,6 +160,7 @@ function RelesEditor({
             dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:saveId,
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
@@ -167,16 +179,18 @@ function RelesEditor({
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
-                textnum:data.text.txt.text().length,
+                textnum:data.text.txt.text().split('&nbsp;').join('').length,
                 browseNum:data.browseNum,
                 thumbupNum:data.thumbupNum,
                 collectNum:data.collectNum,
+
               }
           })
           }else{
             dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:saveId,
                 articleTitle:data.articleTitle,
                 articleText:"",
                 tagnames:tagsName,
@@ -208,10 +222,7 @@ function RelesEditor({
       
   }
 
-  function publish (){
-        const data = {...getFieldsValue(["articleTitle","text"])};
-        console.log(data)
-  }
+  
   function showModal(){
       dispatch({
             type:'content/showBgModal'
@@ -322,10 +333,12 @@ function RelesEditor({
     }else{
        var arr = [];
         arr.push(value.txt.html(),value.txt.text())
+        let CX = arr[1].split('&nbsp;')
         
-        if(arr[1].length==0){
+        var lg = CX.join('');
+        if(lg.length==0){
           callback('请输入正文')
-        }else if (arr[1].length>5000){
+        }else if (lg.length>5000){
           callback('请输入1-5000个字符')
         }else{
           callback()
@@ -347,7 +360,10 @@ function RelesEditor({
         }else{
           callback()
         }*/
+
   }
+
+
   function handleTime(e){
     console.log("e",e.target.value)
     if(e.target.value=="true"){
@@ -381,7 +397,93 @@ function RelesEditor({
   }
   //console.log(secondC[sec])
   var Item =['1','2','3','4','5']
-
+  function tagValue1(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
+      arr.push(data.tag2,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue2(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
+      arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue3(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
+  function tagValue4(rule, value, callback){
+   
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+      
+     
+  }
+  function tagValue5(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag3,)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+       callback()
+      }
+  }
   function onChangeTag(rule, value, callback){
     const data = {...getFieldsValue(['tag2'])}
     if(data.tag2==undefined||data.tag2==""){
@@ -418,12 +520,88 @@ function RelesEditor({
   // var time1 = setInterval(publish(),60000)
   //var time2 =setInterval(publish(),10000)
   function handleFocus(){
-      //publish()
+      aoSave()
      // time1()
+  }
+  function publish (list){
+        
+        dispatch({
+          type:"content/publishSave",
+          payload:{
+            list:list,
+            autoSaveInterval:autoSaveInterval,
+            aoSave:aoSave
+          }
+        })
+  }
+  if(saveId!=undefined&&saveId!=0){
+    console.log(autoSaveInterval)
+    window.clearInterval(autoSaveInterval);
+    console.log(autoSaveInterval)
+      autoSaveInterval = window.setInterval(function() {
+       
+            aoSave();
+            }, 10000);
+  }
+  function aoSave(id){
+    //console.log(id)
+    window.clearInterval(autoSaveInterval);
+    const data = {...getFieldsValue()};
+    if(data.articleTitle==""||data.articleTitle==undefined){
+      return
+    }
+    var tagsName ="";
+          if(data.tag1==undefined){
+             tagsName ="";
+          }else if(data.tag1==!undefined&&data.tag2==undefined){
+            tagsName =data.tag1;
+          }else if(data.tag1==!undefined&&data.tag2!==undefined&&data.tag3==undefined){
+           tagsName =data.tag1+','+data.tag2
+          }
+          else if(data.tag4==undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3
+          }else if(data.tag4!=undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4
+          }else if(data.tag4!=undefined&&data.tag5!=undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
+          }
+    let list ={
+      "articleTitle":data.articleTitle,
+      "articleText":data.text!=undefined?data.text.txt.html():'',
+      "articleId":id!=undefined?id:"",
+      "tagnames":tagsName,
+      description:data.artic,
+      image:imgUrl,
+      type:parseInt(data.type),
+      columnId:data.column!=undefined?parseInt(data.column[0]):null,
+      secondColumn:data.column!=undefined?parseInt(data.column[1]):null,
+      displayStatus:parseInt(data.radioT),
+      displayOrder:parseInt(data.sort),
+      articleSource:data.articleSource,
+      articleLink:data.articleLink,
+      commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
+      publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
+      createUser:UserById.kgUserId!=undefined?UserById.kgUserId:null,
+      sysUser:merId,
+      bonusStatus:parseInt(data.bonusStatus),
+      publishStatus:0,
+      textnum:data.text!=undefined?data.text.txt.text().split('&nbsp;').join('').length:'',
+      browseNum:data.browseNum,
+      thumbupNum:data.thumbupNum,
+      collectNum:data.collectNum,
+
+    }
+    publish(list,autoSaveInterval)
   }
   function checkout(){
        //clearInterval(time1)
+       window.clearInterval(autoSaveInterval);
+       console.log(autoSaveInterval)
+       autoSaveInterval = window.setInterval(function() {
        
+            aoSave();
+            }, 60000);
+
   }
   function titleValue(e){
     //console.log((e.target.value).length);
@@ -448,7 +626,9 @@ function RelesEditor({
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'50%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>} onBlur={handleFocus}/>
                     )}
-                    <span style={{marginLeft:20}} className={styles.pre}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
+                    {(saveId!=undefined&&saveId!=0)?<span  className={styles.zidong}>自动保存中<Icon type="clock-circle-o"/></span>:null
+                    }
+                    
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -479,6 +659,8 @@ function RelesEditor({
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
                             message: '请输入2-5个汉字!',
+                        },{
+                          validator:tagValue1
                         }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
@@ -499,6 +681,8 @@ function RelesEditor({
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
                             message: '请输入2-5个汉字!',
+                        },{
+                          validator:tagValue2
                         }],
                       })(
                         <Input style={{width:'100%'}}/>
@@ -520,6 +704,8 @@ function RelesEditor({
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
                             message: '请输入2-5个汉字!',
+                        },{
+                          validator:tagValue3
                         }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
@@ -534,7 +720,9 @@ function RelesEditor({
                         rules: [{ required: false, min:2,
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!', }],
+                            message: '请输入2-5个汉字!', },{
+                              validator:tagValue4
+                            }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -548,7 +736,9 @@ function RelesEditor({
                         rules: [{ required: false, min:2,
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!',}],
+                            message: '请输入2-5个汉字!',},{
+                              validator:tagValue5
+                            }],
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}

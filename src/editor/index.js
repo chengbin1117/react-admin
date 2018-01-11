@@ -29,6 +29,14 @@ import styles from '../components/common.css';
             message.error(info)
         }
         editor.customConfig.uploadImgHooks = {
+            before: function (xhr, editor, files) {
+              if(files[0].type == "image/gif"){
+                    return {
+                      prevent : true,
+                      msg:'只能上传jpg、png、jpeg格式的图片'
+                    }
+              }
+            },
 
             customInsert: function (insertImg, result, editor) {
                 var url = uploadUrl + result.data[0].filePath;
