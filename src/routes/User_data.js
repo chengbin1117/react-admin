@@ -172,8 +172,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.columnIntro!=null)?userInfo.profile.columnIntro:"——"}</span>
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>所在地区</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.columnProvince)!=null?userInfo.profile.columnProvince+userInfo.profile.columnCounty:"——"}</span></p>
-						{userInfo.userRole==1&&null}
-						{userInfo.userRole==2&&<div>
+						{(userInfo.userRole==1&&userInfo.applyRole==1)&&null}
+						{(userInfo.userRole==2||userInfo.applyRole==2)&&<div>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员真实姓名</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.realName!=null&&userInfo.profile.realName!="")?userInfo.profile.realName:"——"}</span></p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份证号</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.idcard!=null&&userInfo.profile.idcard!="")?userInfo.profile.idcard:"——"}</span></p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份件扫描</span>
@@ -195,7 +195,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 						
 							</div>
 						}
-						{(userInfo.userRole==3||userInfo.userRole==5)?<div>
+						{(userInfo.userRole==3||userInfo.userRole==5||userInfo.applyRole==3||userInfo.applyRole==5)?<div>
 							<p className={stytes.dataBox}><span className={stytes.span1}>组织名称</span><span className={stytes.span2}>
 						        {(userInfo.profile&&userInfo.profile.companyName!=null)?userInfo.profile.companyName:"——"}
 						        </span>
@@ -227,7 +227,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 						
 							</div>:null
 						}
-						{userInfo.userRole==4&&<div>
+						{(userInfo.userRole==4||userInfo.applyRole==4)&&<div>
 								<p className={stytes.dataBox}><span className={stytes.span1}>企业名称
 						            </span><span className={stytes.span2}>
 						           {(userInfo.profile&&userInfo.profile.companyName!=null)?userInfo.profile.companyName:"——"}

@@ -52,15 +52,19 @@ let sec=0;
 let titleNum=0;
 var n =5000;
 var x = 5000;
-var autoSaveInterval  = null
+let autoSaveInterval  = null;
+
+
 function RelesEditor({
   dispatch,
+  location,
   imgUrl,
   ColumnList,
   UserById,
   setting,
   firstC,
   secondC,
+  saveId,
   form: {
     getFieldDecorator,
     validateFields,
@@ -70,8 +74,14 @@ function RelesEditor({
   },
 }){
   let merId =localStorage.getItem("userId");
+  
   const options = ColumnList;
-  //console.log("setting",imgUrl)
+  //console.log("setting",location)
+  /*if(location.pathname!="/content/release_article"){
+    alert(1)
+    window.clearInterval(autoSaveInterval)
+    console.log(autoSaveInterval)
+  }*/
   const {RelationVisible} =setting
   function handleSubmit (){
       validateFields((errors) => {
@@ -346,7 +356,10 @@ function RelesEditor({
         }else{
           callback()
         }*/
+
   }
+
+
   function handleTime(e){
     console.log("e",e.target.value)
     if(e.target.value=="true"){
@@ -380,7 +393,76 @@ function RelesEditor({
   }
   //console.log(secondC[sec])
   var Item =['1','2','3','4','5']
-
+  function tagValue1(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag4,data.tag5)
+      console.log(arr)
+      for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+      callback()
+  }
+  function tagValue2(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag4,data.tag5)
+      console.log(arr)
+      for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+      callback()
+  }
+  function tagValue3(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag2,data.tag4,data.tag5)
+      console.log(arr)
+      for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+      callback()
+  }
+  function tagValue4(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag2,data.tag3,data.tag5)
+      console.log(arr)
+      for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+      callback()
+  }
+  function tagValue5(rule, value, callback){
+    console.log(value)
+    var arr=[];
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
+      arr.push(data.tag1,data.tag2,data.tag2,data.tag3,data.tag5)
+      console.log(arr)
+      for(var i in arr){
+        if(value==arr[i]){
+          //console.log(value,arr[i])
+           callback("标签不能重复")
+        }
+      }
+      callback()
+  }
   function onChangeTag(rule, value, callback){
     const data = {...getFieldsValue(['tag2'])}
     if(data.tag2==undefined||data.tag2==""){
@@ -420,7 +502,7 @@ function RelesEditor({
       aoSave()
      // time1()
   }
-  function publish (list,autoSaveInterval){
+  function publish (list){
         
         dispatch({
           type:"content/publishSave",
@@ -431,9 +513,18 @@ function RelesEditor({
           }
         })
   }
+  if(saveId!=undefined&&saveId!=0){
+   // console.log(autoSaveInterval)
+    window.clearInterval(autoSaveInterval);
+    //console.log(autoSaveInterval)
+      autoSaveInterval = window.setInterval(function() {
+       
+            aoSave();
+            }, 60000);
+  }
   function aoSave(id){
-    console.log(id)
-
+    //console.log(id)
+    window.clearInterval(autoSaveInterval);
     const data = {...getFieldsValue()};
     var tagsName ="";
           if(data.tag1==undefined){
@@ -455,7 +546,7 @@ function RelesEditor({
       "articleText":data.text!=undefined?data.text.txt.html():'',
       "articleId":id!=undefined?id:"",
       "tagnames":tagsName,
-       description:data.artic,
+      description:data.artic,
       image:imgUrl,
       type:parseInt(data.type),
       columnId:data.column!=undefined?parseInt(data.column[0]):null,
@@ -483,7 +574,7 @@ function RelesEditor({
        window.clearInterval(autoSaveInterval);
        console.log(autoSaveInterval)
        autoSaveInterval = window.setInterval(function() {
-        alert(1)
+       
             aoSave();
             }, 60000);
 
@@ -511,7 +602,9 @@ function RelesEditor({
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'50%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>} onBlur={handleFocus}/>
                     )}
-                    <span style={{marginLeft:20}} className={styles.pre}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
+                    {(saveId!=undefined&&saveId!=0)?<span style={{marginLeft:20}} className={styles.pre}>自动保存中...</span>:null
+                    }
+                    
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -542,6 +635,8 @@ function RelesEditor({
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
                             message: '请输入2-5个汉字!',
+                        },{
+                          validator:tagValue1
                         }],
                       })(
                         <Input style={{width:'90%',marginRight:'20px'}}/>
@@ -562,6 +657,8 @@ function RelesEditor({
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
                             message: '请输入2-5个汉字!',
+                        },{
+                          validator:tagValue2
                         }],
                       })(
                         <Input style={{width:'100%'}}/>
@@ -583,6 +680,8 @@ function RelesEditor({
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
                             message: '请输入2-5个汉字!',
+                        },{
+                          validator:tagValue3
                         }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
@@ -597,7 +696,9 @@ function RelesEditor({
                         rules: [{ required: false, min:2,
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!', }],
+                            message: '请输入2-5个汉字!', },{
+                              validator:tagValue4
+                            }],
                       })(
                         <Input style={{width:'100%',marginRight:'20px'}}/>
                       )}
@@ -611,7 +712,9 @@ function RelesEditor({
                         rules: [{ required: false, min:2,
                             max:5,
                             pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!',}],
+                            message: '请输入2-5个汉字!',},{
+                              validator:tagValue5
+                            }],
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}

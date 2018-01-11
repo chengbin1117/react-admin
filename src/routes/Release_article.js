@@ -23,14 +23,14 @@ import {dataURLtoBlob,ImgUrl} from '../services/common'
 
 
 //var imgUrl = "";
-function Release_article({dispatch,router,content,setting}) {
+function Release_article({location,dispatch,router,content,setting}) {
 	//let logoimg = require("image!../assets/images/lx4.png");
   let merId =localStorage.getItem("userId");
   
   var text = '';
   var html = '';
   let src = ""
-  const {BgVisible,FtVisible,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
+  const {BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
   //console.log(ColumnList)
   const options = ColumnList;
 
@@ -44,6 +44,8 @@ function Release_article({dispatch,router,content,setting}) {
     cruImage,
     UserById,
     setting,
+    saveId,
+    location,
     handlsearch(values){
        
         //var ImgSrc = localStorage.getItem("img");

@@ -40,6 +40,7 @@ export default {
     ArticleStat:{},
     secondC:{},
     firstC:[],
+    saveId:0,
   },
 
   subscriptions: {
@@ -1112,8 +1113,8 @@ export default {
       }
     },
     *publishSave({ payload }, {call , put}) {
-      const {list,aoSave}=payload;
-      window.clearInterval(payload.autoSaveInterval);
+      const {list,aoSave,autoSaveInterval}=payload;
+      window.clearInterval(autoSaveInterval);
       let params= {};
       if(list.articleId ==""){
          params={
@@ -1175,11 +1176,18 @@ export default {
       if (data && data.code == 10000) {
          var id = data.responseBody;
          list.articleId = id;
-         console.log(list.articleId)
-         payload.autoSaveInterval = window.setInterval(function() {
          
-              aoSave(list.articleId)
-              }, 60000);
+         yield put({
+             type:"saveSuccess",
+             payload:{
+              saveId:id
+             }
+         })
+         window.clearInterval(autoSaveInterval);
+        /* payload.autoSaveInterval = window.setInterval(function() {
+                
+               // aoSave(list.articleId)
+              }, 10000);*/
 
          
          
@@ -1325,44 +1333,57 @@ export default {
     getArticleListSuccess(state, action) {    
       return {...state,
         ...action.payload,
-        imgUrl:""
+        imgUrl:"",
+        saveId:0
       };
     },
     setDisplayStatusSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        saveId:0
       };
     },
     getColumnListSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        saveId:0
+      };
+    },
+    saveSuccess(state, action) {    
+      return {...state,
+        ...action.payload,
       };
     },
     siteimagelistSuccess(state, action) {    
       return {...state,
-        ...action.payload
+        ...action.payload,
+        saveId:0
       };
     },
     showAddImgModal(state, action) {
       return {...state,
         ...action.payload,
-        addImageVisible: true
+        addImageVisible: true,
+        saveId:0
       };
     },
     hideAddImgModal(state, action) {
       return {...state,
         ...action.payload,
-        addImageVisible: false
+        addImageVisible: false,
+        saveId:0
       };
     },
     getFeedbackListSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
     getCommentListSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
     showCommentSet(state, action) {
@@ -1445,6 +1466,7 @@ export default {
     getBonusSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
     showImageModal(state, action) {
@@ -1463,7 +1485,8 @@ export default {
       
       return {...state,
         ...action.payload,
-        columnEditor: true
+        columnEditor: true,
+        saveId:0
       };
     },
     hideColumnEditorModal(state, action) {
@@ -1501,6 +1524,7 @@ export default {
     getArticleStatSuccess(state, action) {
       return {...state,
         ...action.payload,
+        saveId:0
       };
     },
   },
