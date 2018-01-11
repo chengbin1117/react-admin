@@ -84,7 +84,7 @@ function ArticleEditor({
           return;
         }else{
           const data = {...getFieldsValue()};
-          console.log(data.text);
+          //console.log(data.text);
           var dd=(data.text).replace(/<\/?.+?>/g,"");
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
           let CX = dds.split('&nbsp;')
@@ -860,7 +860,7 @@ function StatusonChange(e) {
                        extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:ArticleList.createUser,
+                        initialValue:(UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:'',
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],

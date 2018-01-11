@@ -183,6 +183,7 @@ function RelesEditor({
                 browseNum:data.browseNum,
                 thumbupNum:data.thumbupNum,
                 collectNum:data.collectNum,
+
               }
           })
           }else{
@@ -534,18 +535,21 @@ function RelesEditor({
         })
   }
   if(saveId!=undefined&&saveId!=0){
-   // console.log(autoSaveInterval)
+    console.log(autoSaveInterval)
     window.clearInterval(autoSaveInterval);
-    //console.log(autoSaveInterval)
+    console.log(autoSaveInterval)
       autoSaveInterval = window.setInterval(function() {
        
             aoSave();
-            }, 60000);
+            }, 10000);
   }
   function aoSave(id){
     //console.log(id)
     window.clearInterval(autoSaveInterval);
     const data = {...getFieldsValue()};
+    if(data.articleTitle==""||data.articleTitle==undefined){
+      return
+    }
     var tagsName ="";
           if(data.tag1==undefined){
              tagsName ="";

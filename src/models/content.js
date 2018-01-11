@@ -76,6 +76,7 @@ export default {
         }
         match = pathToRegexp('/content/release_article').exec(location.pathname);
         if(match){
+
          const search =GetRequest(location.search);
             dispatch({
               type:'getColumnList',
@@ -93,6 +94,7 @@ export default {
         match = pathToRegexp('/content/editor_article').exec(location.pathname);
         if(match){
          const search =GetRequest(location.search);
+          let merId =localStorage.getItem("userId"); 
          // console.log("search",search.articleId)
             dispatch({
               type:'getBonus',
@@ -100,6 +102,12 @@ export default {
                 articleId:search.articleId
               }
             });
+            dispatch({
+              type:'getSysUserById',
+              payload:{
+                userId:merId
+              }
+            })
             dispatch({
               type:'getColumnList',
               payload:{

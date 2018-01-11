@@ -58,7 +58,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 						}
 				})
 	          }
-		      if(values.radio =='3'){
+		      if(values.radio =='2'){
 	          	dispatch({
 						type:'user/auditUser',
 						payload:{
@@ -107,7 +107,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 				  	{getFieldDecorator('text', {
 				  			
 				  		})(
-				  		    <TextArea style={{ width: "60%",minHeight:"100px"  }} disabled={this.state.value==3?false:true} placeholder="不通过原因(选填)"></TextArea>
+				  		    <TextArea style={{ width: "60%",minHeight:"100px"  }} disabled={this.state.value==2?false:true} placeholder="不通过原因(选填)"></TextArea>
 				  		)}
 				</FormItem>
 		        <FormItem>
