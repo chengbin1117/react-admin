@@ -84,7 +84,7 @@ function ArticleEditor({
           return;
         }else{
           const data = {...getFieldsValue()};
-          //console.log(data.text);
+          console.log(data.text);
           var dd=(data.text).replace(/<\/?.+?>/g,"");
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
           let CX = dds.split('&nbsp;')
@@ -110,7 +110,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -138,7 +138,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -170,7 +170,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -200,7 +200,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -270,7 +270,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,30):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -432,71 +432,86 @@ function StatusonChange(e) {
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag3,data.tag4,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag2,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue2(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag3,data.tag4,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue3(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag2,data.tag4,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue4(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag2,data.tag3,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue5(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
-      arr.push(data.tag1,data.tag2,data.tag2,data.tag3,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   return(
       <Form onSubmit={handleSubmit}>

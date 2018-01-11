@@ -105,6 +105,7 @@ function RelesEditor({
          dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:saveId,
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
@@ -159,6 +160,7 @@ function RelesEditor({
             dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:saveId,
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
@@ -187,6 +189,7 @@ function RelesEditor({
             dispatch({
               type:'content/publishArticle',
               payload:{
+                articleId:saveId,
                 articleTitle:data.articleTitle,
                 articleText:"",
                 tagnames:tagsName,
@@ -397,71 +400,88 @@ function RelesEditor({
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag3,data.tag4,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag2,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue2(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag3,data.tag4,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue3(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag2,data.tag4,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function tagValue4(rule, value, callback){
-    console.log(value)
+   
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag2,data.tag3,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
+      
+     
   }
   function tagValue5(rule, value, callback){
     console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
-      arr.push(data.tag1,data.tag2,data.tag2,data.tag3,data.tag5)
-      console.log(arr)
-      for(var i in arr){
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag3,)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
-      callback()
+       callback()
+      }
   }
   function onChangeTag(rule, value, callback){
     const data = {...getFieldsValue(['tag2'])}
@@ -602,7 +622,7 @@ function RelesEditor({
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'50%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>} onBlur={handleFocus}/>
                     )}
-                    {(saveId!=undefined&&saveId!=0)?<span style={{marginLeft:20}} className={styles.pre}>自动保存中...</span>:null
+                    {(saveId!=undefined&&saveId!=0)?<span  className={styles.zidong}>自动保存中<Icon type="clock-circle-o"/></span>:null
                     }
                     
               </FormItem>

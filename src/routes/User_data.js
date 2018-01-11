@@ -96,7 +96,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 		            <RadioGroup onChange={this.onChange} value={this.state.value}>
 		                <Radio  value={1}>通过</Radio>
 		                <br />
-				        <Radio  value={3}>
+				        <Radio  value={2}>
 				          不通过
 				          
 				        </Radio>
@@ -178,16 +178,16 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份证号</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.idcard!=null&&userInfo.profile.idcard!="")?userInfo.profile.idcard:"——"}</span></p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份件扫描</span>
 						<span className={stytes.span2}>
-						    {(userInfo.profile&&userInfo.profile.idcardBack!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
-						    {(userInfo.profile&&userInfo.profile.idcardFront!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardFront}/>:"——"}
-						<br />
-						{(userInfo.profile&&(userInfo.profile.idcardPic!=null||userInfo.profile.idcardPic!=""))?<img style={{width:100,height:100}} src={uploadUrl+userInfo.profile.idcardPic}/>:"——"}
+						    {(userInfo.profile&&userInfo.profile.idcardBack!=null&&userInfo.profile.idcardBack!=="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardFront!=null&&userInfo.profile.idcardFront!=="")?<img style={{width:200,marginLeft:20}} src={uploadUrl+userInfo.profile.idcardFront}/>:<span className={stytes.idcardBack}>暂无上传身份反面</span>} 
+						    {(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200,marginLeft:20}} src={uploadUrl+userInfo.profile.idcardPic}/>:<span className={stytes.idcardBack}>暂无上传手持身份正面</span>}
 						</span>
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>相关网站链接</span><span className={stytes.span2}>{(userInfo.profile&&(userInfo.profile.siteLink!=""))?userInfo.profile.siteLink:"——"}</span></p>
 						<p className={stytes.dataBox}>
+						<span className={stytes.span1}>其他资质</span>
 						<span className={stytes.span2}>
-						{(userInfo.profile&&userInfo.profile.otherPic!=null&&((userInfo.profile.otherPic).split(',')).length!=0)?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
+						{(userInfo.profile&&(userInfo.profile.otherPic!=null&&userInfo.profile.otherPic!=""&&((userInfo.profile.otherPic).split(',')).length!=0))?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
 							return(
 								<img src={uploadUrl+item} style={{width:200,marginLeft:20}} key={index}/>
 								)
@@ -210,14 +210,16 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份证号</span><span className={stytes.span2}>{(userInfo.profile&&userInfo.profile.idcard!=null&&userInfo.profile.idcard!="")?userInfo.profile.idcard:"——"}</span></p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员身份件扫描</span>
 						<span className={stytes.span2}>
-						{(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardPic}/>:"——"}
+						    {(userInfo.profile&&userInfo.profile.idcardBack!=null&&userInfo.profile.idcardBack!=="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardFront!=null&&userInfo.profile.idcardFront!=="")?<img style={{width:200,marginLeft:20}} src={uploadUrl+userInfo.profile.idcardFront}/>:<span className={stytes.idcardBack}>暂无上传身份反面</span>} 
+						    {(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200,marginLeft:20}} src={uploadUrl+userInfo.profile.idcardPic}/>:<span className={stytes.idcardBack}>暂无上传手持身份正面</span>}
 						</span>
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>相关网站链接</span><span className={stytes.span2}>{(userInfo.profile&&(userInfo.profile.siteLink!=""))?userInfo.profile.siteLink:"——"}</span></p>
 						<p className={stytes.dataBox}>
 						<span className={stytes.span1}>其他资质</span>
 						<span className={stytes.span2}>
-						{(userInfo.profile&&userInfo.profile.otherPic!=null&&((userInfo.profile.otherPic).split(',')).length!=0)?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
+						{(userInfo.profile&&(userInfo.profile.otherPic!=null&&userInfo.profile.otherPic!=""&&((userInfo.profile.otherPic).split(',')).length!=0))?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
 							return(
 								<img src={uploadUrl+item} style={{width:200,marginLeft:20}} key={index}/>
 								)
@@ -244,16 +246,16 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<div className={stytes.dataBox}>
 						<span className={stytes.span1}>管理员身份件扫描</span>
 						<span className={stytes.span2}>
-						    {(userInfo.profile&&userInfo.profile.idcardBack!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
-						    {(userInfo.profile&&userInfo.profile.idcardFront!=null)?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardFront}/>:<span className={stytes.idcardBack}>暂无上传身份反面</span>} 
-						    {(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardPic}/>:<span className={stytes.idcardBack}>暂无上传手持身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardBack!=null&&userInfo.profile.idcardBack!=="")?<img style={{width:200}} src={uploadUrl+userInfo.profile.idcardBack}/>:<span className={stytes.idcardBack}>暂无上传身份正面</span>}
+						    {(userInfo.profile&&userInfo.profile.idcardFront!=null&&userInfo.profile.idcardFront!=="")?<img style={{width:200,marginLeft:20}} src={uploadUrl+userInfo.profile.idcardFront}/>:<span className={stytes.idcardBack}>暂无上传身份反面</span>} 
+						    {(userInfo.profile&&userInfo.profile.idcardPic!=null&&userInfo.profile.idcardPic!="")?<img style={{width:200,marginLeft:20}} src={uploadUrl+userInfo.profile.idcardPic}/>:<span className={stytes.idcardBack}>暂无上传手持身份正面</span>}
 						</span>
 						</div>
 						<p className={stytes.dataBox}><span className={stytes.span1}>相关网站链接</span><span className={stytes.span2}>{(userInfo.profile&&(userInfo.profile.siteLink!=""))?userInfo.profile.siteLink:"——"}</span></p>
 						<p className={stytes.dataBox}>
 						<span className={stytes.span1}>其他资质</span>
 						<span className={stytes.span2}>
-						{(userInfo.profile&&userInfo.profile.otherPic!=null&&((userInfo.profile.otherPic).split(',')).length!=0)?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
+						{(userInfo.profile&&(userInfo.profile.otherPic!=null&&userInfo.profile.otherPic!=""&&((userInfo.profile.otherPic).split(',')).length!=0))?<span>{((userInfo.profile.otherPic).split(',')).map((item,index)=>{
 							return(
 								<img src={uploadUrl+item} style={{width:200,marginLeft:20}} key={index}/>
 								)

@@ -412,19 +412,10 @@ export default {
       //console.log("11",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
-         if(payload.articleId!=undefined){
-            message.success('编辑成功')
-            yield put(routerRedux.push('/content/content_article?page=1'));
-         }else{
-           if(payload.publishStatus==1){
-              message.success('发布成功')
-           }else{
-            message.success('存草稿成功')
-           }
+         
+            message.success('成功')
            yield put(routerRedux.push('/content/content_article?page=1'));
            
-            
-         }
          
          
          /*console.log(res)
