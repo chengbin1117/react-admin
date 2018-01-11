@@ -258,6 +258,14 @@ class LayoutContainer extends React.Component {
           first= "首页";
           second= "图片管理";
           third=""
+      }else if(path =="/data/data_column"){
+          first= "首页";
+          second= "专栏数据";
+          third=""
+      }else if(path =="/data/data_user"){
+          first= "首页";
+          second= "用户数据";
+          third=""
       }else if(path =="/setting/about"){
           first= "首页";
           second= "关于我们";

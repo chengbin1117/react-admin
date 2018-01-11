@@ -225,7 +225,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 			})
 		},
 		onEditItem(record){
-			console.log(record)
+			//console.log(record)
 			//localStorage.setItem('kg_aboutEditor',JSON.SON.stringify(record)
 			dispatch({
 				type: 'setting/hideMangeModal',
@@ -349,7 +349,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 		        cancelText:"取消",
 				content:(
 					      <div>
-					        <p style={{fontSize:16+'px'}}>将重置为初始密码:{paw}</p>
+					        <p style={{fontSize:16+'px'}}>将重置为初始密码：{paw}</p>
 					      </div>
 					    ),
 				onOk() {

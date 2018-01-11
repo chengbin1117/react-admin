@@ -252,7 +252,7 @@ export default {
          var res = data.responseBody;
             message.success('审核成功')
             if(user_data!=undefined){
-              yield put(routerRedux.push('/user/'));
+              yield put(routerRedux.push('/user/user_admin?page=1'));
             }
             if(audit == 0){
               yield put({
