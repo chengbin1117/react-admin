@@ -573,7 +573,7 @@ function RelesEditor({
     let list ={
       "articleTitle":data.articleTitle,
       "articleText":data.text!=undefined?data.text.txt.html():'',
-      "articleId":id!=undefined?id:"",
+      "articleId":(saveId!=undefined||saveId!="")?saveId:"",
       "tagnames":tagsName,
       description:data.artic,
       image:imgUrl,
