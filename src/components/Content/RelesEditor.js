@@ -52,7 +52,7 @@ let sec=0;
 let titleNum=0;
 var n =5000;
 var x = 5000;
-
+var autoSaveInterval  = null
 function RelesEditor({
   dispatch,
   imgUrl,
@@ -112,7 +112,7 @@ function RelesEditor({
                 createUser:UserById.kgUserId,
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
-                textnum:data.text.txt.text().length,
+                textnum:data.text.txt.text().split('&nbsp;').join('').length,
                 publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
                 publishStatus:1,
                 browseNum:data.browseNum,
@@ -167,7 +167,7 @@ function RelesEditor({
                 sysUser:merId,
                 bonusStatus:parseInt(data.bonusStatus),
                 publishStatus:0,
-                textnum:data.text.txt.text().length,
+                textnum:data.text.txt.text().split('&nbsp;').join('').length,
                 browseNum:data.browseNum,
                 thumbupNum:data.thumbupNum,
                 collectNum:data.collectNum,
@@ -208,10 +208,7 @@ function RelesEditor({
       
   }
 
-  function publish (){
-        const data = {...getFieldsValue(["articleTitle","text"])};
-        console.log(data)
-  }
+  
   function showModal(){
       dispatch({
             type:'content/showBgModal'
@@ -322,10 +319,12 @@ function RelesEditor({
     }else{
        var arr = [];
         arr.push(value.txt.html(),value.txt.text())
+        let CX = arr[1].split('&nbsp;')
         
-        if(arr[1].length==0){
+        var lg = CX.join('');
+        if(lg.length==0){
           callback('请输入正文')
-        }else if (arr[1].length>5000){
+        }else if (lg.length>5000){
           callback('请输入1-5000个字符')
         }else{
           callback()
@@ -418,12 +417,76 @@ function RelesEditor({
   // var time1 = setInterval(publish(),60000)
   //var time2 =setInterval(publish(),10000)
   function handleFocus(){
-      //publish()
+      aoSave()
      // time1()
+  }
+  function publish (list,autoSaveInterval){
+        
+        dispatch({
+          type:"content/publishSave",
+          payload:{
+            list:list,
+            autoSaveInterval:autoSaveInterval,
+            aoSave:aoSave
+          }
+        })
+  }
+  function aoSave(id){
+    console.log(id)
+
+    const data = {...getFieldsValue()};
+    var tagsName ="";
+          if(data.tag1==undefined){
+             tagsName ="";
+          }else if(data.tag1==!undefined&&data.tag2==undefined){
+            tagsName =data.tag1;
+          }else if(data.tag1==!undefined&&data.tag2!==undefined&&data.tag3==undefined){
+           tagsName =data.tag1+','+data.tag2
+          }
+          else if(data.tag4==undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3
+          }else if(data.tag4!=undefined&&data.tag5==undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4
+          }else if(data.tag4!=undefined&&data.tag5!=undefined){
+            tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
+          }
+    let list ={
+      "articleTitle":data.articleTitle,
+      "articleText":data.text!=undefined?data.text.txt.html():'',
+      "articleId":id!=undefined?id:"",
+      "tagnames":tagsName,
+       description:data.artic,
+      image:imgUrl,
+      type:parseInt(data.type),
+      columnId:data.column!=undefined?parseInt(data.column[0]):null,
+      secondColumn:data.column!=undefined?parseInt(data.column[1]):null,
+      displayStatus:parseInt(data.radioT),
+      displayOrder:parseInt(data.sort),
+      articleSource:data.articleSource,
+      articleLink:data.articleLink,
+      commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
+      publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
+      createUser:UserById.kgUserId!=undefined?UserById.kgUserId:null,
+      sysUser:merId,
+      bonusStatus:parseInt(data.bonusStatus),
+      publishStatus:0,
+      textnum:data.text!=undefined?data.text.txt.text().split('&nbsp;').join('').length:'',
+      browseNum:data.browseNum,
+      thumbupNum:data.thumbupNum,
+      collectNum:data.collectNum,
+
+    }
+    publish(list,autoSaveInterval)
   }
   function checkout(){
        //clearInterval(time1)
-       
+       window.clearInterval(autoSaveInterval);
+       console.log(autoSaveInterval)
+       autoSaveInterval = window.setInterval(function() {
+        alert(1)
+            aoSave();
+            }, 60000);
+
   }
   function titleValue(e){
     //console.log((e.target.value).length);

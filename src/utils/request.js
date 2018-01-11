@@ -65,6 +65,7 @@ export default function request(url, options) {
     let option = {
       ...options,
       'headers': headers,
+      "Content-Type": "text/plain"
       };
     //console.log("options",options)
     return fetch(fullUrl, option)

@@ -181,3 +181,15 @@ export async function getSiteInfo(params) {
 	     }
 	);
 }
+//退出登录
+
+export async function logOut(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/login/logOut?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}

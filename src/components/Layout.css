@@ -204,8 +204,10 @@
 	background-color: #00A0E9;
 }
 .logOut{
-	font-size:16px;
+	font-size:18px;
 	padding-right:20px; 
+	cursor: pointer;
+	color:#1890ff;
 }
 .footer{
 	width:100%;

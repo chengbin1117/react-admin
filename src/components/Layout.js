@@ -154,16 +154,25 @@ let third = "";
   }
 }*/
 
-function logout(){
-  localStorage.clear();
-}
+/*function logout(){
+  dispatch({
+    type:"user/logOut",
+    payload:{
+      userId:userId
+    }
+  })
+  
+}*/
 
 class LayoutContainer extends React.Component {
   rootSubmenuKeys:['sub0','sub1','sub2','sub3','sub4','sub5','sub6','sub7']
   state = {
     collapsed: false,
     openKeys: ['sub0'],
-    current:'1'
+    current:'1',
+    dispatch:{
+
+    }
   };
   onCollapse = (collapsed) => {
     console.log(collapsed);
@@ -196,8 +205,21 @@ class LayoutContainer extends React.Component {
       openKeys:[e.keyPath[1]]
     });
   }
+  logout(dispatch){
+    //console.log(dispatch)
+    dispatch({
+       type:"user/logOut",
+       payload:{
+        userId:userId
+       }
+    })
+  }
   render() {
-   // console.log('openKeys',this.props.location)
+    //console.log('openKeys',this.props.dispatch)
+    /*this.setState({
+      dispatch:this.props.dispatch
+    })*/
+    //this.state.dispatch=this.props.dispatch
     const path =this.props.location.pathname;
     if(path =="/index"){
           first ="首页";
@@ -339,7 +361,7 @@ class LayoutContainer extends React.Component {
              />
               <div className = {styles.header_right}>
                 <span className={styles.rename}>欢迎您，<span style={{color:"#FFA500"}}>{realname&&realname}</span></span>
-                <Link to="/login" className={styles.logOut} onClick={logout}>退出</Link>
+                <span  className={styles.logOut} onClick={()=>this.logout(this.props.dispatch)}>退出</span>
               </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>

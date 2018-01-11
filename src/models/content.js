@@ -1111,6 +1111,88 @@ export default {
         }
       }
     },
+    *publishSave({ payload }, {call , put}) {
+      const {list,aoSave}=payload;
+      window.clearInterval(payload.autoSaveInterval);
+      let params= {};
+      if(list.articleId ==""){
+         params={
+          articleTitle:list.articleTitle,
+          articleText:list.articleText,
+          publishStatus:0,
+          tagnames:list.tagnames,
+          description:list.description,
+          image:list.image,
+          type:list.type,
+          columnId:list.columnId,
+          secondColumn:list.columnId,
+          displayStatus:list.displayStatus,
+          displayOrder:list.displayOrder,
+          articleSource:list.articleSource,
+          articleLink:list.articleLink,
+          commentSet:list.commentSet,
+          publishSet:list.publishSet,
+          createUser:list.createUser,
+          sysUser:list.sysUser,
+          bonusStatus:list.bonusStatus,
+          textnum:list.textnum,
+          browseNum:list.browseNum,
+          thumbupNum:list.thumbupNum,
+          collectNum:list.collectNum
+
+        }
+      }else{
+        params={
+          articleTitle:list.articleTitle,
+          articleText:list.articleText,
+          publishStatus:0,
+          articleId:list.articleId,
+          tagnames:list.tagnames,
+          description:list.description,
+          image:list.image,
+          type:list.type,
+          columnId:list.columnId,
+          secondColumn:list.columnId,
+          displayStatus:list.displayStatus,
+          displayOrder:list.displayOrder,
+          articleSource:list.articleSource,
+          articleLink:list.articleLink,
+          commentSet:list.commentSet,
+          publishSet:list.publishSet,
+          createUser:list.createUser,
+          sysUser:list.sysUser,
+          bonusStatus:list.bonusStatus,
+          textnum:list.textnum,
+          browseNum:list.browseNum,
+          thumbupNum:list.thumbupNum,
+          collectNum:list.collectNum
+
+        }
+      }
+   
+      const { data } = yield call(publishArticle, params);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+         var id = data.responseBody;
+         list.articleId = id;
+         console.log(list.articleId)
+         payload.autoSaveInterval = window.setInterval(function() {
+         
+              aoSave(list.articleId)
+              }, 60000);
+
+         
+         
+      } else {
+         
+        if(data.code ==10004||data.code ==10011){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
     *getBonus({ payload }, {call , put}) {
       let params ={
         articleId:payload.articleId
