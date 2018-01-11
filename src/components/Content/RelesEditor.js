@@ -520,7 +520,12 @@ function RelesEditor({
   // var time1 = setInterval(publish(),60000)
   //var time2 =setInterval(publish(),10000)
   function handleFocus(){
+    if(saveId!=undefined&&saveId!=0){
+      return
+    }else{
       aoSave()
+    }
+      
      // time1()
   }
   function publish (list){
@@ -535,9 +540,9 @@ function RelesEditor({
         })
   }
   if(saveId!=undefined&&saveId!=0){
-    console.log(autoSaveInterval)
+    //console.log(autoSaveInterval)
     window.clearInterval(autoSaveInterval);
-    console.log(autoSaveInterval)
+    //console.log(autoSaveInterval)
       autoSaveInterval = window.setInterval(function() {
        
             aoSave();
