@@ -7,7 +7,8 @@ import React, {
   IndexRoute,
   Link,
 } from 'dva/router';*/
-
+import { LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 // /import { Router, Route, Switch,IndexRoute} from 'dva/router';
 import { Router, Route, Link, Switch, HashHistory } from 'react-router-dom';
 import LayoutContainer from './components/Layout';
@@ -87,6 +88,7 @@ function RouterConfig({ history }) {
 //console.log(history)
 
   return (
+    <LocaleProvider locale={zhCN}>
     <Router history={history}>
     <Switch>
       <Route path="/" exact  component={UserRouter} />
@@ -130,6 +132,7 @@ function RouterConfig({ history }) {
       </LayoutContainer>
       </Switch>
     </Router>
+    </LocaleProvider>
   );
 }
 

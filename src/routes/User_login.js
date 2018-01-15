@@ -137,7 +137,7 @@ function UserLogin({dispatch,user}) {
 				        md:{ span: 4 },
 				        lg:{ span: 2 },
 				        xl:{ span: 4 },
-				        xxl:{ span: 2}
+				        xxl:{ span: 3}
 				      },
 				      wrapperCol: {
 				        xs: { span: 2 },
@@ -158,7 +158,7 @@ function UserLogin({dispatch,user}) {
 			          })(<PriceInput />)}
 			        </FormItem>
 			        <FormItem >
-			          <Button type="primary" onClick={this.handleSubmit} size="large" style={{paddingLeft:40,paddingRight:40}}>保存</Button>
+			          <Button type="primary" onClick={this.handleSubmit} size="large" style={{paddingLeft:20,paddingRight:20,marginLeft:40}}>保存</Button>
 			          
 			        </FormItem>
 			      </Form>

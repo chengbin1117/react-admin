@@ -53,9 +53,9 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  render(text,record){
 	  	return(
 	  		<span>
-	  		{text==0 && <Badge status="processing" text="草稿" />}
+	  		{text==0 && <Badge status="warning" text="草稿" />}
 		    {text==1 && <Badge status="success" text="通过" />}
-		    {text==2 && <Badge status="warning" text="审核中" />}
+		    {text==2 && <Badge status="processing" text="审核中" />}
 		    {text==3 && <Badge status="error" text="未通过" />}
 	  		</span>
 	  		)

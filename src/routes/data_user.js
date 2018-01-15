@@ -138,7 +138,7 @@ function DataUser({dispatch,center}) {
 			        forceFit={this.state.forceFit}
 			      />
 			      <div>
-			      	<Table columns={columns} bordered dataSource={UserList} pagination={false}/>
+			      	<Table columns={columns} bordered dataSource={UserList} pagination={false} rowKey={record => record.uid} locale={{emptyText:'暂无数据'}}/>
 			      </div>
 	    </div>
 	  }

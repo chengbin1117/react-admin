@@ -143,7 +143,7 @@ function DataColumn({dispatch,center}) {
 			        forceFit={this.state.forceFit}
 			      />
 			      <div>
-			      	<Table columns={columns} bordered dataSource={ColumnUserList} rowKey={record => record.uid} pagination={false}/>
+			      	<Table columns={columns} bordered dataSource={ColumnUserList} rowKey={record => record.uid} pagination={false} locale={{emptyText:'暂无数据'}}/>
 			      </div>
 	    </div>
 	  }

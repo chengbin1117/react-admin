@@ -106,7 +106,19 @@ const LockModal = ({
 		  }
 		  render() {
 		    const { size } = this.props;
-		    const state = this.state;
+				const state = this.state;
+				const selectAfter = (
+				  <Select
+			          value={state.currency}
+			          size={size}
+			          
+			          onChange={this.handleCurrencyChange}
+			        >
+			          <Option value="1">小时</Option>
+			          <Option value="2">天</Option>
+			          
+			        </Select>
+				); 
 		    return (
 		      <span>
 		        <Input
@@ -114,18 +126,10 @@ const LockModal = ({
 		          size={size}
 		          value={state.number}
 		          onChange={this.handleNumberChange}
-		          style={{ width: '40%'}}
+							style={{ width: '60%'}}
+							addonAfter={selectAfter}
 		        />
-		        <Select
-		          value={state.currency}
-		          size={size}
-		          style={{ width: '32%' }}
-		          onChange={this.handleCurrencyChange}
-		        >
-		          <Option value="5">小时</Option>
-		          <Option value="4">天</Option>
-		           <Option value="2">月</Option>
-		        </Select>
+		        
 		      </span>
 		    );
 		  }
@@ -159,8 +163,8 @@ const LockModal = ({
 			          })(<PriceInput />)}
 			        </FormItem>
 			        <FormItem >
-			          <Button type="primary" htmlType="submit">确定</Button>
-			          <Button onClick={onCancel}>取消</Button>
+			          <Button type="primary" htmlType="submit" size="large">确定</Button>
+			          <Button onClick={onCancel} size="large" style={{marginLeft:30}}>取消</Button>
 			        </FormItem>
 			      </Form>
 			    );
@@ -170,7 +174,7 @@ const LockModal = ({
       const WrappedDemo = Form.create()(Demo);
 	return (
 			
-		<Modal {...modalOpts} width='400px'>
+		<Modal {...modalOpts} width='300px'>
 		<WrappedDemo />
 				
 		</Modal>

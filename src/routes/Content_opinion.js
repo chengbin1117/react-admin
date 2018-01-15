@@ -13,7 +13,7 @@ import {
 import LayoutContainer from '../components/Layout';
 import Content_Opinion from '../components/Content/Content_Opinion';
 import { Modal,message,Row,Col} from 'antd';
-import {timeFormat,uploadUrl} from '../services/common';
+import {timeFormat,uploadUrl,GetRequest} from '../services/common';
 function ContentOpinion({dispatch,content,router,location}) {
 	let token =localStorage.getItem("Kgtoken");
 	if(!token) {
@@ -39,44 +39,58 @@ function ContentOpinion({dispatch,content,router,location}) {
 			if(values.time!=undefined){
 
 				if(values.status==undefined){
-					dispatch({
-					type:"content/getFeedbackList",
-					payload:{
-						content:values.content,
-						startDate:timeFormat(values.time[0]),
-						endDate:timeFormat(values.time[1]),
-					}
-				})
+					// dispatch({
+					// type:"content/getFeedbackList",
+					// 	payload:{
+					// 		content:values.content,
+					// 		startDate:timeFormat(values.time[0]),
+					// 		endDate:timeFormat(values.time[1]),
+					// 	}
+				    // })
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content+'&startDate='+timeFormat(values.time[0])+
+				'&endDate='+timeFormat(values.time[1])
+			    ))
 				}else{
 
-					dispatch({
-					type:"content/getFeedbackList",
-					payload:{
-						content:values.content,
-						startDate:timeFormat(values.time[0]),
-						endDate:timeFormat(values.time[1]),
-						status:values.status =="true"?true:false
-					}
-				})
+				// 	dispatch({
+				// 	type:"content/getFeedbackList",
+				// 	payload:{
+				// 		content:values.content,
+				// 		startDate:timeFormat(values.time[0]),
+				// 		endDate:timeFormat(values.time[1]),
+				// 		status:values.status =="true"?true:false
+				// 	}
+				// })
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content+'&startDate='+timeFormat(values.time[0])+
+				'&endDate='+timeFormat(values.time[1])+'&status='+values.status
+			    ))
 				}
 				
 			}else{
 				if(values.status==undefined){
-					dispatch({
-					type:"content/getFeedbackList",
-					payload:{
-						content:values.content,
+				// 	dispatch({
+				// 	type:"content/getFeedbackList",
+				// 	payload:{
+				// 		content:values.content,
 						
-					}
-				})
+				// 	}
+				// })
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content
+			    ))
 				}else{
-					dispatch({
-					type:"content/getFeedbackList",
-					payload:{
-						content:values.content,
-						status:values.status =="true"?true:false,
-					}
-				})
+				// 	dispatch({
+				// 	type:"content/getFeedbackList",
+				// 	payload:{
+				// 		content:values.content,
+				// 		status:values.status =="true"?true:false,
+				// 	}
+				// })
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content+'&status='+values.status
+			    ))
 				}
 
 				
@@ -108,7 +122,11 @@ function ContentOpinion({dispatch,content,router,location}) {
         	dispatch(routerRedux.push('/content/opinion?id='+record.id))
         },
         changepage(page){
-        	dispatch(routerRedux.push('/content/content_opinion?page='+page))
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/content/content_opinion?page='+page+
+			'&content='+search.content+'&status='+search.status+'&startDate='+search.startDate+
+			'&endDate='+search.endDate
+		))
         }
 	}
 

@@ -21,7 +21,7 @@ function beforeUpload(file) {
       return false
     }
   const is2M = file.size / 1024 / 1024 < 2;
-  console.log('is2M', is2M)
+ // console.log('is2M', is2M)
   if (!is2M) {
     message.error('图片大小不超过2M');
   }
@@ -40,12 +40,17 @@ export default class Upload_Image extends React.Component {
   };
 
   handleChange = (info) => {
- 
-    if (info.file.status === 'done') {
-      console.log(info.fileList[0])
+    
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status == 'done') {
+      //console.log(info)
+      //console.log(info.fileList[0])
       // Get this url from response in real world.
      // getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl,loading:false }));
-      var img_url = info.fileList[0].response;
+      var img_url = info.file.response;
       this.setState({
         imageUrl:img_url.data[0].filePath,
         loading:false
@@ -59,7 +64,6 @@ export default class Upload_Image extends React.Component {
     const uploadButton = (
       <div className={styles.NoImg}>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        
       </div>
     );
     return (

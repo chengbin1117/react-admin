@@ -31,7 +31,7 @@ function ArticleList({
     title: '文章ID',
     dataIndex: 'articleId',
     key: 'articleId',
-    width: 100,
+    width: "120px",
   }, {
     title: '标题',
     dataIndex: 'articleTitle',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select,DatePicker} from 'antd';
+import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Badge,Select,DatePicker} from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import {options} from "../../services/common";
@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSets,audit,handlsearch,currentPage,loading,total}){
-	console.log("loading",loading)
+//	console.log("loading",loading)
 	const columns = [{
 		  title: '评论内容',
 		  dataIndex: 'content',
@@ -32,7 +32,14 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		},{
 		  title: '状态',
 		  dataIndex: 'statusDisplay',
-		  key: 'statusDisplay',
+			key: 'statusDisplay',
+			render:(text,record)=>(
+				<span>
+					{record.status==0&&<Badge status="processing" text={text} />}
+					{record.status==1&&<Badge status="success" text={text} />}
+					{record.status==2&&<Badge status="error" text={text} />}
+				</span>
+			)
 		},{
 		  title: '显示状态',
 		  dataIndex: 'displayStatusDisplay',
@@ -166,10 +173,7 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		      	<p style = {{float:"left",margin:10}}>当前共有评论：{total}</p>
 		      	<Button type="primary" size = 'large' style = {{float:'right'}} onClick = {opinionSetModal}>评论审核设置</Button>
 		      </div>
-		      <Table style = {{marginTop:90}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId} locale={{emptyText:"暂无数据"}}/>
-		      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange} total={total} onChange={this.onChange} pageSize={20}/>
-		      
-		     
+		      <Table style = {{marginTop:90}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId} locale={{emptyText:"暂无数据"}}/> 
 		    </div>
 		  );
 		};

@@ -138,6 +138,10 @@ export default {
               type:'getFeedbackList',
               payload:{
                   currentPage:parseInt(search.page),
+                  content:search.content!='undefined'?search.content:null,
+                  status:(search.status!="undefined"&&search.status!=undefined)?(search.status=="true"?true:false):null,
+                  startDate:search.startDate!="undefined"?search.startDate:null,
+                  endDate:search.endDate!="undefined"?search.endDate:null,
                   pageSize:25,
               }
             })
@@ -251,7 +255,7 @@ export default {
     },
     *setDisplayOrder({ payload }, {call , put}) {
       const {articleId,displayOrder} =payload;
-
+      console.log(payload.search)
       let prams ={
         articleId:articleId,
         displayOrder:displayOrder
@@ -259,11 +263,18 @@ export default {
       const { data } = yield call(setDisplayOrder, prams);
       //console.log("11",data)
       if (data && data.code == 10000) {
-        const search =GetRequest(location.search);
+        const search =GetRequest(payload.search);
             yield put({
               type: 'getArticleList',
               payload:{
                 currentPage:search.page,
+                articleId:search.articleId!='undefined'?search.articleId:null,
+                articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+                articleTag:search.articleTag!='undefined'?search.articleTag:null,
+                publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+                displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+                columnId:search.columnId!='null'?parseInt(search.columnId):null,
+                secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
                 pageSize:25,
               }
             }); 
@@ -899,6 +910,11 @@ export default {
               type: 'getCommentList',
               payload:{
                 currentPage:search.page,
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25,
               }
 
@@ -906,14 +922,14 @@ export default {
       } else {
        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
-          yield put(routerRedux.push('/'));
+           yield put(routerRedux.push('/'));
         }else{
           message.error(data.message,2);
         }
       }
     },
     *setcommentStatus({ payload }, {call , put}) {
-      const {commentIds,displayStatus,search} =payload;
+      const {commentIds,displayStatus} =payload;
       let params ={
         commentIds:commentIds,
         displayStatus:displayStatus
@@ -921,13 +937,18 @@ export default {
       const { data } = yield call(setcommentStatus, params);
           
       if (data && data.code == 10000) {
-        const se = GetRequest(payload.search)
+        const search = GetRequest(payload.search)
           message.success('设置成功')
          
            yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:se.page,
+                currentPage:search.page,
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25
               }
            })
@@ -946,7 +967,7 @@ export default {
     },
     *auditComment({ payload }, {call , put}) {
       
-      const {commentId,status,search,refuseReason} =payload;
+      const {commentId,status,refuseReason} =payload;
 
       let params ={};
       if(status == 1){
@@ -966,7 +987,7 @@ export default {
       const { data } = yield call(auditComment, params);
           
       if (data && data.code == 10000) {
-        const se = GetRequest(payload.search)
+        const search = GetRequest(payload.search)
         message.success('审核成功')
           // var res = data.responseBody.data;
            yield put({
@@ -979,7 +1000,12 @@ export default {
             yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:se.page,
+                currentPage:search.page,
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25
               }
 

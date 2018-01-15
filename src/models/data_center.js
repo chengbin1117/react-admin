@@ -5,7 +5,7 @@ import {
 import {
   message
 } from 'antd';
-
+import { routerRedux } from 'dva/router';
 export default {
 
   namespace: 'center',
@@ -80,7 +80,6 @@ export default {
         type:payload.type,
       }
       const { data } = yield call(getDataStatChart, params);
-      //console.log("11",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
          //console.log(res)
@@ -93,6 +92,9 @@ export default {
               }
             }); 
       } else {
+        yield put({
+            type: 'hideLoading',
+        });
         if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
@@ -105,9 +107,7 @@ export default {
       yield put({
         type: 'showLoading',
       });
-      yield put({
-        type: 'hideLoading',
-      });
+     
       const { data } = yield call(getColumnUserList, payload);
       //console.log("11",data)
       if (data && data.code == 10000) {
@@ -121,6 +121,9 @@ export default {
               }
             }); 
       } else {
+         yield put({
+            type: 'hideLoading',
+         });
         if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
@@ -147,7 +150,9 @@ export default {
               }
             }); 
       } else {
-        message.error(data.message);
+         yield put({
+            type: 'hideLoading',
+         });
         if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
