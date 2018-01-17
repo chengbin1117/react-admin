@@ -9,7 +9,7 @@ import {
 	Link,
 	browserHistory
 } from 'dva/router';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
+import { Form, Row, Col, Input, Button,Badge,Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
 import style_search from '../search.css';
 import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
@@ -29,6 +29,7 @@ const Manage = ({
 	data,
 	onEdit,
 	Examine,
+
 }) => {
 	//console.log(userlist)
 
@@ -86,6 +87,13 @@ const Manage = ({
 		  title: '状态',
 		  dataIndex: 'statusDisplay',
 		  key: 'statusDisplay',
+		  render:(text,record)=>(
+		  	<span>
+		  		{record.status==1 && <Badge status="success" text={text} />}
+		  		{record.status==2 && <Badge status="error" text={text} />}
+		  		{record.status==0 && <Badge status="processing" text={text} />}
+		  	</span>
+		  	)
 		}, {
 		  title: '操作',
 		  key: 'action',

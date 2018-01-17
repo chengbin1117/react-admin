@@ -22,6 +22,7 @@
               "pathRewrite": { "^/api" : "" }
               
        }
-  }
+  },
+  "theme": "./src/theme.js"
  
 }
