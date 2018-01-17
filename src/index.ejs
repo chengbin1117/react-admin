@@ -12,9 +12,17 @@
   	html,body{
   		
   	}
+
   	.ant-table{
   		font-size:12px!important;
   	}
+    .ant-table-thead > tr > th{
+      /*text-align: center!important;*/
+      background: none!important;
+    }
+    /*.ant-table table{
+      text-align: center!important;
+    }*/
     .w-e-text-container{
         height:700px!important;
       }
@@ -51,6 +59,9 @@
       border: 1px solid #adb8c0;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
       /*//color: #99a1a7;*/
+    }
+    .ant-table-tbody>tr:nth-child(odd), .bs-table tr:nth-child(odd){
+      background: #fbfbfb;
     }
   </style>
 </head>

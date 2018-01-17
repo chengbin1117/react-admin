@@ -171,7 +171,7 @@ const Transaction = ({
 			  render() {
 			    return (
 			      <div>
-			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false}  loading={loading} rowKey={record => record.flowId} />
+			        <Table bordered size="default" columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false}  loading={loading} rowKey={record => record.flowId} />
 	      	  
 	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 			          

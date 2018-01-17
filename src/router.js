@@ -117,18 +117,17 @@ function RouterConfig({ history }) {
           <Route path="/seo/top_search" component={SeoTopSearch} />
           <Route path="/content/content_column" strict component={ContentColumn} />
           <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
-      
-        <Route path="/content/content_article" strict component={ContentArticle}/>
-        <Route path="/content/content_image" strict component={ContentImage}/>
-        <Route path="/content/content_comment" strict component={ContentComment}/>
-        <Route path="/content/release_article" strict component={Release_article}/>
-        <Route path="/content/editor_article" strict component={Editor_Article}/>
-        <Route path="/content/content_opinion"  component={ContentOpinion} />
-        <Route path ='/content/opinion'  component={ContentOpinionShow}/>
-        <Route path="/finance/recharge" strict component={FinanceRecharge}/>
-        <Route path="/finance/withdrawals"   strict component={Withdrawals} />
-        <Route path="/finance/record" strict component={Record} />
-        <Route path="/finance/bond" strict component={Bond} />
+          <Route path="/content/content_article" strict component={ContentArticle}/>
+          <Route path="/content/content_image" strict component={ContentImage}/>
+          <Route path="/content/content_comment" strict component={ContentComment}/>
+          <Route path="/content/release_article" strict component={Release_article}/>
+          <Route path="/content/editor_article" strict component={Editor_Article}/>
+          <Route path="/content/content_opinion"  component={ContentOpinion} />
+          <Route path ='/content/opinion'  component={ContentOpinionShow}/>
+          <Route path="/finance/recharge" strict component={FinanceRecharge}/>
+          <Route path="/finance/withdrawals"   strict component={Withdrawals} />
+          <Route path="/finance/record" strict component={Record} />
+          <Route path="/finance/bond" strict component={Bond} />
       </LayoutContainer>
       </Switch>
     </Router>

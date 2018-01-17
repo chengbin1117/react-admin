@@ -44,7 +44,10 @@ function AboutUs({dispatch,router,setting}) {
 		},
 		handeShow(record){
 				confirm({
-				    title: record.infoStatus ==true?'是否设置成隐藏?':'是否设置成显示?',
+				    title:(<div>
+				    	{record.infoStatus ==true&&<span>是否设置成<span style={{color:"#f00"}}>隐藏</span>?</span>}
+				    	{record.infoStatus ==false&&<span>是否设置成<span style={{color:"#52c41a"}}>显示</span>?</span>}
+				    </div>),
 				    okText:"确定",
 				    cancelText:"取消",
 				    onOk() {

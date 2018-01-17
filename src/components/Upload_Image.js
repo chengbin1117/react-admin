@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Icon, message } from 'antd';
+import { Upload, Icon, message,Modal} from 'antd';
 import styles from "./search.css";
 import {uploadUrl,ImgUrl} from "../services/common"
 
@@ -36,6 +36,8 @@ function beforeUpload(file) {
 export default class Upload_Image extends React.Component {
   state = {
     loading: false,
+    previewVisible: false,
+    previewImage: '',
     imageUrl:this.props.editorImg!=undefined?this.props.editorImg:''
   };
 
@@ -58,15 +60,23 @@ export default class Upload_Image extends React.Component {
       this.props.checkimg(img_url.data[0].filePath)
     }
   }
-
+  handleCancel = () => this.setState({ previewVisible: false })
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
   render() {
     const imageUrl = this.state.imageUrl;
+    const { previewVisible, previewImage } = this.state;
     const uploadButton = (
       <div className={styles.NoImg}>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
       </div>
     );
     return (
+      <div className="clearfix">
       <Upload
         className="avatar-uploader"
         name="file"
@@ -82,6 +92,7 @@ export default class Upload_Image extends React.Component {
             uploadButton
         }
       </Upload>
+      </div>
     );
   }
 }
