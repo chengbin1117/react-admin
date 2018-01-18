@@ -126,7 +126,8 @@
 .search{
   display: inline-block;
   position: absolute;
-  right: 10px;
+  right: 100px;
+  top:30px;
   font-size:26px;
 }
 .search .el-input__inner,.search .el-input__inner:focus,.search .el-input__inner:hover{
@@ -178,6 +179,10 @@
 }
 .container_left{
   width:70%;
+}
+.container_left_pre{
+  width:70%;
+  margin-top: 60px;
 }
 .container_right{
   width:30%;

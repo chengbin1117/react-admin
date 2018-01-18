@@ -15,8 +15,8 @@ import Useradmin from '../components/User/UserAdmin';
 import ExamineModal from '../components/User/ExamineModal';
 import SetHotuser from '../components/User/SetHotuser';
 import LockModal from '../components/User/LockModal';
-import {timeFormat} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message,Alert} from 'antd';
+import {timeFormat,formatDate} from '../services/common';
+import { Form, Row, Col, Input, Tag, Icon,Table,Pagination,Modal,Radio,Select,message,Alert} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -80,15 +80,26 @@ function ArticlePreview({location,dispatch,content,router,}) {
                  <div className = {styles.previewMask}>
                  <Alert message="这是预览页面，不支持任何操作" type="warning"  className={styles.text}/>
                  </div>
-              	<div className={styles.container} >
+              	<div className={styles.container} style={{minHeight:850}}>
               	
-              	<div className={styles.container_left}>
-	                <p className={styles.title}>{preList&&preList.articleTitle}</p>
+              	<div className={styles.container_left_pre}>
+	                <h1 className={styles.title}>{preList&&preList.articleTitle}</h1>
+	                <div>{preList&&preList.username}<span style={{marginLeft:10,marginRight:10}}>·</span>{preList&&formatDate(preList.createDate)}
+	               
+                    
+	                </div>
 	              	<div className={styles.abstract}>
-	              	    {(previewartic=='undefined'||previewartic=="")?previewdec:previewartic}
+	              	    {preList&&preList.articleDescription}
 	              	</div>
-	                <div className={styles.article} dangerouslySetInnerHTML={{__html: previewText}}></div>
-	              <div className = {styles.line}></div>
+	                <div className={styles.article} dangerouslySetInnerHTML={{__html: (preList&&preList.articleText)}}></div>
+		            <div className = {styles.line}>
+		            {(preList&&preList.tags!=undefined)?preList.tags.map((t,index)=>{
+		            	return(
+		            		 <Tag color="blue" key={index}>{t}</Tag>
+		            		)
+		            }):null}
+		           
+		            </div>
 	          </div>
               	</div>
               <div className={styles.footer}>
