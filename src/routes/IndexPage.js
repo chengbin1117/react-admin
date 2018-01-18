@@ -188,6 +188,10 @@ function IndexPage({location,dispatch,user,router,content}) {
 					selectList:record
 				}
 			});
+	  	},
+	  	onPreview(record){
+	  		console.log(record)
+	  		dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
 	  	}
 	  }
 	  function onChange(page){

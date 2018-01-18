@@ -24,6 +24,7 @@ function ArticleList({
   onSetItem,
   onToggleItem,
   data,
+  onPreview
 }) {
 
   //console.log("total",total)
@@ -58,7 +59,7 @@ function ArticleList({
 			return (
 				<div>
               <a data-key={i} onClick={() => onEditItem(record)} style = {{marginRight:10}}>审核</a>
-              
+              <a data-key={i} onClick={() => onPreview(record)} style = {{marginRight:10}}>预览</a>
             </div>
 			)
 		}

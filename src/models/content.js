@@ -41,6 +41,7 @@ export default {
     secondC:{},
     firstC:[],
     saveId:0,
+    preList:{}
   },
 
   subscriptions: {
@@ -114,6 +115,19 @@ export default {
                 
               }
             })
+        }
+        match = pathToRegexp('/articlePreview').exec(location.pathname);
+        if(match){
+         const search =GetRequest(location.search);
+          //let merId =localStorage.getItem("userId"); 
+         // console.log("search",search.articleId)
+            dispatch({
+              type:'getArById',
+              payload:{
+                articleId:search.articleId
+              }
+            });
+           
         }
         match =pathToRegexp('/content/content_image').exec(location.pathname);
         if(match){
@@ -591,6 +605,31 @@ export default {
             localStorage.setItem("articleList", JSON.stringify(res));
             localStorage.setItem("articleText", res.articleText);
             yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
+
+      } else {
+        if(data.code ==10004||data.code ==10011){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
+    *getArById({ payload }, {call , put}) {
+    
+      const { data } = yield call(getArticleById, payload);
+      //console.log("栏目",data)
+      if (data && data.code == 10000) {
+         var res = data.responseBody;
+         var tags = "tags";
+         res[tags]=res.tagnames!=null?res.tagnames.split(","):'';
+            yield put({
+              type: 'getPreSuccess',
+              payload:{
+                preList:res,
+                loading:false,
+              }
+            });
 
       } else {
         if(data.code ==10004||data.code ==10011){
@@ -1550,6 +1589,11 @@ export default {
       return {...state,
         ...action.payload,
         saveId:0
+      };
+    },
+    getPreSuccess(state, action) {
+      return {...state,
+        ...action.payload,
       };
     },
   },
