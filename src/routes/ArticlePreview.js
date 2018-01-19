@@ -25,8 +25,7 @@ import styles from './Common.css';
 import logo from '../assets/images/logo.png'
 //console.log(merId)
 function ArticlePreview({location,dispatch,content,router,}) {
-	const {preList} =content;
-	console.log(preList)
+	
 	var previewTitle =localStorage.getItem("previewTitle");
 	var previewText =localStorage.getItem("previewText");
 	var previewartic =localStorage.getItem("previewartic");
@@ -83,7 +82,7 @@ function ArticlePreview({location,dispatch,content,router,}) {
               	<div className={styles.container} >
               	
               	<div className={styles.container_left}>
-	                <p className={styles.title}>{preList&&preList.articleTitle}</p>
+	                <p className={styles.title}>{previewTitle=='undefined'?"":previewTitle}</p>
 	              	<div className={styles.abstract}>
 	              	    {(previewartic=='undefined'||previewartic=="")?previewdec:previewartic}
 	              	</div>

@@ -103,12 +103,12 @@ export default {
                 articleId:search.articleId
               }
             });
-            dispatch({
+            /*dispatch({
               type:'getSysUserById',
               payload:{
                 userId:merId
               }
-            })
+            })*/
             dispatch({
               type:'getColumnList',
               payload:{
@@ -578,7 +578,7 @@ export default {
       }
     },
     *getArticleById({ payload }, {call , put}) {
-    
+      let merId =localStorage.getItem("userId");
       const { data } = yield call(getArticleById, payload);
       //console.log("栏目",data)
       if (data && data.code == 10000) {
@@ -592,7 +592,14 @@ export default {
                 loading:false,
               }
             });
-
+            if(res.createUser==null){
+              yield put({
+                type: 'getSysUserById',
+                payload:{
+                  userId:merId,
+                }
+              });
+            }
             if(res.sysUser==null||res.sysUser!=""){
                yield put({
                 type: 'getBonus',
