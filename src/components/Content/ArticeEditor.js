@@ -279,7 +279,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
                   sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
