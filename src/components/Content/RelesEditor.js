@@ -74,13 +74,21 @@ function RelesEditor({
   },
 }){
   let merId =localStorage.getItem("userId");
-  
+  console.log(titleNum,autoSaveInterval,saveId)
   const options = ColumnList;
   //console.log("setting",location)
   /*if(location.pathname!="/content/release_article"){
     alert(1)
     window.clearInterval(autoSaveInterval)
     console.log(autoSaveInterval)
+  }*/
+  /*if(saveId==0){
+    
+    titleNum==0;
+    n ==5000;
+    x ==5000;
+    autoSaveInterval  ==null;
+
   }*/
   const {RelationVisible} =setting
   function handleSubmit (){
@@ -415,7 +423,7 @@ function RelesEditor({
       }
   }
   function tagValue2(rule, value, callback){
-    console.log(value)
+   // console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
       arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
@@ -600,12 +608,12 @@ function RelesEditor({
   }
   function checkout(){
        //clearInterval(time1)
-       window.clearInterval(autoSaveInterval);
+       /*window.clearInterval(autoSaveInterval);
        console.log(autoSaveInterval)
        autoSaveInterval = window.setInterval(function() {
        
             aoSave();
-            }, 60000);
+            }, 10000);*/
 
   }
   function titleValue(e){
