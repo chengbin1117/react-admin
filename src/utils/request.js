@@ -5,7 +5,7 @@ import {urlprefix} from '../services/common';
 import fetchJsonp from 'fetch-jsonp';
 import { routerRedux } from 'dva/router';
 import {
-  message
+  message,notification
 } from 'antd';
 import {
   hashHistory,
@@ -20,20 +20,13 @@ function parseJSON(response) {
 
 function checkStatus(response) {
   //console.log("checkStatus:", response);
-  if(response.status == 404){
-    message.error('访问不存在')
-    return false;
-  }
-  /*if(response.status == 200){
-    console.log("response",response)
-  }*/
-  if(response.status == 500){
-    message.error('服务器内部出错')
-     return false;
-  }
-  if(response.status >= 200 && response.status < 300) {
+  if (response.status >= 200 && response.status < 300) {
     return response;
   }
+  notification.error({
+    message: `请求错误 ${response.status}: ${response.url}`,
+    description: response.statusText,
+  });
   const error = new Error(response.statusText);
   error.response = response;
   throw error;
@@ -64,10 +57,12 @@ export default function request(url, options) {
     
     let option = {
       ...options,
+      'Accept': 'application/json',
       'headers': headers,
-      "Content-Type": "text/plain"
+      'Content-Type': 'application/json; charset=utf-8',
       };
     //console.log("options",options)
+    
     return fetch(fullUrl, option)
     .then(checkStatus)
     .then(parseJSON)

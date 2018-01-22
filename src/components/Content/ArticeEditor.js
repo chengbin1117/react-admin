@@ -7,7 +7,7 @@ import {
   routerRedux,
 
 } from 'dva/router';
-import { Form, Icon, Input, Button,Badge, Checkbox,Tag,Row,Col,Upload,InputNumber,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
+import { Form, Icon, Input, Button,Badge, Checkbox,Tag,Row,Col,Upload,InputNumber,Radio,Cascader,DatePicker, TimePicker, message,Modal } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
@@ -89,7 +89,7 @@ function ArticleEditor({
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
           let CX = dds.split('&nbsp;')
           var lg = CX.join('');
-          //console.log(dds.lengthgvfdg)
+         
           var tagsName =""
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -110,7 +110,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?lg.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -119,7 +119,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -138,7 +138,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?lg.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -147,7 +147,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -170,7 +170,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?lg.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -179,7 +179,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -200,7 +200,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?lg.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -209,7 +209,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
                   sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
@@ -270,7 +270,7 @@ function ArticleEditor({
                   articleTitle:data.articleTitle,
                   articleText:data.text,
                   tagnames:tagsName,
-                  description:(data.artic==undefined||data.artic=="")?CX.substring(0,100):data.artic,
+                  description:(data.artic==undefined||data.artic=="")?lg.substring(0,100):data.artic,
                   image:imgUrl==''?data.image:imgUrl,
                   type:parseInt(data.type),
                   columnId:parseInt(data.column[0]),
@@ -279,7 +279,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
                   sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
@@ -307,7 +307,7 @@ function ArticleEditor({
   }
   function disabledDate(current) {
   // Can not select days before today and today
-  return current && current.valueOf() <= Date.now();
+    return current && current <= moment()
   }
   function disabledDateTime() {
     return {
@@ -369,22 +369,24 @@ function StatusonChange(e) {
   }
   const RelationModalProps ={
     visible:RelationVisible,
+    deskUserId:setting.deskUserId,
     onCancel(){
       dispatch({
         type:"setting/hideRelationModal"
       })
     },
-    onOk(record,values){
-      console.log(record,values)
-      Modal.confirm({
+    onOk(record,deskUserId){
+      //console.log(record,values)
+     Modal.confirm({
         title:"确认关联前台用户吗？",
-        okText : '确',
-          onOk() {
+        okText : '确定',
+        onOk() {
+            //console.log(values,record)
               dispatch({
                 type:"setting/setKgUser",
                 payload:{
-                  userId:record.id,
-                  kgUserId:values.kgUserId
+                  userId:merId,
+                  kgUserId:deskUserId
                 }
                   })
           },
@@ -395,13 +397,14 @@ function StatusonChange(e) {
       
     },
     handleBlur(e){
-      //console.log(e.target.value)
-      dispatch({
-        type:"setting/getUserId",
-        payload:{
-          userMobile:e.target.value
-        }
-      })
+     if(e.target.value.length == 11){
+        dispatch({
+          type:"setting/getUserId",
+          payload:{
+            userMobile:e.target.value
+          }
+        })
+      }
     }
   }
 
@@ -617,7 +620,7 @@ function StatusonChange(e) {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[3]:'',
                         rules: [{ required: false, min:2,
                             max:5,
-                            message: '请输入2-5个字符!', },{
+                            message: '请输入2-5个字符!' },{
                             validator:tagValue4
                         }],
                       })(
@@ -632,13 +635,13 @@ function StatusonChange(e) {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
                         rules: [{ required: false, min:2,
                             max:5,
-                            message: '请输入2-5个字符!',},{
+                            message: '请输入2-5个字符!'},{
                             validator:tagValue5
                         }],
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
-                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个汉字</span>
+                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个字符</span>
                   </FormItem>
               </Col>
            </Row> 
@@ -838,7 +841,7 @@ function StatusonChange(e) {
                       extra ="定时范围：从当前时间点开始至未来7天内，按自然日计算"
                     >
                       {getFieldDecorator('time',{
-                         initialValue:moment(formatDate(ArticleList.publishTime),"YYYY-MM-DD HH:mm:ss"),
+                         initialValue:ArticleList.publishTime==null?"":moment(formatDate(ArticleList.publishTime),"YYYY-MM-DD HH:mm:ss"),
                          rules: [
                           { required: true,message:"请选择时间",},
                         ],
@@ -846,7 +849,7 @@ function StatusonChange(e) {
                          <DatePicker
                             format="YYYY-MM-DD HH:mm:ss"
                             disabledDate={disabledDate}
-                            disabledTime={disabledDateTime}
+                            /*disabledTime={disabledDateTime}*/
                             showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                             locale={options}
                             size="large"
@@ -860,15 +863,15 @@ function StatusonChange(e) {
                        extra='注：若该文章为用户发布，则此处不可更改'
                     >
                       {getFieldDecorator('createUser',{
-                        initialValue:(UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:'',
+                        initialValue:ArticleList.createUser ==null?((UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:''):ArticleList.username,
                         rules: [
                           { required: true,message:'请关联前台用户作为发布人显示' },
                         ],
                       })(
-                        <Input style={{width:'20%'}} disabled={true}/>
+                        <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
 
                       )}
-                      
+                      {(ArticleList.createUser ==null&&UserById.kgUserId==null)?<a style={{marginRight:40+'px'}} onClick={showUser} >关联前台用户</a>:null}
               </FormItem>
               <FormItem
                       {...formItemLayout}

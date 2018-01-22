@@ -144,13 +144,13 @@ function ContentArticle({location,dispatch,router,content}) {
 			})
 		},
 		fixSort(data,e){
-			console.log(data,e.target.value)
+			//console.log(location);
 			dispatch({
 				type:"content/setDisplayOrder",
 				payload:{
 					articleId:data.articleId,
 					displayOrder:parseInt(e.target.value),
-					serach:location.serach
+					search:location.search
 				}
 			})
 		}
@@ -165,7 +165,7 @@ function ContentArticle({location,dispatch,router,content}) {
 			})
 		},
 		onOk(selectList,status){
-			console.log(selectList,status);
+			
 			dispatch({
 				type:'content/setDisplayStatus',
 				payload:{

@@ -27,7 +27,7 @@ let value = 0;
 
 const formItemLayout = {
 	labelCol: {
-		span: 4,
+		span: 5,
 	},
 	wrapperCol: {
 		span: 14,

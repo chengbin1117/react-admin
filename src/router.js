@@ -7,7 +7,8 @@ import React, {
   IndexRoute,
   Link,
 } from 'dva/router';*/
-
+import { LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 // /import { Router, Route, Switch,IndexRoute} from 'dva/router';
 import { Router, Route, Link, Switch, HashHistory } from 'react-router-dom';
 import LayoutContainer from './components/Layout';
@@ -42,6 +43,7 @@ import Content_Column_Editor from './routes/Content_Column_Editor';
 import Release_article from './routes/Release_article';
 import Editor_Article from './routes/Editor_Article';
 import ArticlePreview from './routes/ArticlePreview';
+import Preview from './routes/Preview';
 //Seo
 import Seo from './routes/Seo';
 import SeoHot from './routes/Seo_hot';
@@ -87,11 +89,13 @@ function RouterConfig({ history }) {
 //console.log(history)
 
   return (
+    <LocaleProvider locale={zhCN}>
     <Router history={history}>
     <Switch>
       <Route path="/" exact  component={UserRouter} />
       <Route path="/login" exact  component={UserRouter} />
       <Route path="/preview" exact  component={ArticlePreview} />
+      <Route path="/articlePreview" exact  component={Preview} />
       <LayoutContainer location={history.location}>
           <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
           <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
@@ -115,21 +119,21 @@ function RouterConfig({ history }) {
           <Route path="/seo/top_search" component={SeoTopSearch} />
           <Route path="/content/content_column" strict component={ContentColumn} />
           <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
-      
-        <Route path="/content/content_article" strict component={ContentArticle}/>
-        <Route path="/content/content_image" strict component={ContentImage}/>
-        <Route path="/content/content_comment" strict component={ContentComment}/>
-        <Route path="/content/release_article" strict component={Release_article}/>
-        <Route path="/content/editor_article" strict component={Editor_Article}/>
-        <Route path="/content/content_opinion"  component={ContentOpinion} />
-        <Route path ='/content/opinion'  component={ContentOpinionShow}/>
-        <Route path="/finance/recharge" strict component={FinanceRecharge}/>
-        <Route path="/finance/withdrawals"   strict component={Withdrawals} />
-        <Route path="/finance/record" strict component={Record} />
-        <Route path="/finance/bond" strict component={Bond} />
+          <Route path="/content/content_article" strict component={ContentArticle}/>
+          <Route path="/content/content_image" strict component={ContentImage}/>
+          <Route path="/content/content_comment" strict component={ContentComment}/>
+          <Route path="/content/release_article" strict component={Release_article}/>
+          <Route path="/content/editor_article" strict component={Editor_Article}/>
+          <Route path="/content/content_opinion"  component={ContentOpinion} />
+          <Route path ='/content/opinion'  component={ContentOpinionShow}/>
+          <Route path="/finance/recharge" strict component={FinanceRecharge}/>
+          <Route path="/finance/withdrawals"   strict component={Withdrawals} />
+          <Route path="/finance/record" strict component={Record} />
+          <Route path="/finance/bond" strict component={Bond} />
       </LayoutContainer>
       </Switch>
     </Router>
+    </LocaleProvider>
   );
 }
 

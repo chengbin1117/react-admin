@@ -13,7 +13,7 @@ import {
 import createG2 from 'g2-react';
 import { Stat } from 'g2';
 import Layout from '../components/Layout';
-import { Table,Pagination} from 'antd';
+import { Table,Pagination,Card} from 'antd';
 import ArticleList from '../components/Log/Article';
 import AuditingModal from '../components/Log/AuditingModal';
 import ExamineModal from '../components/User/ExamineModal';
@@ -80,7 +80,7 @@ function IndexPage({location,dispatch,user,router,content}) {
 	    title: '用户ID',
 	    dataIndex: 'userId',
 	    key: 'userId',
-	    width: 100,
+	    width: 120,
 	  }, {
 	    title: '用户名',
 	    dataIndex: 'userName',
@@ -188,6 +188,10 @@ function IndexPage({location,dispatch,user,router,content}) {
 					selectList:record
 				}
 			});
+	  	},
+	  	onPreview(record){
+	  		console.log(record)
+	  		dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
 	  	}
 	  }
 	  function onChange(page){
@@ -195,24 +199,26 @@ function IndexPage({location,dispatch,user,router,content}) {
 	  }
 	return (
 			<div>
-				<div>
-				    <h2>待审核的专栏用户 <Link to={{ 
+				<Card  title="待审核的专栏用户" extra={<Link to={{ 
 			             pathname:"/user/user_admin", 
 			             query:{page: 1} 
-			         }}  className={styles.allUser}>查看全部用户</Link></h2>
+							 }}  className={styles.allUser}>查看全部用户</Link>}
+							 hoverable={true}
+							 >
+				   
 				    <Table bordered rowKey={record => record.userId} columns={columns}  pagination={false}  dataSource={userlist} loading={loading}/>
 				    
 				    <ExamineModal {...ExamineModalProps}/>
-				</div>
-				<div style={{marginTop:"100px"}}>
-				    <h2>待审核的专栏文章
-				    <Link to={{ 
+				</Card>
+				<Card title="待审核的专栏文章"
+								hoverable={true}
+				        extra={<Link to={{ 
 			             pathname:"/content/content_article", 
 			             query:{page: 1} 
-			         }}  className={styles.allUser}>查看全部文章</Link></h2>
+			         }}  className={styles.allUser}>查看全部文章</Link>} style={{marginTop:"100px"}}>
 				    <ArticleList {...ArticleListProps}/>
 				    <AuditingModal {...AuditingModalProps}/>
-				</div>
+				</Card>
 			</div>
 
 	);

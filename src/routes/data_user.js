@@ -30,8 +30,19 @@ function DataUser({dispatch,center}) {
 		dispatch(routerRedux.push('/'))
 	}
 	const Chart = createG2(chart => {
-	
+		chart.legend({ 
+		  position: 'bottom', // 设置图例的显示位置
+		  itemGap: 100, // 图例项之间的间距
+		  marker:'square'
+		});
+		chart.animate(true);
 		chart.line().position('time*value').color('name').size(2);
+		chart.axis('time', {
+		  title: null // 不展示 xField 对应坐标轴的标题
+		});
+		chart.axis('value', {
+			  title:null
+		});
 		chart.render();
 	});
 	//console.log(size)
@@ -40,7 +51,7 @@ function DataUser({dispatch,center}) {
 	    shape: 'line',
 	    data: ChartColumn,
 	    width: 500,
-	    height: 260,
+	    height: 400,
 	    forceFit:true,
 	  }
 	  handleSizeChange = (e) => {
@@ -138,7 +149,7 @@ function DataUser({dispatch,center}) {
 			        forceFit={this.state.forceFit}
 			      />
 			      <div>
-			      	<Table columns={columns} bordered dataSource={UserList} pagination={false}/>
+			      	<Table columns={columns} bordered dataSource={UserList} pagination={false} rowKey={record => record.uid} />
 			      </div>
 	    </div>
 	  }

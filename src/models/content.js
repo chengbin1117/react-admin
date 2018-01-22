@@ -41,6 +41,7 @@ export default {
     secondC:{},
     firstC:[],
     saveId:0,
+    preList:{}
   },
 
   subscriptions: {
@@ -102,18 +103,31 @@ export default {
                 articleId:search.articleId
               }
             });
-            dispatch({
+            /*dispatch({
               type:'getSysUserById',
               payload:{
                 userId:merId
               }
-            })
+            })*/
             dispatch({
               type:'getColumnList',
               payload:{
                 
               }
             })
+        }
+        match = pathToRegexp('/articlePreview').exec(location.pathname);
+        if(match){
+         const search =GetRequest(location.search);
+          //let merId =localStorage.getItem("userId"); 
+         // console.log("search",search.articleId)
+            dispatch({
+              type:'getArById',
+              payload:{
+                articleId:search.articleId
+              }
+            });
+           
         }
         match =pathToRegexp('/content/content_image').exec(location.pathname);
         if(match){
@@ -138,6 +152,10 @@ export default {
               type:'getFeedbackList',
               payload:{
                   currentPage:parseInt(search.page),
+                  content:search.content!='undefined'?search.content:null,
+                  status:(search.status!="undefined"&&search.status!=undefined)?(search.status=="true"?true:false):null,
+                  startDate:search.startDate!="undefined"?search.startDate:null,
+                  endDate:search.endDate!="undefined"?search.endDate:null,
                   pageSize:25,
               }
             })
@@ -251,7 +269,7 @@ export default {
     },
     *setDisplayOrder({ payload }, {call , put}) {
       const {articleId,displayOrder} =payload;
-
+      console.log(payload.search)
       let prams ={
         articleId:articleId,
         displayOrder:displayOrder
@@ -259,11 +277,18 @@ export default {
       const { data } = yield call(setDisplayOrder, prams);
       //console.log("11",data)
       if (data && data.code == 10000) {
-        const search =GetRequest(location.search);
+        const search =GetRequest(payload.search);
             yield put({
               type: 'getArticleList',
               payload:{
                 currentPage:search.page,
+                articleId:search.articleId!='undefined'?search.articleId:null,
+                articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+                articleTag:search.articleTag!='undefined'?search.articleTag:null,
+                publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+                displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+                columnId:search.columnId!='null'?parseInt(search.columnId):null,
+                secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
                 pageSize:25,
               }
             }); 
@@ -553,7 +578,7 @@ export default {
       }
     },
     *getArticleById({ payload }, {call , put}) {
-    
+      let merId =localStorage.getItem("userId");
       const { data } = yield call(getArticleById, payload);
       //console.log("栏目",data)
       if (data && data.code == 10000) {
@@ -567,7 +592,14 @@ export default {
                 loading:false,
               }
             });
-
+            if(res.createUser==null){
+              yield put({
+                type: 'getSysUserById',
+                payload:{
+                  userId:merId,
+                }
+              });
+            }
             if(res.sysUser==null||res.sysUser!=""){
                yield put({
                 type: 'getBonus',
@@ -580,6 +612,31 @@ export default {
             localStorage.setItem("articleList", JSON.stringify(res));
             localStorage.setItem("articleText", res.articleText);
             yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
+
+      } else {
+        if(data.code ==10004||data.code ==10011){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
+    *getArById({ payload }, {call , put}) {
+    
+      const { data } = yield call(getArticleById, payload);
+      //console.log("栏目",data)
+      if (data && data.code == 10000) {
+         var res = data.responseBody;
+         var tags = "tags";
+         res[tags]=res.tagnames!=null?res.tagnames.split(","):'';
+            yield put({
+              type: 'getPreSuccess',
+              payload:{
+                preList:res,
+                loading:false,
+              }
+            });
 
       } else {
         if(data.code ==10004||data.code ==10011){
@@ -899,6 +956,11 @@ export default {
               type: 'getCommentList',
               payload:{
                 currentPage:search.page,
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25,
               }
 
@@ -906,14 +968,14 @@ export default {
       } else {
        if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
-          yield put(routerRedux.push('/'));
+           yield put(routerRedux.push('/'));
         }else{
           message.error(data.message,2);
         }
       }
     },
     *setcommentStatus({ payload }, {call , put}) {
-      const {commentIds,displayStatus,search} =payload;
+      const {commentIds,displayStatus} =payload;
       let params ={
         commentIds:commentIds,
         displayStatus:displayStatus
@@ -921,13 +983,18 @@ export default {
       const { data } = yield call(setcommentStatus, params);
           
       if (data && data.code == 10000) {
-        const se = GetRequest(payload.search)
+        const search = GetRequest(payload.search)
           message.success('设置成功')
          
            yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:se.page,
+                currentPage:search.page,
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25
               }
            })
@@ -946,7 +1013,7 @@ export default {
     },
     *auditComment({ payload }, {call , put}) {
       
-      const {commentId,status,search,refuseReason} =payload;
+      const {commentId,status,refuseReason} =payload;
 
       let params ={};
       if(status == 1){
@@ -966,7 +1033,7 @@ export default {
       const { data } = yield call(auditComment, params);
           
       if (data && data.code == 10000) {
-        const se = GetRequest(payload.search)
+        const search = GetRequest(payload.search)
         message.success('审核成功')
           // var res = data.responseBody.data;
            yield put({
@@ -979,7 +1046,12 @@ export default {
             yield put({
               type: 'getCommentList',
               payload:{
-                currentPage:se.page,
+                currentPage:search.page,
+                content:search.content!="undefined"?search.content:null,
+                status:search.status!="undefined"?search.status:null,
+                startDate:search.startDate!="undefined"?search.startDate:null,
+                endDate:search.endDate!="undefined"?search.endDate:null,
+                displayStatus:(search.displayStatus!="undefined"&&search.displayStatus!=undefined)?(search.displayStatus=="1"?true:false):null,
                 pageSize:25
               }
 
@@ -1524,6 +1596,11 @@ export default {
       return {...state,
         ...action.payload,
         saveId:0
+      };
+    },
+    getPreSuccess(state, action) {
+      return {...state,
+        ...action.payload,
       };
     },
   },

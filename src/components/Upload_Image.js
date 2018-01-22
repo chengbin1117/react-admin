@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Icon, message } from 'antd';
+import { Upload, Icon, message,Modal} from 'antd';
 import styles from "./search.css";
 import {uploadUrl,ImgUrl} from "../services/common"
 
@@ -21,7 +21,7 @@ function beforeUpload(file) {
       return false
     }
   const is2M = file.size / 1024 / 1024 < 2;
-  console.log('is2M', is2M)
+ // console.log('is2M', is2M)
   if (!is2M) {
     message.error('图片大小不超过2M');
   }
@@ -36,16 +36,23 @@ function beforeUpload(file) {
 export default class Upload_Image extends React.Component {
   state = {
     loading: false,
+    previewVisible: false,
+    previewImage: '',
     imageUrl:this.props.editorImg!=undefined?this.props.editorImg:''
   };
 
   handleChange = (info) => {
- 
-    if (info.file.status === 'done') {
-      console.log(info.fileList[0])
+    
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status == 'done') {
+      //console.log(info)
+      //console.log(info.fileList[0])
       // Get this url from response in real world.
      // getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl,loading:false }));
-      var img_url = info.fileList[0].response;
+      var img_url = info.file.response;
       this.setState({
         imageUrl:img_url.data[0].filePath,
         loading:false
@@ -53,16 +60,23 @@ export default class Upload_Image extends React.Component {
       this.props.checkimg(img_url.data[0].filePath)
     }
   }
-
+  handleCancel = () => this.setState({ previewVisible: false })
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
   render() {
     const imageUrl = this.state.imageUrl;
+    const { previewVisible, previewImage } = this.state;
     const uploadButton = (
       <div className={styles.NoImg}>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        
       </div>
     );
     return (
+      <div className="clearfix">
       <Upload
         className="avatar-uploader"
         name="file"
@@ -78,6 +92,7 @@ export default class Upload_Image extends React.Component {
             uploadButton
         }
       </Upload>
+      </div>
     );
   }
 }

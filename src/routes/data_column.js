@@ -23,6 +23,7 @@ const ButtonGroup = Button.Group;
 
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
+
 function DataColumn({dispatch,center}) {
 	let token =localStorage.getItem("Kgtoken");
 	if(!token) {
@@ -30,8 +31,19 @@ function DataColumn({dispatch,center}) {
 	}
 	const {ChartColumn,ColumnUserList,size} = center;
 	const Chart = createG2(chart => {
-		
+		chart.legend({ 
+		  position: 'bottom', // 设置图例的显示位置
+		  itemGap: 100, // 图例项之间的间距
+		  marker:'square'
+		});
+		chart.animate(true);
 		chart.line().position('time*value').color('name').size(2);
+		chart.axis('time', {
+		  title: null // 不展示 xField 对应坐标轴的标题
+		});
+		chart.axis('value', {
+			  title:null
+		});
 		chart.render();
 	})
 	//console.log('size',center)
@@ -40,7 +52,8 @@ function DataColumn({dispatch,center}) {
 	    shape: 'line',
 	    data: ChartColumn,
 	    width: 500,
-	    height: 260,
+	    height: 400,
+	    padding: [ 20, 20, 95, 80 ],// 上，右，下，左
 	    forceFit:true,
 	    //size:'3'
 	  }
@@ -140,10 +153,12 @@ function DataColumn({dispatch,center}) {
 			        data={this.state.data}
 			        width={this.state.width}
 			        height={this.state.height}
+			        padding={this.state.padding}
 			        forceFit={this.state.forceFit}
 			      />
+			     
 			      <div>
-			      	<Table columns={columns} bordered dataSource={ColumnUserList} rowKey={record => record.uid} pagination={false}/>
+			      	<Table columns={columns} bordered dataSource={ColumnUserList} rowKey={record => record.uid} pagination={false} locale={{emptyText:'暂无数据'}}/>
 			      </div>
 	    </div>
 	  }

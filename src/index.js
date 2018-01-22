@@ -1,14 +1,20 @@
 import 'babel-polyfill';
 import './index.css';
 import dva from 'dva';
+import {
+  message,notification
+} from 'antd';
 // 1. Initialize
 const app = dva();
 
 // 2. Plugins
 app.use({
 	onError: (err, dispatch) => {
-		console.log("errrrr: ", err);
-		
+		//console.log("errrrr: ", err);
+		notification.error({
+		    message: `请求错误`,
+		    description: err,
+	    });
 	},
 });
 //app.use(createLoading())
