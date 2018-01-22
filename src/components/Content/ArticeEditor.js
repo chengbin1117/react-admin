@@ -562,8 +562,7 @@ function StatusonChange(e) {
                            },{
                             min:2,
                             max:5,
-                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!',
+                            message: '请输入2-5个字符!',
                         },{
                           validator:tagValue1
                         }],
@@ -584,8 +583,7 @@ function StatusonChange(e) {
                            },{
                             min:2,
                             max:5,
-                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!',
+                            message: '请输入2-5个字符!',
                         },{
                           validator:tagValue2
                         }],
@@ -606,8 +604,7 @@ function StatusonChange(e) {
                            },{
                             min:2,
                             max:5,
-                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!',
+                            message: '请输入2-5个字符!',
                         },{
                           validator:tagValue3
                         }],
@@ -623,8 +620,7 @@ function StatusonChange(e) {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[3]:'',
                         rules: [{ required: false, min:2,
                             max:5,
-                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!', },{
+                            message: '请输入2-5个字符!' },{
                             validator:tagValue4
                         }],
                       })(
@@ -639,14 +635,13 @@ function StatusonChange(e) {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
                         rules: [{ required: false, min:2,
                             max:5,
-                            pattern:/^[\u4e00-\u9fa5]{2,5}$/,
-                            message: '请输入2-5个汉字!',},{
+                            message: '请输入2-5个字符!'},{
                             validator:tagValue5
                         }],
                       })(
                         <Input style={{width:'30%',marginRight:'20px'}}/>
                       )}
-                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个汉字</span>
+                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个字符</span>
                   </FormItem>
               </Col>
            </Row> 
