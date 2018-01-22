@@ -876,7 +876,7 @@ function StatusonChange(e) {
                         <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
 
                       )}
-                      {(ArticleList.createUser ==null&&(UserById.kgUserName==null||UserById.kgUserName==""))?<a style={{marginRight:40+'px'}} onClick={showUser} >关联前台用户</a>:null}
+                      {(ArticleList.createUser ==null&&UserById.kgUserId==null)?<a style={{marginRight:40+'px'}} onClick={showUser} >关联前台用户</a>:null}
               </FormItem>
               <FormItem
                       {...formItemLayout}

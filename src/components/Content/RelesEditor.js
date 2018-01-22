@@ -74,7 +74,7 @@ function RelesEditor({
   },
 }){
   let merId =localStorage.getItem("userId");
-  console.log(titleNum,autoSaveInterval,saveId)
+  //console.log(titleNum,autoSaveInterval,saveId,artSorce)
   const options = ColumnList;
   //console.log("setting",location)
   /*if(location.pathname!="/content/release_article"){
@@ -90,8 +90,10 @@ function RelesEditor({
     autoSaveInterval  ==null;
 
   }*/
+  console.log(UserById.kgUserName)
   const {RelationVisible} =setting
-  function handleSubmit (){
+  function handleSubmit (e){
+    e.preventDefault();
       validateFields((errors) => {
         if (errors) {
           return;
@@ -102,6 +104,11 @@ function RelesEditor({
             message.error('请上传封面图')
             return true
           }
+          if(UserById.kgUserId==null||UserById.kgUserId==""){
+            message.error('请先关联前台用户');
+            return true
+          }
+          console.log("234",UserById.kgUserId)
           var tagsName ="";
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -236,6 +243,9 @@ function RelesEditor({
             type:'content/showBgModal'
       })
   }
+  function createUserValue(e){
+    return UserById.kgUserName
+  }
   function edtiorContent (editor){
         //console.log(editor.txt.html());
         /*var html  = editor.txt.html()
@@ -263,6 +273,9 @@ function RelesEditor({
     secondCity=parseInt(value)
   }
   function showUser(){
+    
+     const data = {...getFieldsValue(['createUser'])};
+     console.log(data)
     dispatch({
         type:"setting/showRelationModal"
       })
@@ -557,7 +570,7 @@ function RelesEditor({
             }, 10000);
   }
   function aoSave(id){
-    //console.log(id)
+    console.log("123",UserById.kgUserId)
     window.clearInterval(autoSaveInterval);
     const data = {...getFieldsValue()};
     if(data.articleTitle==""||data.articleTitle==undefined){
@@ -594,7 +607,7 @@ function RelesEditor({
       articleLink:data.articleLink,
       commentSet:data.commentSet!=undefined?(data.commentSet == "true"?true:false):null,
       publishSet:data.radioG!=undefined?(data.radioG == "true"?true:false):null,
-      createUser:UserById.kgUserId!=undefined?UserById.kgUserId:null,
+      createUser:UserById.kgUserId!=null?UserById.kgUserId:null,
       sysUser:merId,
       bonusStatus:parseInt(data.bonusStatus),
       publishStatus:0,
@@ -763,7 +776,7 @@ function RelesEditor({
              
               <FormItem label="摘要" {...formItemLayout}>
                     {getFieldDecorator('artic', {
-                     
+                      initialValue:'',
                       rules: [{ required: false,min:10,max:100,message: '摘要10-100字,支持中英文,数字，符号，不区分大小写!' }],
                     })(
                       <TextArea style={{minHeight:"200px",width:"80%"}} placeholder="选填，若未填写会默认抓取正文前100字"></TextArea>
@@ -976,16 +989,10 @@ function RelesEditor({
                       {...formItemLayout}
                        label="发布人"
                        extra='注：若该文章为用户发布，则此处不可更改'
-                    >
-                      {getFieldDecorator('createUser',{
-                        initialValue:(UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:'',
-                        rules: [
-                          { required: true,message:'请关联前台用户作为发布人显示' },
-                        ],
-                      })(
-                        <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
+                      >
+                       
+                        <Input style={{width:'20%',marginRight:20+'px'}} onChange={createUserValue} value={UserById.kgUserName==null?"":UserById.kgUserName} disabled={true}/>
 
-                      )}
                       {(UserById.kgUserId ==null||UserById.kgUserId=="")?<a style={{marginRight:40+'px'}} onClick={showUser} >关联前台用户</a>:null}
               </FormItem>
               <FormItem
