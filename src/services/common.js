@@ -139,7 +139,7 @@ export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件
 //上传图片
 
 //let ImgUrl = "http://kg.btc123.com:8080/kgapi/image/upload"; //开发
-let ImgUrl = "https://kg.com/image/upload"; //生产&&测试
+let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
 // let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
 
 //下载图片
@@ -158,7 +158,7 @@ let uploadUrl = "https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/"; //生产
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 //let urlprefix = "http://kg.btc123.com:8080/kgapi";//开发
 // let urlprefix = "https://www.kg.com"; //生产&&测试
-let urlprefix = "https://kg.com"; //生产&&测试
+let urlprefix = "https://www.kg.com"; //生产&&测试
 
 
 export {
