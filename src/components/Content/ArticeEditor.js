@@ -411,6 +411,9 @@ function StatusonChange(e) {
    function ImgHandle(src){
     //console.log("src",src)
    }
+   function Trim(str){ 
+      return str.replace(/(^\s*)|(\s*$)/g, ""); 
+    }
    function handlevaild(rule, value, callback){
       
       var dd=value.replace(/<\/?.+?>/g,"");
