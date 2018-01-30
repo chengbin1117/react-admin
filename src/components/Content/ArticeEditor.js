@@ -416,6 +416,7 @@ function StatusonChange(e) {
       //console.log(dds)
       let CX = dds.split('&nbsp;')
       var lg = CX.join('');
+      console.log(lg.length)
       if(lg.length==0){
         callback("请输入正文")
       }else if(lg.length>5000){
