@@ -407,17 +407,14 @@ function StatusonChange(e) {
       }
     }
   }
-
    function ImgHandle(src){
     //console.log("src",src)
    }
    function handlevaild(rule, value, callback){
-      
       var dd=value.replace(/<\/?.+?>/g,"");
       var dds=dd.replace(/ /g,"");//dds为得到后的内容
       //console.log(dds)
       let CX = dds.split('&nbsp;')
-        
       var lg = CX.join('');
       if(lg.length==0){
         callback("请输入正文")
@@ -426,7 +423,6 @@ function StatusonChange(e) {
       }else{
         callback()
       }
-      
    }
    function checkout(){
 
@@ -458,7 +454,6 @@ function StatusonChange(e) {
       }else{
         for(var i in arr){
         if(value==arr[i]){
-          //console.log(value,arr[i])
            callback("标签不能重复")
         }
       }
