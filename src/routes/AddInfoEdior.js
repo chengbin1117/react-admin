@@ -142,7 +142,7 @@ function AddinfoEditor({dispatch,setting,router}) {
 				],
 	          })(
 	            <Select size="large"  placeholder="请选择" disabled>
-	              <Option value="关于我们,about">关于(about)</Option>
+	              <Option value="关于我们,about">关于我们(about)</Option>
 	              <Option value="加入我们,add">加入我们(add)</Option>
 	              <Option value="联系我们,contact">联系我们(contact)</Option>
 	              <Option value="版权声明,copy">版权声明(copy)</Option>
