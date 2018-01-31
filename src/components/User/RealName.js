@@ -91,6 +91,9 @@ const RealName = ({
 		    	<p>{text}岁</p>
 		    </div>
 		  ),
+
+		}, {
+
 		}, {
 		  title: '提交时间',
 		  dataIndex: 'createDate',
