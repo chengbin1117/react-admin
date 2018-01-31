@@ -28,7 +28,6 @@ export default {
     UserCertList:[],
     SiteInfo:{}
   },
-
   subscriptions: {
     setup({
       dispatch,

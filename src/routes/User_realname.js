@@ -194,26 +194,28 @@ function UserRealName({location,dispatch,user,router,}) {
 		},
 		onOk(values,selectList){
 			console.log(values,selectList)
-			if(values.radio == '1'){
-				dispatch({
-					type:"user/auditUserCert",
-					payload:{
-						userIds:selectList,
-						status:parseInt(values.radio),
-						auditUser:merId,
-					}
-				})
-			}else{
-				dispatch({
-					type:"user/auditUserCert",
-					payload:{
-						userIds:selectList,
-						status:parseInt(values.radio),
-						auditUser:merId,
-						refuseReason:values.text
-					}
-			    })
-			}
+			// if(values.radio == '1'){
+			// 	dispatch({
+			// 		type:"user/auditUserCert",
+			// 		payload:{
+			// 			userIds:selectList,
+			// 			status:parseInt(values.radio),
+			// 			auditUser:merId,
+			// 			auditUserName:localStorage.getItem('realname')
+			// 		}
+			// 	})
+			// }else{
+			// 	dispatch({
+			// 		type:"user/auditUserCert",
+			// 		payload:{
+			// 			userIds:selectList,
+			// 			status:parseInt(values.radio),
+			// 			auditUser:merId,
+			// 			refuseReason:values.text,
+			// 			auditUserName:localStorage.getItem('realname')
+			// 		}
+			//     })
+			// }
 		}
 	}
 	return (

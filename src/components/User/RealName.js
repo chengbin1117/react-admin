@@ -47,8 +47,8 @@ const RealName = ({
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '昵称',
-		  dataIndex: 'nickname',
-		  key: 'nickname',
+		  dataIndex: 'auditUserName',
+		  key: 'auditUserName',
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '邮箱',
