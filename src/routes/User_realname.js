@@ -164,6 +164,7 @@ function UserRealName({location,dispatch,user,router,}) {
 						userIds:selectList.userId,
 						status:parseInt(values.radio),
 						auditUser:merId,
+						auditUserName:localStorage.getItem("realname")
 					}
 				})
 
@@ -174,7 +175,8 @@ function UserRealName({location,dispatch,user,router,}) {
 						userIds:selectList.userId,
 						status:parseInt(values.radio),
 						auditUser:merId,
-						refuseReason:values.text
+						refuseReason:values.text,
+						auditUserName:localStorage.getItem("realname")
 					}
 			    })
 			}
@@ -201,6 +203,7 @@ function UserRealName({location,dispatch,user,router,}) {
 						userIds:selectList,
 						status:parseInt(values.radio),
 						auditUser:merId,
+						auditUserName:localStorage.getItem("realname")
 					}
 				})
 			}else{
@@ -210,7 +213,8 @@ function UserRealName({location,dispatch,user,router,}) {
 						userIds:selectList,
 						status:parseInt(values.radio),
 						auditUser:merId,
-						refuseReason:values.text
+						refuseReason:values.text,
+						auditUserName:localStorage.getItem("realname")
 					}
 			    })
 			}
