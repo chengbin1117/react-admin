@@ -78,11 +78,20 @@ const RealName = ({
          		<p>{record.idcardNo}</p>
 		    </div>
 		  ),
-		}, {
+		}, /*{
 		  title: '所属地区',
-		  dataIndex: 'address',
-		  key: 'address',
-		}, {
+		  dataIndex: 'userArea',
+		  key: 'userArea',
+		},{
+		  title: '年龄',
+		  dataIndex: 'userAge',
+		  key: 'userAge',
+		  render: (text, record) => (
+		    <div>
+		    	<p>{text}岁</p>
+		    </div>
+		  ),
+		},*/ {
 		  title: '提交时间',
 		  dataIndex: 'createDate',
 		  key: 'createDate',
