@@ -45,7 +45,7 @@ const RealName = ({
 		  dataIndex: 'userId',
 		  key: 'userId',
 		  render: text => <span>{text}</span>,
-		}, {
+		}, /*{
 		  title: '昵称',
 		  dataIndex: 'auditUserName',
 		  key: 'auditUserName',
@@ -54,7 +54,7 @@ const RealName = ({
 		  title: '邮箱',
 		  dataIndex: 'emailemail',
 		  key: 'email',
-		}, {
+		},*/ {
 		  title: '手机号',
 		  dataIndex: 'mobile',
 		  key: 'mobile',
@@ -92,9 +92,7 @@ const RealName = ({
 		    </div>
 		  ),
 
-		}, {
-
-		}, {
+		},{
 		  title: '提交时间',
 		  dataIndex: 'createDate',
 		  key: 'createDate',
@@ -104,8 +102,8 @@ const RealName = ({
 		  key: 'statusDisplay',
 		}, {
 		  title: '审核人',
-		  dataIndex: 'auditUser',
-		  key: 'auditUser',
+		  dataIndex: 'auditUserName',
+		  key: 'auditUserName',
 		}, {
 		  title: '审核时间',
 		  dataIndex: 'auditDate',
