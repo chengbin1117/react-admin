@@ -88,7 +88,7 @@ const RealName = ({
 		  key: 'userAge',
 		  render: (text, record) => (
 		    <div>
-		    	<p>{text}岁</p>
+		    	<p>{text}</p>
 		    </div>
 		  ),
 

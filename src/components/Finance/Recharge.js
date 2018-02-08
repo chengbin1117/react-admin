@@ -169,11 +169,12 @@ const Recharge = ({
 			    );
 			  }
 			}
-
-
-
 	return (
 		<div className = {style_common.contentDiv}>
+		  <div>
+		  	<Button>钛值（TV）</Button>
+		  	<Button>钛小白</Button>
+		  </div>
 	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 	      <div className={style_search.search_result}>
 	      	<TableList />
@@ -181,7 +182,5 @@ const Recharge = ({
 	    </div>
 	);
 };
-
 Recharge.propTypes = {};
-
 export default Form.create()(Recharge);
