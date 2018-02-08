@@ -90,7 +90,7 @@ function AddinfoEditor({dispatch,setting,router}) {
 	  	//console.log(value)
 	  	var dd=value.replace(/<\/?.+?>/g,"");
 	      var dds=dd.replace(/ /g,"");//dds为得到后的内容
-	      //console.log(dds)
+	      // console.log(dds)
 	     
           let CX = dds.split('&nbsp;');
           var lg = CX.join('');
