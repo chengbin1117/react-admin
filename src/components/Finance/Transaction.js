@@ -32,7 +32,7 @@ const Transaction = ({
 	currentPage,
 	BusinessType,
 }) => {
-	console.log(currentPage)
+	// console.log(currentPage)
 	const columns = [{
 		  title: '流水号',
 		  dataIndex: 'flowId',

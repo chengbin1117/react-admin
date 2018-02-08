@@ -32,7 +32,7 @@ const Transaction = ({
 	currentPage,
 	BusinessType,
 }) => {
-	console.log(currentPage)
+	// console.log(currentPage)
 	const columns = [{
 		  title: '流水号',
 		  dataIndex: 'flowId',
@@ -44,7 +44,7 @@ const Transaction = ({
 		  key: 'businessTypeName',
 		  render: text => <span>{text}</span>,
 		}, {
-		  title: '钛值数额',
+		  title: '交易数额',
 		  dataIndex: 'amount',
 		  key: 'amount',
 		}, {
@@ -67,7 +67,7 @@ const Transaction = ({
 		  	<span>{record.email==null?"——":record.email}</span>
 		  	)
 		}, {
-		  title: '状态',
+		  title: '交易状态',
 		  dataIndex: 'status',
 		  key: 'status',
 		}, {
@@ -75,8 +75,7 @@ const Transaction = ({
 		  key: 'action',
 		  render: (text, record) => (
 		    <span>
-		    <a style={{marginRight:10+"px"}} onClick={()=>Examine(record)}>详情</a>
-         	
+		    	<a style={{marginRight:10+"px"}} onClick={()=>Examine(record)}>详情</a>
 		    </span>
 		  ),
 	}];
