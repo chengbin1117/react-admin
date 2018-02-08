@@ -12,15 +12,16 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import Manage from '../components/Finance/Mange';
+import ManageTi from '../components/Finance/MangeTi';
 import stytes from './UserLoginPage.css';
 import ExamineModal from '../components/Finance/ExamineModal';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const TabPane = Tabs.TabPane;
 //console.log(merId)
 function Withdrawals({location,dispatch,finance,router,}) {
 	
@@ -29,7 +30,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {WIthdrawList,currentPage,totalNumber,loading,ExamineVisible,selectList} =finance;
+	const {WIthdrawList,currentPage,totalNumber,loading,ExamineVisible,selectList,ActiveKey} =finance;
 
 
 	const ManageProps ={
@@ -145,10 +146,40 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		}
 
 	}
+
+	function callback(key){
+		console.log(key)
+		dispatch({
+			type:"finance/selectActiveKey",
+			payload:{
+				ActiveKey:key
+			}
+		})
+	}
+	class TableList extends React.Component {
+			  state = {
+			    defaultActiveKey: ActiveKey, 
+			    selectedRowKeys:[],
+			  };
+			  render() {
+			   const {defaultActiveKey}=this.state
+			    return (
+			      <Tabs defaultActiveKey={defaultActiveKey} onChange={callback}>
+				    <TabPane tab="钛值TV" key="1">
+				    <Manage {...ManageProps}/>
+				    <ExamineModal {...ExamineModalProps}/>
+				    </TabPane>
+				    <TabPane tab="钛小白" key="2">
+				    <ManageTi />
+				    <ExamineModal {...ExamineModalProps}/>
+				    </TabPane>
+				</Tabs>
+			    );
+			  }
+    }
 	return (
 			<div>
-						<Manage {...ManageProps}/>
-						<ExamineModal {...ExamineModalProps}/>
+				<TableList/>
 			</div>
 
 	);

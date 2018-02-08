@@ -24,7 +24,8 @@ export default {
     AccountList:[],
     AccountDiposit:[],
     selectList:{},
-    BusinessType:[]
+    BusinessType:[],
+    ActiveKey:'1'
   },
 
   subscriptions: {
@@ -141,6 +142,7 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                ActiveKey:"1"
               }
             }); 
       } else {
@@ -179,6 +181,7 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                ActiveKey:"1"
               }
             }); 
       } else {
@@ -212,6 +215,7 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                ActiveKey:"1"
               }
             }); 
       } else {
@@ -334,6 +338,9 @@ export default {
       return {...state,ExamineVisible:false,...action.payload};
     },
     getBusinessTypeSuccess(state, action) {
+      return {...state,...action.payload};
+    },
+    selectActiveKey(state, action) {
       return {...state,...action.payload};
     },
   },

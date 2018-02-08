@@ -13,16 +13,17 @@ import {
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
 import Recharge from '../components/Finance/Recharge';
+import RechargeTi from '../components/Finance/RechargeTi';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const TabPane = Tabs.TabPane;
 //console.log(merId)
 function FinanceReacharge({location,dispatch,finance,router,}) {
-	const {RechargeList,loading,totalNumber,currentPage}=finance;
+	const {RechargeList,loading,totalNumber,currentPage,ActiveKey}=finance;
 	//console.log(loading)
 	let merId =localStorage.getItem("userId");
 	let token =localStorage.getItem("Kgtoken");
@@ -35,6 +36,7 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 		console.log(1111111111)
 		router.push('/')
 	}*/
+	console.log(ActiveKey)
 	const RechargeProps ={
 		data:RechargeList,
 		total:totalNumber,
@@ -105,9 +107,37 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 		}
 	}
 	
+	function callback(key){
+		console.log(key)
+		dispatch({
+			type:"finance/selectActiveKey",
+			payload:{
+				ActiveKey:key
+			}
+		})
+	}
+	class TableList extends React.Component {
+			  state = {
+			    defaultActiveKey: ActiveKey, 
+			    selectedRowKeys:[],
+			  };
+			  render() {
+			   const {defaultActiveKey}=this.state
+			    return (
+			      <Tabs defaultActiveKey={defaultActiveKey} onChange={callback}>
+				    <TabPane tab="钛值TV" key="1">
+				    <Recharge {...RechargeProps}/>
+				    </TabPane>
+				    <TabPane tab="钛小白" key="2">
+				    <RechargeTi />
+				    </TabPane>
+				</Tabs>
+			    );
+			  }
+    }
 	return (
 			<div>
-				<Recharge {...RechargeProps}/>
+				<TableList />
 			</div>
 
 	);

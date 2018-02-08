@@ -13,14 +13,15 @@ import {
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
 import Transaction from '../components/Finance/Transaction';
+import TransactionTi from '../components/Finance/TransactionTi';
 import {timeFormat,GetRequest} from '../services/common';
 
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const TabPane = Tabs.TabPane;
 //console.log(merId)
 function Record({location,dispatch,finance,router,}) {
 	
@@ -29,7 +30,7 @@ function Record({location,dispatch,finance,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {AccountList,currentPage,totalNumber,loading,BusinessType} =finance;
+	const {AccountList,currentPage,totalNumber,loading,BusinessType,ActiveKey} =finance;
 	const TransactionProps = {
 			data:AccountList,
 			currentPage,
@@ -127,18 +128,6 @@ function Record({location,dispatch,finance,router,}) {
 					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
 					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
 					))
-				/*dispatch({
-					type:'finance/getAccount',
-					payload:{
-						flowId:values.flowId,
-						email:values.email,
-						mobile:values.mobile,
-						businessTypeId:parseInt(values.businessTypeId),
-						minAmount:parseFloat(values.minAmount),
-						maxAmount:parseFloat(values.maxAmount),
-						pageSize:25,
-					}
-				})*/
 			}else{
 				dispatch(routerRedux.push(
 					'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
@@ -146,26 +135,42 @@ function Record({location,dispatch,finance,router,}) {
 					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
 					+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
 					))
-				/*dispatch({
-					type:'finance/getAccount',
-					payload:{
-						flowId:values.flowId,
-						email:values.email,
-						mobile:values.mobile,
-						businessTypeId:parseInt(values.businessTypeId),
-						minAmount:parseFloat(values.minAmount),
-						maxAmount:parseFloat(values.maxAmount),
-						startDate:timeFormat(new Date(values.time[0])),
-						endDate:timeFormat(new Date(values.time[1])),
-					}
-				})*/
 			}
 		}
 	}
 
+
+	function callback(key){
+		console.log(key)
+		dispatch({
+			type:"finance/selectActiveKey",
+			payload:{
+				ActiveKey:key
+			}
+		})
+	}
+	class TableList extends React.Component {
+			  state = {
+			    defaultActiveKey: ActiveKey, 
+			    selectedRowKeys:[],
+			  };
+			  render() {
+			   const {defaultActiveKey}=this.state
+			    return (
+			      <Tabs defaultActiveKey={defaultActiveKey} onChange={callback}>
+				    <TabPane tab="钛值TV" key="1">
+				    <Transaction {...TransactionProps}/>
+				    </TabPane>
+				    <TabPane tab="钛小白" key="2">
+				    <TransactionTi/>
+				    </TabPane>
+				</Tabs>
+			    );
+			  }
+    }
 	return (
 			<div>
-				<Transaction {...TransactionProps}/>
+				<TableList />
 			</div>
 
 	);

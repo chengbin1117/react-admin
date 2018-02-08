@@ -31,7 +31,7 @@ const Recharge = ({
 }) => {
   	console.log("loading",loading)
 	const columns = [{
-		  title: '充值流水号',
+		  title: '流水号',
 		  dataIndex: 'flowId',
 		  key: 'flowId',
 		  render: text => <span>{text}</span>,
@@ -55,7 +55,7 @@ const Recharge = ({
 		  	<span>{record.mobile==null?"——":record.mobile}</span>
 		  	)
 		}, {
-		  title: '充值数(TV)',
+		  title: '充值数(钛小白)',
 		  dataIndex: 'amount',
 		  key: 'amount',
 		}, {
@@ -151,20 +151,20 @@ const Recharge = ({
 			    selectedRows: [], 
 			    selectedRowKeys:[],
 			  };
-			  onShowSizeChange =(page) =>{
-			      
-			      	changepage(page)
-			      }
-			   onChange = (page)=>{
-			      	changepage(page)
-			      }
+			 
 			  render() {
-			   
+			   	const paginationProps = {
+			      showSizeChanger: true,
+			      showQuickJumper: true,
+			      total:total,
+			      onChange:changepage,
+			      onShowSizeChange:changepage,
+			      pageSize:25,
+			      current:currentPage
+			    };
 			    return (
 			      <div>
-			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
-	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
-			          
+			        <Table bordered columns={columns} dataSource={data} pagination={paginationProps} loading={loading} rowKey={record => record.flowId} />   
 			      </div>
 			    );
 			  }

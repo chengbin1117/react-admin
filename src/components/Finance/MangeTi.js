@@ -9,36 +9,39 @@ import {
 	Link,
 	browserHistory
 } from 'dva/router';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
+import { Form, Row, Col, Input, Button,Badge,Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
 import style_search from '../search.css';
 import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
-import {options} from "../../services/common"
+import {options} from "../../services/common";
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-const Recharge = ({
+const Manage = ({
 	loading,
-	data,
-	total,
+	handlsearch,
 	router,
+	total,
 	changepage,
 	currentPage,
-	handlsearch,
+	data,
+	onEdit,
 	Examine,
+
 }) => {
-  	console.log("loading",loading)
+	//console.log(userlist)
+
+	function confirm(e) {
+       //console.log(e);
+       conOk(e)
+  }
+  	
 	const columns = [{
-		  title: '充值流水号',
+		  title: '提现流水号',
 		  dataIndex: 'flowId',
 		  key: 'flowId',
-		  render: text => <span>{text}</span>,
-		}, {
-		  title: '用户ID',
-		  dataIndex: 'userId',
-		  key: 'userId',
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '邮箱',
@@ -55,33 +58,49 @@ const Recharge = ({
 		  	<span>{record.mobile==null?"——":record.mobile}</span>
 		  	)
 		}, {
-		  title: '充值数(TV)',
-		  dataIndex: 'amount',
-		  key: 'amount',
+		  title: '提现地址',
+		  dataIndex: 'toAddress',
+		  key: 'toAddress',
+		  render:(text,record)=> (
+		  	<span>{record.toAddress==null?"——":record.toAddress}</span>
+		  	)
 		}, {
-		  title: '充值时间',
-		  dataIndex: 'rechargeTime',
-		  key: 'rechargeTime',
+		  title: '提现数(钛小白)',
+		  dataIndex: 'withdrawAmount',
+		  key: 'withdrawAmount',
+		}, {
+		  title: '实际到账数(钛小白)',
+		  dataIndex: 'accountAmount',
+		  key: 'accountAmount',
+		}, {
+		  title: '提现时间',
+		  dataIndex: 'withdrawTime',
+		  key: 'withdrawTime',
 		}, {
 		  title: '到账时间',
 		  dataIndex: 'accountTime',
 		  key: 'accountTime',
-		}, {
-		  title: '备注信息',
-		  dataIndex: 'remark',
-		  key: 'remark',
 		  render:(text,record)=> (
-		  	<span>{record.remark==null?"——":record.remark}</span>
+		  	<span>{record.accountTime==null?"——":record.accountTime}</span>
 		  	)
 		}, {
 		  title: '状态',
 		  dataIndex: 'statusDisplay',
 		  key: 'statusDisplay',
+		  render:(text,record)=>(
+		  	<span>
+		  		{record.status==1 && <Badge status="success" text={text} />}
+		  		{record.status==2 && <Badge status="error" text={text} />}
+		  		{record.status==0 && <Badge status="processing" text={text} />}
+		  	</span>
+		  	)
 		}, {
 		  title: '操作',
 		  key: 'action',
 		  render: (text, record) => (
 		    <span>
+		    {record.status==0?<a style={{marginRight:10+"px"}} onClick={()=>onEdit(record)}>审核</a>:
+		    <a style={{marginRight:10+"px",color:"#e5e5e5"}} >审核</a>}
 		    <a style={{marginRight:10+"px"}} onClick={()=>Examine(record)}>详情</a>
          	
 		    </span>
@@ -96,17 +115,6 @@ const Recharge = ({
 	    children.push(
 	    	<div key="0">
 		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='用户ID'>
-		            {getFieldDecorator('userId',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
-			            	]
-		            })(
-		              <Input placeholder="请输入用户Id" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='邮箱'>
 		            {getFieldDecorator('email')(
 		              <Input type="email"placeholder="请输入邮箱" />
@@ -120,24 +128,25 @@ const Recharge = ({
 			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
 			            	]
 		            })(
-		              <Input type="mobile" placeholder="请输入手机号" />
+		              <Input type="phone" placeholder="请输入手机号" />
 		            )}
 		          </FormItem>
 		        </Col>
 		         <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='充值时间'>
+		          <FormItem {...formItemLayout} label='提现时间'>
 		            {getFieldDecorator('time')(
 		              <RangePicker locale={options}/>
 		            )}
 		          </FormItem>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='充值状态'>
+		          <FormItem {...formItemLayout} label='提现状态'>
 		            {getFieldDecorator('status')(
-		              <Select  placeholder="请选择">
-					      <Option value="0">充值中</Option>
-					      <Option value="1">充值成功</Option>
-					    </Select>
+		              <Select   placeholder="请选择">
+					      <Option value="0">审核中</Option>
+					      <Option value="1">已通过</Option>
+					      <Option value="2">已撤销</Option>
+					  </Select>
 		            )}
 		          </FormItem>
 		        </Col>
@@ -145,21 +154,20 @@ const Recharge = ({
 	      );
 	    return children;
 	}
-
 	class TableList extends React.Component {
 			  state = {
 			    selectedRows: [], 
 			    selectedRowKeys:[],
+			    loading: false,
 			  };
-			  onShowSizeChange =(page) =>{
-			      
+			   onShowSizeChange =(page) =>{
+			      	console.log(page)
 			      	changepage(page)
 			      }
 			   onChange = (page)=>{
 			      	changepage(page)
 			      }
 			  render() {
-			   
 			    return (
 			      <div>
 			        <Table bordered columns={columns} locale={{emptyText:"暂无数据"}} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
@@ -169,6 +177,9 @@ const Recharge = ({
 			    );
 			  }
 			}
+
+
+
 	return (
 		<div className = {style_common.contentDiv}>
 	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
@@ -178,5 +189,7 @@ const Recharge = ({
 	    </div>
 	);
 };
-Recharge.propTypes = {};
-export default Form.create()(Recharge);
+
+Manage.propTypes = {};
+
+export default Form.create()(Manage);
