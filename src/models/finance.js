@@ -1,7 +1,7 @@
 import pathToRegexp from 'path-to-regexp';
 import {
   getAccountRecharge,getAccountWIthdraw,auditAccountWithdraw,getAccount,
-  getAccountDiposit,getBusinessType
+  getAccountDiposit,getBusinessType,getAccountTxb
 } from '../services/finance';
 import {formatDate,GetRequest} from '../services/common'
 import {
@@ -24,7 +24,8 @@ export default {
     AccountList:[],
     AccountDiposit:[],
     selectList:{},
-    BusinessType:[]
+    BusinessType:[],
+    ActiveKey:'1'
   },
 
   subscriptions: {
@@ -98,6 +99,33 @@ export default {
                   }
                 })
             }
+            match = pathToRegexp('/finance/recordTxb').exec(location.pathname);
+
+            if (match) {
+              const search =GetRequest(location.search);
+              console.log(search)
+                dispatch({
+                  type: 'getAccountTxb',
+                  payload: {
+                    currentPage:search.page,
+                    flowId:search.flowId!="undefined"?search.flowId:null,
+                    businessTypeId:search.businessTypeId!="undefined"?parseInt(search.businessTypeId):null,
+                    email:search.email!="undefined"?search.email:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
+                    minAmount:search.minAmount!="undefined"?parseInt(search.minAmount):null,
+                    maxAmount:search.maxAmount!="undefined"?parseInt(search.maxAmount):null,
+                    pageSize:25,
+                  }
+                });
+                dispatch({
+                  type:'getBusinessType',
+                  payload:{
+
+                  }
+                })
+            }
             match = pathToRegexp('/finance/bond').exec(location.pathname);
             if (match) {
                 const search =GetRequest(location.search);
@@ -141,6 +169,7 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                ActiveKey:"1"
               }
             }); 
       } else {
@@ -179,6 +208,7 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                ActiveKey:"1"
               }
             }); 
       } else {
@@ -212,6 +242,41 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                ActiveKey:"1"
+              }
+            }); 
+      } else {
+        if(data.code ==10004||data.code ==10011){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
+         yield put({
+            type: 'hideLoading',
+          });
+      }
+    },
+    *getAccountTxb({ payload }, {call , put}) {
+      yield put({
+        type: 'showLoading',
+      });
+      const { data } = yield call(getAccountTxb, payload);
+    
+      if (data && data.code == 10000) {
+         var res = data.responseBody;
+            for (var i in res.data){
+            
+              res.data[i].flowDate = formatDate(res.data[i].flowDate)
+            }
+            yield put({
+              type: 'getAccountTxbSuccess',
+              payload:{
+                AccountList:res.data,
+                loading:false,
+                currentPage:res.currentPage,
+                totalNumber:res.totalNumber,
+                ActiveKey:"2"
               }
             }); 
       } else {
@@ -324,6 +389,9 @@ export default {
     getAccountSuccess(state, action) {
       return {...state,...action.payload};
     },
+    getAccountTxbSuccess(state, action) {
+      return {...state,...action.payload};
+    },
     getAccountDipositSuccess(state, action) {
       return {...state,...action.payload};
     },
@@ -334,6 +402,9 @@ export default {
       return {...state,ExamineVisible:false,...action.payload};
     },
     getBusinessTypeSuccess(state, action) {
+      return {...state,...action.payload};
+    },
+    selectActiveKey(state, action) {
       return {...state,...action.payload};
     },
   },

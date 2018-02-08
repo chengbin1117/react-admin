@@ -96,7 +96,7 @@ function Record({location,dispatch,finance,router,}) {
 					    			<tr><td>当前状态</td><td>{reacord.status==null?"——":reacord.status}</td></tr>
 				    			</tbody>
 				    			}
-				    			{reacord.businessTypeId == 70 &&
+				    			{reacord.businessTypeId == 1000 &&
 				    			<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
@@ -121,7 +121,7 @@ function Record({location,dispatch,finance,router,}) {
 			const search =GetRequest(location.search);
 			console.log(search)
 			//if()
-			dispatch(routerRedux.push('/finance/record?page='+page+"&flowId="+search.flowId+"&email="+search.email
+			dispatch(routerRedux.push('/finance/recordTxb?page='+page+"&flowId="+search.flowId+"&email="+search.email
 				+"&mobile="+search.mobile+"&businessTypeId="+search.businessTypeId+"&minAmount="+search.minAmount+"&maxAmount="+search.maxAmount
 				+"&startDate="+search.startDate+"&endDate="+search.endDate
 				))
@@ -131,13 +131,13 @@ function Record({location,dispatch,finance,router,}) {
 			console.log(values)
 			if(values.time ==undefined||values.time.length ==0){
 				dispatch(routerRedux.push(
-					'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
+					'/finance/recordTxb?page=1'+"&flowId="+values.flowId+"&email="+values.email+
 					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
 					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
 					))
 			}else{
 				dispatch(routerRedux.push(
-					'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
+					'/finance/recordTxb?page=1'+"&flowId="+values.flowId+"&email="+values.email+
 					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
 					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
 					+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
@@ -146,54 +146,6 @@ function Record({location,dispatch,finance,router,}) {
 		}
 	}
 
-
-	function callback(key){
-		console.log('key',key)
-/*		dispatch({
-			type:"finance/selectActiveKey",
-			payload:{
-				ActiveKey:key
-			}
-		})*/
-		const search =GetRequest(location.search);
-		console.log('search',search)
-		if(key == 1){
-            dispatch({
-                  type: 'finance/getAccount',
-                  payload: {
-                    currentPage:search.page,
-                    userId:search.userId!="undefined"?search.userId:null,
-                    email:search.email!="undefined"?search.email:null,
-                    mobile:search.mobile!="undefined"?search.mobile:null,
-                    status:search.status!="undefined"?parseInt(search.status):null,
-                    startDate:search.startDate!="undefined"?search.startDate:null,
-                    endDate:search.endDate!="undefined"?search.endDate:null,
-                    pageSize:25,
-
-                  }
-            });
-		}else{
-/*	        dispatch({
-                  type: 'finance/getAccountTxb',
-                  payload: {
-                    currentPage:search.page,
-                    userId:search.userId!="undefined"?search.userId:null,
-                    email:search.email!="undefined"?search.email:null,
-                    mobile:search.mobile!="undefined"?search.mobile:null,
-                    status:search.status!="undefined"?parseInt(search.status):null,
-                    startDate:search.startDate!="undefined"?search.startDate:null,
-                    endDate:search.endDate!="undefined"?search.endDate:null,
-                    pageSize:25,
-
-                  }
-            });	*/	
-				dispatch(routerRedux.push(
-					'/finance/record1?page=1'+"&flowId="+search.flowId+"&email="+search.email+
-					"&mobile="+search.mobile+"&businessTypeId="+search.businessTypeId+
-					"&minAmount="+search.minAmount+"&maxAmount="+search.maxAmount
-					))
-		}
-	}
 	class TableList extends React.Component {
 			  state = {
 			    defaultActiveKey: ActiveKey, 
@@ -215,11 +167,11 @@ function Record({location,dispatch,finance,router,}) {
     }
 	return (
 			<div>
-				<div className = {styles.changCoinType}>
-					<Link  className = {styles.activeColor} to = '/finance/record'>钛值</Link>
-					<Link   to = '/finance/recordTxb'>钛小白</Link>
+				<div  className = {styles.changCoinType}>
+					<Link  to = '/finance/record'>钛值</Link>
+					<Link className = {styles.activeColor} to = '/finance/recordTxb'>钛小白</Link>
 				</div>
-				<Transaction {...TransactionProps}/>
+				<TransactionTi {...TransactionProps}/>
 			</div>
 
 	);

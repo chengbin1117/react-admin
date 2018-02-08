@@ -68,6 +68,7 @@ import Finance from './routes/Finance';
 import FinanceRecharge from './routes/Finance_recharge';
 import Withdrawals from './routes/Withdrawals.js';
 import Record from './routes/Record';
+import RecordTxb from './routes/RecordTxb';
 import Bond from './routes/Bond';
 function requireAuth(nextState, replace, callback) {
   let token = localStorage.getItem('Kgtoken');
@@ -129,6 +130,7 @@ function RouterConfig({ history }) {
           <Route path="/finance/recharge" strict component={FinanceRecharge}/>
           <Route path="/finance/withdrawals"   strict component={Withdrawals} />
           <Route path="/finance/record" strict component={Record} />
+          <Route path="/finance/recordTxb" strict component={RecordTxb} />
           <Route path="/finance/bond" strict component={Bond} />
       </LayoutContainer>
       </Switch>
@@ -210,3 +212,7 @@ export default RouterConfig;
     </Router>
   );
 };*/
+
+
+
+

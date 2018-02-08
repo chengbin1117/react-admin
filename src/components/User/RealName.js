@@ -65,7 +65,6 @@ const RealName = ({
 		  render: (text, record) => (
 		    <div>
 		    	<p onClick={()=>showIdCard(record)}><img src={uploadUrl+record.idcardFront} style={{width:100,height:100}}/></p>
-         	
 		    </div>
 		    )
 		}, {

@@ -13,23 +13,23 @@ import {
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
 import Recharge from '../components/Finance/Recharge';
+import RechargeTi from '../components/Finance/RechargeTi';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const TabPane = Tabs.TabPane;
 //console.log(merId)
 function FinanceReacharge({location,dispatch,finance,router,}) {
-	const {RechargeList,loading,totalNumber,currentPage}=finance;
+	const {RechargeList,loading,totalNumber,currentPage,ActiveKey}=finance;
 	//console.log(loading)
 	let merId =localStorage.getItem("userId");
 	let token =localStorage.getItem("Kgtoken");
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	console.log(merId)
 	/*if(merId == 'undefined'){
 		message.error('请重新登陆')
 		console.log(1111111111)
@@ -42,7 +42,6 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 		loading,
 		router,
 		handlsearch(values){
-			console.log(values)
 			if(values.time ==undefined){
 				/*dispatch({
 					type:'finance/getAccountRecharge',
@@ -74,12 +73,10 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 			}
 		},
 		changepage(page){
-				//console.log(page)
 				const search =GetRequest(location.search);
 				dispatch(routerRedux.push('/finance/recharge?page='+page+"&userId="+search.userId
 				+"&mobile="+search.mobile+"&email="+search.email+"&status="+search.status+"&startDate="+search.startDate+"&endDate="+search.endDate))
-				//dispatch(routerRedux.push('/finance/recharge?page='+page))
-				//router.push('/finance/recharge?page='+page)
+
 		},
 		Examine(reacord){
 			Modal.info({
@@ -105,6 +102,35 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 		}
 	}
 	
+	function callback(key){
+		console.log(key)
+		dispatch({
+			type:"finance/selectActiveKey",
+			payload:{
+				ActiveKey:key
+			}
+		})
+	}
+	class TableList extends React.Component {
+			  state = {
+			    defaultActiveKey: ActiveKey, 
+			    selectedRowKeys:[],
+			  };
+			  render() {
+			   const {defaultActiveKey}=this.state
+			   console.log('defaultActiveKey',defaultActiveKey)
+			    return (
+			      <Tabs defaultActiveKey={defaultActiveKey} onChange={callback}>
+				    <TabPane tab="钛值TV" key="1">
+				    <Recharge {...RechargeProps}/>
+				    </TabPane>
+				    <TabPane tab="钛小白" key="2">
+				    <RechargeTi />
+				    </TabPane>
+				</Tabs>
+			    );
+			  }
+    }
 	return (
 			<div>
 				<Recharge {...RechargeProps}/>
