@@ -45,16 +45,16 @@ const RealName = ({
 		  dataIndex: 'userId',
 		  key: 'userId',
 		  render: text => <span>{text}</span>,
-		}, {
+		}, /*{
 		  title: '昵称',
-		  dataIndex: 'nickname',
-		  key: 'nickname',
+		  dataIndex: 'auditUserName',
+		  key: 'auditUserName',
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '邮箱',
 		  dataIndex: 'emailemail',
 		  key: 'email',
-		}, {
+		},*/ {
 		  title: '手机号',
 		  dataIndex: 'mobile',
 		  key: 'mobile',
@@ -78,7 +78,7 @@ const RealName = ({
          		<p>{record.idcardNo}</p>
 		    </div>
 		  ),
-		}, /*{
+		}, {
 		  title: '所属地区',
 		  dataIndex: 'userArea',
 		  key: 'userArea',
@@ -88,10 +88,11 @@ const RealName = ({
 		  key: 'userAge',
 		  render: (text, record) => (
 		    <div>
-		    	<p>{text}岁</p>
+		    	<p>{text}</p>
 		    </div>
 		  ),
-		},*/ {
+
+		},{
 		  title: '提交时间',
 		  dataIndex: 'createDate',
 		  key: 'createDate',
@@ -101,8 +102,8 @@ const RealName = ({
 		  key: 'statusDisplay',
 		}, {
 		  title: '审核人',
-		  dataIndex: 'auditUser',
-		  key: 'auditUser',
+		  dataIndex: 'auditUserName',
+		  key: 'auditUserName',
 		}, {
 		  title: '审核时间',
 		  dataIndex: 'auditDate',
