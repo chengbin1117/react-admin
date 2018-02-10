@@ -419,9 +419,9 @@ function StatusonChange(e) {
       console.log(lg.length)
       if(lg.length==0){
         callback("请输入正文")
-      }else if(lg.length>5000){
+      }/*else if(lg.length>5000){
         callback("正文内容不能超过5000个字符")
-      }else{
+      }*/else{
         callback()
       }
    }
