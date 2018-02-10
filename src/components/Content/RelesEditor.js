@@ -117,8 +117,8 @@ function RelesEditor({
             message.error('文章内容不能超过30000字');
             return true
           }
-          console.log(lg.length)
-          console.log("234",UserById.kgUserId)
+         // console.log(lg.length)
+         // console.log("234",UserById.kgUserId)
           var tagsName ="";
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -127,35 +127,35 @@ function RelesEditor({
           }else if(data.tag4!=undefined&&data.tag5!=undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
           }
-      //    dispatch({
-      //         type:'content/publishArticle',
-      //         payload:{
-      //           articleId:saveId,
-      //           articleTitle:data.articleTitle,
-      //           articleText:data.text.txt.html(),
-      //           tagnames:tagsName,
-      //           description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
-      //           image:imgUrl,
-      //           type:parseInt(data.type),
-      //           columnId:parseInt(data.column[0]),
-      //           secondColumn:parseInt(data.column[1]),
-      //           displayStatus:parseInt(data.radioT),
-      //           displayOrder:parseInt(data.sort),
-      //           articleSource:data.articleSource,
-      //           articleLink:data.articleLink,
-      //           commentSet:data.commentSet == "true"?true:false,
-      //           publishSet:data.radioG == "true"?true:false,
-      //           createUser:UserById.kgUserId,
-      //           sysUser:merId,
-      //           bonusStatus:parseInt(data.bonusStatus),
-      //           textnum:data.text.txt.text().split('&nbsp;').join('').length,
-      //           publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
-      //           publishStatus:1,
-      //           browseNum:data.browseNum,
-      //           thumbupNum:data.thumbupNum,
-      //           collectNum:data.collectNum,
-      //         }
-      //     })
+         dispatch({
+              type:'content/publishArticle',
+              payload:{
+                articleId:saveId,
+                articleTitle:data.articleTitle,
+                articleText:data.text.txt.html(),
+                tagnames:tagsName,
+                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
+                image:imgUrl,
+                type:parseInt(data.type),
+                columnId:parseInt(data.column[0]),
+                secondColumn:parseInt(data.column[1]),
+                displayStatus:parseInt(data.radioT),
+                displayOrder:parseInt(data.sort),
+                articleSource:data.articleSource,
+                articleLink:data.articleLink,
+                commentSet:data.commentSet == "true"?true:false,
+                publishSet:data.radioG == "true"?true:false,
+                createUser:UserById.kgUserId,
+                sysUser:merId,
+                bonusStatus:parseInt(data.bonusStatus),
+                textnum:data.text.txt.text().split('&nbsp;').join('').length,
+                publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
+                publishStatus:1,
+                browseNum:data.browseNum,
+                thumbupNum:data.thumbupNum,
+                collectNum:data.collectNum,
+              }
+          })
         }
      })
   }
@@ -262,15 +262,15 @@ function RelesEditor({
         var value  = editor.txt.text();*/
         /*localStorage.setItem("text", text);
         localStorage.setItem("html", html);*/
-        var arr = [];
-        arr.push(editor.txt.html(),editor.txt.text())
-        //console.log(editor.txt.text())
-        var lg = editor.txt.text();
-        let CX = lg.split('&nbsp;')
-        lg = CX.join('');
-        var l =lg.length
-        x = n-l
-        return arr
+        // var arr = [];
+        // arr.push(editor.txt.html(),editor.txt.text())
+        // //console.log(editor.txt.text())
+        // var lg = editor.txt.text();
+        // let CX = lg.split('&nbsp;')
+        // lg = CX.join('');
+        // var l =lg.length
+        // x = n-l
+        return editor
     }
   function handleChange(imgUrl){
     console.log(imgUrl)
@@ -359,21 +359,29 @@ function RelesEditor({
   function onChange(rule, value, callback) {
     //console.log(value)
     
-    if(value ==undefined){
+    if(value == undefined){
       callback()
     }else{
-       var arr = [];
-        arr.push(value.txt.html(),value.txt.text())
-        let CX = arr[1].split('&nbsp;')
+        var arr = [];
+        //arr.push(value.txt.html(),value.txt.text())
+        //let CX = arr[1].split('&nbsp;')
         
-        var lg = CX.join('');
-        if(lg.length==0){
+        //var lg = CX.join('');
+        var html = value.txt.html();
+        html.replace(/<style(([\s\S])*?)<\/style>/g, '')
+        console.log(html)
+        if(html==""||html=='<p class="MsoNormal"><br></p>'){
           callback('请输入正文')
-        }else if (lg.length>5000){
-          callback('请输入1-5000个字符')
         }else{
           callback()
         }
+        // if(lg.length==0){
+         
+        // }else if (lg.length>5000){
+        //   callback('请输入1-5000个字符')
+        // }else{
+          
+        // }
     }
    
     
@@ -670,6 +678,7 @@ function RelesEditor({
                   {getFieldDecorator('text', {
                       rules: [
                       { required: true, message: '请输入正文!' },
+                      {type:"object",validator:onChange}
                       ],
                       trigger:'edtiorContent'
                     })(
