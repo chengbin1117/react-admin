@@ -897,17 +897,19 @@ function StatusonChange(e) {
               {ArticleList.sysUser ==null?(getBonusList!=undefined&&getBonusList.length!=0)?<FormItem label="阅读奖励" {...formItemLayout}>
                   {getBonusList.map((item,index)=>{
 
-                      AllTotal += parseInt(item.total)
+                      AllTotal += parseFloat(item.total)
                     return(
                         <Row key={index}>
                         <Col span="5">
                           {item.name}
                         </Col>
                          <Col span="5">
-                          奖励钛值{item.value}个/人
+                            {item.kind==2&&<span>总奖励钛值{(item.value).toFixed(3)}</span>}
+                            {item.kind==1&&<span>奖励钛值{item.value}个/人</span>}
+                          
                         </Col>
-                        <Col span="5">
-                          最大奖励{item.max}人,合计发放:{item.total}人
+                        <Col span="9">
+                          最大奖励{item.max}人,合计发放:{(item.total).toFixed(3)}钛值
                         </Col>
                         <Col span="5">
                           {item.status==0&&<Badge status="Default" text="未生效"/>}
@@ -921,7 +923,7 @@ function StatusonChange(e) {
                   })}
                   <Row className={styles.alltotal}>
                       <Col>
-                          总计发放：{AllTotal}个
+                          总计发放：{AllTotal&&AllTotal.toFixed(3)}个
                       </Col>
                      </Row>   
               </FormItem>:<FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem>:null}
