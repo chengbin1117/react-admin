@@ -164,7 +164,8 @@ const Recharge = ({
 			    };
 			    return (
 			      <div>
-			        <Table bordered columns={columns} dataSource={data} pagination={paginationProps} loading={loading} rowKey={record => record.flowId} />   
+			        <Table bordered columns={columns} dataSource={data} pagination={false} loading={loading} rowKey={record => record.flowId} /> 
+			          <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>  
 			      </div>
 			    );
 			  }

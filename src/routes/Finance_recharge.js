@@ -30,13 +30,11 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	console.log(merId)
 	/*if(merId == 'undefined'){
 		message.error('请重新登陆')
 		console.log(1111111111)
 		router.push('/')
 	}*/
-	console.log(ActiveKey)
 	const RechargeProps ={
 		data:RechargeList,
 		total:totalNumber,
@@ -44,7 +42,6 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 		loading,
 		router,
 		handlsearch(values){
-			console.log(values)
 			if(values.time ==undefined){
 				/*dispatch({
 					type:'finance/getAccountRecharge',
@@ -76,12 +73,10 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 			}
 		},
 		changepage(page){
-				//console.log(page)
 				const search =GetRequest(location.search);
 				dispatch(routerRedux.push('/finance/recharge?page='+page+"&userId="+search.userId
 				+"&mobile="+search.mobile+"&email="+search.email+"&status="+search.status+"&startDate="+search.startDate+"&endDate="+search.endDate))
-				//dispatch(routerRedux.push('/finance/recharge?page='+page))
-				//router.push('/finance/recharge?page='+page)
+
 		},
 		Examine(reacord){
 			Modal.info({
@@ -123,6 +118,7 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 			  };
 			  render() {
 			   const {defaultActiveKey}=this.state
+			   console.log('defaultActiveKey',defaultActiveKey)
 			    return (
 			      <Tabs defaultActiveKey={defaultActiveKey} onChange={callback}>
 				    <TabPane tab="钛值TV" key="1">
@@ -137,7 +133,7 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
     }
 	return (
 			<div>
-				<TableList />
+				<Recharge {...RechargeProps}/>
 			</div>
 
 	);

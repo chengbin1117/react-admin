@@ -53,7 +53,7 @@ function UserRealName({location,dispatch,user,router,}) {
 			    			</Row>
 			    			<Row>
 			    				<Col span={12} style={{textAlign:'center',width:'50%'}}>
-			    			    <img src= {uploadUrl+record.idcardBack} style={{width:300}}/>
+			    			    <img src= {uploadUrl+record.idcardPic} style={{width:300}}/>
 			    			    <p  style={{fontSize:18+'px',color:"#000",marginTop:10+'px'}}>手持正面</p>
 			    			    </Col>
 			    			</Row>

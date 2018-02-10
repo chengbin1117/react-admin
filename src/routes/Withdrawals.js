@@ -179,7 +179,8 @@ function Withdrawals({location,dispatch,finance,router,}) {
     }
 	return (
 			<div>
-				<TableList/>
+				    <Manage {...ManageProps}/>
+				    <ExamineModal {...ExamineModalProps}/>
 			</div>
 
 	);
