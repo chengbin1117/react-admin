@@ -108,6 +108,16 @@ function RelesEditor({
             message.error('请先关联前台用户');
             return true
           }
+          var dd=(data.text.txt.text()).replace(/<\/?.+?>/g,"");
+          var dds=dd.replace(/ /g,"");//dds为得到后的内容
+          //console.log(dds.lengthgvfdg)
+          let CX = dds.split('&nbsp;')
+          var lg = CX.join('');
+          if(lg.length>30000){
+            message.error('文章内容不能超过30000字');
+            return true
+          }
+          console.log(lg.length)
           console.log("234",UserById.kgUserId)
           var tagsName ="";
           if(data.tag4==undefined&&data.tag5==undefined){
@@ -117,37 +127,37 @@ function RelesEditor({
           }else if(data.tag4!=undefined&&data.tag5!=undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
           }
-         dispatch({
-              type:'content/publishArticle',
-              payload:{
-                articleId:saveId,
-                articleTitle:data.articleTitle,
-                articleText:data.text.txt.html(),
-                tagnames:tagsName,
-                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
-                image:imgUrl,
-                type:parseInt(data.type),
-                columnId:parseInt(data.column[0]),
-                secondColumn:parseInt(data.column[1]),
-                displayStatus:parseInt(data.radioT),
-                displayOrder:parseInt(data.sort),
-                articleSource:data.articleSource,
-                articleLink:data.articleLink,
-                commentSet:data.commentSet == "true"?true:false,
-                publishSet:data.radioG == "true"?true:false,
-                createUser:UserById.kgUserId,
-                sysUser:merId,
-                bonusStatus:parseInt(data.bonusStatus),
-                textnum:data.text.txt.text().split('&nbsp;').join('').length,
-                publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
-                publishStatus:1,
-                browseNum:data.browseNum,
-                thumbupNum:data.thumbupNum,
-                collectNum:data.collectNum,
-              }
-          })
+      //    dispatch({
+      //         type:'content/publishArticle',
+      //         payload:{
+      //           articleId:saveId,
+      //           articleTitle:data.articleTitle,
+      //           articleText:data.text.txt.html(),
+      //           tagnames:tagsName,
+      //           description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
+      //           image:imgUrl,
+      //           type:parseInt(data.type),
+      //           columnId:parseInt(data.column[0]),
+      //           secondColumn:parseInt(data.column[1]),
+      //           displayStatus:parseInt(data.radioT),
+      //           displayOrder:parseInt(data.sort),
+      //           articleSource:data.articleSource,
+      //           articleLink:data.articleLink,
+      //           commentSet:data.commentSet == "true"?true:false,
+      //           publishSet:data.radioG == "true"?true:false,
+      //           createUser:UserById.kgUserId,
+      //           sysUser:merId,
+      //           bonusStatus:parseInt(data.bonusStatus),
+      //           textnum:data.text.txt.text().split('&nbsp;').join('').length,
+      //           publishTime:data.time!=undefined?formatDate(new Date(data.time)):null,
+      //           publishStatus:1,
+      //           browseNum:data.browseNum,
+      //           thumbupNum:data.thumbupNum,
+      //           collectNum:data.collectNum,
+      //         }
+      //     })
         }
-      })
+     })
   }
   function publishStatus (){
           validateFields(['articleTitle'],(errors) => {
@@ -660,14 +670,12 @@ function RelesEditor({
                   {getFieldDecorator('text', {
                       rules: [
                       { required: true, message: '请输入正文!' },
-                      { type:"object",min:1,max:5000,message:'请输入1-5000个字符'},
-                      { validator:onChange}
                       ],
                       trigger:'edtiorContent'
                     })(
                          <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left'}} checkout={checkout}/>
                     )}
-                  <span>限制字数{x}/5000</span>
+                
               </FormItem>
               <Row  key='2'>
               <Col span={4} >

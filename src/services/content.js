@@ -65,11 +65,17 @@ export async function auditArticle(params) {
 export async function publishArticle(params) {
 
 	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/article/publishArticle?data='+encodeURIComponent(data)+"&sign="+sign;
-
+	var sign = SignUrl(data)
+	let myHeaders = new Headers();
+	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+	let url = '/admin/article/publishArticle';
+	let formData = new FormData();
+   	formData.append('data', data);
+   	formData.append('sign', sign);
 	return request(url,{
-		method:"post"
+		method:"post",
+		body:formData,
+		headers:myHeaders,
 	}
 	);
 }

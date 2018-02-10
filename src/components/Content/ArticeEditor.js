@@ -89,7 +89,14 @@ function ArticleEditor({
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
           let CX = dds.split('&nbsp;')
           var lg = CX.join('');
-         
+          if(lg.length>30000){
+            message.error('文章内容不能超过30000字');
+            return true
+          }
+          if(imgUrl == ""||data.image==""){
+            message.error('请上传封面图')
+            return true
+          }
           var tagsName =""
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -247,7 +254,8 @@ function ArticleEditor({
           let CX = dds.split('&nbsp;')
         
           var lg = CX.join('');
-          var tagsName =""
+         
+          var tagsName ="";
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
           }else if(data.tag4!=undefined&&data.tag5==undefined){
@@ -537,7 +545,6 @@ function StatusonChange(e) {
                       initialValue:ArticleList.articleText,
                       rules: [
                       { required: true, message: '请输入正文!' },
-                      {validator:handlevaild}
                       ],
                       trigger:'edtiorContentText'
                     })(
