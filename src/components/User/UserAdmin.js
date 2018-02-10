@@ -56,7 +56,7 @@ const UserAdmin = ({
 		  title: '用户ID',
 		  dataIndex: 'userId',
 		  key: 'userId',
-		  
+		  fixed: 'left',
 		  width:150,
 		  render: text => <span>{text}</span>,
 		}, {
@@ -294,7 +294,7 @@ const UserAdmin = ({
 			    return (
 			      <div>
 			        <Table bordered columns={columns} dataSource={userlist} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} 
-			        scroll={{ x:2000 }} locale={{emptyText:"暂无数据"}}
+			        scroll={{ x:1900 }} 
 			        />
 	      	 <div className="table-operations" style={{marginTop:20}}>
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)}>批量审核</Button>

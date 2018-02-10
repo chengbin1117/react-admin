@@ -155,9 +155,7 @@ function AddinfoEditor({dispatch,setting,router}) {
 	        	{getFieldDecorator('text', {
 	        		  initialValue: data.infoDetail,
                       rules: [
-                      { required: true, message: '请输入正文!' },
-                      
-                      { validator:this.onChange}],
+                      { required: true, message: '请输入正文!' }],
                       trigger:'edtiorContentText'
                     })(
                       <Editor  checkout={this.checkout} edtiorContent={this.edtiorContent} edtiorContentText={this.edtiorContentText}/>
