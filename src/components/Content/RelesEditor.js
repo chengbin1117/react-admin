@@ -108,7 +108,17 @@ function RelesEditor({
             message.error('请先关联前台用户');
             return true
           }
-          console.log("234",UserById.kgUserId)
+          var dd=(data.text.txt.text()).replace(/<\/?.+?>/g,"");
+          var dds=dd.replace(/ /g,"");//dds为得到后的内容
+          //console.log(dds.lengthgvfdg)
+          let CX = dds.split('&nbsp;')
+          var lg = CX.join('');
+          if(lg.length>30000){
+            message.error('文章内容不能超过30000字');
+            return true
+          }
+         // console.log(lg.length)
+         // console.log("234",UserById.kgUserId)
           var tagsName ="";
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -147,7 +157,7 @@ function RelesEditor({
               }
           })
         }
-      })
+     })
   }
   function publishStatus (){
           validateFields(['articleTitle'],(errors) => {
@@ -252,15 +262,15 @@ function RelesEditor({
         var value  = editor.txt.text();*/
         /*localStorage.setItem("text", text);
         localStorage.setItem("html", html);*/
-        var arr = [];
-        arr.push(editor.txt.html(),editor.txt.text())
-        //console.log(editor.txt.text())
-        var lg = editor.txt.text();
-        let CX = lg.split('&nbsp;')
-        lg = CX.join('');
-        var l =lg.length
-        x = n-l
-        return arr
+        // var arr = [];
+        // arr.push(editor.txt.html(),editor.txt.text())
+        // //console.log(editor.txt.text())
+        // var lg = editor.txt.text();
+        // let CX = lg.split('&nbsp;')
+        // lg = CX.join('');
+        // var l =lg.length
+        // x = n-l
+        return editor
     }
   function handleChange(imgUrl){
     console.log(imgUrl)
@@ -349,21 +359,29 @@ function RelesEditor({
   function onChange(rule, value, callback) {
     //console.log(value)
     
-    if(value ==undefined){
+    if(value == undefined){
       callback()
     }else{
-       var arr = [];
-        arr.push(value.txt.html(),value.txt.text())
-        let CX = arr[1].split('&nbsp;')
+        var arr = [];
+        //arr.push(value.txt.html(),value.txt.text())
+        //let CX = arr[1].split('&nbsp;')
         
-        var lg = CX.join('');
-        if(lg.length==0){
+        //var lg = CX.join('');
+        var html = value.txt.html();
+        html.replace(/<style(([\s\S])*?)<\/style>/g, '')
+        console.log(html)
+        if(html==""||html=='<p class="MsoNormal"><br></p>'){
           callback('请输入正文')
-        }else if (lg.length>5000){
-          callback('请输入1-5000个字符')
         }else{
           callback()
         }
+        // if(lg.length==0){
+         
+        // }else if (lg.length>5000){
+        //   callback('请输入1-5000个字符')
+        // }else{
+          
+        // }
     }
    
     
@@ -660,14 +678,13 @@ function RelesEditor({
                   {getFieldDecorator('text', {
                       rules: [
                       { required: true, message: '请输入正文!' },
-                      { type:"object",min:1,max:5000,message:'请输入1-5000个字符'},
-                      { validator:onChange}
+                      {type:"object",validator:onChange}
                       ],
                       trigger:'edtiorContent'
                     })(
                          <Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} style={{textAlign:'left'}} checkout={checkout}/>
                     )}
-                  <span>限制字数{x}/5000</span>
+                
               </FormItem>
               <Row  key='2'>
               <Col span={4} >

@@ -34,9 +34,9 @@ function UrlSearch() {
 const User = (props) => {
 
 	return (
-		<LayoutContainer>
+		<div>
 			{props.children}
-		</LayoutContainer>
+		</div>
 
 	);
 }
