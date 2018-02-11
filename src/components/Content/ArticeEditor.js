@@ -93,10 +93,10 @@ function ArticleEditor({
             message.error('文章内容不能超过30000字');
             return true
           }
-          if(imgUrl == ""||data.image==""){
-            message.error('请上传封面图')
-            return true
-          }
+          // if(imgUrl == ""||data.image==""){
+          //   message.error('请上传封面图')
+          //   return true
+          // }
           var tagsName =""
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
@@ -263,9 +263,10 @@ function ArticleEditor({
           }else if(data.tag4!=undefined&&data.tag5!=undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
           }
-          if(imgUrl == ""&&data.image==""){
+          console.log(imgUrl,data.image)
+          if(imgUrl==""){
             message.error('请上传封面图')
-            return true
+            return
           }
           /*if(data.publishStatus==undefined){
             data.publishStatus=ArticleList.publishStatus
