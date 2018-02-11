@@ -56,24 +56,29 @@ console.log("imgUrl",imgUrl)
   const BgModalProps ={
   	visible:BgVisible,
   	onCancel(){
+      
   		dispatch({
   		    type:'content/hideBgModal'
   	    })
   
   	},
   	showfpModal(activeImg){
-  		dispatch({
-  		    type:'content/hideBgModal',
-  		    payload:{
-  		    	activeImg:activeImg
-  		    }
-  	    })
-  	    dispatch({
-  		    type:'content/showfpModal',
-  		    payload:{
-  		    	
-  		    }
-  	    })
+  		if(activeImg==""){
+        message.warning("请选择图片")
+      }else{
+        dispatch({
+          type:'content/hideBgModal',
+          payload:{
+            activeImg:activeImg
+          }
+        })
+        dispatch({
+          type:'content/showfpModal',
+          payload:{
+            
+          }
+        })
+      }
   	}
   }
   const FtModalProps ={
