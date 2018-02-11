@@ -264,7 +264,7 @@ function ArticleEditor({
             tagsName =data.tag1+','+data.tag2+','+data.tag3+','+data.tag4+','+data.tag5
           }
           console.log(imgUrl,data.image)
-          if(imgUrl==""){
+          if(imgUrl==""&&data.image==""){
             message.error('请上传封面图')
             return
           }
