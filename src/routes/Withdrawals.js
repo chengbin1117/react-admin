@@ -79,7 +79,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 				    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>提币地址</td><td>{reacord.toAddress}</td></tr>
 				    			<tr><td>提币数量</td><td>{reacord.withdrawAmount}</td><td>手续费</td><td>{reacord.poundageAmount}</td></tr>
 				    			<tr><td>实际到账数量</td><td>{reacord.accountAmount}</td><td>当前状态</td><td>{reacord.statusDisplay}</td></tr>
-				    			<tr><td>到账时间</td><td>{reacord.accountTime==null?"——":reacord.accountTime}</td></tr>
+				    			<tr><td>到账时间</td><td>{reacord.accountTime==null?"——":reacord.accountTime}</td><td>备注</td><td>{reacord.remark==null?"——":reacord.remark}</td></tr>
 			    			</tbody>
 			    	      </table>
 			    	),
