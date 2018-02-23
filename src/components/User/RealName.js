@@ -12,7 +12,6 @@ import {
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
 import style_search from '../search.css';
 import style_pagination from '../pagination.css';
-import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
 import styles from './LoginForm.css';
 import {uploadUrl,options} from '../../services/common'
@@ -101,8 +100,8 @@ const RealName = ({
 		  key: 'statusDisplay',
 		}, {
 		  title: '审核人',
-		  dataIndex: 'auditUserName',
-		  key: 'auditUserName',
+		  dataIndex: 'auditUser',
+		  key: 'auditUser',
 		}, {
 		  title: '审核时间',
 		  dataIndex: 'auditDate',
@@ -121,54 +120,7 @@ const RealName = ({
 		console.log()
 	}
 	
-	function getFields(getFieldDecorator,formItemLayout){
-		const children = [];
-	    children.push(
-	    	<div key="0">
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='用户ID'>
-		            {getFieldDecorator('userId')(
-		              <Input placeholder="请输入用户Id" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email"placeholder="请输入邮箱" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile')(
-		              <Input type="phone" placeholder="请输入手机号" />
-		            )}
-		          </FormItem>
-		        </Col>
-		         <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='认证时间'>
-		            {getFieldDecorator('time')(
-		              <RangePicker locale={options}/>
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='审核状态'>
-		            {getFieldDecorator('status')(
-		              <Select   placeholder="请选择" allowClear={true}>
-					      <Option value="2">审核中</Option>
-					      <Option value="1">已通过</Option>
-					      <Option value="0" >不通过</Option>
-					      
-					    </Select>
-		            )}
-		          </FormItem>
-		        </Col>
-	        </div>
-	      );
-	    return children;
-	}
+	
 	
 
 	class TableList extends React.Component {
@@ -200,11 +152,11 @@ const RealName = ({
 			    return (
 			      <div>
 			        <Table bordered columns={columns} dataSource={data} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} locale={{emptyText:"暂无数据"}}/>
-	      	      <div className="table-operations" style={{marginTop:20}}>
-		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)}>批量审核</Button>
-	
+	      	        <div className="table-operations" >
+		            <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)} style={{marginTop:20}}>批量审核</Button>
+				    <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 		           </div>
-	      	 <Pagination className = {style_pagination.pagination} showQuickJumper   current={1} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
+	      	
 			          
 			      </div>
 			    );
@@ -215,7 +167,6 @@ const RealName = ({
 
 	return (
 		<div className = {style_common.contentDiv}>
-	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 	      <div className={style_search.search_result}>
 	      	<TableList />
 	      </div>
