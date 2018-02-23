@@ -10,18 +10,20 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
 import Useradmin from '../components/User/UserAdmin';
 import ExamineModal from '../components/User/ExamineModal';
 import SetHotuser from '../components/User/SetHotuser';
 import LockModal from '../components/User/LockModal';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input, Button,DatePicker,Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({location,dispatch,user,router,}) {
 	const {ExmianVisible,userlist,userInfo,selectList,HotVisible,LockVisible,loading,totalNumber,currentPage}=user;
@@ -38,32 +40,7 @@ function UserAdmin({location,dispatch,user,router,}) {
 		currentPage,
 		handlsearch:function(values){
 				//console.log(values.time)
-                if(values.time !=undefined){
-                	/*dispatch({
-				       type: 'user/getUserList',
-				       payload:{
-				       	userId:values.Id,
-				       	userEmail:values.email,
-				       	userMobile:values.phone,
-				       	userRole:parseInt(values.role),
-				       	auditStatus:parseInt(values.auditStatus),
-				       	lockStatus:parseInt(values.lockStatus),
-				       	createDateStart:timeFormat(new Date(values.time[0])),
-				       	createDateEnd:timeFormat(new Date(values.time[1]))
-				       }
-		            });*/
-		         dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
-		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.role+
-		         	"&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus+
-		         	"&createDateStart="+timeFormat(new Date(values.time[0]))+
-		         	"&createDateEnd="+timeFormat(new Date(values.time[1]))
-		         	))	
-                }else{
-		            dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
-		         	"&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.role+
-		         	"&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus 	
-		         	))	
-                }
+                
                 
 				
 
@@ -322,8 +299,107 @@ function UserAdmin({location,dispatch,user,router,}) {
 
 		}
 	}
+
+	function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='用户ID'>
+		            {getFieldDecorator('Id',{
+		            	rules:[
+		            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
+		            	]
+		            })(
+
+		              <Input placeholder="请输入用户Id" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('phone',{
+		            	rules:[
+		            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能为数字"}
+		            	]
+		            })(
+		              <Input type="phone" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='用户角色'>
+		            {getFieldDecorator('role')(
+		              <Select placeholder="请选择" allowClear={true}>
+		              	    <Option value="1">普通用户</Option>
+		              	    <Option value="2">个人</Option>
+		              	    <Option value="3">媒体</Option>
+		              	    <Option value="4">企业</Option>
+		              	    <Option value="5">组织</Option>
+		              </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='注册时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker/>
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='审核状态'>
+		            {getFieldDecorator('auditStatus')(
+		              <Select placeholder="请选择" allowClear={true}>
+		              	    <Option value="0">审核中</Option>
+		              	    <Option value="1">通过</Option>
+		              	    <Option value="2">不通过</Option>
+		              </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='锁定状态'>
+		            {getFieldDecorator('lockStatus')(
+		               <Select placeholder="请选择" allowClear={true}>
+		              	    <Option value="1">未锁定</Option>
+		              	    <Option value="2">已锁定</Option>
+		              	   
+		              </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+
+	//搜索
+	function handlsearch(values){
+		if(values.time !=undefined){
+		 dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
+			 "&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.role+
+			 "&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus+
+			 "&createDateStart="+timeFormat(new Date(values.time[0]))+
+			 "&createDateEnd="+timeFormat(new Date(values.time[1]))
+			 ))	
+		}else{
+			dispatch(routerRedux.push('/user/user_admin?page=1'+"&userId="+values.Id+
+			 "&userEmail="+values.email+"&userMobile="+values.phone+"&userRole="+values.role+
+			 "&auditStatus="+values.auditStatus+"&lockStatus="+values.lockStatus 	
+			 ))	
+		}
+	}
 	return (
 			<div>
+				<WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 				<Useradmin {...UseradminProps}/>
 				<ExamineModal {...ExamineModalProps}/>
 				<SetHotuser {...SetHotuserModalProps}/>

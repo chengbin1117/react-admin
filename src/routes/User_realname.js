@@ -15,12 +15,14 @@ import RealName from '../components/User/RealName';
 import RealNameModal from '../components/User/RealNameModal';
 import RealsModal from '../components/User/RealsModal';
 import {timeFormat,uploadUrl,GetRequest} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
+import { Form, Row, Col, Input, Button, Icon,Table,DatePicker,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserRealName({location,dispatch,user,router,}) {
 	const {RealNameVisible,RealsVisible,UserCertList,loading,totalNumber,currentPage,selectList}=user;
@@ -35,7 +37,7 @@ function UserRealName({location,dispatch,user,router,}) {
 
 	const UserRealNameProps ={
 		data:UserCertList,
-	    currentPage,
+	    currentPage:currentPage,
 	    total:totalNumber,
 	    loading:loading,
 	    showIdCard(record){
@@ -102,38 +104,7 @@ function UserRealName({location,dispatch,user,router,}) {
 			}
 	    },
 	    handlsearch(values){
-	    	if(values.time ==undefined){
-				dispatch({
-					type:'user/getUserCert',
-					payload:{
-						userId:values.userId,
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status)
-					}
-				})
-				dispatch(routerRedux.push('/user/realName?page=1'+"&userId="+values.userId+
-		         	"&email="+values.email+"&mobile="+values.mobile+"&status="+values.status
-		         	))	
-			}else{
-				
-				
-				dispatch({
-					type:'user/getUserCert',
-					payload:{
-						userId:values.userId,
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status),
-						startDate:timeFormat(new Date(values.time[0])),
-						endDate:timeFormat(new Date(values.time[1]))
-					}
-				})
-				dispatch(routerRedux.push('/user/realName?page=1'+"&userId="+values.userId+
-		         	"&email="+values.email+"&mobile="+values.mobile+"&status="+values.status+
-		         	"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
-		         	))	
-			}
+	    	
 	    },
 	    changepage(page){
 	    	const search =GetRequest(location.search);
@@ -221,8 +192,71 @@ function UserRealName({location,dispatch,user,router,}) {
 			}
 		}
 	}
+	function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='用户ID'>
+		            {getFieldDecorator('userId')(
+		              <Input placeholder="请输入用户Id" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile')(
+		              <Input type="phone" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='认证时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='审核状态'>
+		            {getFieldDecorator('status')(
+		              <Select   placeholder="请选择" allowClear={true}>
+					      <Option value="2">审核中</Option>
+					      <Option value="1">已通过</Option>
+					      <Option value="0" >不通过</Option>
+					      
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+
+	//搜索
+	function handlsearch(values){
+		if(values.time ==undefined){
+			dispatch(routerRedux.push('/user/realName?page=1'+"&userId="+values.userId+
+				 "&email="+values.email+"&mobile="+values.mobile+"&status="+values.status
+				 ))	
+		}else{
+			dispatch(routerRedux.push('/user/realName?page=1'+"&userId="+values.userId+
+				 "&email="+values.email+"&mobile="+values.mobile+"&status="+values.status+
+				 "&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
+		    ))	
+		}
+	}
 	return (
 			<div>
+			    <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 				<RealName {...UserRealNameProps}/>
 				<RealNameModal {...RealNameModalProps} />
 				<RealsModal {...RealsModalProps}/>

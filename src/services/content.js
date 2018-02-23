@@ -349,7 +349,7 @@ export async function columnservice(params) {
 export async function sendEmail(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/feedback/sendEmail?data='+data+"&sign="+sign;
+	let url = '/admin/feedback/sendEmail?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"

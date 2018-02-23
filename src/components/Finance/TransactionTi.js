@@ -116,8 +116,8 @@ const Transaction = ({
 		          </FormItem>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
-		          <Col span={12} style={{paddingLeft:68+"px"}}>
-		          	<FormItem {...formItemLayout} label='钛值'>
+		          <Col span={12} style={{paddingLeft:50+"px"}}>
+		          	<FormItem {...formItemLayout} label='钛小白'>
 		            {getFieldDecorator('minAmount')(
 		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
 		              	

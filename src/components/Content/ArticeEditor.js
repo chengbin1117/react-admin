@@ -905,12 +905,12 @@ function StatusonChange(e) {
                           {item.name}
                         </Col>
                          <Col span="5">
-                            {item.kind==2&&<span>总奖励钛值{(item.value).toFixed(3)}</span>}
+                            {item.kind==2&&<span>总奖励钛值{(item.total).toFixed(3)}</span>}
                             {item.kind==1&&<span>奖励钛值{item.value}个/人</span>}
                           
                         </Col>
                         <Col span="9">
-                          最大奖励{item.max}人,合计发放:{(item.total).toFixed(3)}钛值
+                          最大奖励{item.max}人,{item.kind==1&&<span>合计发放:{(item.total).toFixed(3)}钛值</span>}
                         </Col>
                         <Col span="5">
                           {item.status==0&&<Badge status="Default" text="未生效"/>}
