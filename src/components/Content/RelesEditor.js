@@ -11,7 +11,9 @@ import Editor from '../../editor/index';
 import styles from './Content_Opinion_Show.css';
 import RelationModal from '../Setting/RelationUser';
 import {options,uploadUrl,formatDate} from "../../services/common"
-
+import imgx from '../../assets/images/lx4.png';
+import imgy from '../../assets/images/12.jpg';
+import imgz from '../../assets/images/22.jpg';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -21,16 +23,19 @@ const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 const formItemLayout = {
       labelCol: {
-        xs: { span: 1 },
-        sm: { span: 1 },
-        xl: { span: 2 },
-        xxl:{span:1}
+        xs: { span: 24 },
+        sm: { span: 7 },
       },
       wrapperCol: {
-        xs: { span: 16 },
-        sm: { span: 16 },
-        xl: { span: 22 },
-        xxl:{span:23}
+        xs: { span: 24 },
+        sm: { span: 12 },
+        md: { span: 12 },
+      },
+    };
+const submitFormLayout = {
+      wrapperCol: {
+        xs: { span: 24, offset: 0 },
+        sm: { span: 10, offset: 7 },
       },
     };
 const tailFormItemLayout = {
@@ -65,6 +70,7 @@ function RelesEditor({
   firstC,
   secondC,
   saveId,
+  uploadImg,
   form: {
     getFieldDecorator,
     validateFields,
@@ -76,21 +82,8 @@ function RelesEditor({
   let merId =localStorage.getItem("userId");
   //console.log(titleNum,autoSaveInterval,saveId,artSorce)
   const options = ColumnList;
-  //console.log("setting",location)
-  /*if(location.pathname!="/content/release_article"){
-    alert(1)
-    window.clearInterval(autoSaveInterval)
-    console.log(autoSaveInterval)
-  }*/
-  /*if(saveId==0){
-    
-    titleNum==0;
-    n ==5000;
-    x ==5000;
-    autoSaveInterval  ==null;
-
-  }*/
-  console.log(UserById.kgUserName)
+  const imgArr=[imgx,imgy,imgz];
+  //console.log(UserById.kgUserName)
   const {RelationVisible} =setting
   function handleSubmit (e){
     e.preventDefault();
@@ -134,7 +127,7 @@ function RelesEditor({
                 articleTitle:data.articleTitle,
                 articleText:data.text.txt.html(),
                 tagnames:tagsName,
-                description:(data.artic==undefined||data.artic=="")?data.text.txt.text().substring(0,100):data.artic,
+                description:(data.artic==undefined||data.artic=="")?lg.substring(0,100):data.artic,
                 image:imgUrl,
                 type:parseInt(data.type),
                 columnId:parseInt(data.column[0]),
@@ -257,23 +250,11 @@ function RelesEditor({
     return UserById.kgUserName
   }
   function edtiorContent (editor){
-        //console.log(editor.txt.html());
-        /*var html  = editor.txt.html()
-        var value  = editor.txt.text();*/
-        /*localStorage.setItem("text", text);
-        localStorage.setItem("html", html);*/
-        // var arr = [];
-        // arr.push(editor.txt.html(),editor.txt.text())
-        // //console.log(editor.txt.text())
-        // var lg = editor.txt.text();
-        // let CX = lg.split('&nbsp;')
-        // lg = CX.join('');
-        // var l =lg.length
-        // x = n-l
+       
         return editor
     }
   function handleChange(imgUrl){
-    console.log(imgUrl)
+    //console.log(imgUrl)
     return imgUrl
   }
 
@@ -285,7 +266,7 @@ function RelesEditor({
   function showUser(){
     
      const data = {...getFieldsValue(['createUser'])};
-     console.log(data)
+     //console.log(data)
     dispatch({
         type:"setting/showRelationModal"
       })
@@ -344,7 +325,7 @@ function RelesEditor({
   }
   function disabledDate(current) {
   // Can not select days before today and today
-  console.log(current)
+  //console.log(current)
   //console.log(moment())
   return current && current <= moment()
   }
@@ -369,7 +350,7 @@ function RelesEditor({
         //var lg = CX.join('');
         var html = value.txt.html();
         html.replace(/<style(([\s\S])*?)<\/style>/g, '')
-        console.log(html)
+        //console.log(html)
         if(html==""||html=='<p class="MsoNormal"><br></p>'){
           callback('请输入正文')
         }else{
@@ -383,22 +364,7 @@ function RelesEditor({
           
         // }
     }
-   
-    
-    /*let n = 0;
-        for(var i in this.tag){
-            if (this.tag[i].value == '') {
-              // callback(new Error('请输入密码'));
-              n +=1
-            }else if(this.tag[i].value.length > 5 || this.tag[i].value.length < 2){
-              callback(new Error('每个tag：2-5个汉字'));
-            }
-        }
-        if(n > 2){
-          callback(new Error('至少输入3个tag'));
-        }else{
-          callback()
-        }*/
+
 
   }
 
@@ -523,30 +489,7 @@ function RelesEditor({
        callback()
       }
   }
-  function onChangeTag(rule, value, callback){
-    const data = {...getFieldsValue(['tag2'])}
-    if(data.tag2==undefined||data.tag2==""){
-      callback("请至少输入三个标签")
-    }else{
-      callback()
-    }
-    //console.log(data)
-    //console.log(getFieldValue())
-    //console.log(this.form.getFieldValue('password'))
-    /*if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }*/
-    
-  }
-  /*function handleNumberChange(e){
-     const number = parseInt(e.target.value || 0, 10);
-     console.log(number)
-      if (isNaN(number)) {
-        return;
-      }
-  }*/
+
   function handleNumberChange(e){
     const { value } = e.target;
    
@@ -638,14 +581,7 @@ function RelesEditor({
     publish(list,autoSaveInterval)
   }
   function checkout(){
-       //clearInterval(time1)
-       /*window.clearInterval(autoSaveInterval);
-       console.log(autoSaveInterval)
-       autoSaveInterval = window.setInterval(function() {
        
-            aoSave();
-            }, 10000);*/
-
   }
   function titleValue(e){
     //console.log((e.target.value).length);
@@ -668,12 +604,13 @@ function RelesEditor({
                         }
                         ],
                     })(
-                      <Input  type="text" placeholder="输入标题" style={{width:'50%'}} onChange={titleValue} suffix={<span>{titleNum}/64</span>} onBlur={handleFocus}/>
+                      <Input  type="text" placeholder="输入标题" style={{width:'50%'}}  onBlur={handleFocus}/>
                     )}
-                    {(saveId!=undefined&&saveId!=0)?<span  className={styles.zidong}>自动保存中<Icon type="clock-circle-o"/></span>:null
-                    }
                     
+                    <span style={{marginLeft:20}} className={styles.pre}>1-64个字符</span>
               </FormItem>
+              {(saveId!=undefined&&saveId!=0)?<span  className={styles.zidong}>自动保存中<Icon type="clock-circle-o"/></span>:null
+                    }
               <FormItem >
                   {getFieldDecorator('text', {
                       rules: [
@@ -686,12 +623,10 @@ function RelesEditor({
                     )}
                 
               </FormItem>
-              <Row  key='2'>
-              <Col span={4} >
-                  <FormItem label="Tag标签 " labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 14 }}>
+              <Row  key='2' type="flex" justify="center">
+              <Col>
+                  <FormItem label="Tag标签 " {...formItemLayout}>
                       {getFieldDecorator('tag1', {
-                        
                         rules: [
                           {
                             required: true, 
@@ -705,12 +640,12 @@ function RelesEditor({
                           validator:tagValue1
                         }],
                       })(
-                        <Input style={{width:'90%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px',marginRight:'50px'}} placeholder="至少输入3个Tag"/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag2', {
                        
@@ -726,12 +661,12 @@ function RelesEditor({
                           validator:tagValue2
                         }],
                       })(
-                        <Input style={{width:'100%'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag3', {
                         
@@ -748,12 +683,12 @@ function RelesEditor({
                           validator:tagValue3
                         }],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag4', {
                         
@@ -764,13 +699,13 @@ function RelesEditor({
                               validator:tagValue4
                             }],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={6} style={{marginRight:'55px'}}>
-                  <FormItem  >
+              <Col style={{marginRight:'55px'}}>
+                  <FormItem >
                       {getFieldDecorator('tag5', {
                         
                         rules: [{ required: false, 
@@ -781,9 +716,9 @@ function RelesEditor({
                               validator:tagValue5
                             }],
                       })(
-                        <Input style={{width:'30%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
-                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个字符</span>
+                      
                   </FormItem>
               </Col>
               
@@ -799,8 +734,8 @@ function RelesEditor({
               </FormItem>
               <FormItem
                     {...formItemLayout}
-                    label="封面图"
-                    extra=""
+                    label={<span><span style={{color:'#f5222d'}}>*</span>封面图</span>}
+                    extra="找不到合适的图片？您可以用以下任一张图作为封面图"
                   >
                    {getFieldDecorator('image',{
                     rules: [{ required: false, message: '请选择图片!' },
@@ -813,6 +748,18 @@ function RelesEditor({
                     
                     </div>
                     )}
+              </FormItem>
+              <FormItem
+                  {...formItemLayout}
+                  label="&emsp;"
+                  colon={false}
+              >
+                  <div>
+                    {imgArr.map((item,index)=>
+                      <img  key={index} onClick = {()=>uploadImg(item)} src={item} className={styles.Imgx} />
+                      )}
+                     
+                  </div> 
               </FormItem>
               <FormItem
                       {...formItemLayout}
@@ -895,7 +842,7 @@ function RelesEditor({
                       label="排序"
                     >
                       {getFieldDecorator('sort',{
-                        initialValue:'',
+                        initialValue:'0',
                         rules: [
                           { required: false,message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
                         ],
@@ -1028,14 +975,12 @@ function RelesEditor({
                         </RadioGroup>
                       )}
               </FormItem>
-              <FormItem {...tailFormItemLayout}>
+              <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
                 <Button type="primary" onClick={handleSubmit}>发布</Button>
-                <Button type="primary" style={{marginLeft:30}} onClick={publishStatus}>存草稿</Button>
-                <Button type="primary" style={{marginLeft:30}} onClick={()=>previewPage()}>预览</Button>
-                <RelationModal {...RelationModalProps} />
+                <Button type="primary" style={{marginLeft:30}} onClick={publishStatus}  className={styles.draft}>存草稿</Button>
+                <Button type="primary" style={{marginLeft:30}} onClick={()=>previewPage()} className={styles.preview}>预览</Button>
+              <RelationModal {...RelationModalProps} />
               </FormItem>
-              
-              
       </Form>
     )
 }

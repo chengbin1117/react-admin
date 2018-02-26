@@ -18,7 +18,7 @@ import FtModal from '../components/Content/FtModal';
 import Editor from '../editor/index';
 import RelesEditor from '../components/Content/RelesEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
-import {dataURLtoBlob,ImgUrl} from '../services/common'
+import {dataURLtoBlob,ImgUrl,getBase64} from '../services/common'
 
 
 
@@ -64,6 +64,39 @@ function Release_article({location,dispatch,router,content,setting}) {
     editorText(h,t){
         text  = t;
         html  = h;
+    },
+    uploadImg(img){
+      //console.log(e.target.src)
+      //var img = e.target.src;
+      getBase64(img)
+            .then(function(base64){
+              //console.log(base64);//处理成功打印在控制台
+              var s = dataURLtoBlob(base64)
+              let formData = new FormData();
+                    formData.append('name', 'file');
+                    formData.append('file', s);
+                    let config = {
+                        headers: {
+                          'Content-Type': 'multipart/form-data'
+                        }
+                    }
+              axios.post(ImgUrl, formData, config).then(res=>{
+                       res =res.data; 
+                      
+                        if (res.errorCode == 10000) {
+                            console.log(res) 
+                           //imgUrl =res.data[0].filePath;
+                            dispatch({
+                              type:'content/hidefpModal',
+                              payload:{
+                                imgUrl:res.data[0].filePath
+                              }
+                            })    
+                        }
+                    })
+            },function(err){
+                  console.log(err);//打印异常信息
+            });      
     }
   }
   const BgModalProps ={

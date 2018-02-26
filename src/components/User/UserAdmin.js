@@ -57,69 +57,56 @@ const UserAdmin = ({
 		  dataIndex: 'userId',
 		  key: 'userId',
 		  fixed: 'left',
-		  width:150,
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '用户名',
 		  dataIndex: 'userName',
 		  key: 'userName',
-		  width:100,
 		  render: text => <span>{text}</span>,
 		}, {
 		  title: '邮箱',
 		  dataIndex: 'userEmail',
 		  key: 'userEmail',
-		  width:100,
 		}, {
 		  title: '手机号',
 		  dataIndex: 'userMobile',
 		  key: 'userMobile',
-		  width:100,
 		}, {
 		  title: '注册时间',
 		  dataIndex: 'createDate',
 		  key: 'createDate',
-		  width:150,
 		}, {
 		  title: '角色',
 		  dataIndex: 'userRoleDisplay',
 		  key: 'userRoleDisplay',
-		  width:80,
 		}, {
 		  title: '级别',
 		  dataIndex: 'userLevelDisplay',
 		  key: 'userLevelDisplay',
-		  width:60,
 		}, {
 		  title: '最后活动时间',
 		  dataIndex: 'lastActiveTime',
 		  key: 'lastActiveTime',
-		  width:150,
 		}, {
 		  title: '发文量',
 		  dataIndex: 'articleNum',
 		  key: 'articleNum',
-		  width:50,
 		}, {
 		  title: '评论量',
 		  dataIndex: 'commentNum',
 		  key: 'commentNum',
-		  width:50,
 		}, {
 		  title: '收藏量',
 		  dataIndex: 'collectNum',
 		  key: 'collectNum',
-		  width:50,
 		}, {
 		  title: '分享量',
 		  dataIndex: 'shareNum',
 		  key: 'shareNum',
-		  width:50,
 		}, {
 		  title: '审核状态',
 		  dataIndex: 'auditStatus',
 		  key: 'auditStatus',
-		  width:90,
 		  render: (text,record) => {
 		  	//console.log(text,record)
 		  	return(	
@@ -134,28 +121,23 @@ const UserAdmin = ({
 		  title: '审核人',
 		  dataIndex: 'auditor',
 		  key: 'auditor',
-		  width:80,
 		}, {
 		  title: '审核时间',
 		  dataIndex: 'auditDate',
 		  key: 'auditDate',
-		  width:150,
 		},{
 		  title: '锁定状态',
 		  dataIndex: 'lockStatusDisplay',
 		  key: 'lockStatusDisplay',
-		  width:80,
 		},{
 		  title: '是否推荐',
 		  dataIndex: 'hotUser',
 		  key: 'hotUser',
-		  width:60,
 		  render: text => <span>{text==true?"是":'否'}</span>,
 		},{
 		  title: '排序',
 		  dataIndex: 'userOrder',
 		  key: 'userOrder',
-		  width:60,
 		  render: text => <span>{text}</span>,
 		},{
 		  title: '操作',

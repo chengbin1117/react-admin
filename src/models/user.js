@@ -498,7 +498,7 @@ export default {
       } else {
         if(data.code ==10004||data.code ==10011){
            message.error(data.message,2);
-          yield put(routerRedux.push('/'));
+           yield put(routerRedux.push('/'));
         }else{
           message.error(data.message,2);
         }
@@ -619,7 +619,13 @@ export default {
          localStorage.clear()
         yield put(routerRedux.push('/'))
       } else {
-        message.error(data.message,2);
+         if(data.code ==10004||data.code ==10011){
+           message.error(data.message,2);
+           yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,2);
+        }
+
       }
     },
   },
