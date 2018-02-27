@@ -131,12 +131,12 @@ const BonsModal = ({
 				    			)}
 				    	</Col>
 				    	<Col  span={7}>
-				    		{total}钛值
+				    		{ArticleStat!=null?ArticleStat.bonusTotal:0}钛值
 				    	</Col>
 				    </Row>
 				    <Row className={styles.bonsFooter}>
 				    	<Col  span={24}>
-				    		截止目前,已有{ArticleStat!=null?ArticleStat.bonusNum:0}个用户获得了他的奖励,剩余奖励数{(ArticleStat!=null&&ArticleStat.bonusTotal)-(ArticleStat!=null&&ArticleStat.bonusValue)}
+				    		截止目前,已有{ArticleStat!=null?ArticleStat.bonusNum:0}个用户获得了他的奖励,剩余奖励数{((ArticleStat!=null&&ArticleStat.bonusTotal)-(ArticleStat!=null&&ArticleStat.bonusValue)).toFixed(3)}
 				    	</Col>
 				    </Row>
                </div>:<div>该文章暂未设置阅读奖励</div>}
