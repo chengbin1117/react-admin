@@ -33,16 +33,9 @@ let titleNum=0;
 var n =5000;
 var x = 5000;
 const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-        md: { span: 12 },
-      },
-    };
+        labelCol: { span: 2 },
+        wrapperCol: { span: 18},
+      };
 const submitFormLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
@@ -583,9 +576,12 @@ function StatusonChange(e) {
                     )}
                   
               </FormItem>
-              <Row  key='2' type="flex" justify="center">
-              <Col>
-                  <FormItem label="Tag标签 " {...formItemLayout}>
+              <Row  key='2' type="flex" justify="start" >
+               <Col style={{ marginLeft: '26px' }} >
+                <span className={styles.tagLabel}><span style={{color:'#f5222d'}}>*</span>TAG标签：</span>
+              </Col>
+              <Col  style={{ marginRight: '15px' }}>
+                  <FormItem extra="至少输入3个tag">
                       {getFieldDecorator('tag1', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[0]:'',
                         rules: [
@@ -674,7 +670,7 @@ function StatusonChange(e) {
                       })(
                         <Input style={{width:'120px'}}/>
                       )}
-                      <span className={styles.pre}> 至少3个tag，每个tag：2-5个字符</span>
+                     
                   </FormItem>
               </Col>
            </Row> 
