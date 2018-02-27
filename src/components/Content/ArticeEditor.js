@@ -33,14 +33,20 @@ let titleNum=0;
 var n =5000;
 var x = 5000;
 const formItemLayout = {
-        labelCol: {
-        xs: { span: 1 },
-        sm: { span: 1 },
-        xl: { span: 1 },
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 7 },
       },
       wrapperCol: {
-        xs: { span: 16 },
-        sm: { span: 16 },
+        xs: { span: 24 },
+        sm: { span: 12 },
+        md: { span: 12 },
+      },
+    };
+const submitFormLayout = {
+      wrapperCol: {
+        xs: { span: 24, offset: 0 },
+        sm: { span: 10, offset: 7 },
       },
     };
 const tailFormItemLayout = {
@@ -563,7 +569,7 @@ function StatusonChange(e) {
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'60%'}}/>
                     )}
-                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
+                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符</span>
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -577,10 +583,9 @@ function StatusonChange(e) {
                     )}
                   
               </FormItem>
-              <Row  key='2'>
-              <Col span={4} style={{marginLeft:'0px'}}>
-                  <FormItem label="Tag标签 " labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 14 }}>
+              <Row  key='2' type="flex" justify="center">
+              <Col>
+                  <FormItem label="Tag标签 " {...formItemLayout}>
                       {getFieldDecorator('tag1', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[0]:'',
                         rules: [
@@ -595,12 +600,12 @@ function StatusonChange(e) {
                           validator:tagValue1
                         }],
                       })(
-                        <Input style={{width:'90%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px',marginRight:'50px'}} />
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col  style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag2', {
                          initialValue:ArticleList.tags!=undefined?ArticleList.tags[1]:'',
@@ -616,13 +621,13 @@ function StatusonChange(e) {
                           validator:tagValue2
                         }],
                       })(
-                        <Input style={{width:'100%'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
-                  <FormItem  >
+              <Col  style={{marginRight:'55px'}}>
+                  <FormItem>
                       {getFieldDecorator('tag3', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[2]:'',
                          rules: [
@@ -637,12 +642,12 @@ function StatusonChange(e) {
                           validator:tagValue3
                         }],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col style={{marginRight:'55px'}}>
                   <FormItem>
                       {getFieldDecorator('tag4', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[3]:'',
@@ -652,12 +657,12 @@ function StatusonChange(e) {
                             validator:tagValue4
                         }],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={6} style={{marginRight:'55px'}}>
+              <Col style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag5', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
@@ -667,7 +672,7 @@ function StatusonChange(e) {
                             validator:tagValue5
                         }],
                       })(
-                        <Input style={{width:'30%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       <span className={styles.pre}> 至少3个tag，每个tag：2-5个字符</span>
                   </FormItem>
@@ -869,7 +874,7 @@ function StatusonChange(e) {
                          initialValue:ArticleList.publishSet==true?"true":"false",
                          rules: [{ required: true, }],
                       })(
-                        <RadioGroup onChange={handleTime}>
+                        <RadioGroup onChange={handleTime} disabled={(ArticleList.publishStatus!=undefined&&ArticleList.publishStatus==0)?false:true}>
                           <Radio value="true">开启定时发布</Radio>
                           <Radio value="false">不开启</Radio>
                         </RadioGroup>
