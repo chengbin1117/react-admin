@@ -84,6 +84,20 @@ import styles from '../components/common.css';
               'undo',
               'redo',
         ];
+      //    editor.config.familys = [
+      //       '宋体', '黑体', '楷体', '微软雅黑',
+      //       'Arial', 'Verdana', 'Georgia'
+      //   ];
+      //   editor.config.fontsizes = {
+      //   // 格式：'value': 'title'
+      //     1: '10px',
+      //     2: '13px',
+      //     3: '16px',
+      //     4: '19px',
+      //     5: '22px',
+      //     6: '25px',
+      //     7: '28px'
+      // };
         // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
        /* editor.customConfig.onfocus = function (html) {
         // html 即编辑器中的内容
