@@ -22,16 +22,9 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 7 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-    md: { span: 12 },
-  },
-};
+        labelCol: { span: 2 },
+        wrapperCol: { span: 18},
+      };
 const submitFormLayout = {
   wrapperCol: {
     xs: { span: 24, offset: 0 },
@@ -623,9 +616,15 @@ function RelesEditor({
           )}
 
       </FormItem>
-      <Row key='2' type="flex" justify="center">
-        <Col>
-          <FormItem label="Tag标签 " {...formItemLayout}>
+      <Row key='2' type="flex" justify="start"  >
+        <Col style={{ marginLeft: '26px' }} >
+          <span className={styles.tagLabel}><span style={{color:'#f5222d'}}>*</span>TAG标签：</span>
+        </Col>
+        <Col style={{ marginRight: '15px' }}>
+          
+          <FormItem 
+          extra="至少输入3个tag"
+         >
             {getFieldDecorator('tag1', {
               rules: [
                 {
