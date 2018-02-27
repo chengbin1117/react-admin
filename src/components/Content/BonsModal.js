@@ -110,7 +110,7 @@ const BonsModal = ({
 				    						{item.name}
 				    					</Col>
 				    					<Col span={7}>
-				    					{item.kind==2&&<span>总奖励钛值{(item.total).toFixed(3)}</span>}
+				    					{item.kind==2&&<span>总奖励钛值{(item.value).toFixed(3)}</span>}
                                         {item.kind==1&&<span>奖励钛值{item.value}个/人</span>}
 				    						
 				    					</Col>
