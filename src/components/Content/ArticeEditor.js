@@ -16,6 +16,9 @@ import {options,uploadUrl,ImgUrl,formatDate} from "../../services/common"
 import E from 'wangeditor';
 import WrappedEditorForm from './EditorForm';
 import RelationModal from '../Setting/RelationUser';
+import imgx from '../../assets/images/lx4.png';
+import imgy from '../../assets/images/12.jpg';
+import imgz from '../../assets/images/22.jpg';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -30,14 +33,20 @@ let titleNum=0;
 var n =5000;
 var x = 5000;
 const formItemLayout = {
-        labelCol: {
-        xs: { span: 1 },
-        sm: { span: 1 },
-        xl: { span: 1 },
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 7 },
       },
       wrapperCol: {
-        xs: { span: 16 },
-        sm: { span: 16 },
+        xs: { span: 24 },
+        sm: { span: 12 },
+        md: { span: 12 },
+      },
+    };
+const submitFormLayout = {
+      wrapperCol: {
+        xs: { span: 24, offset: 0 },
+        sm: { span: 10, offset: 7 },
       },
     };
 const tailFormItemLayout = {
@@ -62,6 +71,7 @@ function ArticleEditor({
   ColumnList,
   UserById,
   setting,
+  uploadImg,
   getBonusList,
   form: {
     getFieldDecorator,
@@ -72,6 +82,7 @@ function ArticleEditor({
 }){
   let merId =localStorage.getItem("userId");
   let articleList =JSON.parse(localStorage.getItem("articleList"));
+  const imgArr=[imgx,imgy,imgz];  //默认背景图；
 
   const options = ColumnList;
   //console.log("setting",ArticleList)
@@ -79,7 +90,7 @@ function ArticleEditor({
   let AllTotal =0;
   
   function handleSubmit (){
-      validateFields((errors) => {
+      validateFields((errors,fieldsValue) => {
         if (errors) {
           return;
         }else{
@@ -97,7 +108,7 @@ function ArticleEditor({
           //   message.error('请上传封面图')
           //   return true
           // }
-          var tagsName =""
+          var tagsName ="";
           if(data.tag4==undefined&&data.tag5==undefined){
             tagsName =data.tag1+','+data.tag2+','+data.tag3
           }else if(data.tag4!=undefined&&data.tag5==undefined){
@@ -108,6 +119,14 @@ function ArticleEditor({
           if(data.publishStatus==undefined){
             data.publishStatus=ArticleList.publishStatus
           }
+          let editArticle = 0;
+          const title = data.articleTitle;
+          if(title != ArticleList.articleTitle){
+            editArticle = 1
+          }else{
+            editArticle = 0
+          }
+
           if(ArticleList.sysUser==null){
             if(data.publishStatus =="1"){
               dispatch({
@@ -135,6 +154,7 @@ function ArticleEditor({
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
+                  editArticle:editArticle,
                 }
             })
           }else{
@@ -164,6 +184,7 @@ function ArticleEditor({
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
+                  editArticle:editArticle,
                 }
           })
           }
@@ -197,6 +218,7 @@ function ArticleEditor({
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
+                  editArticle:editArticle,
                 }
             })
           }else{
@@ -228,6 +250,7 @@ function ArticleEditor({
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
+                  editArticle:editArticle,
                 }
           })
           }
@@ -271,7 +294,13 @@ function ArticleEditor({
           /*if(data.publishStatus==undefined){
             data.publishStatus=ArticleList.publishStatus
           }*/
-          
+          let editArticle = 0;
+          const title = data.articleTitle;
+          if(title != ArticleList.articleTitle){
+            editArticle = 1
+          }else{
+            editArticle = 0
+          }
             dispatch({
                 type:'content/publishArticle',
                 payload:{
@@ -298,6 +327,7 @@ function ArticleEditor({
                   browseNum:data.browseNum,
                   thumbupNum:data.thumbupNum,
                   collectNum:data.collectNum,
+                  editArticle:editArticle
                 }
             })
           }
@@ -539,7 +569,7 @@ function StatusonChange(e) {
                     })(
                       <Input  type="text" placeholder="输入标题" style={{width:'60%'}}/>
                     )}
-                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符,支持中英文及特殊符号，空格，不区分大小写</span>
+                    <span style={{color:"#aaa",marginLeft:20}}>1-64个字符</span>
               </FormItem>
               <FormItem >
                   {getFieldDecorator('text', {
@@ -553,10 +583,9 @@ function StatusonChange(e) {
                     )}
                   
               </FormItem>
-              <Row  key='2'>
-              <Col span={4} style={{marginLeft:'0px'}}>
-                  <FormItem label="Tag标签 " labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 14 }}>
+              <Row  key='2' type="flex" justify="center">
+              <Col>
+                  <FormItem label="Tag标签 " {...formItemLayout}>
                       {getFieldDecorator('tag1', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[0]:'',
                         rules: [
@@ -571,12 +600,12 @@ function StatusonChange(e) {
                           validator:tagValue1
                         }],
                       })(
-                        <Input style={{width:'90%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px',marginRight:'50px'}} />
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
+              <Col  style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag2', {
                          initialValue:ArticleList.tags!=undefined?ArticleList.tags[1]:'',
@@ -592,13 +621,13 @@ function StatusonChange(e) {
                           validator:tagValue2
                         }],
                       })(
-                        <Input style={{width:'100%'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
-                  <FormItem  >
+              <Col  style={{marginRight:'55px'}}>
+                  <FormItem>
                       {getFieldDecorator('tag3', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[2]:'',
                          rules: [
@@ -613,13 +642,13 @@ function StatusonChange(e) {
                           validator:tagValue3
                         }],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={2} style={{marginRight:'55px'}}>
-                  <FormItem  >
+              <Col style={{marginRight:'55px'}}>
+                  <FormItem>
                       {getFieldDecorator('tag4', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[3]:'',
                         rules: [{ required: false, min:2,
@@ -628,12 +657,12 @@ function StatusonChange(e) {
                             validator:tagValue4
                         }],
                       })(
-                        <Input style={{width:'100%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       
                   </FormItem>
               </Col>
-              <Col span={6} style={{marginRight:'55px'}}>
+              <Col style={{marginRight:'55px'}}>
                   <FormItem  >
                       {getFieldDecorator('tag5', {
                         initialValue:ArticleList.tags!=undefined?ArticleList.tags[4]:'',
@@ -643,7 +672,7 @@ function StatusonChange(e) {
                             validator:tagValue5
                         }],
                       })(
-                        <Input style={{width:'30%',marginRight:'20px'}}/>
+                        <Input style={{width:'120px'}}/>
                       )}
                       <span className={styles.pre}> 至少3个tag，每个tag：2-5个字符</span>
                   </FormItem>
@@ -660,8 +689,8 @@ function StatusonChange(e) {
               </FormItem>
               <FormItem
                     {...formItemLayout}
-                    label="封面图"
-                    extra=""
+                    label={<span><span style={{color:'#f5222d'}}>*</span>封面图</span>}
+                    extra="找不到合适的图片？您可以用以下任一张图作为封面图"
                   >
                    {getFieldDecorator('image',{
                     initialValue:ArticleList.articleImage,
@@ -677,6 +706,18 @@ function StatusonChange(e) {
                       }
                     </div>
                     )}
+              </FormItem>
+              <FormItem
+                  {...formItemLayout}
+                  label="&emsp;"
+                  colon={false}
+              >
+                  <div>
+                    {imgArr.map((item,index)=>
+                      <img  key={index} onClick = {()=>uploadImg(item)} src={item} className={styles.Imgx} />
+                      )}
+                     
+                  </div> 
               </FormItem>
               <FormItem
                       {...formItemLayout}
@@ -833,7 +874,7 @@ function StatusonChange(e) {
                          initialValue:ArticleList.publishSet==true?"true":"false",
                          rules: [{ required: true, }],
                       })(
-                        <RadioGroup onChange={handleTime}>
+                        <RadioGroup onChange={handleTime} disabled={(ArticleList.publishStatus!=undefined&&ArticleList.publishStatus==0)?false:true}>
                           <Radio value="true">开启定时发布</Radio>
                           <Radio value="false">不开启</Radio>
                         </RadioGroup>

@@ -10,7 +10,8 @@ import {
   Icon,
   Switch,
   Pagination,
-  Popconfirm 
+  Popconfirm,
+  Divider
 } from 'antd';
 
 /*import styles from './purchaseList.css'*/
@@ -64,10 +65,10 @@ function ArticleList({
     render: (text, record, i) => {
 			return (
 				<div>
-              <a data-key={i} onClick={() => onEditItem(record)} style = {{marginRight:10}}>编辑</a>
-              <a data-key={i} style = {{marginRight:10}} onClick={()=>handeShow(record)}>显示状态</a>
-              
-            </div>
+          <a data-key={i} onClick={() => onEditItem(record)}>编辑</a>
+           <Divider type="vertical" />
+          <a data-key={i} onClick={()=>handeShow(record)}>显示状态</a>  
+        </div>
 			)
 		}
   },];

@@ -24,145 +24,6 @@ let realname = localStorage.getItem("realname")
 let first = "";
 let second = "";
 let third = "";
-//console.log("hashHistory",history)
-//let location=history.location
-//let path = location.pathname
-/*console.log(window)*/
-/*function hasPermission(permission) {
-  const resourceList = session.get(resourceSessionKey) // 获取登录用户的所有权限
-  resourceList || redirectLoginPage()
-  if (!resourceList || !resourceList.length || (permission && resourceList.indexOf(permission) === -1)) {
-    // 无权限访问跳转到无权限页面
-    return false
-  }
-  return true
-}
-// 递归生成菜单
-  const getMenus = menuTreeN => {
-    return menuTreeN.map(item => {
-      if (item.children) {
-        return (
-          hasPermission(item.permission) && <Menu.SubMenu
-            key={item.id}
-            title={<span>{item.icon && <Icon type={item.icon} />}{item.name}</span>}
-          >
-            {getMenus(item.children)}
-          </Menu.SubMenu>
-        )
-      }
-      return (
-        hasPermission(item.permission) && <Menu.Item key={item.id}>
-          <Link to={item.url}>
-            {item.icon && <Icon type={item.icon} />}
-            {item.name}
-          </Link>
-        </Menu.Item>
-      )
-    })
-  }
-  menuItems = getMenus(nav)*/
-
-
-   
-
-  
-
-/*class LayoutContainer extends React.Component {
-  constructor(){
-        super();
-        this.state = {
-		    collapsed: false,
-		    defaultOpenKeys:['sub1','sub2','sub3','sub4','sub5','sub6']
-        };
-        this.onOpenChange = this.onOpenChange.bind(this);
-        this.onClick = this.onClick.bind(this);
-  }
-  onCollapse = (collapsed) => {
-    console.log('collapsed',collapsed);
-    // this.setState({ collapsed });
-  }
-  onClick(item){
-  	// hashHistory.push('/index')
-  	//console.log('item',item)
-  	//console.log('keyPath',item.keyPath[1])
-  	this.setState({
-  		defaultOpenKeys:item.keyPath[1]
-  	})
-  }
-  onOpenChange(val){
-/*  	this.setState({
-  		defaultOpenKeys:val
-  	})*/
-  	//console.log('val',val)
-  //}
-  /*render() {
-  	//let logoimg = require("image!../assets/images/code.png");
-   
-    return (
-      <Layout style={{ minHeight: '100vh' }}>
-        <Sider
-			collapsible = {true}
-			onCollapse = {this.onCollapse}
-			defaultCollapsed = {false}
-			reverseArrow = {true}
-        >
-          <div className={styles.logo}>
-            <Link to = {'/index?userId='+userId}><Icon type="home" /></Link>
-          </div>
-          <Menu 
-	          theme="dark"  
-	          mode="inline" 
-	          onClick = {this.onClick} 
-	          inlineCollapsed = {false}
-	          onOpenChange = {this.onOpenChange}
-	          defaultOpenKeys = {this.state.defaultOpenKeys}
-          >
-            {nav&&nav.map((item,index)=>
-                   <SubMenu key={index} title={<span><Icon type="user1" /><span>{item.menuName}</span></span>}>
-                    {item.children.map((c,inde)=>
-                        <Menu.Item key={c.menuId}><Link activeClassName = {style.activeColor} to = {"/"+c.menuLink+'?page=1'}>{c.menuName}</Link></Menu.Item>
-                      )}
-                  </SubMenu>
-                )
-                
-            }
-          </Menu>
-        </Sider>
-        <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
-          		<div className = {styles.header_right}>
-          			<span>CB</span>
-          			<Link to="/" className={styles.logOut}>退出</Link>
-          		</div>
-          </Header>
-          <Content style={{ margin: '0 16px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>{first}</Breadcrumb.Item>
-              <Breadcrumb.Item>{second}</Breadcrumb.Item>
-              <Breadcrumb.Item>{third}</Breadcrumb.Item>
-            </Breadcrumb>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-              {this.props.children}
-            </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            KG ©2016 Created by Ant UED
-          </Footer>
-        </Layout>
-      </Layout>
-    );
-  }
-}*/
-
-/*function logout(){
-  dispatch({
-    type:"user/logOut",
-    payload:{
-      userId:userId
-    }
-  })
-  
-}*/
 
 class LayoutContainer extends React.Component {
   rootSubmenuKeys:['sub0','sub1','sub2','sub3','sub4','sub5','sub6','sub7']
@@ -215,6 +76,7 @@ class LayoutContainer extends React.Component {
     })
   }
   render() {
+    const { collapsed } = this.state;
     //console.log('openKeys',this.props.dispatch)
     /*this.setState({
       dispatch:this.props.dispatch
@@ -320,9 +182,12 @@ class LayoutContainer extends React.Component {
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
+            trigger={null}
+            collapsible
+            collapsed={collapsed}
+            breakpoint="md"
           
-          collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
+            className={styles.sider}
         >
         <Menu 
           theme="dark" 
@@ -355,13 +220,13 @@ class LayoutContainer extends React.Component {
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
               <Icon
-              className={styles.trigger}
-              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-             />
+                  className={styles.trigger}
+                  type={collapsed ? 'menu-unfold' : 'menu-fold'}
+                  onClick={this.toggle}
+              />
               <div className = {styles.header_right}>
                 <span className={styles.rename}>欢迎您，<span style={{color:"#FFA500"}}>{realname&&realname}</span></span>
-                <span  className={styles.logOut} onClick={()=>this.logout(this.props.dispatch)}>退出</span>
+                <Icon className={styles.logOut} onClick={()=>this.logout(this.props.dispatch)} type="logout"/>
               </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>

@@ -8,7 +8,7 @@ import {
   BrowserRouter,
   Link,
 } from 'dva/router';
-
+import $ from 'jquery';
 import dva from 'dva';
 import md5 from 'js-md5';
 let Base64 = require('js-base64').Base64;
@@ -134,8 +134,52 @@ export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件
     return new Blob([u8arr], {type:mime});
 }
 
+//转化Base64
+// export function getBase64(img){//传入图片路径，返回base64
+//       function getBase64Image(img,width,height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
+//         var canvas = document.createElement("canvas");
+//         canvas.width = width ? width : img.width;
+//         canvas.height = height ? height : img.height;
 
+//         var ctx = canvas.getContext("2d");
+//         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+//         var dataURL = canvas.toDataURL();
+//         return dataURL;
+//       }
+//       var image = new Image();
+//       image.crossOrigin = '';
+//       image.src = img;
+//       var deferred=$.Deferred();
+//       if(img){
+//         image.onload =function (){
+//           deferred.resolve(getBase64Image(image));//将base64传给done上传处理
+//         }
+//         return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
+//       }
+//     }  
 
+export function  getBase64(img){
+        function getBase64Image(img,width,height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
+          var canvas = document.createElement("canvas");
+          canvas.width = width ? width : img.width;
+          canvas.height = height ? height : img.height;
+ 
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var dataURL = canvas.toDataURL();
+          return dataURL;
+        }
+        var image = new Image();
+        image.crossOrigin = '';
+        image.src = img;
+        var deferred=$.Deferred();
+        if(img){
+          image.onload =function (){
+            deferred.resolve(getBase64Image(image));//将base64传给done上传处理
+          }
+          return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
+        }
+      }
 //上传图片
 
 
