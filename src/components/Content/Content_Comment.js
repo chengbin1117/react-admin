@@ -24,7 +24,6 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		  title: '评论人',
 		  dataIndex: 'user',
 		  key: 'user',
-		  width:100,
 		}, {
 		  title: '评论时间',
 		  dataIndex: 'createDate',

@@ -24,6 +24,7 @@ import styles from '../components/common.css';
         editor.customConfig.uploadImgServer = ImgUrl;//配置服务器上传地址
         editor.customConfig.uploadFileName = 'file';
         editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024;
+        editor.customConfig.pasteFilterStyle = false; //手动关闭掉粘贴样式的过滤
         editor.customConfig.customAlert = function (info) {
             // info 是需要提示的内容
             message.error(info)
@@ -54,19 +55,19 @@ import styles from '../components/common.css';
          editor.customConfig.zIndex = 10;
          //editor.customConfig.height = 1000
          editor.customConfig.colors = [
-        '#000000',
-        '#f00',
-        '#eeece0',
-        '#1c487f',
-        '#4d80bf',
-        '#c24f4a',
-        '#8baa4a',
-        '#7b5ba1',
-        '#46acc8',
-        '#f9963b',
-        '#ffffff'
-         ]
-        editor.customConfig.menus = [
+          '#000000',
+          '#f00',
+          '#eeece0',
+          '#1c487f',
+          '#4d80bf',
+          '#c24f4a',
+          '#8baa4a',
+          '#7b5ba1',
+          '#46acc8',
+          '#f9963b',
+          '#ffffff'
+           ]
+         editor.customConfig.menus = [
               'head',
               'bold',
               'italic',
@@ -75,10 +76,28 @@ import styles from '../components/common.css';
               'justify',
               'foreColor',
               'backColor',
+              'quote',  // 引用
+              'emoticon',  // 表情
+              'link',  // 插入链接
+              'table',  // 表格
               'image',
               'undo',
               'redo',
         ];
+      //    editor.config.familys = [
+      //       '宋体', '黑体', '楷体', '微软雅黑',
+      //       'Arial', 'Verdana', 'Georgia'
+      //   ];
+      //   editor.config.fontsizes = {
+      //   // 格式：'value': 'title'
+      //     1: '10px',
+      //     2: '13px',
+      //     3: '16px',
+      //     4: '19px',
+      //     5: '22px',
+      //     6: '25px',
+      //     7: '28px'
+      // };
         // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
        /* editor.customConfig.onfocus = function (html) {
         // html 即编辑器中的内容
