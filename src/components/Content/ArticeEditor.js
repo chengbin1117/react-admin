@@ -91,8 +91,17 @@ function ArticleEditor({
           //console.log(data.text);
           var dd=(data.text).replace(/<\/?.+?>/g,"");
           var dds=dd.replace(/ /g,"");//dds为得到后的内容
-          let CX = dds.split('&nbsp;')
-          var lg = CX.join('');
+          let CX = dds.split('&nbsp;');
+         
+           var lg = CX.join('');
+           lg =  lg.replace(/^@font.*Section0;}$/g, '')
+           lg = lg.replace(/{[^{]*(?=})/g,"");
+           lg = lg.replace(/{[^@]*(?=})/g,"");
+           lg = lg.replace(/\s+/g, "")
+           lg = lg.replace(/<\/?.+?>/g,""); 
+           lg = lg.replace(/[\r\n]/g, ""); 
+           //console.log(lg)
+           console.log("文章字数",lg.length)
           if(lg.length>30000){
             message.error('文章内容不能超过30000字');
             return true
@@ -327,7 +336,7 @@ function ArticleEditor({
        })   
   }
   function typeChange (e){
-    console.log(e.target.value)
+    //console.log(e.target.value)
     ArticleList.articleType =parseInt(e.target.value)
   }
   function range(start, end) {
@@ -375,7 +384,7 @@ function ArticleEditor({
       return html
   }
   function handleTime(e){
-    console.log(e.target.value)
+    //console.log(e.target.value)
     if(e.target.value=="false"){
       ArticleList.publishSet=false;
     }else{
@@ -384,7 +393,7 @@ function ArticleEditor({
     
   }
   function handleChange(imgUrl){
-    console.log(imgUrl)
+    //console.log(imgUrl)
     return imgUrl
   }
 
@@ -448,7 +457,7 @@ function StatusonChange(e) {
       //console.log(dds)
       let CX = dds.split('&nbsp;')
       var lg = CX.join('');
-      console.log(lg.length)
+      //console.log(lg.length)
       if(lg.length==0){
         callback("请输入正文")
       }/*else if(lg.length>5000){
@@ -461,7 +470,7 @@ function StatusonChange(e) {
 
    }
    function tagValue1(rule, value, callback){
-    console.log(value)
+    //console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
       arr.push(data.tag2,data.tag3,data.tag4,data.tag5)
@@ -478,7 +487,7 @@ function StatusonChange(e) {
       }
   }
   function tagValue2(rule, value, callback){
-    console.log(value)
+    //console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
       arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
@@ -494,7 +503,7 @@ function StatusonChange(e) {
       }
   }
   function tagValue3(rule, value, callback){
-    console.log(value)
+    //console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
       arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
@@ -511,7 +520,7 @@ function StatusonChange(e) {
       }
   }
   function tagValue4(rule, value, callback){
-    console.log(value)
+    //console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
       arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
@@ -528,7 +537,7 @@ function StatusonChange(e) {
       }
   }
   function tagValue5(rule, value, callback){
-    console.log(value)
+    //console.log(value)
     var arr=[];
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
       arr.push(data.tag1,data.tag2,data.tag4,data.tag5)

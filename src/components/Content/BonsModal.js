@@ -44,7 +44,7 @@ const BonsModal = ({
 	
 }) => {
 	let total =0;
-	console.log("artice",artice)
+	//console.log("artice",artice)
 	function handleOk(value,text) {
 			
 			//console.log(value,text)
