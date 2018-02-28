@@ -99,6 +99,13 @@ function RelesEditor({
         //console.log(dds.lengthgvfdg)
         let CX = dds.split('&nbsp;')
         var lg = CX.join('');
+           lg =  lg.replace(/^@font.*Section0;}$/g, '')
+           lg = lg.replace(/{[^{]*(?=})/g,"");
+           lg = lg.replace(/{[^@]*(?=})/g,"");
+           lg = lg.replace(/\s+/g, "")
+           lg = lg.replace(/<\/?.+?>/g,""); 
+           lg = lg.replace(/[\r\n]/g, ""); 
+           console.log("文章字数",lg.length)
         if (lg.length > 30000) {
           message.error('文章内容不能超过30000字');
           return true
@@ -343,7 +350,7 @@ function RelesEditor({
       //var lg = CX.join('');
       var html = value.txt.html();
       html.replace(/<style(([\s\S])*?)<\/style>/g, '')
-      console.log(html)
+      //console.log(html)
       if (html == "" || html == '<p class="MsoNormal"><br></p>') {
         callback('请输入正文')
       } else {
