@@ -11,9 +11,9 @@ import Editor from '../../editor/index';
 import styles from './Content_Opinion_Show.css';
 import RelationModal from '../Setting/RelationUser';
 import { options, uploadUrl, formatDate } from "../../services/common"
-import imgx from '../../assets/images/lx4.jpg';
-import imgy from '../../assets/images/12.jpg';
-import imgz from '../../assets/images/22.jpg';
+import imgx from '../../assets/images/article1.jpg';
+import imgy from '../../assets/images/article2.jpg';
+import imgz from '../../assets/images/article3.jpg';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;

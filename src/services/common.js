@@ -183,8 +183,8 @@ export function  getBase64(img){
 //上传图片
 
 
-// let ImgUrl = "http://kg.btc123.com/kgapi/image/upload"; //开发
-let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
+ let ImgUrl = "http://kg.btc123.com/kgapi/image/upload"; //开发
+//let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
 // let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
 
 //下载图片
@@ -201,8 +201,8 @@ let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
 
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
-// let urlprefix = "http://kg.btc123.com/kgapi";//开发
-let urlprefix = "https://www.kg.com"; //生产&&测试
+let urlprefix = "http://kg.btc123.com/kgapi";//开发
+//let urlprefix = "https://www.kg.com"; //生产&&测试
 // let urlprefix = "https://www.kg.com"; //生产&&测试
 
 

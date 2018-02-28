@@ -12,7 +12,7 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
-import { Form, Row, Col, Input, Button, Icon,message,Radio} from 'antd';
+import { Form, Row, Col, Input, Button, Icon,message,Radio,Card} from 'antd';
 import {uploadUrl} from '../services/common'
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -118,10 +118,31 @@ function UserAdmin({location,dispatch,user,router,}) {
 	  }
 	}
 	const WrappedDynamicRule = Form.create()(DynamicRule);
-	
+	function reward(){
+		dispatch(routerRedux.push('/user/reward'))
+	}
+	function invite(){
+		dispatch(routerRedux.push('/user/invite'))
+	}
+	function master(){
+		dispatch(routerRedux.push('/user/master'))
+	}
 	return (
-			<div>
-				<h2 >基础信息</h2>
+			<Card>
+				<Card 
+				    title={<div>
+				    	<span style={{fontSize:24,fontWeight:'bold'}}>{userInfo&&userInfo.userName}基础信息</span>
+				    	&emsp;&emsp;&emsp;&emsp;
+				    	<span>
+						<Button type="primary" size="large" className={stytes.btnB} onClick={()=>reward()}>奖励明细</Button>
+						&emsp;&emsp;&emsp;&emsp;
+						<Button type="primary" size="large" className={stytes.btnB} onClick={()=>master()}>师徒关系</Button>
+						&emsp;&emsp;&emsp;&emsp;
+						<Button type="primary" size="large" className={stytes.btnB} onClick={()=>invite()}>邀新记录</Button>
+					    </span>
+				    	</div>} bordered={false}
+				  
+				>
 					<table className={stytes.table}>
 						<tbody>
 						<tr>
@@ -150,7 +171,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 						</tr>
 						</tbody>
 					</table>
-				<h2 className={stytes.title}>活跃数据</h2>
+				</Card>
+				<Card title="活跃数据" bordered={false}>
 				    <table className={stytes.table}>
 				    <tbody>
 						<tr><td>评论数</td><td>{userInfo.commentNum!=null?userInfo.commentNum:"——"}</td>
@@ -161,7 +183,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 						</tr>
 					</tbody>	
 					</table>
-				<h2 className={stytes.title}>其他信息</h2>
+				</Card>
+				<Card title="其他信息" bordered={false}>
 				<div>
 					<p className={stytes.dataBox}><span className={stytes.span1}>专栏名称</span>
 					    <span className={stytes.span2}>
@@ -267,7 +290,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 					      }
 						{(userInfo.auditStatus == 0 && userInfo.applyRole!=1)?<WrappedDynamicRule />:null}
 					</div>
-			</div>
+					</Card>
+			</Card>
 
 	);
 }
