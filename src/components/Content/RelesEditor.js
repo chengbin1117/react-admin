@@ -44,7 +44,7 @@ const tailFormItemLayout = {
   },
 };
 
-let artSorce = 2;
+let artSorce = 0;
 let timeDis = true;
 let sec = 0;
 let titleNum = 0;
@@ -774,7 +774,6 @@ function RelesEditor({
         label="类别"
       >
         {getFieldDecorator('type', {
-          initialValue: '2',
           rules: [{ required: true, message: '请选择类别!' },
           ],
         })(
