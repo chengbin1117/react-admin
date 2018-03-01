@@ -7,7 +7,7 @@ import {
   routerRedux,
 
 } from 'dva/router';
-import { Form, Icon, Input, Button,Badge, Checkbox,Tag,Row,Col,Upload,InputNumber,Radio,Cascader,DatePicker, TimePicker, message,Modal } from 'antd';
+import { Form, Icon, Input, Button,Badge, Checkbox,Select,Tag,Row,Col,Upload,InputNumber,Radio,Cascader,DatePicker, TimePicker, message,Modal } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
@@ -25,7 +25,7 @@ const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
-
+const Option = Select.Option;
 let artSorce =2;
 let timeDis =true;
 let sec=0;
@@ -79,7 +79,7 @@ function ArticleEditor({
 
   const options = ColumnList;
   //console.log("setting",ArticleList)
-  const {RelationVisible} =setting;
+  const {RelationVisible,getRelUserList} =setting;
   let AllTotal =0;
   
   function handleSubmit (){
@@ -147,7 +147,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?data.createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -176,7 +176,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?data.createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -209,7 +209,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?data.createUser:ArticleList.createUser,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
                   articleLink:data.articleLink,
@@ -240,7 +240,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?data.createUser:ArticleList.createUser,
                   sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
@@ -319,7 +319,7 @@ function ArticleEditor({
                   displayOrder:parseInt(data.sort),
                   commentSet:data.commentSet == "true"?true:false,
                   publishSet:data.radioG == "true"?true:false,
-                  createUser:ArticleList.createUser==null?UserById.kgUserId:ArticleList.createUser,
+                  createUser:ArticleList.createUser==null?data.createUser:ArticleList.createUser,
                   sysUser:merId,
                   bonusStatus:parseInt(data.bonusStatus),
                   articleSource:data.articleSource,
@@ -907,22 +907,52 @@ function StatusonChange(e) {
                           />
                       )}
               </FormItem>}
-              <FormItem
-                      {...formItemLayout}
-                       label="发布人"
-                       extra='注：若该文章为用户发布，则此处不可更改'
-                    >
-                      {getFieldDecorator('createUser',{
-                        initialValue:ArticleList.createUser ==null?((UserById.kgUserName!=null&&UserById.kgUserName!="")?UserById.kgUserName:''):ArticleList.username,
-                        rules: [
-                          { required: true,message:'请关联前台用户作为发布人显示' },
-                        ],
-                      })(
-                        <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
-
+              {(ArticleList.sysUser!=null&&ArticleList.createUser!=null)&&<FormItem
+                {...formItemLayout}
+                label="发布人"
+                extra='注：若该文章为用户发布，则此处不可更改'
+              >
+                {getFieldDecorator('createUser', {
+                  initialValue:ArticleList.username,
+                  rules: [
+                    { required: true, message: "请选择关联账户", },
+                  ],
+                })(
+                  <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
+                  )}
+              </FormItem>}
+                {(ArticleList.sysUser == null&&ArticleList.createUser!=null)&&<FormItem
+                {...formItemLayout}
+                label="发布人"
+                extra='注：若该文章为用户发布，则此处不可更改'
+              >
+                {getFieldDecorator('createUser', {
+                  initialValue:ArticleList.username,
+                  rules: [
+                    { required: true, message: "请选择关联账户", },
+                  ],
+                })(
+                  <Input style={{width:'20%',marginRight:20+'px'}} disabled={true}/>
+                  )}
+              </FormItem>}
+              {(ArticleList.sysUser!=null&&ArticleList.createUser==null)&&<FormItem
+                {...formItemLayout}
+                label="发布人"
+                extra='注：若该文章为用户发布，则此处不可更改'
+              >
+                {getFieldDecorator('createUser', {
+                  rules: [
+                    { required: true, message: "请选择关联账户", },
+                  ],
+                })(
+                  <Select placeholder="请选择前台账号" style={{width:"20%"}} disabled={ArticleList.publishStatus==0?false:true}>
+                      {getRelUserList&&getRelUserList.map((item,index)=>
+                      <Option value={item.kgUserId+""} key={index}>{item.kgUsername}</Option>
                       )}
-                      {(ArticleList.createUser ==null&&UserById.kgUserId==null)?<a style={{marginRight:40+'px'}} onClick={showUser} >关联前台用户</a>:null}
-              </FormItem>
+                  </Select>
+                  )}
+              </FormItem>}
+             
               <FormItem
                       {...formItemLayout}
                       label="文章打赏"

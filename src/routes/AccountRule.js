@@ -17,6 +17,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 import UserList from '../components/Setting/UserList';
 import AdduserModal from '../components/Setting/AddUserModal.js';
+import GetRelUser from '../components/Setting/GetRelUser.js';
 import EditoruserModal from '../components/Setting/EditorUserModal.js';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import ManageModal from '../components/Setting/ManageModal';
@@ -31,7 +32,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
+	const { getRelUserList,GetRelUserViible,deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
 	//console.log('getAuthTree',getAuthTree)
 	//生成随机密码
 	function upsetArr(arr){
@@ -376,29 +377,42 @@ function AccountRule({location,dispatch,setting,router,}) {
 				})
 
 			}else{
-				Modal.confirm({
-					title: "关联前台用户",
-					iconType:null,
-					content:(
-						      <div>
-						      	   <p>手机号：{record.kgUsername}</p>
-						      </div>
-						   ),
-					okText : '修改',
-					cancelText:"取消",
-					onOk() {
-					    dispatch({
-					    	type:"setting/showRelationModal",
-					    	payload:{
-					    		item:record
-					    	}
-					    })
+				dispatch({
+					type:"setting/getRelUser",
+					payload:{
+						sysUserId:record.id
+					}
 
-					},
-					onCancel() {
-					      console.log('Cancel');
-					},			
 				})
+				dispatch({
+					type:"setting/showGetRelUserModal",
+					payload:{
+						item:record
+					}
+				})
+				// Modal.confirm({
+				// 	title: "关联前台用户",
+				// 	iconType:null,
+				// 	content:(
+				// 		      <div>
+				// 		      	   <p>手机号：{record.kgUsername}</p>
+				// 		      </div>
+				// 		   ),
+				// 	okText : '修改',
+				// 	cancelText:"取消",
+				// 	onOk() {
+				// 	    dispatch({
+				// 	    	type:"setting/showRelationModal",
+				// 	    	payload:{
+				// 	    		item:record
+				// 	    	}
+				// 	    })
+
+				// 	},
+				// 	onCancel() {
+				// 	      console.log('Cancel');
+				// 	},			
+				// })
 			}
 
 
@@ -448,6 +462,46 @@ function AccountRule({location,dispatch,setting,router,}) {
 			}
 		
 	}
+
+	//已关联的用户列表
+	//console.log(getRelUserList)
+	const GetRelUserProps ={
+		visible:GetRelUserViible,
+		data:getRelUserList,
+		item,
+		onCancel(){
+			dispatch({
+				type:"setting/hideGetRelUserModal",
+				payload:{
+					item:{}
+				}
+			})
+		},
+		handleDel(record,item){
+			dispatch({
+				type:"setting/unsetKgUser",
+				payload:{
+					relId:record.relId,
+					sysUserId:item.id,
+				}
+			})
+		},
+		addGetUser(item){
+			dispatch({
+				type:"setting/hideGetRelUserModal",
+				payload:{
+					//item:{}
+				}
+			})
+			dispatch({
+				type:"setting/showRelationModal",
+				payload:{
+					item:item
+				}
+			})
+		}
+
+	}
 	return (
 			<div className={styles.Indexbox}>
 				<div>
@@ -463,6 +517,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 				<AddPostModal {...AddPostModalProps}/>
 				<RelationModal {...RelationModalProps}/>
 				<EditorPostModal {...EditorPostModalProps}/>
+				<GetRelUser {...GetRelUserProps}/>
 			</div>
 
 	);

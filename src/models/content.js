@@ -86,9 +86,9 @@ export default {
               }
             })
             dispatch({
-              type:'getSysUserById',
+              type:'setting/getRelUser',
               payload:{
-                userId:search.userId
+                sysUserId:search.userId
               }
             })
         }
@@ -103,6 +103,12 @@ export default {
                 articleId:search.articleId
               }
             });
+             dispatch({
+              type:'setting/getRelUser',
+              payload:{
+                sysUserId:merId
+              }
+            })
             /*dispatch({
               type:'getSysUserById',
               payload:{

@@ -77,7 +77,7 @@ function RelesEditor({
   const options = ColumnList;
   const imgArr=[imgx,imgy,imgz];  //默认背景图；
   //console.log(UserById.kgUserName)
-  const { RelationVisible } = setting
+  const { RelationVisible,getRelUserList } = setting
   function handleSubmit(e) {
     e.preventDefault();
     validateFields((errors) => {
@@ -90,10 +90,10 @@ function RelesEditor({
           message.error('请上传封面图')
           return true
         }
-        if (UserById.kgUserId == null || UserById.kgUserId == "") {
-          message.error('请先关联前台用户');
-          return true
-        }
+        // if (UserById.kgUserId == null || UserById.kgUserId == "") {
+        //   message.error('请先关联前台用户');
+        //   return true
+        // }
         var dd = (data.text.txt.text()).replace(/<\/?.+?>/g, "");
         var dds = dd.replace(/ /g, "");//dds为得到后的内容
         //console.log(dds.lengthgvfdg)
@@ -138,7 +138,7 @@ function RelesEditor({
             articleLink: data.articleLink,
             commentSet: data.commentSet == "true" ? true : false,
             publishSet: data.radioG == "true" ? true : false,
-            createUser: UserById.kgUserId,
+            createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
             textnum: data.text.txt.text().split('&nbsp;').join('').length,
@@ -193,7 +193,7 @@ function RelesEditor({
             articleLink: data.articleLink,
             commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
             publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
-            createUser: UserById.kgUserId,
+            createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
             publishStatus: 0,
@@ -223,7 +223,7 @@ function RelesEditor({
             articleLink: data.articleLink,
             commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
             publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
-            createUser: UserById.kgUserId,
+            createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
             publishStatus: 0,
@@ -568,7 +568,7 @@ function RelesEditor({
       articleLink: data.articleLink,
       commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
       publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
-      createUser: UserById.kgUserId != null ? UserById.kgUserId : null,
+      createUser: data.createUser,
       sysUser: merId,
       bonusStatus: parseInt(data.bonusStatus),
       publishStatus: 0,
@@ -960,10 +960,17 @@ function RelesEditor({
         label="发布人"
         extra='注：若该文章为用户发布，则此处不可更改'
       >
-
-        <Input style={{ width: '20%', marginRight: 20 + 'px' }} onChange={createUserValue} value={UserById.kgUserName == null ? "" : UserById.kgUserName} disabled={true} />
-
-        {(UserById.kgUserId == null || UserById.kgUserId == "") ? <a style={{ marginRight: 40 + 'px' }} onClick={showUser} >关联前台用户</a> : null}
+        {getFieldDecorator('createUser', {
+          rules: [
+            { required: true, message: "请选择关联账户", },
+          ],
+        })(
+          <Select placeholder="请选择前台账号" style={{width:"20%"}}>
+            {getRelUserList&&getRelUserList.map((item,index)=>
+              <Option value={item.kgUserId+""} key={index}>{item.kgUsername}</Option>
+              )}
+          </Select>
+          )}
       </FormItem>
       <FormItem
         {...formItemLayout}

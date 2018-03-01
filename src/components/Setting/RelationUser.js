@@ -85,7 +85,7 @@ const RelationModal = ({
 					{getFieldDecorator('kgId', {
 						initialValue: '',
 						rules: [
-							{required: true, message: '请输入正确手机号',pattern:/^1[3|4|5|8][0-9]\d{4,8}$/},
+							{required: true, message: '请输入正确手机号',pattern:/^1[3|4|5|7|8][0-9]\d{4,8}$/},
 						],
 					})(
 						<Input type="text" onChange={handleBlur}/>
