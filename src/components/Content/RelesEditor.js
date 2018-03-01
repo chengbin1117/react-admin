@@ -44,7 +44,7 @@ const tailFormItemLayout = {
   },
 };
 
-let artSorce = 0;
+// let artSorce = 0;
 let timeDis = true;
 let sec = 0;
 let titleNum = 0;
@@ -64,6 +64,7 @@ function RelesEditor({
   firstC,
   secondC,
   saveId,
+  artSorce,
   form: {
     getFieldDecorator,
     validateFields,
@@ -73,7 +74,7 @@ function RelesEditor({
   },
 }) {
   let merId = localStorage.getItem("userId");
-  //console.log(titleNum,autoSaveInterval,saveId,artSorce)
+  console.log(artSorce)
   const options = ColumnList;
   const imgArr=[imgx,imgy,imgz];  //默认背景图；
   //console.log(UserById.kgUserName)
@@ -273,7 +274,13 @@ function RelesEditor({
   }
   function typeChange(e) {
     //console.log(e.target.value)
-    artSorce = parseInt(e.target.value)
+    //artSorce = parseInt(e.target.value)
+    dispatch({
+      type:"content/typeChange",
+      payload:{
+        artSorce:parseInt(e.target.value)
+      }
+    })
   }
   const RelationModalProps = {
     visible: RelationVisible,
