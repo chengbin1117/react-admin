@@ -81,6 +81,7 @@ import styles from '../components/common.css';
               'link',  // 插入链接
               'table',  // 表格
               'image',
+              'video',  // 插入视频
               'undo',
               'redo',
         ];

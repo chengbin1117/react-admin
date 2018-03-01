@@ -41,7 +41,8 @@ export default {
     secondC:{},
     firstC:[],
     saveId:0,
-    preList:{}
+    preList:{},
+    artSorce:0
   },
 
   subscriptions: {
@@ -86,7 +87,13 @@ export default {
               }
             })
             dispatch({
-              type:'setting/getRelUser',
+              type:"typeChange",
+              payload:{
+                artSorce:0
+              }
+            })
+            dispatch({
+               type:'setting/getRelUser',
               payload:{
                 sysUserId:search.userId
               }
@@ -1332,6 +1339,15 @@ export default {
         }
       }
     },
+    *typeChange({ payload }, {call , put}) {
+     
+      yield put({
+        type:"typeChangeSuccess",
+        payload:{
+          artSorce:payload.artSorce
+        }
+      })
+    },
   },
   reducers: {  
     showLoading(state, action) { 
@@ -1570,6 +1586,12 @@ export default {
       return {...state,
         ...action.payload,
         columnEditor: false
+      };
+    },
+    typeChangeSuccess(state, action) {
+      //console.log("111",action.payload)
+      return {...state,
+        ...action.payload,
       };
     },
     showColumnChildModal(state, action) {
