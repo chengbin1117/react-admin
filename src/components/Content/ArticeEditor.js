@@ -724,6 +724,20 @@ function StatusonChange(e) {
                      
                   </div> 
               </FormItem>
+              {ArticleList&&ArticleList.articleType==null?<FormItem
+                      {...formItemLayout}
+                      label="类别"
+                    >
+                      {getFieldDecorator('type',{
+                        rules: [{ required: true, message: '请选择类别!' },
+                       ],
+                      })(
+                        <RadioGroup onChange={typeChange}>
+                          <Radio value="1">原创</Radio>
+                          <Radio value="2">转载</Radio>
+                        </RadioGroup>
+                      )}
+              </FormItem>:
               <FormItem
                       {...formItemLayout}
                       label="类别"
@@ -739,6 +753,8 @@ function StatusonChange(e) {
                         </RadioGroup>
                       )}
               </FormItem>
+             }
+              
               {ArticleList&&ArticleList.articleType ==2?<FormItem
                       {...formItemLayout}
                       label="文章来源"
@@ -924,7 +940,7 @@ function StatusonChange(e) {
                 {(ArticleList.sysUser == null&&ArticleList.createUser!=null)&&<FormItem
                 {...formItemLayout}
                 label="发布人"
-                extra='注：若该文章为用户发布，则此处不可更改'
+                extra='注：若该文章为用户发布，则此处不可更改,如没有关联的账户,请进入系统账号管理关联'
               >
                 {getFieldDecorator('createUser', {
                   initialValue:ArticleList.username,
@@ -938,7 +954,7 @@ function StatusonChange(e) {
               {(ArticleList.sysUser!=null&&ArticleList.createUser==null)&&<FormItem
                 {...formItemLayout}
                 label="发布人"
-                extra='注：若该文章为用户发布，则此处不可更改'
+                extra='注：若该文章为用户发布，则此处不可更改,如没有关联的账户,请进入系统账号管理关联'
               >
                 {getFieldDecorator('createUser', {
                   rules: [

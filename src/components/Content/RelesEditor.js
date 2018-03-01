@@ -161,16 +161,16 @@ function RelesEditor({
       var tagsName = "";
       if (data.tag1 == undefined) {
         tagsName = "";
-      } else if (data.tag1 == !undefined && data.tag2 == undefined) {
+      } else if (data.tag1 !==undefined && data.tag2 == undefined&&data.tag3 ==undefined) {
         tagsName = data.tag1;
-      } else if (data.tag1 == !undefined && data.tag2 !== undefined && data.tag3 == undefined) {
+      } else if (data.tag1 !=undefined && data.tag2 != undefined && data.tag3 == undefined) {
         tagsName = data.tag1 + ',' + data.tag2
       }
-      else if (data.tag4 == undefined && data.tag5 == undefined) {
+      else if (data.tag4 == undefined && data.tag5 == undefined&&data.tag1 !=undefined && data.tag2 != undefined && data.tag3 !=undefined) {
         tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
-      } else if (data.tag4 != undefined && data.tag5 == undefined) {
+      } else if (data.tag4 != undefined && data.tag5 == undefined&&data.tag1 !=undefined && data.tag2 != undefined && data.tag3 !=undefined) {
         tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4
-      } else if (data.tag4 != undefined && data.tag5 != undefined) {
+      } else if (data.tag4 != undefined && data.tag5 != undefined&&data.tag1 !=undefined && data.tag2 != undefined && data.tag3 !=undefined) {
         tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
       }
       //console.log(data)

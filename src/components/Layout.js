@@ -112,6 +112,11 @@ class LayoutContainer extends React.Component {
           second= "实名认证管理";
           third="";
           four = "";
+      }else if(path =="/user/platformReward"){
+          first= "首页";
+          second= "平台奖励管理";
+          third="";
+          four = "";
       }else if(path =="/user/user_data"){
           first= "首页";
           second= "用户管理";

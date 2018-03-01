@@ -27,6 +27,7 @@ import realName from './routes/User_realname';
 import RewardDetails from './routes/RewardDetails';
 import InviteRecord from './routes/InviteRecord';
 import Master from './routes/Master';
+import PlatformReward from './routes/PlatformReward';
 
 //日志
 import Log from './routes/Log';
@@ -109,6 +110,7 @@ function RouterConfig({ history }) {
           <Route path="/user/reward" exact component={RewardDetails}/>
           <Route path="/user/invite" exact component={InviteRecord}/>
           <Route path="/user/master" exact component={Master}/>
+          <Route path="/user/platformReward" exact component={PlatformReward}/>
           <Route path="/user/user_login" exact component={UserLogin} />
           <Route path="/user/user_info" exact component={UserInfo} />
           <Route path="/user/realName" exact component={realName} />
