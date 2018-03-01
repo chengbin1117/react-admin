@@ -30,10 +30,10 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
+  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
   //console.log(ColumnList)
   const options = ColumnList;
-
+  //const {getRelUserList} =setting;
   const ArticleEditorProps = {
     ColumnList,
     firstC,
@@ -46,20 +46,9 @@ function Release_article({location,dispatch,router,content,setting}) {
     setting,
     saveId,
     location,
+    artSorce,
     handlsearch(values){
        
-        //var ImgSrc = localStorage.getItem("img");
-        var Html = localStorage.getItem("html");
-        var Text = localStorage.getItem("text");
-        //console.log(Html)
-       
-        
-        if(Text == '') {
-          message.warn('请输入正文')
-          return false
-        }
-       // console.log(values)
-        
     },
     editorText(h,t){
         text  = t;
