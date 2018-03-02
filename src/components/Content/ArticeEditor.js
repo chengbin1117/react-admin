@@ -666,7 +666,7 @@ function StatusonChange(e) {
                           validator:tagValue1
                         }],
                       })(
-                        <Input style={{width:'120px',marginRight:'50px'}} />
+                        <Input style={{width: '140px',marginRight:'50px'}} />
                       )}
                       
                   </FormItem>
@@ -683,7 +683,7 @@ function StatusonChange(e) {
                           validator:tagValue2
                         }],
                       })(
-                        <Input style={{width:'120px'}}/>
+                        <Input style={{width: '140px',}}/>
                       )}
                       
                   </FormItem>
@@ -700,7 +700,7 @@ function StatusonChange(e) {
                           validator:tagValue3
                         }],
                       })(
-                        <Input style={{width:'120px'}}/>
+                        <Input style={{width: '140px',}}/>
                       )}
                       
                   </FormItem>
@@ -713,7 +713,7 @@ function StatusonChange(e) {
                             validator:tagValue4
                         }],
                       })(
-                        <Input style={{width:'120px'}}/>
+                        <Input style={{width: '140px',}}/>
                       )}
                       
                   </FormItem>
@@ -726,7 +726,7 @@ function StatusonChange(e) {
                             validator:tagValue5
                         }],
                       })(
-                        <Input style={{width:'120px'}}/>
+                        <Input style={{width: '140px',}}/>
                       )}
                      
                   </FormItem>

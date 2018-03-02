@@ -711,7 +711,7 @@ function RelesEditor({
                   validator: tagValue1
                 }],
             })(
-              <Input style={{ width: '120px', marginRight: '20px' }} />
+              <Input style={{ width: '140px', marginRight: '20px' }} />
               )}
 
           </FormItem>
@@ -728,7 +728,7 @@ function RelesEditor({
                   validator: tagValue2
                 }],
             })(
-              <Input style={{ width: '120px' }} />
+              <Input style={{ width: '140px',}} />
               )}
 
           </FormItem>
@@ -743,14 +743,10 @@ function RelesEditor({
 
                   message: '请输入标签!',
                 }, {
-                  min: 2,
-                  max: 5,
-                  message: '请输入2-5个字符!',
-                }, {
                   validator: tagValue3
                 }],
             })(
-              <Input style={{ width: '120px' }} />
+              <Input style={{ width: '140px',}} />
               )}
 
           </FormItem>
@@ -760,14 +756,12 @@ function RelesEditor({
             {getFieldDecorator('tag4', {
 
               rules: [{
-                required: false, min: 2,
-                max: 5,
-                message: '请输入2-5个字符!'
+                required: false
               }, {
                 validator: tagValue4
               }],
             })(
-              <Input style={{ width: '120px' }} />
+              <Input style={{ width: '140px', }} />
               )}
 
           </FormItem>
@@ -778,14 +772,12 @@ function RelesEditor({
 
               rules: [{
                 required: false,
-                min: 2,
-                max: 5,
-                message: '请输入2-5个字符!'
+
               }, {
                 validator: tagValue5
               }],
             })(
-              <Input style={{ width: '120px' }} />
+              <Input style={{ width: '140px', }} />
               )}
 
           </FormItem>
