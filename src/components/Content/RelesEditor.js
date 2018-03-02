@@ -410,8 +410,20 @@ function RelesEditor({
   //console.log(secondC[sec])
   var Item = ['1', '2', '3', '4', '5']
   function tagValue1(rule, value, callback) {
-    console.log(value)
     var arr = [];
+    var len = 0 ;
+    for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+    if((len>16||len<2)&&value != ""){
+      callback("请输入2-16个字符！")
+    }
     const data = { ...getFieldsValue(['tag2', 'tag3', 'tag4', 'tag5']) }
     arr.push(data.tag2, data.tag3, data.tag4, data.tag5)
     if (value == undefined || value == "") {
@@ -429,6 +441,19 @@ function RelesEditor({
   function tagValue2(rule, value, callback) {
     // console.log(value)
     var arr = [];
+    var len = 0 ;
+    for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+    if((len>16||len<2)&&value != ""){
+      callback("请输入2-16个字符！")
+    }
     const data = { ...getFieldsValue(['tag1', 'tag3', 'tag4', 'tag5']) }
     arr.push(data.tag1, data.tag3, data.tag4, data.tag5)
     if (value == undefined || value == "") {
@@ -444,8 +469,20 @@ function RelesEditor({
     }
   }
   function tagValue3(rule, value, callback) {
-    console.log(value)
     var arr = [];
+    var len = 0 ;
+    for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+    if((len>16||len<2)&&value != ""){
+      callback("请输入2-16个字符！")
+    }
     const data = { ...getFieldsValue(['tag1', 'tag2', 'tag4', 'tag5']) }
     arr.push(data.tag1, data.tag2, data.tag4, data.tag5)
     if (value == undefined || value == "") {
@@ -463,6 +500,19 @@ function RelesEditor({
   function tagValue4(rule, value, callback) {
 
     var arr = [];
+    var len = 0 ;
+    for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+    if((len>16||len<2)&&value != ""){
+      callback("请输入2-16个字符！")
+    }
     const data = { ...getFieldsValue(['tag1', 'tag3', 'tag2', 'tag5']) }
     arr.push(data.tag1, data.tag2, data.tag3, data.tag5)
     if (value == undefined || value == "") {
@@ -480,8 +530,20 @@ function RelesEditor({
 
   }
   function tagValue5(rule, value, callback) {
-    console.log(value)
     var arr = [];
+    var len = 0 ;
+    for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+    if((len>16||len<2)&&value != ""){
+      callback("请输入2-16个字符！")
+    }
     const data = { ...getFieldsValue(['tag1', 'tag3', 'tag4', 'tag2']) }
     arr.push(data.tag1, data.tag2, data.tag4, data.tag3, )
     if (value == undefined || value == "") {
@@ -538,7 +600,7 @@ function RelesEditor({
     }, 10000);
   }
   function aoSave(id) {
-    console.log("123", UserById.kgUserId)
+    //console.log("123", UserById.kgUserId)
     window.clearInterval(autoSaveInterval);
     const data = { ...getFieldsValue() };
     if (data.articleTitle == "" || data.articleTitle == undefined) {
@@ -646,10 +708,6 @@ function RelesEditor({
                   message: '请输入标签!',
 
                 }, {
-                  min: 2,
-                  max: 5,
-                  message: '请输入2-5个字符!',
-                }, {
                   validator: tagValue1
                 }],
             })(
@@ -666,10 +724,6 @@ function RelesEditor({
                 {
                   required: true,
                   message: '请输入标签!',
-                }, {
-                  min: 2,
-                  max: 5,
-                  message: '请输入2-5个字符!',
                 }, {
                   validator: tagValue2
                 }],
