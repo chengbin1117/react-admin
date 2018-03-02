@@ -36,7 +36,8 @@ function UserAdmin({location,dispatch,user,router,}) {
         sm: { span: 3 },
       },
     };
-    //console.log((userInfo.profile.otherPic).split(","))
+
+    
 	class DynamicRule extends React.Component {
 	  state = {
 	    checkNick: false,
@@ -130,7 +131,13 @@ function UserAdmin({location,dispatch,user,router,}) {
 						</tr>
 						<tr>
 						    <td>手机号</td><td>{userInfo.userMobile?userInfo.userMobile:"——"}</td>
-						    <td>用户角色</td><td>{userInfo.userRole?userInfo.userRoleDisplay:"——"}</td>
+						    <td>用户角色</td><td>
+						    	{(userInfo&&userInfo.applyRole==1)&&"普通用户"}
+						    	{(userInfo&&userInfo.applyRole==2)&&"个人"}
+						    	{(userInfo&&userInfo.applyRole==3)&&"媒体"}
+						    	{(userInfo&&userInfo.applyRole==4)&&"企业"}
+						    	{(userInfo&&userInfo.applyRole==5)&&"组织"}
+						     </td>
 						</tr>
 						<tr>
 						    <td>用户级别</td><td>{userInfo.userLevelDisplay?userInfo.userLevelDisplay:"——"}</td>
