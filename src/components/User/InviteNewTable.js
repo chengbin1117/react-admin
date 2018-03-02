@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editorItem,deleteItem,setShow,onShowModal,autidShow}){
+function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editorItem,deleteItem,setShow,showModal,autidShow}){
 
   const columns = [
       {
@@ -58,7 +58,11 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
         dataIndex: 'action',
         render: (text, record) => (
         <span>
-            <a onClick={()=>userData(record)}>解冻</a>
+            <Popconfirm placement="topRight" title="确定解冻吗？" onConfirm={confirm} okText="确定" cancelText="取消">
+              <a>解冻</a>
+            </Popconfirm>
+            <Divider type="vertical" />
+            <a onClick={()=>showModal(record)}>冻结</a>
             <Divider type="vertical" />
             <a onClick={()=>userData(record)}>查看详细信息</a>
             <Divider type="vertical" />

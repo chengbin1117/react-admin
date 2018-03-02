@@ -196,7 +196,7 @@ const UserAdmin = ({
 			    const hasSelected = selectedRowKeys.length > 0;
 			    return (
 			      <div>
-			        <Table bordered columns={columns} dataSource={userlist} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} 
+			        <Table columns={columns} dataSource={userlist} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} 
 			        scroll={{ x:1900 }} 
 			        />
 	      	 <div className="table-operations" >

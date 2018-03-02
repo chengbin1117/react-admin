@@ -809,6 +809,20 @@ export default {
         ...state,
         ...action.payload
       };
+    },  
+    showFrozenModal(state, action) {
+      return {
+        ...state,
+        FrozenVisible: true,
+        ...action.payload
+      };
+    },
+    hideFrozenModal(state, action) {
+      return {
+        ...state,
+        FrozenVisible: false,
+        ...action.payload
+      };
     },
   },
 

@@ -13,9 +13,7 @@ import {
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
 import InviteNewTable from '../components/User/InviteNewTable';
-import ExamineModal from '../components/User/ExamineModal';
-import SetHotuser from '../components/User/SetHotuser';
-import LockModal from '../components/User/LockModal';
+import FrozenModal from '../components/User/FrozenModal';
 import { timeFormat, GetRequest } from '../services/common';
 import styles from './Record.css'
 import { Form, Row, Col, Input, Button, DatePicker, Icon, Table, Pagination, Modal, Radio, Select, message } from 'antd';
@@ -27,7 +25,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({ location, dispatch, user, router, }) {
-	const { ExmianVisible, userlist, userInfo, selectList, HotVisible, LockVisible, loading, totalNumber, currentPage } = user;
+	const { FrozenVisible,loading, totalNumber, currentPage } = user;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
@@ -162,6 +160,25 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		}
 	}
 
+
+	//奖励列表
+	const InviteNewTableProps = {
+		showModal(){
+			dispatch({
+				type:"user/showFrozenModal"
+			})
+		}
+	}
+
+	//冻结模态框
+	const FrozenModalProps = {
+		visible:FrozenVisible,
+		onCancel(){
+			dispatch({
+				type:"user/hideFrozenModal"
+			})
+		}
+	}
 	//奖励说明
 	function RweInfo(){
 		Modal.info({
@@ -193,7 +210,8 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<a  className = {styles.activeColor} onClick={RweInfo}>奖励说明</a>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
-			<InviteNewTable />
+			<InviteNewTable {...InviteNewTableProps}/>
+			<FrozenModal {...FrozenModalProps}/>
 		</div>
 
 	);
