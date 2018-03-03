@@ -473,23 +473,23 @@ function StatusonChange(e) {
     //console.log(value)
       var arr=[];
       var len = 0 ;
-      for (var i = 0; i < value.length; i++) {
-                  var a = value.charAt(i);
-                  if (a.match(/[^\x00-\xff]/ig) != null) {
-                      len += 2;
-                  }
-                  else {
-                      len += 1;
-                  }
-              }
-      if((len>16||len<2)&&value != ""){
-        callback("请输入2-16个字符！")
-      }
       const data = {...getFieldsValue(['tag2','tag3','tag4','tag5'])}
       arr.push(data.tag2,data.tag3,data.tag4,data.tag5)
       if(value==undefined||value==""){
         callback()
       }else{
+        for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+        if((len>16||len<2)&&value != ""){
+          callback("请输入2-16个字符！")
+        }
         for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
@@ -503,23 +503,24 @@ function StatusonChange(e) {
     //console.log(value)
       var arr=[];
       var len = 0 ;
-      for (var i = 0; i < value.length; i++) {
-                  var a = value.charAt(i);
-                  if (a.match(/[^\x00-\xff]/ig) != null) {
-                      len += 2;
-                  }
-                  else {
-                      len += 1;
-                  }
-              }
-      if((len>16||len<2)&&value != ""){
-        callback("请输入2-16个字符！")
-      }
+
       const data = {...getFieldsValue(['tag1','tag3','tag4','tag5'])}
       arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
       if(value==undefined||value==""){
         callback()
       }else{
+        for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+        if((len>16||len<2)&&value != ""){
+          callback("请输入2-16个字符！")
+        }
         for(var i in arr){
         if(value==arr[i]){
            callback("标签不能重复")
@@ -532,23 +533,23 @@ function StatusonChange(e) {
     //console.log(value)
        var arr=[];
       var len = 0 ;
-      for (var i = 0; i < value.length; i++) {
-                  var a = value.charAt(i);
-                  if (a.match(/[^\x00-\xff]/ig) != null) {
-                      len += 2;
-                  }
-                  else {
-                      len += 1;
-                  }
-              }
-      if((len>16||len<2)&&value != ""){
-        callback("请输入2-16个字符！")
-      }
       const data = {...getFieldsValue(['tag1','tag2','tag4','tag5'])}
       arr.push(data.tag1,data.tag3,data.tag4,data.tag5)
       if(value==undefined||value==""){
         callback()
       }else{
+        for (var i = 0; i < value.length; i++) {
+                var a = value.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null) {
+                    len += 2;
+                }
+                else {
+                    len += 1;
+                }
+            }
+        if((len>16||len<2)&&value != ""){
+          callback("请输入2-16个字符！")
+        }
         for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
@@ -562,7 +563,13 @@ function StatusonChange(e) {
     //console.log(value)
     var arr=[];
     var len = 0 ;
-    for (var i = 0; i < value.length; i++) {
+    
+      const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
+      arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for (var i = 0; i < value.length; i++) {
                 var a = value.charAt(i);
                 if (a.match(/[^\x00-\xff]/ig) != null) {
                     len += 2;
@@ -571,14 +578,9 @@ function StatusonChange(e) {
                     len += 1;
                 }
             }
-    if((len>16||len<2)&&value != ""){
-      callback("请输入2-16个字符！")
-    }
-      const data = {...getFieldsValue(['tag1','tag3','tag2','tag5'])}
-      arr.push(data.tag1,data.tag2,data.tag3,data.tag5)
-      if(value==undefined||value==""){
-        callback()
-      }else{
+        if((len>16||len<2)&&value != ""){
+          callback("请输入2-16个字符！")
+        }
         for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
@@ -592,7 +594,13 @@ function StatusonChange(e) {
     //console.log(value)
     var arr=[];
     var len = 0 ;
-    for (var i = 0; i < value.length; i++) {
+   
+      const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
+      arr.push(data.tag1,data.tag2,data.tag4,data.tag5)
+      if(value==undefined||value==""){
+        callback()
+      }else{
+        for (var i = 0; i < value.length; i++) {
                 var a = value.charAt(i);
                 if (a.match(/[^\x00-\xff]/ig) != null) {
                     len += 2;
@@ -601,14 +609,9 @@ function StatusonChange(e) {
                     len += 1;
                 }
             }
-    if((len>16||len<2)&&value != ""){
-      callback("请输入2-16个字符！")
-    }
-      const data = {...getFieldsValue(['tag1','tag3','tag4','tag2'])}
-      arr.push(data.tag1,data.tag2,data.tag4,data.tag5)
-      if(value==undefined||value==""){
-        callback()
-      }else{
+        if((len>16||len<2)&&value != ""){
+          callback("请输入2-16个字符！")
+        }
         for(var i in arr){
         if(value==arr[i]){
           //console.log(value,arr[i])
