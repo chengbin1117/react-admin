@@ -63,7 +63,7 @@ const RealName = ({
 		  key: 'IdCard',
 		  render: (text, record) => (
 		    <div>
-		    	<p onClick={()=>showIdCard(record)}><img src={uploadUrl+record.idcardFront} style={{width:100,height:100}}/></p>
+		    	<p onClick={()=>showIdCard(record)}><img src={uploadUrl+record.idcardFront} style={{width:50,height:50}}/></p>
 		    </div>
 		    )
 		}, {
@@ -72,8 +72,9 @@ const RealName = ({
 		  key: 'info',
 		  render: (text, record) => (
 		    <div>
-		    	<p>{record.realname}</p>
-         		<p>{record.idcardNo}</p>
+		    	{record.realname}
+		    	<br />
+         		{record.idcardNo}
 		    </div>
 		  ),
 		}, {
@@ -168,6 +169,7 @@ const RealName = ({
 	return (
 		<div className = {style_common.contentDiv}>
 	      <div className={style_search.search_result}>
+	        <p>当前共有实名认证用户：{total}</p>
 	      	<TableList />
 	      </div>
 	    </div>

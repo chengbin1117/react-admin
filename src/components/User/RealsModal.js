@@ -35,6 +35,7 @@ const RealsModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -63,6 +64,9 @@ const RealsModal = ({
 		value =e.target.value;
 		
 	}
+	function afterClose(){
+		resetFields()
+	}
 	const modalOpts = {
 		title: selectList.status!=1?'审核处理':"取消通过",
 		visible,
@@ -70,6 +74,7 @@ const RealsModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		width:600,
+		afterClose:afterClose,
 	};
 	
 	return (

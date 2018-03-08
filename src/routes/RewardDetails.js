@@ -22,16 +22,33 @@ const Option = Select.Option;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
-function UserAdmin({ location, dispatch, user, router, }) {
+function UserAdmin({ location, dispatch, user, router,finance }) {
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
 	
+	const {AccountList,loading,currentPage,totalNumber} = finance;
+	const urlSelect = GetRequest(location.search);
+	
+
+	//列表
+	const RewardTableProps = {
+		data:AccountList,
+		loading:loading,
+		total:totalNumber,
+		currentPage:currentPage,
+		handelchande(page){
+			const search =GetRequest(location.search);
+			dispatch(routerRedux.push('/user/reward?page='+page+'&mobile='+search.mobile+"&userName="+search.userName))
+		}
+	}
 	return (
-		<Card title={<div><h2>王小二奖励明细&emsp;&emsp;&emsp;奖励总额123TV</h2></div>} bordered={false}>
-			<RewardTable />
+		<Card title={<div><h2><span style={{color:"#1DA57A"}}>{urlSelect&&urlSelect.userName}</span>奖励明细&emsp;&emsp;&emsp;
+		奖励总额：{(AccountList&&AccountList.length>0)?AccountList[0].allAmount:0}TV</h2></div>} 
+		bordered={false}>
+			<RewardTable {...RewardTableProps}/>
 		</Card>
 
 	);
@@ -42,10 +59,10 @@ UserAdmin.propTypes = {
 };
 
 function mapStateToProps({
-	user
+	user,finance
 }) {
 	return {
-		user
+		user,finance
 	};
 }
 

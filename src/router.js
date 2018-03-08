@@ -7,6 +7,7 @@ import React, {
   IndexRoute,
   Link,
 } from 'dva/router';*/
+import './routes/font.less';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 // /import { Router, Route, Switch,IndexRoute} from 'dva/router';

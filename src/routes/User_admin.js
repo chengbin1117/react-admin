@@ -143,12 +143,13 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			}
 		},
 		conOk(user) {
-			console.log(user)
+			//console.log(user)
 			dispatch({
 				type: 'user/lockUser',
 				payload: {
 					userId: user.userId,
 					lockUserId: merId,
+					search:location.search
 				}
 			});
 
@@ -164,6 +165,58 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		},
 		userData(record) {
 			dispatch(routerRedux.push('/user/user_data?userId=' + record.userId))
+		},
+		sorterUserList(sorter){
+			console.log(sorter)
+			const search = GetRequest(location.search);
+			let orderByClause = ""
+			if(sorter.field=="articleNum"){
+				if(sorter.order=="descend"){
+					orderByClause = "article_num desc"
+				}else{
+					orderByClause = "article_num asc"
+				}
+				
+			}
+			if(sorter.field=="commentNum"){
+				if(sorter.order=="descend"){
+					orderByClause = "comment_num desc"
+				}else{
+					orderByClause = "comment_num asc"
+				}
+			}
+			if(sorter.field=="collectNum"){
+				if(sorter.order=="descend"){
+					orderByClause = "collect_num desc"
+				}else{
+					orderByClause = "collect_num asc"
+				}
+			}
+			if(sorter.field=="shareNum"){
+				if(sorter.order=="descend"){
+					orderByClause = "share_num desc"
+				}else{
+					orderByClause = "share_num asc"
+				}
+			}
+
+			dispatch(routerRedux.push('/user/user_admin?page=1' +
+						"&userId=" + search.userId + "&userEmail=" + search.userEmail + "&userMobile=" + search.userMobile +
+						"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
+						"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&orderByClause='+orderByClause
+			))	
+			
+
+			// if(sorter.field=="commentNum"&&sorter.){
+			// 	dispatch({
+			// 		type:"user/getUserList",
+			// 		payload:{
+			// 			currentPage:1,
+
+			// 		}
+			// 	})
+			// }
+			
 		}
 	}
 	const ExamineModalProps = {
@@ -183,7 +236,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						userId: list,
 						auditStatus: parseInt(data.radio),
 						auditUserId: merId,
-
+						search:location.search
 					}
 				})
 			} else {
@@ -193,7 +246,8 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						userId: list,
 						auditStatus: parseInt(data.radio),
 						auditUserId: merId,
-						refuseReason: data.text
+						refuseReason: data.text,
+						search:location.search
 					}
 				})
 			}
@@ -215,7 +269,8 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				type: 'user/setHotUser',
 				payload: {
 					userId: user.userId,
-					hotUser: parseInt(b.radio) == 2 ? false : true
+					hotUser: parseInt(b.radio) == 2 ? false : true,
+					search:location.search
 				}
 
 			})

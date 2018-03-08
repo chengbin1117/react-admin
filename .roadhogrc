@@ -5,24 +5,16 @@
       "extraBabelPlugins": [
         "dva-hmr",
         "transform-runtime",
-        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
+        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
       ]
     },
     "production": {
       "extraBabelPlugins": [
         "transform-runtime",
-        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
+        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
       ]
-    }
-  },
-  "proxy": {
-      "/api": {
-              "target": "http://172.16.1.108:8081/",
-              "changeOrigin": true,
-              "pathRewrite": { "^/api" : "" }
-              
-       }
-  },
-  "theme": "./src/theme.js"
+    },
+    "ignoreMomentLocale": true
+  }
  
 }

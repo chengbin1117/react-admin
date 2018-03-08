@@ -28,6 +28,13 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
+
+	const { InviteBonusList,InviteUserList,currentPage,loading,total } =user;
+	let userData = {};
+	if(InviteBonusList.length>0){
+		userData=InviteBonusList[0]
+	}
+	const urlSelect = GetRequest(location.search);
 	function getFields(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
@@ -46,7 +53,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='昵称'>
-						{getFieldDecorator('email')(
+						{getFieldDecorator('userName')(
 							<Input placeholder="请输入昵称" />
 						)}
 					</FormItem>
@@ -76,17 +83,6 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='级别'>
-						{getFieldDecorator('auditStatus')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="0">审核中</Option>
-								<Option value="1">通过</Option>
-								<Option value="2">不通过</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='注册时间'>
 						{getFieldDecorator('time')(
 							<RangePicker />
@@ -102,32 +98,91 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	//搜索
 	function handlsearch(values) {
 		if (values.time != undefined) {
-			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
+			dispatch(routerRedux.push('/user/invite?page=1' +'&inviteUserId='+urlSelect.inviteUserId+ "&userId=" + values.Id +
+				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
 				"&createDateStart=" + timeFormat(new Date(values.time[0])) +
 				"&createDateEnd=" + timeFormat(new Date(values.time[1]))
 			))
 		} else {
-			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
+			dispatch(routerRedux.push('/user/invite?page=1'  +'&inviteUserId='+urlSelect.inviteUserId+ "&userId=" + values.Id +
+				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role
 			))
 		}
+	}
+
+	//邀新记录列表
+
+	const InviteTableProps = {
+		data:InviteUserList,
+		loading:loading,
+		currentPage:currentPage,
+		total:total,
+		handelchande(page){
+			const values =GetRequest(location.search);
+			dispatch(routerRedux.push('/user/invite?page='+page+'&inviteUserId='+values.inviteUserId+ "&userId=" + values.userId +
+				"&userName=" + values.userName + "&userMobile=" + values.userMobile + "&userRole=" + values.userRole +
+				"&createDateStart=" + values.createDateStart+
+				"&createDateEnd=" + values.createDateEnd
+
+
+			))
+		},
+		userData(record){
+			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
+		}
+	}
+
+	//审查
+	function inviteStatus(userData){
+		confirm({
+			title:"确认审查吗?",
+			onOk(){
+				dispatch({
+					type:"user/checkUser",
+					payload:{
+						userId:userData.userId,
+						auditUserId:merId
+					}
+				})
+			}
+		})
+	}
+	//冻结
+	function frozen(data){
+		confirm({
+			title:"确认冻结吗？",
+			onOk(){
+				dispatch({
+					type:"user/freezeUser",
+					payload:{
+						auditUserId:merId,
+						userId:data.userId,
+						bonusStatus:0,
+						bonusFreezeReason:data.bonusFreezeReason,
+						search:location.search
+					}	
+				})
+			}
+		})
+		
 	}
 	return (
 		<Card title={
 			<div>
-			    <span>王小二的邀新记录&emsp;&emsp;20人&emsp;<span style={{color:"#f00"}}>需审查</span></span>
+			    <span>{userData&&userData.userName}的邀新记录&emsp;&emsp;{total&&total}人&emsp;
+			        <span >{userData&&(userData.inviteStatus==0?"无需审查":<span style={{color:"#f00"}}>需审查</span>)}</span>
+			    </span>
 			    &emsp;
-			    <Button type="primary">确认审查</Button>
+			    {userData&&(userData.inviteStatus==1)&&<Button type="primary" onClick={()=>inviteStatus(userData)}>确认审查</Button>}
+			    
 			    &emsp;
-			    <Button type="primary">冻结</Button>
+			    {userData&&(userData.bonusStatus==1)&&<Button type="primary" onClick={()=>frozen(userData)}>冻结</Button>}
+			    
 			</div>} 
 			bordered={false}
 		>
 			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
-			<InviteTable />
+			<InviteTable {...InviteTableProps}/>
 		</Card>
 
 	);

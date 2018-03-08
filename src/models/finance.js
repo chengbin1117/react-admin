@@ -25,7 +25,8 @@ export default {
     AccountDiposit:[],
     selectList:{},
     BusinessType:[],
-    ActiveKey:'1'
+    ActiveKey:'1',
+    total:0
   },
 
   subscriptions: {
@@ -98,6 +99,22 @@ export default {
 
                   }
                 })
+            }
+            match = pathToRegexp('/user/reward').exec(location.pathname);
+
+            if (match) {
+              const search =GetRequest(location.search);
+              console.log(search)
+                dispatch({
+                  type: 'getAccount',
+                  payload: {
+                    currentPage:search.page,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    searchType:"bonus",
+                    pageSize:25,
+                  }
+                });
+                
             }
             match = pathToRegexp('/finance/recordTxb').exec(location.pathname);
 
@@ -228,7 +245,7 @@ export default {
         type: 'showLoading',
       });
       const { data } = yield call(getAccount, payload);
-    
+      //console.log(data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
             for (var i in res.data){
@@ -242,6 +259,7 @@ export default {
                 loading:false,
                 currentPage:res.currentPage,
                 totalNumber:res.totalNumber,
+                total:res.totalPage,
                 ActiveKey:"1"
               }
             }); 

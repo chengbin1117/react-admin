@@ -351,7 +351,7 @@ export default {
         *setKgUser({ payload }, {call , put}) {
           let merId =localStorage.getItem("userId");
           const { data } = yield call(setKgUser, payload);
-            console.log(data)
+           // console.log(data)
           if (data && data.code == 10000) {
             message.success('关联成功')
                yield put({
@@ -541,6 +541,12 @@ export default {
                   sysUserId:payload.sysUserId
                 }
               })
+              yield put({
+                type:'getSysUserList',
+                payload:{
+                  
+                }
+               })
           } else {
             if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);

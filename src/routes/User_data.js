@@ -119,29 +119,31 @@ function UserAdmin({location,dispatch,user,router,}) {
 	  }
 	}
 	const WrappedDynamicRule = Form.create()(DynamicRule);
-	function reward(){
-		dispatch(routerRedux.push('/user/reward'))
+	function reward(userInfo){
+
+		dispatch(routerRedux.push('/user/reward?page=1'+'&mobile='+userInfo.userMobile+"&userName="+userInfo.userName))
 	}
-	function invite(){
-		dispatch(routerRedux.push('/user/invite'))
+	function invite(userInfo){
+		dispatch(routerRedux.push('/user/invite?page=1'+'&inviteUserId='+userInfo.userId))
 	}
-	function master(){
-		dispatch(routerRedux.push('/user/master'))
+	function master(userInfo){
+		dispatch(routerRedux.push('/user/master?page=1'+'&inviteUserId='+userInfo.userId+"&name="+userInfo.userName))
 	}
 	return (
 			<Card>
 				<Card 
 				    title={<div>
-				    	<span style={{fontSize:24,fontWeight:'bold'}}>{userInfo&&userInfo.userName}基础信息</span>
-				    	&emsp;&emsp;&emsp;&emsp;
+				    	<span style={{fontSize:24,fontWeight:'bold'}}>{userInfo&&userInfo.userName}的基础信息</span>
+				    	
 				    	<span>
-						<Button type="primary" size="large" className={stytes.btnB} onClick={()=>reward()}>奖励明细</Button>
-						&emsp;&emsp;&emsp;&emsp;
-						<Button type="primary" size="large" className={stytes.btnB} onClick={()=>master()}>师徒关系</Button>
-						&emsp;&emsp;&emsp;&emsp;
-						<Button type="primary" size="large" className={stytes.btnB} onClick={()=>invite()}>邀新记录</Button>
+						<a className={stytes.btnn} style={{marginLeft:50}} onClick={()=>reward(userInfo)}>奖励明细</a>
+					
+						<a type="primary" size="large" className={stytes.btnn} onClick={()=>master(userInfo)}>师徒关系</a>
+					
+						<a type="primary" size="large" className={stytes.btnn} onClick={()=>invite(userInfo)}>邀新记录</a>
 					    </span>
-				    	</div>} bordered={false}
+				    	</div>} 
+				    	bordered={false}
 				  
 				>
 					<table className={stytes.table}>
@@ -173,8 +175,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 						    <td>审核时间</td><td>{userInfo.auditDate!=null?userInfo.auditDate:"——"}</td>
 						</tr>
 						<tr>
+						    <td>师傅</td><td>{userInfo.parentUser!=null?userInfo.parentUser:"——"}</td>
 						    <td>锁定状态</td><td>{userInfo.lockStatusDisplay!=null?userInfo.lockStatusDisplay:"——"}</td>
-						    <td></td><td>——</td>
 						</tr>
 						</tbody>
 					</table>
@@ -186,7 +188,10 @@ function UserAdmin({location,dispatch,user,router,}) {
 						<td>浏览数</td><td>{userInfo.bowseNum!=null?userInfo.bowseNum:"——"}</td></tr>
 						<tr><td>收藏数</td><td>{userInfo.collectNum!=null?userInfo.collectNum:"——"}</td>
 						<td>发文数</td><td>{userInfo.articleNum!=null?userInfo.articleNum:"——"}</td></tr>
-						<tr><td>分享数</td><td>{userInfo.shareNum!=null?userInfo.shareNum:"——"}</td>
+						<tr>
+							<td>分享数</td><td>{userInfo.shareNum!=null?userInfo.shareNum:"——"}
+							</td>
+							<td></td><td></td>
 						</tr>
 					</tbody>	
 					</table>

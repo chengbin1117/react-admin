@@ -9,40 +9,43 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editorItem,deleteItem,setShow,onShowModal,autidShow}){
-
+function StandardTable({data,loading,pageSize,handelchande,currentPage,total,editorItem,deleteItem,setShow,onShowModal,autidShow}){
+  //render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
   const columns = [
       {
         title: '奖励类型',
-        dataIndex: 'no',
+        dataIndex: 'businessTypeName',
       },
       {
         title: '奖励说明',
-        dataIndex: 'description',
+        dataIndex: 'flowDetail',
       },
       {
         title: '状态',
-        dataIndex: 'categoryName',
+        dataIndex: 'status',
         align: 'left',
       },{
         title: '时间',
-        dataIndex: 'updatedAt',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        dataIndex: 'flowDate',
+       
       },
       {
         title: '数量',
-        dataIndex: 'createdText',
+        dataIndex: 'amount',
       },
     ];
-    const list=[{
-      "no":1,
-      "description":"这是一段描述",
-      "callNo":"杨XX"
-    }]
+    // const list=[{
+    //   "no":1,
+    //   "description":"这是一段描述",
+    //   "callNo":"杨XX"
+    // }]
     const paginationProps = {
       showSizeChanger: false,
       showQuickJumper: true,
-      
+      total:total,
+      onChange:handelchande,
+      current:currentPage,
+      pageSize:25
     };
 
     class App extends React.Component {
@@ -75,7 +78,7 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
       
         return (
           <div>
-            <Table columns={columns} dataSource={list} rowKey={record => record.id} loading={loading} pagination = {paginationProps}/>
+            <Table columns={columns} dataSource={data} rowKey={record => record.flowId} loading={loading} pagination = {paginationProps}/>
           </div>
         );
       }

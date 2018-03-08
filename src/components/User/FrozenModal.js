@@ -35,6 +35,7 @@ const RealsModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -46,11 +47,14 @@ const RealsModal = ({
 				return;
 			}
 
-			const data = {...getFieldsValue()
+			const data = {
+				userId:item.userId,
+				bonusStatus:item.bonusStatus,
+				...getFieldsValue()
 
 			};
 			
-			onOk(data,selectList);
+			onOk(data);
 		   })
 	}
 
@@ -63,6 +67,9 @@ const RealsModal = ({
 		value =e.target.value;
 		
 	}
+	function afterClose(){
+		resetFields()
+	}
 	const modalOpts = {
 		title: "冻结",
 		visible,
@@ -70,7 +77,8 @@ const RealsModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		width:600,
-		okText:"冻结"
+		okText:"确认冻结",
+		afterClose:afterClose,
 	};
 	
 	return (
@@ -78,7 +86,7 @@ const RealsModal = ({
 		<Modal {...modalOpts} width='400px'>
 		<Form>
 		        <FormItem>
-		          {getFieldDecorator('text',{
+		          {getFieldDecorator('bonusFreezeReason',{
 		          	 rules: [{
 			              required: false, message: '请输入!',
 			            }], 

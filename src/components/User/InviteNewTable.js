@@ -9,64 +9,74 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editorItem,deleteItem,setShow,showModal,autidShow}){
+function StandardTable({data,loading,pageSize,handelchande,getUserData,currentPage,total,InviteUserListData,confirm,showModal}){
 
   const columns = [
       {
         title: '用户ID',
-        dataIndex: 'no',
+        dataIndex: 'userId',
       },
       {
         title: '昵称',
-        dataIndex: 'description',
+        dataIndex: 'userName',
       },
       {
         title: '手机号',
-        dataIndex: 'categoryName',
+        dataIndex: 'mobile',
         align: 'left',
       },{
         title: '角色',
-        dataIndex: 'dsa',
+        dataIndex: 'userRoleDisplay',
         align: 'left',
       },{
         title: '级别',
-        dataIndex: 'df',
+        dataIndex: 'levelDisplay',
         align: 'left',
       },{
         title: '邀新数量',
-        dataIndex: 'mf',
+        dataIndex: 'inviteCount',
         align: 'left',
       },{
         title: '邀新状态',
-        dataIndex: 'status',
+        dataIndex: 'inviteStatus',
         align: 'left',
+        render:(text,record)=>(
+          <span>
+            {text ==0 && "无需审查"}
+            {text ==1 && <span style={{color:"#f5222d"}}>需审查</span>}
+          </span>
+          )
       },,{
         title: '已获得奖励',
-        dataIndex: 'getRew',
+        dataIndex: 'getAmount',
         align: 'left',
       },{
         title: '奖励提取发起时间',
-        dataIndex: 'updatedAt',
+        dataIndex: 'bonusWithdrawDate',
         render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
         title: '奖励状态',
-        dataIndex: 'createdText',
+        dataIndex: 'bonusStatus',
+        render:(text,record)=>(
+          <span>
+            {text ==0 && <span style={{color:"#f5222d"}}>冻结</span>}
+            {text ==1 && <span style={{color:"#52c41a"}}>可用</span>}
+          </span>
+          )
       },
       {
         title: '操作',
         dataIndex: 'action',
         render: (text, record) => (
         <span>
-            <Popconfirm placement="topRight" title="确定解冻吗？" onConfirm={confirm} okText="确定" cancelText="取消">
+            {record.bonusStatus == 0?<Popconfirm placement="topRight" title="确定解冻吗？" onConfirm={()=>confirm(record)} okText="确定" cancelText="取消">
               <a>解冻</a>
-            </Popconfirm>
+            </Popconfirm>:  <a onClick={()=>showModal(record)}>冻结</a>}
             <Divider type="vertical" />
-            <a onClick={()=>showModal(record)}>冻结</a>
+            <a onClick={()=>getUserData(record)}>查看详细信息</a>
             <Divider type="vertical" />
-            <a onClick={()=>userData(record)}>查看详细信息</a>
-            <Divider type="vertical" />
-            <a onClick={()=>userData(record)}>查看邀新记录</a>
+            <a onClick={()=>InviteUserListData(record)}>查看邀新记录</a>
         </span>
       ),
       },
@@ -79,6 +89,10 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
     const paginationProps = {
       showSizeChanger: false,
       showQuickJumper: true,
+      total:total,
+      onChange:handelchande,
+      current:currentPage,
+      pageSize:25
       
     };
 
@@ -112,7 +126,7 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
       
         return (
           <div>
-            <Table columns={columns} dataSource={list} rowKey={record => record.id} loading={loading} pagination = {paginationProps}/>
+            <Table columns={columns} dataSource={data} rowKey={record => record.userId} loading={loading} pagination = {paginationProps}/>
           </div>
         );
       }

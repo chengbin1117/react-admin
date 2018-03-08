@@ -9,20 +9,20 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editorItem,deleteItem,setShow,onShowModal,autidShow}){
+function StandardTable({data,loading,pageSize,handelchande,currentPage,total,userData}){
 
   const columns = [
       {
         title: '用户ID',
-        dataIndex: 'id',
+        dataIndex: 'userId',
       },
       {
         title: '昵称',
-        dataIndex: 'description',
+        dataIndex: 'userName',
       },
       {
         title: '手机号',
-        dataIndex: 'categoryName',
+        dataIndex: 'userMobile',
         align: 'left',
       },{
         title: '角色',
@@ -30,15 +30,15 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
         align: 'left',
       },{
         title: '级别',
-        dataIndex: 'df',
+        dataIndex: 'userLevelDisplay',
         align: 'left',
       },{
         title: '注册时间',
-        dataIndex: 'updatedAt',
+        dataIndex: 'createDate',
         render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },{
         title: '最后活动时间',
-        dataIndex: 'updated',
+        dataIndex: 'applyColumnTime',
         render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
@@ -59,6 +59,11 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
     const paginationProps = {
       showSizeChanger: false,
       showQuickJumper: true,
+      total:total,
+      onChange:handelchande,
+      current:currentPage,
+      pageSize:25
+
       
     };
 
@@ -88,11 +93,9 @@ function StandardTable({data,loading,pageSize,changepage,pageNumber,total,editor
             selectedRowKeys,
             onChange: this.onSelectChange,
       };
-        const hasSelected = selectedRowKeys.length > 0;
-      
         return (
           <div>
-            <Table columns={columns} dataSource={list} rowKey={record => record.id} loading={loading} pagination = {paginationProps}/>
+            <Table columns={columns} dataSource={data} rowKey={record => record.userId} loading={loading} pagination = {paginationProps}/>
           </div>
         );
       }

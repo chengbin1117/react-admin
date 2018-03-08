@@ -126,7 +126,7 @@ const LockModal = ({
 		          size={size}
 		          value={state.number}
 		          onChange={this.handleNumberChange}
-							style={{ width: '60%'}}
+							style={{ width: '80%'}}
 							addonAfter={selectAfter}
 		        />
 		        
@@ -162,9 +162,9 @@ const LockModal = ({
 			            rules: [{ validator: this.checkPrice }],
 			          })(<PriceInput />)}
 			        </FormItem>
-			        <FormItem >
-			          <Button type="primary" htmlType="submit" size="large">确定</Button>
-			          <Button onClick={onCancel} size="large" style={{marginLeft:30}}>取消</Button>
+			        <FormItem style={{marginLeft:0+'px'}} >
+			          <Button type="primary" htmlType="submit" style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}}>确定</Button>
+			          <Button onClick={onCancel}  style={{marginLeft:10}} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}>取消</Button>
 			        </FormItem>
 			      </Form>
 			    );
