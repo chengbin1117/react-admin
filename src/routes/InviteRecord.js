@@ -169,6 +169,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	return (
 		<Card title={
 			<div>
+				
 			    <span>{userData&&userData.userName}的邀新记录&emsp;&emsp;{total&&total}人&emsp;
 			        <span >{userData&&(userData.inviteStatus==0?"无需审查":<span style={{color:"#f00"}}>需审查</span>)}</span>
 			    </span>

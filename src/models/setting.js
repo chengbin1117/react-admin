@@ -493,7 +493,7 @@ export default {
                yield put({
                 type:'getUserIdSuccess',
                 payload:{
-                  deskUserId:res.userId
+                  deskUserId:res,
                 }
                })
                
