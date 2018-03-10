@@ -67,7 +67,7 @@ const ManageModal = ({
     dataIndex: 'mobile',
     key: 'mobile',
   }, {
-    title: '用户名',
+    title: '专栏名',
     dataIndex: 'kgUsername',
     key: 'kgUsername',
   }, {
