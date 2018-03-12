@@ -145,7 +145,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet: data.radioG == "true" ? true : false,
+                publishSet: parseInt(data.radioG),
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
@@ -174,7 +174,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet: data.radioG == "true" ? true : false,
+                publishSet: parseInt(data.radioG),
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
@@ -207,7 +207,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet: data.radioG == "true" ? true : false,
+                publishSet: parseInt(data.radioG),
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
@@ -238,7 +238,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet: data.radioG == "true" ? true : false,
+                publishSet: parseInt(data.radioG),
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 sysUser: merId,
                 bonusStatus: parseInt(data.bonusStatus),
@@ -317,7 +317,7 @@ function ArticleEditor({
             displayStatus: parseInt(data.radioT),
             displayOrder: parseInt(data.sort),
             commentSet: data.commentSet == "true" ? true : false,
-            publishSet: data.radioG == "true" ? true : false,
+            publishSet: parseInt(data.radioG),
             createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
@@ -373,10 +373,10 @@ function ArticleEditor({
   }
   function handleTime(e) {
     //console.log(e.target.value)
-    if (e.target.value == "false") {
-      ArticleList.publishSet = false;
+    if (e.target.value == "0") {
+      ArticleList.publishSet = 0;
     } else {
-      ArticleList.publishSet = true;
+      ArticleList.publishSet = 1;
     }
 
   }
@@ -932,12 +932,12 @@ function ArticleEditor({
         label="定时发布"
       >
         {getFieldDecorator('radioG', {
-          initialValue: ArticleList.publishSet == true ? "true" : "false",
+          initialValue: ArticleList.publishSet+'',
           rules: [{ required: true, }],
         })(
           <RadioGroup onChange={handleTime} disabled={(ArticleList.publishStatus != undefined && ArticleList.publishStatus == 0) ? false : true}>
-            <Radio value="true">开启定时发布</Radio>
-            <Radio value="false">不开启</Radio>
+            <Radio value="1">开启定时发布</Radio>
+            <Radio value="0">不开启</Radio>
           </RadioGroup>
           )}
       </FormItem> : null}
@@ -953,11 +953,10 @@ function ArticleEditor({
           ],
         })(
           <DatePicker
-            format="YYYY-MM-DD HH:mm:ss"
+            format="YYYY-MM-DD HH:mm"
             disabledDate={disabledDate}
             /*disabledTime={disabledDateTime}*/
-            showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-            locale={options}
+            showTime={{ defaultValue: moment('00:00', 'HH:mm'), format:'HH:mm'}}
             size="large"
           /*disabled={timeDis}*/
           />

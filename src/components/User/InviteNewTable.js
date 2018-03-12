@@ -49,11 +49,10 @@ function StandardTable({data,loading,pageSize,handelchande,getUserData,currentPa
       },,{
         title: '已获得奖励',
         dataIndex: 'getAmount',
-        align: 'left',
       },{
         title: '奖励提取发起时间',
         dataIndex: 'bonusWithdrawDate',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        render: val => <span>{val==null?"——":moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
         title: '奖励状态',
