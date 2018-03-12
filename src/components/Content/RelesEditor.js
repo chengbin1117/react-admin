@@ -44,7 +44,7 @@ const tailFormItemLayout = {
   },
 };
 
-let timeDis = true;
+let timeDis = 0;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
@@ -137,7 +137,7 @@ function RelesEditor({
             articleSource: data.articleSource,
             articleLink: data.articleLink,
             commentSet: data.commentSet == "true" ? true : false,
-            publishSet: data.radioG == "true" ? true : false,
+            publishSet: parseInt(data.radioG),
             createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
@@ -192,7 +192,7 @@ function RelesEditor({
             articleSource: data.articleSource,
             articleLink: data.articleLink,
             commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-            publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
+            publishSet: parseInt(data.radioG),
             createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
@@ -222,7 +222,7 @@ function RelesEditor({
             articleSource: data.articleSource,
             articleLink: data.articleLink,
             commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-            publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
+            publishSet: parseInt(data.radioG),
             createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
@@ -382,10 +382,10 @@ function RelesEditor({
 
   function handleTime(e) {
     console.log("e", e.target.value)
-    if (e.target.value == "true") {
-      timeDis = false
+    if (e.target.value == "0") {
+      timeDis = 0
     } else {
-      timeDis = true
+      timeDis = 1
     }
   }
   function edtiorContentText(t) {
@@ -642,7 +642,7 @@ function RelesEditor({
       articleSource: data.articleSource,
       articleLink: data.articleLink,
       commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-      publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
+      publishSet: parseInt(data.radioG),
       createUser: data.createUser,
       sysUser: merId,
       bonusStatus: parseInt(data.bonusStatus),
@@ -982,16 +982,16 @@ function RelesEditor({
         label="定时发布"
       >
         {getFieldDecorator('radioG', {
-          initialValue: 'false',
+          initialValue: '0',
           rules: [{ required: true, }],
         })(
           <RadioGroup onChange={handleTime}>
-            <Radio value="true">开启定时发布</Radio>
-            <Radio value="false">不开启</Radio>
+            <Radio value="1">开启定时发布</Radio>
+            <Radio value="0">不开启</Radio>
           </RadioGroup>
           )}
       </FormItem>
-      {timeDis == false && <FormItem
+      {timeDis == 1 && <FormItem
         {...formItemLayout}
         label=" " colon={false}
         extra="定时范围：从当前时间点开始至未来7天内，按自然日计算"
