@@ -329,18 +329,23 @@ function RelesEditor({
     }
     return result;
   }
-  function disabledDate(current) {
+  function disabledDate(current,cx) {
     // Can not select days before today and today
-    console.log(current)
-    //console.log(moment())
-    return current && current <= moment()
+    var date = Date.parse(new Date())
+    //console.log(date)
+    var time = date -(24*60*60*1000)
+    //console.log("2",cx)
+    return current && current < time
   }
 
   function disabledDateTime() {
+     var date = new Date(Date.parse(new Date()))
+    
+     var  h = date.getHours()
+    var m = date.getMinutes()
     return {
-      disabledHours: () => range(0, 24).splice(4, 20),
-      disabledMinutes: () => range(30, 60),
-      disabledSeconds: () => [55, 56],
+      disabledHours: () => range(0, 24).splice( 0,h),
+      
     };
   }
   function onChange(rule, value, callback) {
@@ -997,11 +1002,10 @@ function RelesEditor({
           ],
         })(
           <DatePicker
-            format="YYYY-MM-DD HH:mm:ss"
+            format="YYYY-MM-DD HH:mm"
             disabledDate={disabledDate}
-            /*disabledTime={disabledDateTime}*/
-            showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-            locale={options}
+            // disabledTime={disabledDateTime}
+            showTime={{ defaultValue: moment('00:00', 'HH:mm'),format:"HH:mm"}}
             size="large"
           /*disabled={timeDis}*/
           />
