@@ -145,9 +145,9 @@ export default {
           const search = GetRequest(location.search);
           ///console.log(location.search)
           dispatch({
-            type:"getInviteBonus",
+            type:"getUserInfo",
             payload:{
-              inviteUserId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
+              userId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
             }
           })
           dispatch({
@@ -159,7 +159,7 @@ export default {
               userId:search.userId != "undefined" ? search.userId : null,
               userName:search.userName != "undefined" ? search.userName : null,
               userMobile:search.userMobile != "undefined" ? search.userMobile : null,
-              userRole:search.userLevel != "undefined" ? search.userRole : null,
+              userRole:search.userRole != "undefined" ? search.userRole : null,
               createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,
               createDateEnd:search.createDateEnd != "undefined" ? search.createDateEnd : null,
               auditStatus:search.auditStatus != "undefined" ? search.auditStatus : null,
@@ -180,7 +180,7 @@ export default {
               userId:search.userId != "undefined" ? search.userId : null,
               userEmail:search.userEmail != "undefined" ? search.userEmail : null,
               userMobile:search.userMobile != "undefined" ? search.userMobile : null,
-              userRole:search.userLevel != "undefined" ? search.userRole : null,
+              userRole:search.userRole != "undefined" ? search.userRole : null,
               createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,
               createDateEnd:search.createDateEnd != "undefined" ? search.createDateEnd : null,
               auditStatus:search.auditStatus != "undefined" ? search.auditStatus : null,
@@ -276,9 +276,9 @@ export default {
       }
     },
     *getUserInfo({ payload }, { call, put }) {
-      yield put({
-        type: 'showLoading',
-      });
+      //yield put({
+      //   type: 'showLoading',
+      // });
 
       const { data } = yield call(getUserInfo, payload);
       //console.log("11",data)
@@ -832,7 +832,49 @@ export default {
               minValue:search.minValue != "undefined" ? search.minValue : null,
               maxValue:search.maxValue != "undefined" ? search.maxValue : null,
             }
+          })
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
 
+      }
+    },
+     *freezeUserData({ payload }, { call, put }) {
+      let params = {}
+      if(payload.bonusFreezeReason==undefined){
+        params ={
+          auditUserId:payload.auditUserId,
+          userId:payload.userId,
+          bonusStatus:payload.bonusStatus
+        }
+      }else{
+        params ={
+          auditUserId:payload.auditUserId,
+          userId:payload.userId,
+          bonusStatus:payload.bonusStatus,
+          bonusFreezeReason:payload.bonusFreezeReason
+        }
+      }
+      
+
+      const { data } = yield call(freezeUser, params);
+
+      if (data && data.code == 10000) {
+          if(payload.bonusStatus==0){
+            message.success("冻结成功");
+          }else{
+            message.success("解冻成功");
+          }
+         // const search =GetRequest(payload.search)
+          yield put({
+            type:"getUserInfo",
+            payload:{
+              userId: payload.userId,
+            }
           })
       } else {
         if (data.code == 10004 || data.code == 10011) {
@@ -880,15 +922,12 @@ export default {
       //console.log("11",data)
       if (data && data.code == 10000) {
         message.success('审查成功')
-        // yield put({
-        //   type: 'getInviteUserListSuccess',
-        //   payload: {
-        //     InviteUserList: res.data,
-        //     loading: false,
-        //     totalNumber: res.totalNumber,
-        //     currentPage: res.currentPage
-        //   }
-        // });
+        yield put({
+          type: 'getUserInfo',
+          payload: {
+            userId:payload.userId
+          }
+        });
       } else {
         if (data.code == 10004 || data.code == 10011) {
           message.error(data.message, 2);

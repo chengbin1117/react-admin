@@ -29,7 +29,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		dispatch(routerRedux.push('/'))
 	}
 
-	const { InviteBonusList,InviteUserList,currentPage,loading,total } =user;
+	const { InviteBonusList,InviteUserList,currentPage,loading,total,userInfo } =user;
 	let userData = {};
 	if(InviteBonusList.length>0){
 		userData=InviteBonusList[0]
@@ -153,7 +153,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			title:"确认冻结吗？",
 			onOk(){
 				dispatch({
-					type:"user/freezeUser",
+					type:"user/freezeUserData",
 					payload:{
 						auditUserId:merId,
 						userId:data.userId,
@@ -163,21 +163,21 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					}	
 				})
 			}
-		})
+	})
 		
 	}
 	return (
 		<Card title={
 			<div>
 				
-			    <span>{userData&&userData.userName}的邀新记录&emsp;&emsp;{total&&total}人&emsp;
-			        <span >{userData&&(userData.inviteStatus==0?"无需审查":<span style={{color:"#f00"}}>需审查</span>)}</span>
+			    <span>{userInfo&&userInfo.userName}的邀新记录&emsp;&emsp;{total&&total}人&emsp;
+			        <span >{userInfo&&(userInfo.inviteStatus==0?"无需审查":<span style={{color:"#f00"}}>需审查</span>)}</span>
 			    </span>
 			    &emsp;
-			    {userData&&(userData.inviteStatus==1)&&<Button type="primary" onClick={()=>inviteStatus(userData)}>确认审查</Button>}
+			    {userInfo&&(userInfo.inviteStatus==1)&&<Button type="primary" onClick={()=>inviteStatus(userInfo)}>确认审查</Button>}
 			    
 			    &emsp;
-			    {userData&&(userData.bonusStatus==1)&&<Button type="primary" onClick={()=>frozen(userData)}>冻结</Button>}
+			    {userInfo&&(userInfo.bonusStatus==1)&&<Button type="primary" onClick={()=>frozen(userInfo)}>冻结</Button>}
 			    
 			</div>} 
 			bordered={false}

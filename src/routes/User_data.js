@@ -13,7 +13,8 @@ import {
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
 import { Form, Row, Col, Input, Button, Icon,message,Radio,Card} from 'antd';
-import {uploadUrl} from '../services/common'
+import {uploadUrl} from '../services/common';
+let Base64 = require('js-base64').Base64;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -121,13 +122,13 @@ function UserAdmin({location,dispatch,user,router,}) {
 	const WrappedDynamicRule = Form.create()(DynamicRule);
 	function reward(userInfo){
 
-		dispatch(routerRedux.push('/user/reward?page=1'+'&mobile='+userInfo.userMobile+"&userName="+userInfo.userName))
+		dispatch(routerRedux.push('/user/reward?page=1'+'&mobile='+userInfo.userMobile+"&userName="+Base64.encode(userInfo.userName)))
 	}
 	function invite(userInfo){
 		dispatch(routerRedux.push('/user/invite?page=1'+'&inviteUserId='+userInfo.userId))
 	}
 	function master(userInfo){
-		dispatch(routerRedux.push('/user/master?page=1'+'&inviteUserId='+userInfo.userId+"&name="+userInfo.userName))
+		dispatch(routerRedux.push('/user/master?page=1'+'&inviteUserId='+userInfo.userId+"&name="+Base64.encode(userInfo.userName)))
 	}
 	return (
 			<Card>
