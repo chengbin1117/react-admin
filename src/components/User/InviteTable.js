@@ -26,7 +26,7 @@ function StandardTable({data,loading,pageSize,handelchande,currentPage,total,use
         align: 'left',
       },{
         title: '角色',
-        dataIndex: 'dsa',
+        dataIndex: 'userRoleDisplay',
         align: 'left',
       },{
         title: '级别',
@@ -35,11 +35,11 @@ function StandardTable({data,loading,pageSize,handelchande,currentPage,total,use
       },{
         title: '注册时间',
         dataIndex: 'createDate',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        render: val => <span>{val==null?"——":moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },{
         title: '最后活动时间',
-        dataIndex: 'applyColumnTime',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        dataIndex: 'lastActiveTime',
+        render: val => <span>{val==null?"——":moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
         title: '操作',
