@@ -333,9 +333,10 @@ function RelesEditor({
     // Can not select days before today and today
     var date = Date.parse(new Date())
     //console.log(date)
-    var time = date -(24*60*60*1000)
+    var time = date -(24*60*60*1000);
+    var severTime = date +(7*24*60*60*1000);
     //console.log("2",cx)
-    return current && current < time
+    return current && severTime < current && current > time
   }
 
   function disabledDateTime() {

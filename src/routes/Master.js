@@ -160,7 +160,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		{ParentUserInfo!=null?
 		<Card title={
 			<div>
-			    <span><span style={{color:"#1DA57A"}}>{urlSelect&&urlSelect.name}</span>的师傅&emsp;&emsp;&emsp;</span>
+			    <span><span style={{color:"#1DA57A"}}>{urlSelect&&Base64.decode(urlSelect.name)}</span>的师傅&emsp;&emsp;&emsp;</span>
 			    &emsp;
 			    <Button type="primary" onClick={()=>unBindUser(ParentUserInfo)}>解除师徒关系</Button>
 			    &emsp;
@@ -180,7 +180,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		
 						</tr>
 						<tr>
-						    <td>用户级别</td><td>{ParentUserInfo.userLevelDisplay?ParentUserInfo.userLevelDisplay:"——"}</td>
+						    <td>用户级别</td><td>初级</td>
 						    <td>注册时间</td><td>{ParentUserInfo.createDate!=null?ParentUserInfo.createDate:"——"}</td>
 						</tr>
 						<tr>
@@ -188,8 +188,8 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						    <td>专栏名称</td><td>{userInfo.auditStatusDisplay!=null?userInfo.auditStatusDisplay:"——"}</td>
 						</tr>
 						<tr>
-						    <td>师徒关系建立时间</td><td>{userInfo.relTime!=null?userInfo.relTime:"——"}</td>
-						    <td>最后活动时间</td><td>{userInfo.applyColumnTime!=null?userInfo.applyColumnTime:"——"}</td>
+						    <td>师徒关系建立时间</td><td>{ParentUserInfo.relTime!=null?ParentUserInfo.relTime:"——"}</td>
+						    <td>最后活动时间</td><td>{ParentUserInfo.lastActiveTime!=null?ParentUserInfo.lastActiveTime:"——"}</td>
 						</tr>
 						{/*<tr>
 						    <td>锁定状态</td><td>{userInfo.lockStatusDisplay!=null?userInfo.lockStatusDisplay:"——"}</td>
@@ -201,10 +201,10 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		<Card 
 		title={<span><span 
 		style={{color:"#1DA57A"}}>
-		{urlSelect&&urlSelect.name}</span>的徒弟&emsp;&emsp;
+		{urlSelect&&Base64.decode(urlSelect.name)}</span>的徒弟&emsp;&emsp;
 		{totalNumber&&totalNumber}人</span>} 
 		bordered={false}
-		loading = {loading}
+		
 		>
 			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
 			<MasterTable {...MasterTableProps}/>

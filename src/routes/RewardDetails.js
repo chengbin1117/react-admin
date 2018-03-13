@@ -45,7 +45,7 @@ function UserAdmin({ location, dispatch, user, router,finance }) {
 		}
 	}
 	return (
-		<Card title={<div><h2><span style={{color:"#1DA57A"}}>{urlSelect&&urlSelect.userName}</span>奖励明细&emsp;&emsp;&emsp;
+		<Card title={<div><h2><span style={{color:"#1DA57A"}}>{urlSelect&&Base64.decode(urlSelect.userName)}</span>奖励明细&emsp;&emsp;&emsp;
 		奖励总额：{(AccountList&&AccountList.length>0)?AccountList[0].allAmount:0}TV</h2></div>} 
 		bordered={false}>
 			<RewardTable {...RewardTableProps}/>
