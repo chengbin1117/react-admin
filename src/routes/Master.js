@@ -185,7 +185,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						</tr>
 						<tr>
 						    <td>用户角色</td><td>{ParentUserInfo.userRole?ParentUserInfo.userRoleDisplay:"——"}</td>
-						    <td>专栏名称</td><td>{userInfo.auditStatusDisplay!=null?userInfo.auditStatusDisplay:"——"}</td>
+						    <td>专栏名称</td><td>{ParentUserInfo&&ParentUserInfo.userRole!=1?ParentUserInfo.userName:"——"}</td>
 						</tr>
 						<tr>
 						    <td>师徒关系建立时间</td><td>{ParentUserInfo.relTime!=null?ParentUserInfo.relTime:"——"}</td>
