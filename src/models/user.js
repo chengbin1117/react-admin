@@ -178,7 +178,7 @@ export default {
               pageSize:25,
               inviteUserId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
               userId:search.userId != "undefined" ? search.userId : null,
-              userEmail:search.userEmail != "undefined" ? search.userEmail : null,
+              userName:search.userName != "undefined" ? search.userName : null,
               userMobile:search.userMobile != "undefined" ? search.userMobile : null,
               userRole:search.userRole != "undefined" ? search.userRole : null,
               createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,
@@ -680,16 +680,42 @@ export default {
       /* yield put({
         type: 'showLoading',
        });*/
-
-      const { data } = yield call(auditUserCert, payload);
+       let params ={};
+       console.log(payload.status)
+       if(payload.status==1){
+          params ={
+            userIds:payload.userIds,
+            status:payload.status,
+            auditUser:payload.auditUser,
+            auditUserName:payload.auditUserName,
+            
+          }
+       }else{
+          params ={
+            userIds:payload.userIds,
+            status:payload.status,
+            auditUser:payload.auditUser,
+            refuseReason:payload.refuseReason,
+            auditUserName:payload.auditUserName, 
+          }
+       }
+      const { data } = yield call(auditUserCert, params);
 
       if (data && data.code == 10000) {
         //var res = data.responseBody;
-        message.success('设置成功')
+        message.success('设置成功');
+        const search = GetRequest(payload.search)
         yield put({
           type: 'getUserCert',
           payload: {
-
+              currentPage: search.page,
+              userId: search.userId != "undefined" ? search.userId : null,
+              email: search.email != "undefined" ? search.email : null,
+              mobile: search.mobile != "undefined" ? search.mobile : null,
+              status: search.status != "undefined" ? parseInt(search.status) : null,
+              startDate: search.startDate != "undefined" ? search.startDate : null,
+              endDate: search.endDate != "undefined" ? search.endDate : null,
+              pageSize: 25,
           }
         });
         yield put({

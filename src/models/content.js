@@ -54,12 +54,13 @@ export default {
         let match = pathToRegexp('/content/content_article').exec(location.pathname);
         if(match){
           const search =GetRequest(location.search);
+          console.log(search.articleTitle)
           dispatch({
             type:'getArticleList',
             payload:{
               currentPage:search.page,
               articleId:search.articleId!='undefined'?search.articleId:null,
-              articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+              articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
               articleTag:search.articleTag!='undefined'?search.articleTag:null,
               publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
               displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
@@ -296,7 +297,7 @@ export default {
               payload:{
                 currentPage:search.page,
                 articleId:search.articleId!='undefined'?search.articleId:null,
-                articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+                articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
                 articleTag:search.articleTag!='undefined'?search.articleTag:null,
                 publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
                 displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
@@ -333,7 +334,7 @@ export default {
               payload:{
                  currentPage:sea.page,
                  articleId:sea.articleId!='undefined'?sea.articleId:null,
-                 articleTitle:sea.articleTitle!='undefined'?sea.articleTitle:null,
+                 articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
                  articleTag:sea.articleTag!='undefined'?sea.articleTag:null,
                  publishStatus:sea.publishStatus!='undefined'?parseInt(sea.publishStatus):null,
                  displayStatus:sea.displayStatus!='undefined'?parseInt(sea.displayStatus):null,
@@ -429,7 +430,7 @@ export default {
               payload:{
                 currentPage:search.page,
                 articleId:search.articleId!='undefined'?search.articleId:null,
-                articleTitle:search.articleTitle!='undefined'?search.articleTitle:null,
+                articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
                 articleTag:search.articleTag!='undefined'?search.articleTag:null,
                 publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
                 displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
@@ -456,11 +457,26 @@ export default {
 
       const { data } = yield call(publishArticle, payload);
       //console.log("11",data)
+     
+      const search=GetRequest(window.location.href)
+       
       if (data && data.code == 10000) {
          var res = data.responseBody;
          
-            message.success('成功')
-           yield put(routerRedux.push('/content/content_article?page=1'));
+            message.success('成功');
+
+            if(search.articleTitle=="undefined"||search.articleTitle==undefined){
+               yield put(routerRedux.push('/content/content_article?page='+search.page+"&pageSize="+search.pageSize
+                  +"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+              "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+            ));
+             }else{
+                 yield put(routerRedux.push('/content/content_article?page='+search.page+"&pageSize="+search.pageSize
+                 +"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+              "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+            ));
+             }
+          
            
          
          
@@ -592,7 +608,10 @@ export default {
     },
     *getArticleById({ payload }, {call , put}) {
       let merId =localStorage.getItem("userId");
-      const { data } = yield call(getArticleById, payload);
+      let params ={
+        articleId:payload.articleId
+      }
+      const { data } = yield call(getArticleById, params);
       //console.log("栏目",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
@@ -624,7 +643,12 @@ export default {
             /*window.location.reload()*/
             localStorage.setItem("articleList", JSON.stringify(res));
             localStorage.setItem("articleText", res.articleText);
-            yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
+            const search = GetRequest(payload.search)
+            yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId+"&page="+search.page
+          +"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+          "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn+"&pageSize=25"
+
+              ))
 
       } else {
         if(data.code ==10004||data.code ==10011){

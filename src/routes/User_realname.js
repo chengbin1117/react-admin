@@ -99,6 +99,7 @@ function UserRealName({location,dispatch,user,router,}) {
 					  type: 'user/showRealsModal',
 					  payload:{
 					  	selectList:Ids,
+
 					  }
 				   });
 			}
@@ -135,7 +136,8 @@ function UserRealName({location,dispatch,user,router,}) {
 						userIds:selectList.userId,
 						status:parseInt(values.radio),
 						auditUser:merId,
-						auditUserName:localStorage.getItem("realname")
+						auditUserName:localStorage.getItem("realname"),
+						search:location.search
 					}
 				})
 
@@ -147,7 +149,8 @@ function UserRealName({location,dispatch,user,router,}) {
 						status:parseInt(values.radio),
 						auditUser:merId,
 						refuseReason:values.text,
-						auditUserName:localStorage.getItem("realname")
+						auditUserName:localStorage.getItem("realname"),
+						search:location.search
 					}
 			    })
 			}
@@ -175,7 +178,8 @@ function UserRealName({location,dispatch,user,router,}) {
 						userIds:selectList,
 						status:parseInt(values.radio),
 						auditUser:merId,
-						auditUserName:localStorage.getItem("realname")
+						auditUserName:localStorage.getItem("realname"),
+						search:location.search
 					}
 				})
 			}else{
@@ -186,7 +190,8 @@ function UserRealName({location,dispatch,user,router,}) {
 						status:parseInt(values.radio),
 						auditUser:merId,
 						refuseReason:values.text,
-						auditUserName:localStorage.getItem("realname")
+						auditUserName:localStorage.getItem("realname"),
+						search:location.search
 					}
 			    })
 			}
