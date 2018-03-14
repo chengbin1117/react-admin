@@ -34,7 +34,7 @@ function StandardTable({data,loading,pageSize,handelchande,currentPage,total,edi
         title: '数量',
         dataIndex: 'amount',
         render:(text,record)=>(
-          <span>{record.freezeAmount!=0?text:record.accountAmount}</span>
+          <span>{record.freezeAmount!=0?text:record.freezeAmount}</span>
           )
       },
     ];
