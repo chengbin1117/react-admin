@@ -11,6 +11,7 @@ const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 function StandardTable({data,loading,pageSize,handelchande,currentPage,total,editorItem,deleteItem,setShow,onShowModal,autidShow}){
   //render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+  console.log(data)
   const columns = [
       {
         title: '奖励类型',
@@ -32,6 +33,9 @@ function StandardTable({data,loading,pageSize,handelchande,currentPage,total,edi
       {
         title: '数量',
         dataIndex: 'amount',
+        render:(text,record)=>(
+          <span>{record.freezeAmount!=0?text:record.accountAmount}</span>
+          )
       },
     ];
     // const list=[{
