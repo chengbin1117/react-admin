@@ -77,7 +77,7 @@ function ArticleEditor({
   const imgArr = [imgx, imgy, imgz];  //默认背景图；
 
   const options = ColumnList;
-  //console.log("setting",ArticleList)
+  console.log("setting",ArticleList)
   const { RelationVisible, getRelUserList } = setting;
   let AllTotal = 0;
 
@@ -927,7 +927,7 @@ function ArticleEditor({
           </RadioGroup>
           )}
       </FormItem>
-      {ArticleList.sysUser != null ? <FormItem
+      <FormItem
         {...formItemLayout}
         label="定时发布"
       >
@@ -940,8 +940,8 @@ function ArticleEditor({
             <Radio value="0">不开启</Radio>
           </RadioGroup>
           )}
-      </FormItem> : null}
-      {(ArticleList && ArticleList.publishSet == true) && <FormItem
+      </FormItem>
+      {(ArticleList && ArticleList.publishSet == 1) && <FormItem
         {...formItemLayout}
         label=" " colon={false}
         extra="定时范围：从当前时间点开始至未来7天内，按自然日计算"

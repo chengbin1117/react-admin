@@ -94,10 +94,19 @@ function ContentArticle({location,dispatch,router,content}) {
 				      	secondColumn:values.cloumn!=undefined?parseInt(values.cloumn[1]):'',
 				       }
 		            });*/
-		            dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+values.title+
-					"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
-					"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
-					))	
+		            if(values.title!=undefined){
+		            	var title =Base64.encode(values.title)
+		            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
+						"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
+						"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+						))	
+		            }else{
+		            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+
+						"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
+						"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+						))
+		            }
+		            
 		},
 		editorItem(record){
 			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
@@ -105,17 +114,27 @@ function ContentArticle({location,dispatch,router,content}) {
 			dispatch({
 				type:"content/getArticleById",
 				payload:{
-					articleId:record.articleId
+					articleId:record.articleId,
+					search:location.search
 				}
 			})
 		},
 		changepage(page){
 			 const search =GetRequest(location.search);
-			 dispatch(routerRedux.push('/content/content_article?page='+page+
-			 	"&articleId="+search.articleId
-				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+			 console.log(search)
+			 if(search.articleTitle=="undefined"||search.articleTitle==undefined){
+			 	dispatch(routerRedux.push('/content/content_article?page='+page+
+			 	"&articleId="+search.articleId+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
 			 	))
+			 }else{
+			 	dispatch(routerRedux.push('/content/content_article?page='+page+
+			 	"&articleId="+search.articleId
+				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn
+			 	))
+			 }
+			 
 		          
 		},
 		delArticle(record){
