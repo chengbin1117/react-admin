@@ -2,7 +2,8 @@ import pathToRegexp from 'path-to-regexp';
 import { routerRedux, hashHistory } from 'dva/router';
 import {
   login, getUserList, getUserInfo, auditUser, setHotUser, lockUser, siteinfoservice, getRoleList, roleSetStatus, getRoleProfile, loginSet,
-  userInfoSet, getSysMenu, getUserCert, auditUserCert, getSiteInfo, logOut
+  userInfoSet, getSysMenu, getUserCert, auditUserCert, getSiteInfo, logOut,getInviteBonus,freezeUser,getInviteUserList,checkUser,getParentUserInfo,
+  getSubUserList,unBindUser
 } from '../services/user';
 import { formatDate, GetRequest } from '../services/common'
 import {
@@ -26,7 +27,12 @@ export default {
     totalNumber: 0,
     currentPage: 1,
     UserCertList: [],
-    SiteInfo: {}
+    SiteInfo: {},
+    InviteBonusList:[], //邀新奖励
+    InviteUserList:[], //邀新记录
+    ParentUserInfo:{},  //师傅
+    SubUserList:[],     //徒弟列表
+    total:0,     //总数
   },
   subscriptions: {
     setup({
@@ -43,6 +49,7 @@ export default {
             payload: {
               currentPage: parseInt(search.page),
               userId: search.userId != "undefined" ? search.userId : null,
+              orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
               userEmail: search.userEmail != "undefined" ? search.userEmail : null,
               userMobile: search.userMobile != "undefined" ? search.userMobile : null,
               userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
@@ -51,6 +58,7 @@ export default {
               createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
               createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
               pageSize: 25,
+
             }
           });
         }
@@ -111,14 +119,81 @@ export default {
               auditStatus: 0
             }
           });
-          /* dispatch({
-                  type: 'getSysMenu',
-                  payload: {
-                      userId:parseInt(search.userId),
-                  }
-                });*/
         }
-
+        match = pathToRegexp('/user/platformReward').exec(location.pathname);
+        if (match) {
+          const search = GetRequest(location.search);
+          ///console.log(location.search)
+          dispatch({
+            type: 'getInviteBonus',
+            payload: {
+              currentPage: search.page,
+              pageSize:25,
+              userId: search.userId != "undefined" ? search.userId : null,
+              userName:search.userName != "undefined" ? search.userName : null,
+              mobile:search.mobile != "undefined" ? search.mobile : null,
+              userRole:search.userRole != "undefined" ? parseInt(search.userRole) : null,
+              bonusStatus:search.bonusStatus != "undefined" ? parseInt(search.bonusStatus) : null,
+              inviteStatus:search.inviteStatus != "undefined" ? parseInt(search.inviteStatus) : null,
+              minValue:search.minValue != "undefined" ? parseFloat(search.minValue) : null,
+              maxValue:search.maxValue != "undefined" ? parseFloat(search.maxValue) : null,
+            }
+          });
+        }
+        match = pathToRegexp('/user/invite').exec(location.pathname);
+        if (match) {
+          const search = GetRequest(location.search);
+          ///console.log(location.search)
+          dispatch({
+            type:"getUserInfo",
+            payload:{
+              userId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
+            }
+          })
+          dispatch({
+            type: 'getInviteUserList',
+            payload: {
+              currentPage: search.page,
+              pageSize:25,
+              inviteUserId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
+              userId:search.userId != "undefined" ? search.userId : null,
+              userName:search.userName != "undefined" ? search.userName : null,
+              userMobile:search.userMobile != "undefined" ? search.userMobile : null,
+              userRole:search.userRole != "undefined" ? search.userRole : null,
+              createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,
+              createDateEnd:search.createDateEnd != "undefined" ? search.createDateEnd : null,
+              auditStatus:search.auditStatus != "undefined" ? search.auditStatus : null,
+              lockStatus:search.lockStatus != "undefined" ? search.lockStatus : null,
+            }
+          });
+        }
+        match = pathToRegexp('/user/master').exec(location.pathname);
+        if (match) {
+          const search = GetRequest(location.search);
+          
+          dispatch({
+            type:"getSubUserList",
+            payload:{
+              currentPage: search.page,
+              pageSize:25,
+              inviteUserId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
+              userId:search.userId != "undefined" ? search.userId : null,
+              userName:search.userName != "undefined" ? search.userName : null,
+              userMobile:search.userMobile != "undefined" ? search.userMobile : null,
+              userRole:search.userRole != "undefined" ? search.userRole : null,
+              createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,
+              createDateEnd:search.createDateEnd != "undefined" ? search.createDateEnd : null,
+              auditStatus:search.auditStatus != "undefined" ? search.auditStatus : null,
+              lockStatus:search.lockStatus != "undefined" ? search.lockStatus : null,
+            }
+          })
+          dispatch({
+            type: 'getParentUserInfo',
+            payload: {
+              userId:search.inviteUserId != "undefined" ? search.inviteUserId : null,
+            }
+          });
+        }
       })
     },
   },
@@ -201,9 +276,9 @@ export default {
       }
     },
     *getUserInfo({ payload }, { call, put }) {
-      yield put({
-        type: 'showLoading',
-      });
+      //yield put({
+      //   type: 'showLoading',
+      // });
 
       const { data } = yield call(getUserInfo, payload);
       //console.log("11",data)
@@ -253,22 +328,40 @@ export default {
         message.success('审核成功')
         if (user_data != undefined) {
           yield put(routerRedux.push('/user/user_admin?page=1'));
+        }else{
+           const search =GetRequest(payload.search)
+            yield put({
+              type: 'getUserList',
+              payload: {
+                  currentPage: parseInt(search.page),
+                  userId: search.userId != "undefined" ? search.userId : null,
+                  userEmail: search.userEmail != "undefined" ? search.userEmail : null,
+                  userMobile: search.userMobile != "undefined" ? search.userMobile : null,
+                  userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
+                  auditStatus: search.auditStatus != "undefined" ? parseInt(search.auditStatus) : null,
+                  lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
+                  createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
+                  createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+                  orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
+                  pageSize: 25,
+              }
+            });
         }
-        if (audit == 0) {
-          yield put({
-            type: 'getUserList',
-            payload: {
-              auditStatus: 0
-            }
-          });
-        } else {
-          yield put({
-            type: 'getUserList',
-            payload: {
+        // if (audit == 0) {
+        //   yield put({
+        //     type: 'getUserList',
+        //     payload: {
+        //       auditStatus: 0
+        //     }
+        //   });
+        // } else {
+        //   yield put({
+        //     type: 'getUserList',
+        //     payload: {
 
-            }
-          });
-        }
+        //     }
+        //   });
+        // }
 
         yield put({
           type: 'hideExmianModal',
@@ -289,22 +382,36 @@ export default {
       /* yield put({
         type: 'showLoading',
       });*/
-
-      const { data } = yield call(setHotUser, payload);
+      let params = {
+        userId:payload.userId,
+        hotUser:payload.hotUser
+      }
+      const { data } = yield call(setHotUser, params);
       // console.log("11",data)
       if (data && data.code == 10000) {
         message.success('设置成功')
         //console.log(res)
+        const search =GetRequest(payload.search)
         yield put({
           type: 'getUserList',
           payload: {
-
+              currentPage: parseInt(search.page),
+              userId: search.userId != "undefined" ? search.userId : null,
+              userEmail: search.userEmail != "undefined" ? search.userEmail : null,
+              userMobile: search.userMobile != "undefined" ? search.userMobile : null,
+              userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
+              auditStatus: search.auditStatus != "undefined" ? parseInt(search.auditStatus) : null,
+              lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
+              createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
+              createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+              orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
+              pageSize: 25,
           }
         });
         yield put({
           type: 'hideHotModal',
           payload: {
-
+            selectList:[]
           }
         });
       } else {
@@ -348,6 +455,7 @@ export default {
               lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
               createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
               createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+              orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
               pageSize: 25,
           }
         });
@@ -572,16 +680,42 @@ export default {
       /* yield put({
         type: 'showLoading',
        });*/
-
-      const { data } = yield call(auditUserCert, payload);
+       let params ={};
+       console.log(payload.status)
+       if(payload.status==1){
+          params ={
+            userIds:payload.userIds,
+            status:payload.status,
+            auditUser:payload.auditUser,
+            auditUserName:payload.auditUserName,
+            
+          }
+       }else{
+          params ={
+            userIds:payload.userIds,
+            status:payload.status,
+            auditUser:payload.auditUser,
+            refuseReason:payload.refuseReason,
+            auditUserName:payload.auditUserName, 
+          }
+       }
+      const { data } = yield call(auditUserCert, params);
 
       if (data && data.code == 10000) {
         //var res = data.responseBody;
-        message.success('设置成功')
+        message.success('设置成功');
+        const search = GetRequest(payload.search)
         yield put({
           type: 'getUserCert',
           payload: {
-
+              currentPage: search.page,
+              userId: search.userId != "undefined" ? search.userId : null,
+              email: search.email != "undefined" ? search.email : null,
+              mobile: search.mobile != "undefined" ? search.mobile : null,
+              status: search.status != "undefined" ? parseInt(search.status) : null,
+              startDate: search.startDate != "undefined" ? search.startDate : null,
+              endDate: search.endDate != "undefined" ? search.endDate : null,
+              pageSize: 25,
           }
         });
         yield put({
@@ -646,6 +780,269 @@ export default {
 
       }
     },
+    *getInviteBonus({ payload }, { call, put }) {
+      yield put({
+        type: 'showLoading',
+      });
+
+      const { data } = yield call(getInviteBonus, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        var res = data.responseBody;
+        //console.log(res)
+        yield put({
+          type: 'getInviteBonusSuccess',
+          payload: {
+            InviteBonusList: res.data,
+            loading: false,
+            totalNumber: res.totalNumber,
+            currentPage: res.currentPage
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
+      }
+    },
+    *freezeUser({ payload }, { call, put }) {
+      let params = {}
+      if(payload.bonusFreezeReason==undefined){
+        params ={
+          auditUserId:payload.auditUserId,
+          userId:payload.userId,
+          bonusStatus:payload.bonusStatus
+        }
+      }else{
+        params ={
+          auditUserId:payload.auditUserId,
+          userId:payload.userId,
+          bonusStatus:payload.bonusStatus,
+          bonusFreezeReason:payload.bonusFreezeReason
+        }
+      }
+      
+
+      const { data } = yield call(freezeUser, params);
+
+      if (data && data.code == 10000) {
+          if(payload.bonusStatus==0){
+            message.success("冻结成功");
+          }else{
+            message.success("解冻成功");
+          }
+          yield put({
+            type:"hideFrozenModal",
+            payload:{
+              currentItem:{}
+            }
+          })
+          const search =GetRequest(payload.search)
+          yield put({
+            type:"getInviteBonus",
+            payload:{
+              currentPage: search.page,
+              pageSize:25,
+              userId: search.userId != "undefined" ? search.userId : null,
+              userName:search.userName != "undefined" ? search.userName : null,
+              mobile:search.mobile != "undefined" ? search.mobile : null,
+              userRole:search.userRole != "undefined" ? search.userRole : null,
+              bonusStatus:search.bonusStatus != "undefined" ? parseInt(search.bonusStatus) : null,
+              inviteStatus:search.inviteStatus != "undefined" ? search.inviteStatus : null,
+              minValue:search.minValue != "undefined" ? search.minValue : null,
+              maxValue:search.maxValue != "undefined" ? search.maxValue : null,
+            }
+          })
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+
+      }
+    },
+     *freezeUserData({ payload }, { call, put }) {
+      let params = {}
+      if(payload.bonusFreezeReason==undefined){
+        params ={
+          auditUserId:payload.auditUserId,
+          userId:payload.userId,
+          bonusStatus:payload.bonusStatus
+        }
+      }else{
+        params ={
+          auditUserId:payload.auditUserId,
+          userId:payload.userId,
+          bonusStatus:payload.bonusStatus,
+          bonusFreezeReason:payload.bonusFreezeReason
+        }
+      }
+      
+
+      const { data } = yield call(freezeUser, params);
+
+      if (data && data.code == 10000) {
+          if(payload.bonusStatus==0){
+            message.success("冻结成功");
+          }else{
+            message.success("解冻成功");
+          }
+         // const search =GetRequest(payload.search)
+          yield put({
+            type:"getUserInfo",
+            payload:{
+              userId: payload.userId,
+            }
+          })
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+
+      }
+    },
+    *getInviteUserList({ payload }, { call, put }) {
+      yield put({
+        type: 'showLoading',
+      });
+
+      const { data } = yield call(getInviteUserList, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        var res = data.responseBody;
+        //console.log(res)
+        yield put({
+          type: 'getInviteUserListSuccess',
+          payload: {
+            InviteUserList: res.data,
+            loading: false,
+            total: res.totalNumber,
+            currentPage: res.currentPage
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
+      }
+    },
+    *checkUser({ payload }, { call, put }) {
+      const { data } = yield call(checkUser, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        message.success('审查成功')
+        yield put({
+          type: 'getUserInfo',
+          payload: {
+            userId:payload.userId
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+      }
+    },
+    *getParentUserInfo({ payload }, { call, put }) {
+      yield put({
+        type: 'showLoading',
+      });
+
+      const { data } = yield call(getParentUserInfo, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        var res = data.responseBody;
+        //console.log(res)
+        yield put({
+          type: 'getParentUserInfoSuccess',
+          payload: {
+            ParentUserInfo: res,
+            loading: false,
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
+      }
+    },
+    *getSubUserList({ payload }, { call, put }) {
+      yield put({
+        type: 'showLoading',
+      });
+
+      const { data } = yield call(getSubUserList, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        var res = data.responseBody;
+        //console.log(res)
+        yield put({
+          type: 'getSubUserListSuccess',
+          payload: {
+            SubUserList: res.data,
+            loading: false,
+            totalNumber:res.totalNumber,
+            currentPage:res.currentPage
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
+      }
+    },
+    *unBindUser({ payload }, { call, put }) {
+      const { data } = yield call(unBindUser, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        message.success('解除成功')
+        yield put({
+          type:"getParentUserInfo",
+          payload:{
+            userId:payload.userId
+          }
+        })
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+      }
+    },
   },
   reducers: {
     // showLogging(state) {
@@ -676,6 +1073,34 @@ export default {
       };
     },
     getUserListSuccess(state, action) {
+      // const newUser = action.payload;      
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
+    getInviteBonusSuccess(state, action) {
+      // const newUser = action.payload;      
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
+    getSubUserListSuccess(state, action) {
+      // const newUser = action.payload;      
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
+    getParentUserInfoSuccess(state, action) {
+      // const newUser = action.payload;      
+      return {
+        ...state,
+        ...action.payload
+      };
+    },
+    getInviteUserListSuccess(state, action) {
       // const newUser = action.payload;      
       return {
         ...state,
@@ -807,6 +1232,20 @@ export default {
     getSiteInfoSuccess(state, action) {
       return {
         ...state,
+        ...action.payload
+      };
+    },  
+    showFrozenModal(state, action) {
+      return {
+        ...state,
+        FrozenVisible: true,
+        ...action.payload
+      };
+    },
+    hideFrozenModal(state, action) {
+      return {
+        ...state,
+        FrozenVisible: false,
         ...action.payload
       };
     },

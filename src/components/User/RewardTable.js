@@ -9,54 +9,40 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-function StandardTable({data,loading,pageSize,handelchande,currentPage,total,userData}){
-
+function StandardTable({data,loading,pageSize,handelchande,currentPage,total,editorItem,deleteItem,setShow,onShowModal,autidShow}){
+  //render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+  console.log(data)
   const columns = [
       {
-        title: '用户ID',
-        dataIndex: 'userId',
+        title: '奖励类型',
+        dataIndex: 'businessTypeName',
       },
       {
-        title: '昵称',
-        dataIndex: 'userName',
+        title: '奖励说明',
+        dataIndex: 'flowDetail',
       },
       {
-        title: '手机号',
-        dataIndex: 'userMobile',
+        title: '状态',
+        dataIndex: 'status',
         align: 'left',
       },{
-        title: '角色',
-        dataIndex: 'userRoleDisplay',
-        align: 'left',
-      },{
-        title: '级别',
-        dataIndex: 'userLevelDisplay',
-        align: 'left',
-      },{
-        title: '师徒建立关系时间',
-        dataIndex: 'relTime',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        title: '时间',
+        dataIndex: 'flowDate',
+       
       },
       {
-        title: '最后活动时间',
-        dataIndex: 'applyColumnTime',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        render: (text, record) => (
-        <span>
-            <a onClick={()=>userData(record)}>查看详细信息</a>
-        </span>
-      ),
+        title: '数量',
+        dataIndex: 'amount',
+        render:(text,record)=>(
+          <span>{record.freezeAmount!=0?record.freezeAmount:text}</span>
+          )
       },
     ];
-    const list=[{
-      "no":1,
-      "description":"这是一段描述",
-      "callNo":"杨XX"
-    }]
+    // const list=[{
+    //   "no":1,
+    //   "description":"这是一段描述",
+    //   "callNo":"杨XX"
+    // }]
     const paginationProps = {
       showSizeChanger: false,
       showQuickJumper: true,
@@ -64,7 +50,6 @@ function StandardTable({data,loading,pageSize,handelchande,currentPage,total,use
       onChange:handelchande,
       current:currentPage,
       pageSize:25
-      
     };
 
     class App extends React.Component {
@@ -93,9 +78,11 @@ function StandardTable({data,loading,pageSize,handelchande,currentPage,total,use
             selectedRowKeys,
             onChange: this.onSelectChange,
       };
+        const hasSelected = selectedRowKeys.length > 0;
+      
         return (
           <div>
-            <Table columns={columns} dataSource={data} rowKey={record => record.userId} loading={loading} pagination = {paginationProps}/>
+            <Table columns={columns} dataSource={data} rowKey={record => record.flowId} loading={loading} pagination = {paginationProps}/>
           </div>
         );
       }

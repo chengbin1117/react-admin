@@ -15,6 +15,7 @@ import LayoutContainer from '../components/Layout';
 import InviteNewTable from '../components/User/InviteNewTable';
 import FrozenModal from '../components/User/FrozenModal';
 import { timeFormat, GetRequest } from '../services/common';
+import './font.less';
 import styles from './Record.css'
 import { Form, Row, Col, Input, Button, DatePicker, Icon, Table, Pagination, Modal, Radio, Select, message } from 'antd';
 const confirm = Modal.confirm;
@@ -25,7 +26,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({ location, dispatch, user, router, }) {
-	const { FrozenVisible,loading, totalNumber, currentPage } = user;
+	const { FrozenVisible,loading, totalNumber, currentPage,InviteBonusList,currentItem} = user;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
@@ -39,7 +40,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			<div key="0">
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='用户ID'>
-						{getFieldDecorator('Id', {
+						{getFieldDecorator('userId', {
 							rules: [
 								{ required: false, pattern: /^[0-9]*$/, message: "用户ID只能输入数字" }
 							]
@@ -50,15 +51,15 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='邮箱'>
-						{getFieldDecorator('email')(
-							<Input type="email" placeholder="请输入邮箱" />
+					<FormItem {...formItemLayout} label='昵称'>
+						{getFieldDecorator('userName')(
+							<Input type="text" placeholder="请输入昵称" />
 						)}
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='手机号'>
-						{getFieldDecorator('phone', {
+						{getFieldDecorator('mobile', {
 							rules: [
 								{ required: false, pattern: /^[0-9]*$/, message: "手机号只能为数字" }
 							]
@@ -69,20 +70,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='用户角色'>
-						{getFieldDecorator('role')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="1">普通用户</Option>
-								<Option value="2">个人</Option>
-								<Option value="3">媒体</Option>
-								<Option value="4">企业</Option>
-								<Option value="5">组织</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='级别'>
-						{getFieldDecorator('role')(
+						{getFieldDecorator('userRole')(
 							<Select placeholder="请选择" allowClear={true}>
 								<Option value="1">普通用户</Option>
 								<Option value="2">个人</Option>
@@ -95,22 +83,20 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='奖励状态'>
-						{getFieldDecorator('auditStatus')(
+						{getFieldDecorator('bonusStatus')(
 							<Select placeholder="请选择" allowClear={true}>
-								<Option value="0">审核中</Option>
-								<Option value="1">通过</Option>
-								<Option value="2">不通过</Option>
+								<Option value="0">冻结</Option>
+								<Option value="1">可用</Option>
 							</Select>
 						)}
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='邀新状态'>
-						{getFieldDecorator('lockStatus')(
+						{getFieldDecorator('inviteStatus')(
 							<Select placeholder="请选择" allowClear={true}>
-								<Option value="1">未锁定</Option>
-								<Option value="2">已锁定</Option>
-
+								<Option value="0">不需要</Option>
+								<Option value="1">需审查</Option>
 							</Select>
 						)}
 					</FormItem>
@@ -121,7 +107,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				  </Col>
 		          <Col span={8}>
 		          	<FormItem>
-		            {getFieldDecorator('minAmount')(
+		            {getFieldDecorator('minValue')(
 		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
 		              	
 		            )}
@@ -132,7 +118,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		          </Col>
 		          <Col span={8}>
 		          		<FormItem {...formItemLayout}>
-				            {getFieldDecorator('maxAmount')(
+				            {getFieldDecorator('maxValue')(
 				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
 				            )}
 				          </FormItem>
@@ -144,28 +130,70 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 
 	//搜索
-	function handlsearch(values) {
-		if (values.time != undefined) {
-			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
-				"&createDateStart=" + timeFormat(new Date(values.time[0])) +
-				"&createDateEnd=" + timeFormat(new Date(values.time[1]))
-			))
-		} else {
-			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
-			))
-		}
+	function handlsearch(data) {
+		dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + data.userId +
+				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole +
+				"&userLevel=" + data.userLevel + "&bonusStatus=" + data.bonusStatus +
+				"&inviteStatus=" + data.inviteStatus +
+				"&minValue=" + data.minValue +
+				"&maxValue=" + data.maxValue 
+		))
+		// if (values.time != undefined) {
+		// 	dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + values.Id +
+		// 		"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
+		// 		"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
+		// 		"&createDateStart=" + timeFormat(new Date(values.time[0])) +
+		// 		"&createDateEnd=" + timeFormat(new Date(values.time[1]))
+		// 	))
+		// } else {
+		// 	dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + values.Id +
+		// 		"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
+		// 		"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
+		// 	))
+		// }
 	}
 
 
 	//奖励列表
 	const InviteNewTableProps = {
-		showModal(){
+		data:InviteBonusList,
+		loading:loading,
+		total:totalNumber,
+		currentPage:currentPage,
+		showModal(record){
 			dispatch({
-				type:"user/showFrozenModal"
+				type:"user/showFrozenModal",
+				payload:{
+					currentItem:record
+				}
+			})
+		},
+		handelchande(page){
+			const data = GetRequest(location.search)
+			dispatch(routerRedux.push('/user/platformReward?page='+ page + "&userId=" + data.userId +
+				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole +
+				"&userLevel=" + data.userLevel + "&bonusStatus=" + data.bonusStatus +
+				"&inviteStatus=" + data.inviteStatus +
+				"&minValue=" + data.minValue +
+				"&maxValue=" + data.maxValue 
+		    ))
+		},
+		getUserData(record){
+			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
+
+		},
+		InviteUserListData(record){
+			dispatch(routerRedux.push('/user/invite?page=1'+"&inviteUserId="+record.userId))
+		},
+		confirm(data){
+			dispatch({
+				type:"user/freezeUser",
+				payload:{
+					auditUserId:merId,
+					userId:data.userId,
+					bonusStatus:1,
+					search:location.search
+				}	
 			})
 		}
 	}
@@ -173,9 +201,25 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	//冻结模态框
 	const FrozenModalProps = {
 		visible:FrozenVisible,
+		item:currentItem,
 		onCancel(){
 			dispatch({
-				type:"user/hideFrozenModal"
+				type:"user/hideFrozenModal",
+				payload:{
+					currentItem:{}
+				}
+			})
+		},
+		onOk(data){
+			dispatch({
+				type:"user/freezeUser",
+				payload:{
+					auditUserId:merId,
+					userId:data.userId,
+					bonusStatus:0,
+					bonusFreezeReason:data.bonusFreezeReason,
+					search:location.search
+				}	
 			})
 		}
 	}
@@ -206,8 +250,8 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	return (
 		<div>
 			<div className = {styles.changCoinType}>
-					<Link  className = {styles.activeColor} to = '/user/platformReward'>邀新奖励</Link>
-					<a  className = {styles.activeColor} onClick={RweInfo}>奖励说明</a>
+					<Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>邀新奖励</Link>
+					<Button  className = {styles.activeColor} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
 			<InviteNewTable {...InviteNewTableProps}/>

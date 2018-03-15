@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import {
  getBaseinfoList,deleteBaseinfo,getSysUserList,sysuserSetStatus,resetPassword,getPostList,
  getPost,getAuthTree,postSetStatus,addSysUser,setKgUser,addBaseinfo,addPost,setInfoStatus,
- getUserId
+ getUserId,getRelUser,unsetKgUser
 
 } from '../services/setting';
 import {formatDate,tokenLogOut,GetRequest} from '../services/common'
@@ -27,7 +27,8 @@ export default {
    loading:false,
    deskUserId:'',
    currentPage:0,
-   totalNumber:0
+   totalNumber:0,
+   getRelUserList:[],//关联账户列表
   },
 
   subscriptions: {
@@ -350,7 +351,7 @@ export default {
         *setKgUser({ payload }, {call , put}) {
           let merId =localStorage.getItem("userId");
           const { data } = yield call(setKgUser, payload);
-            console.log(data)
+           // console.log(data)
           if (data && data.code == 10000) {
             message.success('关联成功')
                yield put({
@@ -492,10 +493,60 @@ export default {
                yield put({
                 type:'getUserIdSuccess',
                 payload:{
-                  deskUserId:res.userId
+                  deskUserId:res,
                 }
                })
                
+          } else {
+            if(data.code ==10004||data.code ==10011){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
+          }
+        },
+        *getRelUser({ payload }, {call , put}) {
+          const { data } = yield call(getRelUser, payload);
+          //console.log("data",data)
+          if (data && data.code == 10000) {
+              var res =data.responseBody;
+               yield put({
+                type:'getRelUserSuccess',
+                payload:{
+                  getRelUserList:res
+                }
+               })
+               
+          } else {
+            if(data.code ==10004||data.code ==10011){
+             message.error(data.message,2);
+              yield put(routerRedux.push('/'));
+            }else{
+              message.error(data.message,2);
+            }
+          }
+        },
+        *unsetKgUser({ payload }, {call , put}) {
+          let params ={
+            relId:payload.relId
+          }
+          const { data } = yield call(unsetKgUser, params);
+          //console.log("data",data)
+          if (data && data.code == 10000) {
+              message.success('解绑成功')
+              yield put({
+                type:"getRelUser",
+                payload:{
+                  sysUserId:payload.sysUserId
+                }
+              })
+              yield put({
+                type:'getSysUserList',
+                payload:{
+                  
+                }
+               })
           } else {
             if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
@@ -595,6 +646,11 @@ export default {
         ...action.payload
       };
     },
+    getRelUserSuccess(state, action) {
+      return {...state,
+        ...action.payload
+      };
+    },
     showRelationModal(state, action) {
       return {...state,
         RelationVisible: true,
@@ -624,6 +680,18 @@ export default {
     },
     getUserIdSuccess(state, action) {
       return {...state,
+        ...action.payload
+      };
+    },
+    showGetRelUserModal(state, action) {
+      return {...state,
+        GetRelUserViible: true,
+        ...action.payload
+      };
+    },
+    hideGetRelUserModal(state, action) {
+      return {...state,
+        GetRelUserViible: false,
         ...action.payload
       };
     },

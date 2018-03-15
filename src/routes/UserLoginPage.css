@@ -156,6 +156,25 @@
 .btn .ant-btn{
 	margin: 0!important;
 }
+.btnn{
+	display: inline-block;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+	margin-right: 50px;
+	color:#fff;
+	background:rgb(0,154,210);
+	border-color:rgb(0,154,210);
+}
+.btnn:hover{
+	color:#fff;
+}
 .dataBox{
 	margin-bottom: 20px;
 }
@@ -174,6 +193,11 @@
 	display: inline-block;
 	width:150px;
 	
+}
+.noPartant{
+	width:100%;
+	font-size:20px;
+	text-align: center;
 }
 @media only screen and (max-width: 1280px){
 	.loginImg{

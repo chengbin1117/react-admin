@@ -24,7 +24,7 @@ let realname = localStorage.getItem("realname")
 let first = "";
 let second = "";
 let third = "";
-
+let four = "";
 class LayoutContainer extends React.Component {
   rootSubmenuKeys:['sub0','sub1','sub2','sub3','sub4','sub5','sub6','sub7']
   state = {
@@ -86,97 +86,141 @@ class LayoutContainer extends React.Component {
     if(path =="/index"){
           first ="首页";
           second = "";
+          four = "";
       }else if(path =="/user/user_admin"){
           first= "首页";
           second= "用户管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/user/user_role"){
           first= "首页";
           second= "用户角色管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/user/user_login"){
           first= "首页";
           second= "用户登陆管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/user/user_info"){
           first= "首页";
           second= "用户默认信息设置";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/user/realName"){
           first= "首页";
           second= "实名认证管理";
-          third=""
+          third="";
+          four = "";
+      }else if(path =="/user/platformReward"){
+          first= "首页";
+          second= "平台奖励管理";
+          third="";
+          four = "";
       }else if(path =="/user/user_data"){
           first= "首页";
           second= "用户管理";
+          third="查看用户信息";
+          four = "";
+      }else if(path =="/user/reward"){
+          first= "首页";
+          second= "用户管理";
           third="查看用户信息"
+          four = "奖励明细";
+      }else if(path =="/user/invite"){
+          first= "首页";
+          second= "用户管理";
+          third="查看用户信息"
+          four = "邀新记录";
+      }else if(path =="/user/master"){
+          first= "首页";
+          second= "用户管理";
+          third="查看用户信息"
+          four = "师徒关系";
       }else if(path =="/content/content_column"){
           first= "首页";
           second= "栏目管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/content/content_article"){
           first= "首页";
           second= "文章管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/content/content_comment"){
           first= "首页";
           second= "评论管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/content/release_article"){
           first= "首页";
           second= "文章管理",
-          third= "发布文章"
+          third= "发布文章";
+          four = "";
       }else if(path =="/content/editor_article"){
           first= "首页";
-          second= "文章管理",
-          third= "编辑文章"
+          second= "文章管理";
+          third= "编辑文章";
+          four = "";
       }else if(path =="/content/content_opinion"){
           first= "首页";
           second= "意见反馈";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/content/opinion"){
           first= "首页";
           second= "意见反馈";
-          third="反馈内容"
+          third="反馈内容";
+          four = "";
       }else if(path =="/content/content_image"){
           first= "首页";
           second= "图片管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/data/data_column"){
           first= "首页";
           second= "专栏数据";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/data/data_user"){
           first= "首页";
           second= "用户数据";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/setting/about"){
           first= "首页";
           second= "关于我们";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/setting/base"){
           first= "首页";
-          second= "网站基本信息"
+          second= "网站基本信息";
+          four = "";
       }else if(path =="/setting/account"){
           first= "首页";
           second= "系统账号管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/finance/recharge"){
           first= "首页";
           second= "充值管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/finance/withdrawals"){
           first= "首页";
           second= "提现管理";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/finance/record"){
           first= "首页";
           second= "交易记录";
-          third=""
+          third="";
+          four = "";
       }else if(path =="/finance/bond"){
           first= "首页";
           second= "保证金记录";
-          third=""
+          third="";
+          four = "";
       }
 
     return (
@@ -234,6 +278,7 @@ class LayoutContainer extends React.Component {
               <Breadcrumb.Item>{first}</Breadcrumb.Item>
               <Breadcrumb.Item>{second}</Breadcrumb.Item>
               <Breadcrumb.Item>{third}</Breadcrumb.Item>
+              <Breadcrumb.Item>{four}</Breadcrumb.Item>
             </Breadcrumb>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               {this.props.children}

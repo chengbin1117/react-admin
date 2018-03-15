@@ -29,13 +29,21 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
+	const { 
+		ParentUserInfo,
+		SubUserList,
+		totalNumber,
+		currentPage,
+		loading
+	} =user;
+	const urlSelect = GetRequest(location.search); 
 	function getFields(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
 			<div key="0">
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='用户ID'>
-						{getFieldDecorator('Id', {
+						{getFieldDecorator('userId', {
 							rules: [
 								{ required: false, pattern: /^[0-9]*$/, message: "用户ID只能输入数字" }
 							]
@@ -47,14 +55,14 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='昵称'>
-						{getFieldDecorator('email')(
+						{getFieldDecorator('userName')(
 							<Input placeholder="请输入昵称" />
 						)}
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='手机号'>
-						{getFieldDecorator('phone', {
+						{getFieldDecorator('userMobile', {
 							rules: [
 								{ required: false, pattern: /^[0-9]*$/, message: "手机号只能为数字" }
 							]
@@ -65,24 +73,13 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='用户角色'>
-						{getFieldDecorator('role')(
+						{getFieldDecorator('userRole')(
 							<Select placeholder="请选择" allowClear={true}>
 								<Option value="1">普通用户</Option>
 								<Option value="2">个人</Option>
 								<Option value="3">媒体</Option>
 								<Option value="4">企业</Option>
 								<Option value="5">组织</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='级别'>
-						{getFieldDecorator('auditStatus')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="0">审核中</Option>
-								<Option value="1">通过</Option>
-								<Option value="2">不通过</Option>
 							</Select>
 						)}
 					</FormItem>
@@ -103,64 +100,116 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	//搜索
 	function handlsearch(values) {
 		if (values.time != undefined) {
-			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
+
+			dispatch(routerRedux.push('/user/master?page=1' +'&inviteUserId='+urlSelect.inviteUserId+'&name='+urlSelect.name+ "&userId=" + values.userId +
+				"&userName=" + values.userName + "&userMobile=" + values.userMobile + "&userRole=" + values.userRole +
 				"&createDateStart=" + timeFormat(new Date(values.time[0])) +
 				"&createDateEnd=" + timeFormat(new Date(values.time[1]))
 			))
 		} else {
-			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
+			dispatch(routerRedux.push('/user/master?page=1' +'&inviteUserId='+urlSelect.inviteUserId+'&name='+urlSelect.name+ "&userId=" + values.userId +
+				"&userName=" + values.userName + "&userMobile=" + values.userMobile + "&userRole=" + values.userRole 
 			))
 		}
 	}
 	const userInfo ={}
+
+	const MasterTableProps = {
+		data:SubUserList,
+		loading:loading,
+		total:totalNumber,
+		currentPage:currentPage,
+		handelchande(page){
+
+			const values = GetRequest(location.search)
+			dispatch(routerRedux.push('/user/master?page='+page+'&inviteUserId='+urlSelect.inviteUserId+'&name='+urlSelect.name+ "&userId=" + values.userId +
+				"&userName=" + values.userName + "&userMobile=" + values.userMobile + "&userRole=" + values.userRole +
+				"&createDateStart=" +values.createDateStart +
+				"&createDateEnd=" + values.createDateEnd
+			))
+		},
+		userData(record){
+			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
+		}
+	}
+
+
+	
+
+	//解除师徒关系
+    function unBindUser(data){
+    	//console.log(data)
+    	confirm({
+    		title:"确认解除师徒关系吗?",
+    		onOk(){
+    			dispatch({
+    				type:"user/unBindUser",
+    				payload:{
+    					inviteUserId:data.userId,
+    					userId:urlSelect.inviteUserId
+    				}
+    			})
+    		}
+    	})
+    }
+
+    //查看师傅详细信息
+    function userDataInfo(data){
+    	dispatch(routerRedux.push('/user/user_data?userId='+data.userId))
+    }
 	return (
 		<div>
+		{ParentUserInfo!=null?
 		<Card title={
 			<div>
-			    <span>王小二的师傅&emsp;&emsp;&emsp;</span>
+			    <span><span style={{color:"#1DA57A"}}>{urlSelect&&Base64.decode(urlSelect.name)}</span>的师傅&emsp;&emsp;&emsp;</span>
 			    &emsp;
-			    <Button type="primary">解除师徒关系</Button>
+			    <Button type="primary" onClick={()=>unBindUser(ParentUserInfo)}>解除师徒关系</Button>
 			    &emsp;
-			    <Button type="primary">查看详细信息</Button>
+			    <Button type="primary" onClick={()=>userDataInfo(ParentUserInfo)}>查看详细信息</Button>
 			</div>} 
 			bordered={false}
-		>
-			<table className={stytes.table}>
+			loading = {loading}
+		><table className={stytes.table}>
 						<tbody>
 						<tr>
-						    <td>用户ID</td><td>{userInfo.userId!=null?userInfo.userId:"——"}</td>
-						    <td>邮箱</td><td>{userInfo.profile&&userInfo.profile.email!=null?userInfo.profile.email:"——"}</td>
+						    <td>用户ID</td><td>{ParentUserInfo.userId!=null?ParentUserInfo.userId:"——"}</td>
+						    <td>昵称</td><td>{ParentUserInfo.userName&&ParentUserInfo.userName!=null?ParentUserInfo.userName:"——"}</td>
 						</tr>
 						<tr>
-						    <td>手机号</td><td>{userInfo.userMobile?userInfo.userMobile:"——"}</td>
-						    <td>用户角色</td><td>{userInfo.userRole?userInfo.userRoleDisplay:"——"}</td>
+						    <td>手机号</td><td>{ParentUserInfo.userMobile?ParentUserInfo.userMobile:"——"}</td>
+						    <td>邮箱</td><td>{ParentUserInfo.userEmail?ParentUserInfo.userEmail:"——"}</td>
+		
 						</tr>
 						<tr>
-						    <td>用户级别</td><td>{userInfo.userLevelDisplay?userInfo.userLevelDisplay:"——"}</td>
-						    <td>注册时间</td><td>{userInfo.createDate!=null?userInfo.createDate:"——"}</td>
+						    <td>用户级别</td><td>初级</td>
+						    <td>注册时间</td><td>{ParentUserInfo.createDate!=null?ParentUserInfo.createDate:"——"}</td>
 						</tr>
 						<tr>
-						    <td>提交专栏申请时间</td><td>{userInfo.applyColumnTime!=null?userInfo.applyColumnTime:"——"}</td>
-						    <td>审核状态</td><td>{userInfo.auditStatusDisplay!=null?userInfo.auditStatusDisplay:"——"}</td>
+						    <td>用户角色</td><td>{ParentUserInfo.userRole?ParentUserInfo.userRoleDisplay:"——"}</td>
+						    <td>专栏名称</td><td>{ParentUserInfo&&ParentUserInfo.userRole!=1?ParentUserInfo.userName:"——"}</td>
 						</tr>
 						<tr>
-						    <td>审核人</td><td>{userInfo.auditor!=null?userInfo.auditor:"——"}</td>
-						    <td>审核时间</td><td>{userInfo.auditDate!=null?userInfo.auditDate:"——"}</td>
+						    <td>师徒关系建立时间</td><td>{ParentUserInfo.relTime!=null?ParentUserInfo.relTime:"——"}</td>
+						    <td>最后活动时间</td><td>{ParentUserInfo.lastActiveTime!=null?ParentUserInfo.lastActiveTime:"——"}</td>
 						</tr>
-						<tr>
+						{/*<tr>
 						    <td>锁定状态</td><td>{userInfo.lockStatusDisplay!=null?userInfo.lockStatusDisplay:"——"}</td>
 						    <td></td><td>——</td>
-						</tr>
+						</tr>*/}
 						</tbody>
 					</table>
-		</Card>
-		<Card title={<span>王小二的徒弟&emsp;&emsp;30人</span>} bordered={false}>
+		</Card>:<div className={stytes.noPartant}><Icon type="frown-o" />暂无师傅</div>}
+		<Card 
+		title={<span><span 
+		style={{color:"#1DA57A"}}>
+		{urlSelect&&Base64.decode(urlSelect.name)}</span>的徒弟&emsp;&emsp;
+		{totalNumber&&totalNumber}人</span>} 
+		bordered={false}
+		
+		>
 			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
-			<MasterTable />
+			<MasterTable {...MasterTableProps}/>
 		</Card>
 		</div>
 

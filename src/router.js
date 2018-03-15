@@ -7,6 +7,7 @@ import React, {
   IndexRoute,
   Link,
 } from 'dva/router';*/
+import './routes/font.less';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 // /import { Router, Route, Switch,IndexRoute} from 'dva/router';
@@ -24,6 +25,11 @@ import UserRole from './routes/User_role';
 import UserInfo from './routes/User_info';
 import UserLogin from './routes/User_login';
 import realName from './routes/User_realname';
+import RewardDetails from './routes/RewardDetails';
+import InviteRecord from './routes/InviteRecord';
+import Master from './routes/Master';
+import PlatformReward from './routes/PlatformReward';
+
 //日志
 import Log from './routes/Log';
 import LogAdmin from './routes/Log_admin';
@@ -102,6 +108,10 @@ function RouterConfig({ history }) {
           <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
           <Route path="/user/user_role" exact component={UserRole} />
           <Route path="/user/user_data" exact component={UserData}/>
+          <Route path="/user/reward" exact component={RewardDetails}/>
+          <Route path="/user/invite" exact component={InviteRecord}/>
+          <Route path="/user/master" exact component={Master}/>
+          <Route path="/user/platformReward" exact component={PlatformReward}/>
           <Route path="/user/user_login" exact component={UserLogin} />
           <Route path="/user/user_info" exact component={UserInfo} />
           <Route path="/user/realName" exact component={realName} />

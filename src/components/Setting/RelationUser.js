@@ -46,11 +46,11 @@ const RelationModal = ({
 			const data = {
 				...getFieldsValue(),
 			}
-			console.log(data)
-			if(deskUserId == ""){
+			//console.log(data)
+			if(deskUserId.userId== ""){
 				message.warn('无此前台账户')
 			}else{
-				onOk(item,deskUserId);
+				onOk(item,deskUserId.userId);
 			}
 			
 		});
@@ -90,7 +90,7 @@ const RelationModal = ({
 					})(
 						<Input type="text" onChange={handleBlur}/>
 					)}
-					<span>该用户ID：{deskUserId}</span>
+					<span>专栏名称：{deskUserId.userName}</span>
 				</FormItem>	
 			</Form>
 		</Modal>

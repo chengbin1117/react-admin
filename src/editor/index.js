@@ -5,6 +5,8 @@ import React, {
 import { Modal, Button,Input,message} from 'antd';
 import Uploader from './upload';
 import E from 'wangeditor';
+import BraftEditor from 'braft-editor'
+import 'braft-editor/dist/braft.css'
 const { TextArea } = Input;
 import {uploadUrl,ImgUrl} from "../services/common";
 import styles from '../components/common.css';
@@ -131,6 +133,103 @@ import styles from '../components/common.css';
         );
       }
     }
+  //braft-editor
+  const validateFn = (file) => {
+  console.log(file)
+  const is2M = file.size / 1024 / 1024 < 2;
+  if (!is2M) {
+    message.error('图片大小不超过2M');
+  }
+  return is2M
+  }
+  const uploadFn = (param) => {
+
+  const serverURL = 'http://kg.btc123.com/kgapi/image/upload'
+  const xhr = new XMLHttpRequest
+  const fd = new FormData()
+
+  // libraryId可用于通过mediaLibrary示例来操作对应的媒体内容
+  console.log(param.libraryId)
+
+  const successFn = (response) => {
+    // 假设服务端直接返回文件上传后的地址
+    // 上传成功后调用param.success并传入上传后的文件地址
+    //console.log(typeof(xhr.responseText))
+    console.log(JSON.parse(xhr.responseText));
+    var filePath = JSON.parse(xhr.responseText).data[0].filePath;
+    param.success({
+      url: uploadUrl+filePath
+    })
+  }
+
+  const progressFn = (event) => {
+    // 上传进度发生变化时调用param.progress
+    param.progress(event.loaded / event.total * 100)
+  }
+
+  const errorFn = (response) => {
+    // 上传发生错误时调用param.error
+    param.error({
+      msg: 'unable to upload.'
+    })
+  }
+
+  xhr.upload.addEventListener("progress", progressFn, false)
+  xhr.addEventListener("load", successFn, false)
+  xhr.addEventListener("error", errorFn, false)
+  xhr.addEventListener("abort", errorFn, false)
+
+  fd.append('file', param.file)
+  xhr.open('POST', serverURL, true)
+  xhr.send(fd)
+
+  }
+  class EditorTest extends Component {
+  constructor(props, context) {
+      super(props, context);
+      this.state = {
+        content: null
+      }
+  }
+  handleChange = (content) => {
+    //console.log(content)
+  }
+  onRawChange= (content) => {
+    ///console.log(content)
+  }
+  handleHTMLChange = (html) => {
+    //console.log(html)
+    this.props.edtiorContent(html)
+  }
+  onConFirm = (e) =>{
+    console.log(this.editorInstance,e)
+    //this.editorInstance.toggleSelectionLink('http://www.baidu.com', '_blank')
+  }
+  render() {
+    const editorProps = {
+      height: 500,
+      initialContent: this.state.content,
+      onChange: this.handleChange,
+      onHTMLChange: this.handleHTMLChange,
+      onRawChange:this.onRawChange,
+      media:{
+        image: true, // 开启图片插入功能
+        video: true, // 开启视频插入功能
+        audio: true, // 开启音频插入功能
+        validateFn: validateFn, // 指定本地校验函数，说明见下文
+        uploadFn: uploadFn // 指定上传函数，说明见下文
+      },
+      pasteMode:['html'|''],
+      allowPasteImage:true
+    }
+    return (
+      <div className="demo">
+        <BraftEditor {...editorProps}/>
+      </div>
+        
+    );
+  }
+}
 
 
 export default Editor;

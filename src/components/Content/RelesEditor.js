@@ -11,9 +11,9 @@ import Editor from '../../editor/index';
 import styles from './Content_Opinion_Show.css';
 import RelationModal from '../Setting/RelationUser';
 import { options, uploadUrl, formatDate } from "../../services/common"
-import imgx from '../../assets/images/lx4.jpg';
-import imgy from '../../assets/images/12.jpg';
-import imgz from '../../assets/images/22.jpg';
+import imgx from '../../assets/images/article1.jpg';
+import imgy from '../../assets/images/article2.jpg';
+import imgz from '../../assets/images/article3.jpg';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -44,8 +44,7 @@ const tailFormItemLayout = {
   },
 };
 
-// let artSorce = 0;
-let timeDis = true;
+let timeDis = 0;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
@@ -78,7 +77,7 @@ function RelesEditor({
   const options = ColumnList;
   const imgArr=[imgx,imgy,imgz];  //默认背景图；
   //console.log(UserById.kgUserName)
-  const { RelationVisible } = setting
+  const { RelationVisible,getRelUserList } = setting
   function handleSubmit(e) {
     e.preventDefault();
     validateFields((errors) => {
@@ -91,10 +90,10 @@ function RelesEditor({
           message.error('请上传封面图')
           return true
         }
-        if (UserById.kgUserId == null || UserById.kgUserId == "") {
-          message.error('请先关联前台用户');
-          return true
-        }
+        // if (UserById.kgUserId == null || UserById.kgUserId == "") {
+        //   message.error('请先关联前台用户');
+        //   return true
+        // }
         var dd = (data.text.txt.text()).replace(/<\/?.+?>/g, "");
         var dds = dd.replace(/ /g, "");//dds为得到后的内容
         //console.log(dds.lengthgvfdg)
@@ -138,8 +137,8 @@ function RelesEditor({
             articleSource: data.articleSource,
             articleLink: data.articleLink,
             commentSet: data.commentSet == "true" ? true : false,
-            publishSet: data.radioG == "true" ? true : false,
-            createUser: UserById.kgUserId,
+            publishSet: parseInt(data.radioG),
+            createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
             textnum: data.text.txt.text().split('&nbsp;').join('').length,
@@ -162,16 +161,16 @@ function RelesEditor({
       var tagsName = "";
       if (data.tag1 == undefined) {
         tagsName = "";
-      } else if (data.tag1 == !undefined && data.tag2 == undefined) {
+      } else if (data.tag1 !==undefined && data.tag2 == undefined&&data.tag3 ==undefined) {
         tagsName = data.tag1;
-      } else if (data.tag1 == !undefined && data.tag2 !== undefined && data.tag3 == undefined) {
+      } else if (data.tag1 !=undefined && data.tag2 != undefined && data.tag3 == undefined) {
         tagsName = data.tag1 + ',' + data.tag2
       }
-      else if (data.tag4 == undefined && data.tag5 == undefined) {
+      else if (data.tag4 == undefined && data.tag5 == undefined&&data.tag1 !=undefined && data.tag2 != undefined && data.tag3 !=undefined) {
         tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
-      } else if (data.tag4 != undefined && data.tag5 == undefined) {
+      } else if (data.tag4 != undefined && data.tag5 == undefined&&data.tag1 !=undefined && data.tag2 != undefined && data.tag3 !=undefined) {
         tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4
-      } else if (data.tag4 != undefined && data.tag5 != undefined) {
+      } else if (data.tag4 != undefined && data.tag5 != undefined&&data.tag1 !=undefined && data.tag2 != undefined && data.tag3 !=undefined) {
         tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
       }
       //console.log(data)
@@ -193,8 +192,8 @@ function RelesEditor({
             articleSource: data.articleSource,
             articleLink: data.articleLink,
             commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-            publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
-            createUser: UserById.kgUserId,
+            publishSet: parseInt(data.radioG),
+            createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
             publishStatus: 0,
@@ -223,8 +222,8 @@ function RelesEditor({
             articleSource: data.articleSource,
             articleLink: data.articleLink,
             commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-            publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
-            createUser: UserById.kgUserId,
+            publishSet: parseInt(data.radioG),
+            createUser: data.createUser,
             sysUser: merId,
             bonusStatus: parseInt(data.bonusStatus),
             publishStatus: 0,
@@ -330,18 +329,24 @@ function RelesEditor({
     }
     return result;
   }
-  function disabledDate(current) {
+  function disabledDate(current,cx) {
     // Can not select days before today and today
-    console.log(current)
-    //console.log(moment())
-    return current && current <= moment()
+    var date = Date.parse(new Date())
+    //console.log(date)
+    var time = date -(24*60*60*1000);
+    var severTime = date +(7*24*60*60*1000);
+    //console.log("2",cx)
+    return current && severTime < current && current > time
   }
 
   function disabledDateTime() {
+     var date = new Date(Date.parse(new Date()))
+    
+     var  h = date.getHours()
+    var m = date.getMinutes()
     return {
-      disabledHours: () => range(0, 24).splice(4, 20),
-      disabledMinutes: () => range(30, 60),
-      disabledSeconds: () => [55, 56],
+      disabledHours: () => range(0, 24).splice( 0,h),
+      
     };
   }
   function onChange(rule, value, callback) {
@@ -378,10 +383,10 @@ function RelesEditor({
 
   function handleTime(e) {
     console.log("e", e.target.value)
-    if (e.target.value == "true") {
-      timeDis = false
+    if (e.target.value == "0") {
+      timeDis = 0
     } else {
-      timeDis = true
+      timeDis = 1
     }
   }
   function edtiorContentText(t) {
@@ -638,8 +643,8 @@ function RelesEditor({
       articleSource: data.articleSource,
       articleLink: data.articleLink,
       commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-      publishSet: data.radioG != undefined ? (data.radioG == "true" ? true : false) : null,
-      createUser: UserById.kgUserId != null ? UserById.kgUserId : null,
+      publishSet: parseInt(data.radioG),
+      createUser: data.createUser,
       sysUser: merId,
       bonusStatus: parseInt(data.bonusStatus),
       publishStatus: 0,
@@ -978,16 +983,16 @@ function RelesEditor({
         label="定时发布"
       >
         {getFieldDecorator('radioG', {
-          initialValue: 'false',
+          initialValue: '0',
           rules: [{ required: true, }],
         })(
           <RadioGroup onChange={handleTime}>
-            <Radio value="true">开启定时发布</Radio>
-            <Radio value="false">不开启</Radio>
+            <Radio value="1">开启定时发布</Radio>
+            <Radio value="0">不开启</Radio>
           </RadioGroup>
           )}
       </FormItem>
-      {timeDis == false && <FormItem
+      {timeDis == 1 && <FormItem
         {...formItemLayout}
         label=" " colon={false}
         extra="定时范围：从当前时间点开始至未来7天内，按自然日计算"
@@ -998,11 +1003,10 @@ function RelesEditor({
           ],
         })(
           <DatePicker
-            format="YYYY-MM-DD HH:mm:ss"
+            format="YYYY-MM-DD HH:mm"
             disabledDate={disabledDate}
-            /*disabledTime={disabledDateTime}*/
-            showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-            locale={options}
+            // disabledTime={disabledDateTime}
+            showTime={{ defaultValue: moment('00:00', 'HH:mm'),format:"HH:mm"}}
             size="large"
           /*disabled={timeDis}*/
           />
@@ -1014,10 +1018,17 @@ function RelesEditor({
         label="发布人"
         extra='注：若该文章为用户发布，则此处不可更改'
       >
-
-        <Input style={{ width: '20%', marginRight: 20 + 'px' }} onChange={createUserValue} value={UserById.kgUserName == null ? "" : UserById.kgUserName} disabled={true} />
-
-        {(UserById.kgUserId == null || UserById.kgUserId == "") ? <a style={{ marginRight: 40 + 'px' }} onClick={showUser} >关联前台用户</a> : null}
+        {getFieldDecorator('createUser', {
+          rules: [
+            { required: true, message: "请选择关联账户", },
+          ],
+        })(
+          <Select placeholder="请选择前台账号" style={{width:"20%"}}>
+            {getRelUserList&&getRelUserList.map((item,index)=>
+              <Option value={item.kgUserId+""} key={index}>{item.kgUsername}</Option>
+              )}
+          </Select>
+          )}
       </FormItem>
       <FormItem
         {...formItemLayout}

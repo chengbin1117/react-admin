@@ -36,6 +36,7 @@ const SetHotModal = ({
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -61,12 +62,16 @@ const SetHotModal = ({
 		onCancel()
 		
 	}
+	function afterClose(){
+		resetFields()
+	}
 	const modalOpts = {
 		title: '是否推荐为热门作者',
 		visible,
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
+		afterClose:afterClose,
 	};
 	
 

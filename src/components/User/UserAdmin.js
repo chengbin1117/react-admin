@@ -38,6 +38,7 @@ const UserAdmin = ({
 	changepage,
 	currentPage,
 	userData,
+	sorterUserList,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -45,7 +46,7 @@ const UserAdmin = ({
 	},
 	forget
 }) => {
-	//console.log(userlist)
+	console.log(userlist)
 
 	function confirm(e) {
        //console.log(e);
@@ -76,6 +77,21 @@ const UserAdmin = ({
 		  dataIndex: 'createDate',
 		  key: 'createDate',
 		}, {
+		  title:"师傅",
+		  dataIndex: 'parentUser',
+		  render:(text,record)=>(
+		  	<span>{text!=null?text:"无"}</span>
+		  	)
+		}, {
+		  title:"邀新状态",
+		  dataIndex: 'inviteStatus',
+		  render:(text,record)=>(
+          <span>
+            {text ==0 && "无需审查"}
+            {text ==1 && <span style={{color:"#f5222d"}}>需审查</span>}
+          </span>
+          )
+		},{
 		  title: '角色',
 		  dataIndex: 'userRoleDisplay',
 		  key: 'userRoleDisplay',
@@ -91,18 +107,26 @@ const UserAdmin = ({
 		  title: '发文量',
 		  dataIndex: 'articleNum',
 		  key: 'articleNum',
+		  sorter: true,
+		  width:100
 		}, {
 		  title: '评论量',
 		  dataIndex: 'commentNum',
 		  key: 'commentNum',
+		  sorter: true,
+		  width:100
 		}, {
 		  title: '收藏量',
 		  dataIndex: 'collectNum',
 		  key: 'collectNum',
+		  sorter: true,
+		  width:100
 		}, {
 		  title: '分享量',
 		  dataIndex: 'shareNum',
 		  key: 'shareNum',
+		  sorter: true,
+		  width:100
 		}, {
 		  title: '审核状态',
 		  dataIndex: 'auditStatus',
@@ -160,7 +184,7 @@ const UserAdmin = ({
 		  ),
 	}];
 	function onChange (pageNumber){
-		console.log()
+		
 	}
 	
 	
@@ -186,6 +210,10 @@ const UserAdmin = ({
 			   onChange = (page)=>{
 			      	changepage(page)
 			      }
+			    handleTableChange= (pagination, filters, sorter)=>{
+			    	// /console.log(filters,sorter)
+			    	sorterUserList(sorter)
+			    }
 			  render() {
 			    const {selectedRowKeys,selectedRows} = this.state;
 			    const rowSelection = {
@@ -196,8 +224,9 @@ const UserAdmin = ({
 			    const hasSelected = selectedRowKeys.length > 0;
 			    return (
 			      <div>
-			        <Table bordered columns={columns} dataSource={userlist} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} 
-			        scroll={{ x:1900 }} 
+			        <Table columns={columns} dataSource={userlist} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} 
+			        scroll={{ x:2250 }} 
+			        onChange={this.handleTableChange}
 			        />
 	      	 <div className="table-operations" >
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)}>批量审核</Button>

@@ -1,24 +1,25 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select,Cascader } from 'antd';
+import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select,Cascader,Divider } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import { routerRedux } from 'dva/router';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import {message,Badge} from 'antd';
-const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList}) => {
+const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList,sorterUserList}) => {
 	const options = ColumnList;
 	let userId =localStorage.getItem("userId");
 	//console.log("loading",loading)
 	function release() {
 		localStorage.removeItem("articleText");
-		dispatch(routerRedux.push('/content/release_article?userId='+userId))
+		dispatch(routerRedux.push('/content/release_article?userId='+userId+"&page=1"))
 		
 	}
 	const columns = [{
 	  title: 'ID',
 	  dataIndex: 'articleId',
 	  key: 'articleId',
+	  width:100
 	}, {
 	  title: '标题',
 	  dataIndex: 'articleTitle',
@@ -85,6 +86,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  title: '访问量',
 	  dataIndex: 'bowseNum',
 	  key: 'bowseNum',
+	  sorter: true,
 	},{
 	  title: '排序',
 	  dataIndex: 'displayOrder',
@@ -100,10 +102,13 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  key: 'addrss',
 	  render: (text, record) => (
 	    <span>
-	      <a onClick={()=>editorItem(record)} className = "action_font" >编辑</a>
-	      <a onClick={()=>article(record)} className = "action_font" style={{marginLeft:10}} disabled={record.publishStatus==2?false:true}>审核</a>
-	      <a onClick={()=>setShowModal(record)} style={{marginLeft:10}} className = "action_font" disabled={record.publishStatus==1?false:true}>显示设置</a>
-	      <a onClick={()=>delArticle(record,getBonusList)} style={{marginLeft:10}} className = "action_font">查看阅读奖励</a>
+	      <a onClick={()=>editorItem(record)} >编辑</a>
+	      <Divider type="vertical" />
+	      <a onClick={()=>article(record)}  disabled={record.publishStatus==2?false:true}>审核</a>
+	      <Divider type="vertical" />
+	      <a onClick={()=>setShowModal(record)} disabled={record.publishStatus==1?false:true}>显示设置</a>
+	      <Divider type="vertical" />
+	      <a onClick={()=>delArticle(record,getBonusList)}  >查看阅读奖励</a>
 	    </span>
 	  )
 	}];
@@ -195,6 +200,10 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	      onChange = (page)=>{
 	      	changepage(page)
 	      }
+	      handleTableChange= (pagination, filters, sorter)=>{
+			    	// /console.log(filters,sorter)
+			    	sorterUserList(sorter)
+			    }
 		  render() {
 		    const { selectedRowKeys,selectedRows } = this.state;
 		    const rowSelection = {
@@ -204,7 +213,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 		    const hasSelected = selectedRowKeys.length > 0;
 		    return (
 		    	<div>
-		             <Table bordered rowSelection={rowSelection} columns={columns} dataSource={ArticleList} pagination = {false}  rowKey={record => record.articleId} loading={loading} locale={{emptyText:"暂无数据"}}/>
+		             <Table rowSelection={rowSelection} columns={columns} dataSource={ArticleList} pagination = {false}  rowKey={record => record.articleId} loading={loading} onChange={this.handleTableChange}/>
                      <Button type="primary" onClick={()=>onShowMOdal(selectedRows)} disabled={!hasSelected} size = 'large' style={{marginTop:"20px"}}>批量设置显示状态</Button>
                      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 		        </div>
