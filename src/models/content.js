@@ -60,6 +60,7 @@ export default {
             payload:{
               currentPage:search.page,
               articleId:search.articleId!='undefined'?search.articleId:null,
+              orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
               articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
               articleTag:search.articleTag!='undefined'?search.articleTag:null,
               publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
@@ -297,6 +298,7 @@ export default {
               payload:{
                 currentPage:search.page,
                 articleId:search.articleId!='undefined'?search.articleId:null,
+                orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
                 articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
                 articleTag:search.articleTag!='undefined'?search.articleTag:null,
                 publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
@@ -334,6 +336,7 @@ export default {
               payload:{
                  currentPage:sea.page,
                  articleId:sea.articleId!='undefined'?sea.articleId:null,
+                 orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
                  articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
                  articleTag:sea.articleTag!='undefined'?sea.articleTag:null,
                  publishStatus:sea.publishStatus!='undefined'?parseInt(sea.publishStatus):null,
@@ -469,11 +472,13 @@ export default {
                yield put(routerRedux.push('/content/content_article?page='+search.page+"&pageSize="+search.pageSize
                   +"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
               "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+              +'&orderByClause='+search.orderByClause
             ));
              }else{
                  yield put(routerRedux.push('/content/content_article?page='+search.page+"&pageSize="+search.pageSize
                  +"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
               "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+              +'&orderByClause='+search.orderByClause
             ));
              }
           
@@ -646,7 +651,7 @@ export default {
             const search = GetRequest(payload.search)
             yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId+"&page="+search.page
           +"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
-          "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn+"&pageSize=25"
+          "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn+"&pageSize=25"+'&orderByClause='+search.orderByClause
 
               ))
 
