@@ -126,12 +126,13 @@ function ContentArticle({location,dispatch,router,content}) {
 			 	dispatch(routerRedux.push('/content/content_article?page='+page+
 			 	"&articleId="+search.articleId+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+				+'&orderByClause='+search.orderByClause
 			 	))
 			 }else{
 			 	dispatch(routerRedux.push('/content/content_article?page='+page+
 			 	"&articleId="+search.articleId
 				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
-				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn
+				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn+'&orderByClause='+search.orderByClause
 			 	))
 			 }
 			 
@@ -172,6 +173,28 @@ function ContentArticle({location,dispatch,router,content}) {
 					search:location.search
 				}
 			})
+		},
+		sorterUserList(sorter){
+			console.log(sorter)
+			let orderByClause = "";
+			if(sorter.order=="descend"){
+					orderByClause = "bowse_num desc"
+				}else{
+					orderByClause = "bowse_num asc"
+			}
+			const search =GetRequest(location.search);
+			 if(search.articleTitle=="undefined"||search.articleTitle==undefined){
+			 	dispatch(routerRedux.push('/content/content_article?page=1'+
+			 	"&articleId="+search.articleId+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn+'&orderByClause='+orderByClause
+			 	))
+			 }else{
+			 	dispatch(routerRedux.push('/content/content_article?page=1'+
+			 	"&articleId="+search.articleId
+				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn+'&orderByClause='+orderByClause
+			 	))
+			 }
 		}
 	}
 	const SetModalProps = {
