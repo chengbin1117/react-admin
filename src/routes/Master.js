@@ -119,8 +119,10 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		loading:loading,
 		total:totalNumber,
 		currentPage:currentPage,
-		handelchande(values){
-			dispatch(routerRedux.push('/user/master?page=1' +'&inviteUserId='+urlSelect.inviteUserId+'&name='+urlSelect.name+ "&userId=" + values.userId +
+		handelchande(page){
+
+			const values = GetRequest(location.search)
+			dispatch(routerRedux.push('/user/master?page='+page+'&inviteUserId='+urlSelect.inviteUserId+'&name='+urlSelect.name+ "&userId=" + values.userId +
 				"&userName=" + values.userName + "&userMobile=" + values.userMobile + "&userRole=" + values.userRole +
 				"&createDateStart=" +values.createDateStart +
 				"&createDateEnd=" + values.createDateEnd
