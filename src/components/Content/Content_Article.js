@@ -12,7 +12,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	//console.log("loading",loading)
 	function release() {
 		localStorage.removeItem("articleText");
-		dispatch(routerRedux.push('/content/release_article?userId='+userId))
+		dispatch(routerRedux.push('/content/release_article?userId='+userId+"&page=1"))
 		
 	}
 	const columns = [{
