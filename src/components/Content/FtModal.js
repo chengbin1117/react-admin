@@ -127,7 +127,8 @@ var ImgBox = React.createClass({
 	              aspectRatio={16 / 9}
 	              guides={false}
 	              crop={this.crop}
-	              canMove ={false} 
+	              canMove ={false}
+	              resizable={false}
 	              />
 
 	        </Col>

@@ -219,11 +219,12 @@ import styles from '../components/common.css';
         validateFn: validateFn, // 指定本地校验函数，说明见下文
         uploadFn: uploadFn // 指定上传函数，说明见下文
       },
-      pasteMode:['html'|''],
-      allowPasteImage:true
+      pasteMode:['text'|''],
+      allowPasteImage:true,
+      placeholder:"请输入正文内容..."
     }
     return (
-      <div className="demo">
+      <div className={styles.editor}>
         <BraftEditor {...editorProps}/>
       </div>
         
