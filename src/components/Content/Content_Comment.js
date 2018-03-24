@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Badge,Select,DatePicker} from 'antd';
+import { Form, Row,Card,Col, Input, Button,Table,Pagination,Popconfirm,Badge,Select,DatePicker} from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import {options} from "../../services/common";
@@ -60,49 +60,7 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 		    </span>
 		  )
 	}];
-	function getFields(getFieldDecorator,formItemLayout){
-			const children = [];
-	    	children.push(
-		    	<div key="0">
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='评论内容'>
-			            {getFieldDecorator('content')(
-			              <Input placeholder="请输入评论内容" />
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='评论时间'>
-			            {getFieldDecorator('time')(
-			               <RangePicker locale={options}/>
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='状态'>
-			            {getFieldDecorator('status')(
-			              <Select placeholder="请选择" allowClear={true}>
-			              	<Option value="0" >审核中</Option>
-			              	<Option value="1">已通过</Option>
-			              	<Option value="2">未通过</Option>
-			              </Select>
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='显示状态'>
-			            {getFieldDecorator('displayStatus')(
-			              <Select placeholder="请选择" allowClear={true}>
-			              	<Option value="1">显示</Option>
-			              	<Option value="2">隐藏</Option>
-			              </Select>
-			            )}
-			          </FormItem>
-			        </Col>
-		        </div>
-	      	);
-	    return children;
-	}
+	
 	function onChange(){
 
 	}
@@ -155,24 +113,18 @@ function Content_Comment({data,opinionSetModal,changepage,showSet,confirm,showSe
 			    	 });
 	      }
 		render(){
-		
-		
-
-	
-		const { selectedRowKeys,selectedRows } = this.state;
+		    const { selectedRowKeys,selectedRows } = this.state;
 		    const rowSelection = {
 			      selectedRowKeys,
 			      onChange: this.onSelectChange,
 			};
-		  const hasSelected = selectedRowKeys.length > 0;
+		    const hasSelected = selectedRowKeys.length > 0;
 		  return (
-		    <div style={{paddingBottom:50}}>
-		      <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} handlsearch={handlsearch}/>
-		      <div>
-		      	<p style = {{float:"left",margin:10}}>当前共有评论：{total}</p>
-		      	<Button type="primary" size = 'large' style = {{float:'right'}} onClick = {opinionSetModal}>评论审核设置</Button>
-		      </div>
-		      <Table style = {{marginTop:90}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId} locale={{emptyText:"暂无数据"}}/> 
+		    <div>
+		      <Card title={"当前共有评论："+total} extra={<Button type="primary" size = 'large' onClick = {opinionSetModal}>评论审核设置</Button>} bordered={false}>
+		      	
+		      </Card>
+		      <Table bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} loading={loading} rowKey={record => record.commentId} locale={{emptyText:"暂无数据"}}/> 
 		      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 		    </div>
 		  );

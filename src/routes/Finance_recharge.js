@@ -12,15 +12,18 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import Recharge from '../components/Finance/Recharge';
 import RechargeTi from '../components/Finance/RechargeTi';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message,DatePicker} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function FinanceReacharge({location,dispatch,finance,router,}) {
 	const {RechargeList,loading,totalNumber,currentPage,ActiveKey}=finance;
@@ -41,37 +44,6 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 		currentPage,
 		loading,
 		router,
-		handlsearch(values){
-			if(values.time ==undefined){
-				/*dispatch({
-					type:'finance/getAccountRecharge',
-					payload:{
-						userId:values.userId,
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status)
-					}
-				})*/
-				dispatch(routerRedux.push('/finance/recharge?page=1'+"&userId="+values.userId+"&mobile="+values.mobile+
-					"&email="+values.email+"&status="+values.status
-					))
-			}else{
-				/*dispatch({
-					type:'finance/getAccountRecharge',
-					payload:{
-						userId:values.userId,
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status),
-						startDate:timeFormat(new Date(values.time[0])),
-						endDate:timeFormat(new Date(values.time[1])),
-					}
-				})*/
-				dispatch(routerRedux.push('/finance/recharge?page=1'+"&userId="+values.userId+"&mobile="+values.mobile+
-					"&email="+values.email+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
-					))
-			}
-		},
 		changepage(page){
 				const search =GetRequest(location.search);
 				dispatch(routerRedux.push('/finance/recharge?page='+page+"&userId="+search.userId
@@ -131,8 +103,100 @@ function FinanceReacharge({location,dispatch,finance,router,}) {
 			    );
 			  }
     }
+    function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='用户ID'>
+		            {getFieldDecorator('userId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入用户Id" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input type="mobile" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='充值时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker/>
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='充值状态'>
+		            {getFieldDecorator('status')(
+		              <Select  placeholder="请选择">
+					      <Option value="0">充值中</Option>
+					      <Option value="1">充值成功</Option>
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='用户ID'>
+		            {getFieldDecorator('userId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入用户Id" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function handlsearch(values){
+			if(values.time ==undefined){
+				dispatch(routerRedux.push('/finance/recharge?page=1'+"&userId="+values.userId+"&mobile="+values.mobile+
+					"&email="+values.email+"&status="+values.status
+				))
+			}else{
+				dispatch(routerRedux.push('/finance/recharge?page=1'+"&userId="+values.userId+"&mobile="+values.mobile+
+					"&email="+values.email+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
+				))
+			}
+	}
 	return (
 			<div>
+				<WrappedAdvancedSearchForm getFieldsFirst={getFieldsFirst} getFields = {getFields} handlsearch={handlsearch}/>
 				<Recharge {...RechargeProps}/>
 			</div>
 

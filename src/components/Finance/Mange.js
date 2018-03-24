@@ -110,50 +110,7 @@ const Manage = ({
 		console.log()
 	}
 	
-	function getFields(getFieldDecorator,formItemLayout){
-		const children = [];
-	    children.push(
-	    	<div key="0">
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email"placeholder="请输入邮箱" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
-			            	]
-		            })(
-		              <Input type="phone" placeholder="请输入手机号" />
-		            )}
-		          </FormItem>
-		        </Col>
-		         <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='提现时间'>
-		            {getFieldDecorator('time')(
-		              <RangePicker locale={options}/>
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='提现状态'>
-		            {getFieldDecorator('status')(
-		              <Select   placeholder="请选择">
-					      <Option value="0">审核中</Option>
-					      <Option value="1">已通过</Option>
-					      <Option value="2">已撤销</Option>
-					  </Select>
-		            )}
-		          </FormItem>
-		        </Col>
-	        </div>
-	      );
-	    return children;
-	}
+	
 	class TableList extends React.Component {
 			  state = {
 			    selectedRows: [], 
@@ -182,7 +139,7 @@ const Manage = ({
 
 	return (
 		<div className = {style_common.contentDiv}>
-	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
+	      
 	      <div className={style_search.search_result}>
 	      	<TableList />
 	      </div>

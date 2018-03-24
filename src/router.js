@@ -38,6 +38,8 @@ import LogUser from './routes/Log_user';
 //内容
 import ContentRouter from './routes/Content';
 import ContentArticle from './routes/Content_article';
+import ContentVideo from './routes/Content_video';
+import Editor_Video from './routes/Editor_Video';
 import ContentColumnContainer from './routes/Content_column_container';
 import ContentColumn from './routes/Content_column';
 import ContentComment from './routes/Content_comment';
@@ -130,10 +132,14 @@ function RouterConfig({ history }) {
           <Route path="/seo/top_search" component={SeoTopSearch} />
           <Route path="/content/content_column" strict component={ContentColumn} />
           <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
-          <Route path="/content/content_article" strict component={ContentArticle}/>
+          <Route path="/content/content_article" exact component={ContentArticle}/>
+          <Route path="/content/videoList" exact component={ContentVideo}/>
+          
           <Route path="/content/content_image" strict component={ContentImage}/>
           <Route path="/content/content_comment" strict component={ContentComment}/>
           <Route path="/content/release_article" strict component={Release_article}/>
+          <Route path="/content/EditorVideo" strict component={Editor_Video}/>
+          
           <Route path="/content/editor_article" strict component={Editor_Article}/>
           <Route path="/content/content_opinion"  component={ContentOpinion} />
           <Route path ='/content/opinion'  component={ContentOpinionShow}/>

@@ -11,8 +11,7 @@ import {
 	Link
 } from 'dva/router';
 import { Modal,message,Row,Col,Tabs,Icon,Button,Form,Input,Cascader,Select} from 'antd';
-import LayoutContainer from '../components/Layout';
-import Content_Article from '../components/Content/Content_Article';
+import VideoList from '../components/Content/VideoList';
 import SetModal from '../components/Content/SetShow';
 import ArticleModal from '../components/Content/AricleMoadl';
 import {formatDate,tokenLogOut,GetRequest} from '../services/common';
@@ -86,15 +85,15 @@ function ContentArticle({location,dispatch,router,content}) {
 		},
 		
 		editorItem(record){
-			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
+		    dispatch(routerRedux.push('/content/EditorVideo?articleId='+record.articleId))
 			//window.open('/#/content/editor_article?articleId='+record.articleId);
-			dispatch({
-				type:"content/getArticleById",
-				payload:{
-					articleId:record.articleId,
-					search:location.search
-				}
-			})
+			// dispatch({
+			// 	type:"content/getArticleById",
+			// 	payload:{
+			// 		articleId:record.articleId,
+			// 		search:location.search
+			// 	}
+			// })
 		},
 		changepage(page){
 			 const search =GetRequest(location.search);
@@ -317,6 +316,7 @@ function ContentArticle({location,dispatch,router,content}) {
 	      	);
 	    return children;
 	}
+
 	function getFieldsFirst(getFieldDecorator,formItemLayout){
 			const children = [];
 	    	children.push(
@@ -368,7 +368,7 @@ function ContentArticle({location,dispatch,router,content}) {
 			<div >
 				<Button type="primary" size = 'large' onClick={release} style={{marginBottom:"20px"}}>发布文章</Button>
                 <WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
-				<Content_Article {...Content_ArticleProps}/>
+				<VideoList {...Content_ArticleProps}/>
 				<SetModal {...SetModalProps}/>
 				<ArticleModal {...ArticleModalProps}/>
 				<BonsModal {...BonsMoadlProps} />

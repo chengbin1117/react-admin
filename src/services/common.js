@@ -124,6 +124,54 @@ let options ={
   }
 }
 
+//图片显示位置
+let residences = [{
+      value: '1',
+      label: '首页',
+      children: [{
+            "value":'11',
+            "label":"首页banner"
+         },{
+            "value":'12',
+            "label":"首页banner下方小幅图片"
+         },{
+            "value":'13',
+            "label":"首页资讯列表横幅"
+         },{
+            "value":'14',
+            "label":"首页右侧top排行上方宽幅图片"
+         },{
+            "value":'15',
+            "label":"首页右侧热门作者下方小横幅"
+         }
+        ],
+    }, {
+      value: '2',
+      label: '栏目列表',
+      children: [{
+          "value":'21',
+          "label":"栏目页右侧top排行上方宽幅图片"
+        },{
+
+          "value":"22",
+          "label":"tag列表右侧top排行上方宽幅图片"
+        }]
+    },{
+      value: '4',
+      label: '资讯详情',
+      children: [{
+          "value":'41',
+          "label":"资讯详情页顶部通栏",
+         },
+         {
+          "value":'42',
+          "label":"资讯详情页正文声明下方横幅",
+         },
+         {
+          "value":'43',
+          "label":"资讯详情页右侧top排行上方宽幅图片",
+         },]
+    }];
 //Blob
 export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件形式
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -198,5 +246,6 @@ export {
   ImgUrl,
   uploadUrl,
   options,
-  urlprefix
+  urlprefix,
+  residences
 }

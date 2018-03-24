@@ -15,7 +15,7 @@ import {
 	Row
 } from 'antd';
 import styles from './Content_Opinion_Show.css';
-import Cropper from 'react-cropper';
+import Cropper from 'react-cropperjs';
 import 'cropperjs/dist/cropper.css';
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
@@ -125,10 +125,12 @@ var ImgBox = React.createClass({
 	              style={{height: 400, width: '100%'}}
 	              // Cropper.js options
 	              aspectRatio={16 / 9}
-	              guides={false}
+	              guides={true}
+	              autoCrop={true}
 	              crop={this.crop}
 	              canMove ={false}
-	              resizable={false}
+	              info={true}
+	              
 	              />
 
 	        </Col>

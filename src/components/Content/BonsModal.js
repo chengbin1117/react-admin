@@ -13,6 +13,7 @@ import {
 	Steps,
 	Col,
 	Row,
+	Icon,
 	Badge
 } from 'antd';
 import styles from './Content_Opinion_Show.css'
@@ -139,7 +140,7 @@ const BonsModal = ({
 				    		截止目前,已有{ArticleStat!=null?ArticleStat.bonusNum:0}个用户获得了他的奖励,剩余奖励数{((ArticleStat!=null&&ArticleStat.bonusTotal)-(ArticleStat!=null&&ArticleStat.bonusValue)).toFixed(3)}
 				    	</Col>
 				    </Row>
-               </div>:<div>该文章暂未设置阅读奖励</div>}
+               </div>:<div className={styles.bonsCneter}><Icon type="frown-o"/>该文章暂未设置阅读奖励</div>}
 				    
 		    </div>
         );

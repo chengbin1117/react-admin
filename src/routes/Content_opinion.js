@@ -12,8 +12,13 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import Content_Opinion from '../components/Content/Content_Opinion';
-import { Modal,message,Row,Col} from 'antd';
+import { Form, Row, Col, Input,message,Button,Modal,Popconfirm,DatePicker, TimePicker,Select} from 'antd';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import {timeFormat,uploadUrl,GetRequest} from '../services/common';
+const FormItem = Form.Item;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
+const Option = Select.Option;
 function ContentOpinion({dispatch,content,router,location}) {
 	let token =localStorage.getItem("Kgtoken");
 	if(!token) {
@@ -34,68 +39,6 @@ function ContentOpinion({dispatch,content,router,location}) {
 				}
 			})
 		},
-		handlsearch(values){
-			//console.log(values)
-			if(values.time!=undefined){
-
-				if(values.status==undefined){
-					// dispatch({
-					// type:"content/getFeedbackList",
-					// 	payload:{
-					// 		content:values.content,
-					// 		startDate:timeFormat(values.time[0]),
-					// 		endDate:timeFormat(values.time[1]),
-					// 	}
-				    // })
-				dispatch(routerRedux.push('/content/content_opinion?page=1'+
-				'&content='+values.content+'&startDate='+timeFormat(values.time[0])+
-				'&endDate='+timeFormat(values.time[1])
-			    ))
-				}else{
-
-				// 	dispatch({
-				// 	type:"content/getFeedbackList",
-				// 	payload:{
-				// 		content:values.content,
-				// 		startDate:timeFormat(values.time[0]),
-				// 		endDate:timeFormat(values.time[1]),
-				// 		status:values.status =="true"?true:false
-				// 	}
-				// })
-				dispatch(routerRedux.push('/content/content_opinion?page=1'+
-				'&content='+values.content+'&startDate='+timeFormat(values.time[0])+
-				'&endDate='+timeFormat(values.time[1])+'&status='+values.status
-			    ))
-				}
-				
-			}else{
-				if(values.status==undefined){
-				// 	dispatch({
-				// 	type:"content/getFeedbackList",
-				// 	payload:{
-				// 		content:values.content,
-						
-				// 	}
-				// })
-				dispatch(routerRedux.push('/content/content_opinion?page=1'+
-				'&content='+values.content
-			    ))
-				}else{
-				// 	dispatch({
-				// 	type:"content/getFeedbackList",
-				// 	payload:{
-				// 		content:values.content,
-				// 		status:values.status =="true"?true:false,
-				// 	}
-				// })
-				dispatch(routerRedux.push('/content/content_opinion?page=1'+
-				'&content='+values.content+'&status='+values.status
-			    ))
-				}
-
-				
-			}
-        },
         delFeeks(list){
         	var Ids =[];
         	for (var i in list){
@@ -130,8 +73,99 @@ function ContentOpinion({dispatch,content,router,location}) {
         }
 	}
 
+	function getFields(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key= "0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='反馈内容'>
+			            {getFieldDecorator('content')(
+			              <Input placeholder="请输入反馈内容" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem
+				          {...formItemLayout}
+				          label="评论时间"
+				        >
+				          {getFieldDecorator('time')(
+				            <RangePicker/>
+				          )}
+				        </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='阅读状态'>
+			            {getFieldDecorator('status')(
+			              <Select
+				              placeholder="请选择"
+				              onChange={this.handleSelectChange}
+				              allowClear={true}
+				            >
+				              <Option value="true">已读</Option>
+				              <Option value="false">未读</Option>
+				            </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key= "0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='反馈内容'>
+			            {getFieldDecorator('content')(
+			              <Input placeholder="请输入反馈内容" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem
+				          {...formItemLayout}
+				          label="评论时间"
+				        >
+				          {getFieldDecorator('time')(
+				            <RangePicker/>
+				          )}
+				        </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	    return children;
+	}
+	function handlsearch(values){
+			//console.log(values)
+			if(values.time!=undefined){
+				if(values.status==undefined){
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content+'&startDate='+timeFormat(values.time[0])+
+				'&endDate='+timeFormat(values.time[1])
+			    ))
+				}else{
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content+'&startDate='+timeFormat(values.time[0])+
+				'&endDate='+timeFormat(values.time[1])+'&status='+values.status
+			    ))
+				}
+			}else{
+				if(values.status==undefined){
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content
+			    ))
+				}else{
+				dispatch(routerRedux.push('/content/content_opinion?page=1'+
+				'&content='+values.content+'&status='+values.status
+			    ))
+				}	
+			}
+    }
 	return (
 			<div >
+				 <WrappedAdvancedSearchForm  getFieldsFirst={getFieldsFirst} getFields = {getFields} handlsearch={handlsearch}/>
 				<Content_Opinion {...Content_OpinionProps}/>
 			</div>
 

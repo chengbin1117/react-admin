@@ -12,16 +12,19 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import Transaction from '../components/Finance/Transaction';
 import TransactionTi from '../components/Finance/TransactionTi';
 import {timeFormat,GetRequest} from '../services/common';
 import styles from './Record.css'
-import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,DatePicker,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function Record({location,dispatch,finance,router,}) {
 	
@@ -117,17 +120,124 @@ function Record({location,dispatch,finance,router,}) {
 				  });
 		},
 		changepage(page){
-			
 			const search =GetRequest(location.search);
-			console.log(search)
-			//if()
 			dispatch(routerRedux.push('/finance/recordTxb?page='+page+"&flowId="+search.flowId+"&email="+search.email
 				+"&mobile="+search.mobile+"&businessTypeId="+search.businessTypeId+"&minAmount="+search.minAmount+"&maxAmount="+search.maxAmount
 				+"&startDate="+search.startDate+"&endDate="+search.endDate
 				))
-			//router.push('/finance/record?page='+page+"&flowId="+search.flowId)
-		},
-		handlsearch(values){
+		}
+	}
+	function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='流水号'>
+		            {getFieldDecorator('flowId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入流水号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='类型'>
+		            {getFieldDecorator('businessTypeId')(
+		               <Select  placeholder="请选择">
+		               		{BusinessType!=undefined?BusinessType.map((item,index)=>
+		               			<Option  key={index} value={item.id+''}>{item.name}</Option>
+		               			)
+		               			
+		               			:null}
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='交易时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker/>
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <Col span={12} style={{paddingLeft:50+"px"}}>
+		          	<FormItem {...formItemLayout} label='钛小白'>
+		            {getFieldDecorator('minAmount')(
+		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
+		              	
+		            )}
+		          </FormItem>
+		          </Col>
+		          <Col span={2} style={{ textAlign: 'center',lineHeight:30+"px"}}>
+		          	<span >~</span>
+		          </Col>
+		          <Col span={10}>
+		          		<FormItem {...formItemLayout}>
+				            {getFieldDecorator('maxAmount')(
+				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
+				            )}
+				          </FormItem>
+		         </Col>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email" placeholder="邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='流水号'>
+		            {getFieldDecorator('flowId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入流水号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='类型'>
+		            {getFieldDecorator('businessTypeId')(
+		               <Select  placeholder="请选择">
+		               		{BusinessType!=undefined?BusinessType.map((item,index)=>
+		               			<Option  key={index} value={item.id+''}>{item.name}</Option>
+		               			)
+		               			
+		               			:null}
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+
+	function handlsearch(values){
 			console.log(values)
 			if(values.time ==undefined||values.time.length ==0){
 				dispatch(routerRedux.push(
@@ -143,9 +253,7 @@ function Record({location,dispatch,finance,router,}) {
 					+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
 					))
 			}
-		}
 	}
-
 	class TableList extends React.Component {
 			  state = {
 			    defaultActiveKey: ActiveKey, 
@@ -171,6 +279,7 @@ function Record({location,dispatch,finance,router,}) {
 					<Link  to = '/finance/record'>钛值</Link>
 					<Link className = {styles.activeColor} to = '/finance/recordTxb'>钛小白</Link>
 				</div>
+				<WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<TransactionTi {...TransactionProps}/>
 			</div>
 
