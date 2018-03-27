@@ -161,7 +161,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
   return (
     <div>
       
-      <p>当前共有文章：{total}</p>
+      <p>当前共有视频：{total}</p>
       <Tabs defaultActiveKey="2" onChange={onChange}>
 	    <TabPane tab={<span>文章</span>} key="1">
       	    

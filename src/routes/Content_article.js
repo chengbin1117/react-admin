@@ -40,7 +40,6 @@ function ContentArticle({location,dispatch,router,content}) {
 		total:ArticleListNumber,
 		currentPage:currentPage,
 		confirm(record){
-			
 			dispatch({
 				type:"content/deleteArticle",
 				payload:{
@@ -69,25 +68,21 @@ function ContentArticle({location,dispatch,router,content}) {
 			})
 		},
 		onShowMOdal(selectList){
-			//console.log(selectList)
 			var Ids =""
 				for(var i in selectList){
-							Ids +=selectList[i].articleId+","
+				Ids +=selectList[i].articleId+","
 			}
-			console.log(Ids)
+			//console.log(Ids)
 			dispatch({
 				type:'content/setShowModal',
 				payload:{
 					selectList:Ids
-				}
-				
+				}	
 			})
 
 		},
 		
 		editorItem(record){
-			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
-			//window.open('/#/content/editor_article?articleId='+record.articleId);
 			dispatch({
 				type:"content/getArticleById",
 				payload:{
@@ -191,7 +186,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					articleId:selectList,
 					displayStatus:status.radio,
 					updateUser:merId,
-					search:location.search
+					search:location.search,
+					publishKind:1
 				}
 			})
 		}
@@ -216,7 +212,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					auditUser:merId,
 					refuseReason:data.text,
 				    auditStatus:parseInt(data.radio),
-				    search:location.search
+				    search:location.search,
+				    publishKind:selectList.publishKind
 				}
 			   })
 			}else{
@@ -229,7 +226,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					columnId:data.column[0],
 					secondColumn:data.column[1],
 					auditStatus:parseInt(data.radio),
-					search:location.search
+					search:location.search,
+					publishKind:selectList.publishKind
 				}
 			   })
 			}

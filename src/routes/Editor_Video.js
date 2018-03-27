@@ -29,14 +29,14 @@ function Editor_article({dispatch,router,content,setting}) {
   var html = '';
   let src = "";
   
-  const {ArticleList,BgVisible,UserById,FtVisible,activeImg,ColumnList,cruImage,editorList,getBonusList,imgUrl} =content;
+  const {ArticleList,BgVisible,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
 
   const options = ColumnList;
-console.log("imgUrl",imgUrl)
+  //console.log("imgUrl",getVideoList)
   const ArticleEditorProps = {
     ColumnList,
     dispatch,
-    ArticleList:editorList,
+    ArticleList:getVideoList,
     router,
     cruImage,
     setting,

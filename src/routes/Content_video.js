@@ -73,7 +73,7 @@ function ContentArticle({location,dispatch,router,content}) {
 				for(var i in selectList){
 							Ids +=selectList[i].articleId+","
 			}
-			console.log(Ids)
+			//console.log(Ids)
 			dispatch({
 				type:'content/setShowModal',
 				payload:{
@@ -85,27 +85,23 @@ function ContentArticle({location,dispatch,router,content}) {
 		},
 		
 		editorItem(record){
-		    dispatch(routerRedux.push('/content/EditorVideo?articleId='+record.articleId))
-			//window.open('/#/content/editor_article?articleId='+record.articleId);
-			// dispatch({
-			// 	type:"content/getArticleById",
-			// 	payload:{
-			// 		articleId:record.articleId,
-			// 		search:location.search
-			// 	}
-			// })
+			const search =GetRequest(location.search);
+		    dispatch(routerRedux.push('/content/EditorVideo?articleId='+record.articleId+'&page='+search.page+
+		    "&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+            "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn+"&pageSize=25"+'&orderByClause='+search.orderByClause
+		    	))
 		},
 		changepage(page){
 			 const search =GetRequest(location.search);
 			 console.log(search)
 			 if(search.articleTitle=="undefined"||search.articleTitle==undefined){
-			 	dispatch(routerRedux.push('/content/content_article?page='+page+
+			 	dispatch(routerRedux.push('/content/videoList?page='+page+
 			 	"&articleId="+search.articleId+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
 				+'&orderByClause='+search.orderByClause
 			 	))
 			 }else{
-			 	dispatch(routerRedux.push('/content/content_article?page='+page+
+			 	dispatch(routerRedux.push('/content/videoList?page='+page+
 			 	"&articleId="+search.articleId
 				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn+'&orderByClause='+search.orderByClause
@@ -146,7 +142,8 @@ function ContentArticle({location,dispatch,router,content}) {
 				payload:{
 					articleId:data.articleId,
 					displayOrder:parseInt(e.target.value),
-					search:location.search
+					search:location.search,
+					publishKind:2
 				}
 			})
 		},
@@ -160,12 +157,12 @@ function ContentArticle({location,dispatch,router,content}) {
 			}
 			const search =GetRequest(location.search);
 			 if(search.articleTitle=="undefined"||search.articleTitle==undefined){
-			 	dispatch(routerRedux.push('/content/content_article?page=1'+
+			 	dispatch(routerRedux.push('/content/videoList?page=1'+
 			 	"&articleId="+search.articleId+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn+'&orderByClause='+orderByClause
 			 	))
 			 }else{
-			 	dispatch(routerRedux.push('/content/content_article?page=1'+
+			 	dispatch(routerRedux.push('/content/videoList?page=1'+
 			 	"&articleId="+search.articleId
 				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn+'&orderByClause='+orderByClause
@@ -190,7 +187,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					articleId:selectList,
 					displayStatus:status.radio,
 					updateUser:merId,
-					search:location.search
+					search:location.search,
+					publishKind:2
 				}
 			})
 		}
@@ -215,7 +213,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					auditUser:merId,
 					refuseReason:data.text,
 				    auditStatus:parseInt(data.radio),
-				    search:location.search
+				    search:location.search,
+				    publishKind:selectList.publishKind
 				}
 			   })
 			}else{
@@ -228,7 +227,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					columnId:data.column[0],
 					secondColumn:data.column[1],
 					auditStatus:parseInt(data.radio),
-					search:location.search
+					search:location.search,
+					publishKind:selectList.publishKind
 				}
 			   })
 			}
@@ -257,10 +257,10 @@ function ContentArticle({location,dispatch,router,content}) {
 	    	children.push(
 		    	<div key="0">
 			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='文章ID'>
+			          <FormItem {...formItemLayout} label='视频ID'>
 			            {getFieldDecorator('Id',{
 			            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"文章ID只能输入数字"}
+			            	  {required:false,pattern:/^[0-9]*$/,message:"视频ID只能输入数字"}
 			            	]
 			            })(
 			              <Input placeholder="请输入" />
@@ -346,12 +346,12 @@ function ContentArticle({location,dispatch,router,content}) {
 	function handlsearch(values){
             if(values.title!=undefined){
             	var title =Base64.encode(values.title)
-            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
+            	dispatch(routerRedux.push('/content/videoList?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
 				"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
 				"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
 				))	
             }else{
-            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+
+            	dispatch(routerRedux.push('/content/videoList?page=1'+"&articleId="+values.Id+
 				"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
 				"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
 				))
@@ -362,7 +362,7 @@ function ContentArticle({location,dispatch,router,content}) {
 	//跳转发布文章
 	function release() {
 		localStorage.removeItem("articleText");
-		dispatch(routerRedux.push('/content/release_article?userId='+userId+"&page=1"));	
+		dispatch(routerRedux.push('/content/release_article?userId='+merId+"&page=1"));	
 	}
 	return (
 			<div >

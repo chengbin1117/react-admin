@@ -619,7 +619,6 @@ function ArticleEditor({
             message: '文章标题1-64个字符,支持中英文及特殊符号，空格，不区分大小写',
             min: 1,
             max: 64,
-
           }, {
             required: true, message: '请输入标题!',
           }

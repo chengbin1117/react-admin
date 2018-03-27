@@ -8,7 +8,7 @@ import {
   message
 } from 'antd';
 import { routerRedux } from 'dva/router';
-import {formatDate,tokenLogOut,GetRequest} from '../services/common'
+import {formatDate,tokenLogOut,GetRequest,videoUrl} from '../services/common'
 export default {
 
   namespace: 'content',
@@ -42,7 +42,8 @@ export default {
     firstC:[],
     saveId:0,
     preList:{},
-    artSorce:0
+    artSorce:0,
+    getVideoList:{}, //视频详情
   },
 
   subscriptions: {
@@ -52,6 +53,33 @@ export default {
     }) {
         history.listen(location => {
         let match = pathToRegexp('/content/content_article').exec(location.pathname);
+        if(match){
+          const search =GetRequest(location.search);
+          dispatch({
+            type:'getArticleList',
+            payload:{
+              currentPage:search.page,
+              articleId:search.articleId!='undefined'?search.articleId:null,
+              orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
+              articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
+              articleTag:search.articleTag!='undefined'?search.articleTag:null,
+              publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+              displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+              columnId:search.columnId!='null'?parseInt(search.columnId):null,
+              secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
+              pageSize:25,
+              publishKind:1,
+
+            }
+          })
+          dispatch({
+            type:'getColumnList',
+            payload:{
+              
+            }
+          })
+        }
+        match = pathToRegexp('/content/videoList').exec(location.pathname);
         if(match){
           const search =GetRequest(location.search);
           console.log(search.articleTitle)
@@ -68,7 +96,7 @@ export default {
               columnId:search.columnId!='null'?parseInt(search.columnId):null,
               secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
               pageSize:25,
-
+              publishKind:2,
             }
           })
           dispatch({
@@ -98,6 +126,43 @@ export default {
                type:'setting/getRelUser',
               payload:{
                 sysUserId:search.userId
+              }
+            })
+        }
+        match = pathToRegexp('/content/EditorVideo').exec(location.pathname);
+        if(match){
+         const search =GetRequest(location.search);
+          let merId =localStorage.getItem("userId"); 
+         // console.log("search",search.articleId)
+            dispatch({
+              type:"getVideoById",
+              payload:{
+                articleId:search.articleId,
+                search:search
+              }
+            })
+            dispatch({
+              type:'getBonus',
+              payload:{
+                articleId:search.articleId
+              }
+            });
+             dispatch({
+              type:'setting/getRelUser',
+              payload:{
+                sysUserId:merId
+              }
+            })
+           /* dispatch({
+              type:'getSysUserById',
+              payload:{
+                userId:merId
+              }
+            })*/
+            dispatch({
+              type:'getColumnList',
+              payload:{
+                
               }
             })
         }
@@ -293,6 +358,7 @@ export default {
       //console.log("11",data)
       if (data && data.code == 10000) {
         const search =GetRequest(payload.search);
+          if(payload.publishKind == 2){
             yield put({
               type: 'getArticleList',
               payload:{
@@ -306,8 +372,28 @@ export default {
                 columnId:search.columnId!='null'?parseInt(search.columnId):null,
                 secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
                 pageSize:25,
+                publishKind:2
               }
             }); 
+          }else{
+            yield put({
+              type: 'getArticleList',
+              payload:{
+                currentPage:search.page,
+                articleId:search.articleId!='undefined'?search.articleId:null,
+                orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
+                articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
+                articleTag:search.articleTag!='undefined'?search.articleTag:null,
+                publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+                displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+                columnId:search.columnId!='null'?parseInt(search.columnId):null,
+                secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
+                pageSize:25,
+                publishKind:1
+              }
+            }); 
+          }
+            
       } else {
         if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
@@ -325,27 +411,47 @@ export default {
         updateUser:updateUser
       }
       const { data } = yield call(setDisplayStatus, params);
-      //console.log("11",data)
-
       if (data && data.code == 10000) {
          var res = data.responseBody;
          const sea =GetRequest(search)
             message.success('设置成功')
-            yield put({
-              type: 'getArticleList',
-              payload:{
-                 currentPage:sea.page,
-                 articleId:sea.articleId!='undefined'?sea.articleId:null,
-                 orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
-                 articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
-                 articleTag:sea.articleTag!='undefined'?sea.articleTag:null,
-                 publishStatus:sea.publishStatus!='undefined'?parseInt(sea.publishStatus):null,
-                 displayStatus:sea.displayStatus!='undefined'?parseInt(sea.displayStatus):null,
-                 columnId:sea.columnId!='null'?parseInt(sea.columnId):null,
-                 secondColumn:sea.secondColumn!='null'?parseInt(sea.secondColumn):null,
-                 pageSize:25,
-              }
-            }); 
+            console.log(payload.publishKind)
+            if(payload.publishKind == 2) {
+              yield put({
+                type: 'getArticleList',
+                payload:{
+                   currentPage:sea.page,
+                   articleId:sea.articleId!='undefined'?sea.articleId:null,
+                   orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
+                   articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
+                   articleTag:sea.articleTag!='undefined'?sea.articleTag:null,
+                   publishStatus:sea.publishStatus!='undefined'?parseInt(sea.publishStatus):null,
+                   displayStatus:sea.displayStatus!='undefined'?parseInt(sea.displayStatus):null,
+                   columnId:sea.columnId!='null'?parseInt(sea.columnId):null,
+                   secondColumn:sea.secondColumn!='null'?parseInt(sea.secondColumn):null,
+                   pageSize:25,
+                   publishKind:2
+                }
+              }); 
+            }else{
+              yield put({
+                type: 'getArticleList',
+                payload:{
+                   currentPage:sea.page,
+                   articleId:sea.articleId!='undefined'?sea.articleId:null,
+                   orderByClause:search.orderByClause != "undefined" ? search.orderByClause : null,
+                   articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
+                   articleTag:sea.articleTag!='undefined'?sea.articleTag:null,
+                   publishStatus:sea.publishStatus!='undefined'?parseInt(sea.publishStatus):null,
+                   displayStatus:sea.displayStatus!='undefined'?parseInt(sea.displayStatus):null,
+                   columnId:sea.columnId!='null'?parseInt(sea.columnId):null,
+                   secondColumn:sea.secondColumn!='null'?parseInt(sea.secondColumn):null,
+                   pageSize:25,
+                   publishKind:1
+                }
+              }); 
+            }
+            
             yield put({
               type: 'hideShowModal',
               payload:{
@@ -419,15 +525,9 @@ export default {
             yield put({
               type:'hideModal'
             })
-            if(payload.Status == 2){
-              yield put({
-                type: 'getArticleList',
-                payload:{
-                  publishStatus:2,
-                }
-              });
-            }else{
-              const search =GetRequest(payload.search);
+             const search =GetRequest(payload.search);
+            if(payload.publishKind == 2){
+            
               yield put({
               type: 'getArticleList',
               payload:{
@@ -440,6 +540,23 @@ export default {
                 columnId:search.columnId!='null'?parseInt(search.columnId):null,
                 secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
                 pageSize:25,
+                publishKind:2
+              }
+            });
+            }else{
+              yield put({
+              type: 'getArticleList',
+              payload:{
+                currentPage:search.page,
+                articleId:search.articleId!='undefined'?search.articleId:null,
+                articleTitle:(search.articleTitle!=undefined)?Base64.decode(search.articleTitle):null,
+                articleTag:search.articleTag!='undefined'?search.articleTag:null,
+                publishStatus:search.publishStatus!='undefined'?parseInt(search.publishStatus):null,
+                displayStatus:search.displayStatus!='undefined'?parseInt(search.displayStatus):null,
+                columnId:search.columnId!='null'?parseInt(search.columnId):null,
+                secondColumn:search.secondColumn!='null'?parseInt(search.secondColumn):null,
+                pageSize:25,
+                publishKind:1
               }
             });
             }
@@ -481,18 +598,43 @@ export default {
               +'&orderByClause='+search.orderByClause
             ));
              }
-          
-           
+      } else {
+         yield put({
+            type: 'hideLoading',
+         });
+        if(data.code ==10004||data.code ==10011){
+           message.error(data.message,3);
+          yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
+    *publishVideo({ payload }, {call , put}) {
+
+      const { data } = yield call(publishArticle, payload);
+      //console.log("11",data)
+     
+      const search=GetRequest(window.location.href)
+       
+      if (data && data.code == 10000) {
+         var res = data.responseBody;
          
-         
-         /*console.log(res)
-            yield put({
-              type: 'getArticleList',
-              payload:{
-                currentPage:1,
-                pageSIze:20,
-              }
-            });*/
+            message.success('成功');
+
+            if(search.articleTitle=="undefined"||search.articleTitle==undefined){
+               yield put(routerRedux.push('/content/videoList?page='+search.page+"&pageSize="+search.pageSize
+                  +"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+              "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+              +'&orderByClause='+search.orderByClause
+            ));
+             }else{
+                 yield put(routerRedux.push('/content/videoList?page='+search.page+"&pageSize="+search.pageSize
+                 +"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
+              "&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
+              +'&orderByClause='+search.orderByClause
+            ));
+             }
       } else {
          yield put({
             type: 'hideLoading',
@@ -606,6 +748,45 @@ export default {
         if(data.code ==10004||data.code ==10011){
            message.error(data.message,3);
           yield put(routerRedux.push('/'));
+        }else{
+          message.error(data.message,3);
+        }
+      }
+    },
+    *getVideoById({ payload }, {call , put}) {
+      let merId =localStorage.getItem("userId");
+      let params ={
+        articleId:payload.articleId
+      }
+      const { data } = yield call(getArticleById, params);
+      if (data && data.code == 10000) {
+         var res = data.responseBody;
+         var tags = "tags";
+         res[tags]=res.tagnames!=null?res.tagnames.split(","):'';
+         if(res.videoFilename==null||res.videoFilename==""||res.videoFilename==undefined){
+              res['videoType'] = 2
+         }else{
+              res['videoType'] = 1;
+              let params = {
+                uid:-1,
+                name:res.videoFilename,
+                status:'done',
+                url:res.videoUrl
+              }
+              res['videoList'] =[params];  
+         }
+            yield put({
+              type: 'getVideoListSuccess',
+              payload:{
+                getVideoList:res,
+                loading:false,
+              }
+            });
+        
+      } else {
+        if(data.code ==10004||data.code ==10011){
+           message.error(data.message,3);
+           yield put(routerRedux.push('/'));
         }else{
           message.error(data.message,3);
         }
@@ -1472,6 +1653,11 @@ export default {
       };
     },
     saveSuccess(state, action) {    
+      return {...state,
+        ...action.payload,
+      };
+    },
+    getVideoListSuccess(state, action) {    
       return {...state,
         ...action.payload,
       };
