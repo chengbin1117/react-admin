@@ -223,7 +223,8 @@ let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
 
 
 //上传视频地址
-let uploadVideoUrl = "http://kg.btc123.com/kgapi/image/uploadVideo"; //开发环境地址
+//let uploadVideoUrl = "http://kg.btc123.com/kgapi/image/uploadVideo"; //开发环境地址
+let uploadVideoUrl = "https://www.kg.com/image/uploadVideo"; //测试&&正式环境地址
 //下载视频地址
 let videoUrl = "https://kgvideo.oss-cn-shenzhen.aliyuncs.com/"; //开发环境视频服务器地址
 //let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
