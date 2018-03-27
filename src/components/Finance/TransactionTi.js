@@ -80,83 +80,7 @@ const Transaction = ({
 		  ),
 	}];
 	
-	function getFields(getFieldDecorator,formItemLayout){
-		const children = [];
-	    children.push(
-	    	<div key="0">
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='流水号'>
-		            {getFieldDecorator('flowId',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
-			            	]
-		            })(
-		              <Input placeholder="请输入流水号" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='类型'>
-		            {getFieldDecorator('businessTypeId')(
-		               <Select  placeholder="请选择">
-		               		{BusinessType!=undefined?BusinessType.map((item,index)=>
-		               			<Option  key={index} value={item.id+''}>{item.name}</Option>
-		               			)
-		               			
-		               			:null}
-					    </Select>
-		            )}
-		          </FormItem>
-		        </Col>
-		         <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='交易时间'>
-		            {getFieldDecorator('time')(
-		              <RangePicker locale={options}/>
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <Col span={12} style={{paddingLeft:50+"px"}}>
-		          	<FormItem {...formItemLayout} label='钛小白'>
-		            {getFieldDecorator('minAmount')(
-		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
-		              	
-		            )}
-		          </FormItem>
-		          </Col>
-		          <Col span={2} style={{ textAlign: 'center',lineHeight:30+"px"}}>
-		          	<span >~</span>
-		          </Col>
-		          <Col span={10}>
-		          		<FormItem {...formItemLayout}>
-				            {getFieldDecorator('maxAmount')(
-				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
-				            )}
-				          </FormItem>
-		         </Col>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
-			            	]
-		            })(
-		              <Input placeholder="手机号" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email" placeholder="邮箱" />
-		            )}
-		          </FormItem>
-		        </Col>
-	        </div>
-	      );
-	    return children;
-	}
+	
 	
 	class TableList extends React.Component {
 			  
@@ -183,7 +107,6 @@ const Transaction = ({
 
 	return (
 		<div className = {style_common.contentDiv}>
-	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 	      <div className={style_search.search_result}>
 	      	<TableList />
 	      </div>

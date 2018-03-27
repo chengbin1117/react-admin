@@ -10,14 +10,18 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { Modal,message} from 'antd';
+import { Form, Row, Col, Input, Button,Modal,message,Select,DatePicker} from 'antd';
 import LayoutContainer from '../components/Layout';
 import Content_Comment from '../components/Content/Content_Comment';
 import Content_CommentSet_Modal from '../components/Content/Content_CommentSet_Modal';
 import Content_CommentSetShow_Modal from '../components/Content/Content_CommentSetShow_Modal';
 import ExamineModal from '../components/Content/ExamineModal';
 import {timeFormat,GetRequest} from '../services/common';
-
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
+const Option = Select.Option;
+const FormItem = Form.Item;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 function ContentComment({location,dispatch,router,content}) {
     
     const {CommentList,CommentSetVisible,showSetVisible,selectList,ExamineVisible,loading,totalNumber,currentPage} = content;
@@ -76,21 +80,6 @@ function ContentComment({location,dispatch,router,content}) {
 				}
 
 			})
-		},
-		handlsearch(values){
-			if(values.time!=undefined){
-				
-				dispatch(routerRedux.push('/content/content_comment?page=1'+
-					"&content="+values.content+"&status="+values.status+"&startDate="+timeFormat(values.time[0])+
-					"&endDate="+timeFormat(values.time[1])+"&displayStatus="+values.displayStatus
-					))
-			}else{
-				dispatch(routerRedux.push('/content/content_comment?page=1'+
-					"&content="+values.content+"&status="+values.status+"&displayStatus="+values.displayStatus
-				))
-				
-				
-			}
 		},
 		changepage(page){
 			const search =GetRequest(location.search);
@@ -180,8 +169,91 @@ function ContentComment({location,dispatch,router,content}) {
 		    }
 	    }
 	}
+
+	function getFields(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='评论内容'>
+			            {getFieldDecorator('content')(
+			              <Input placeholder="请输入评论内容" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='评论时间'>
+			            {getFieldDecorator('time')(
+			               <RangePicker/>
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='状态'>
+			            {getFieldDecorator('status')(
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="0" >审核中</Option>
+			              	<Option value="1">已通过</Option>
+			              	<Option value="2">未通过</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='显示状态'>
+			            {getFieldDecorator('displayStatus')(
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="1">显示</Option>
+			              	<Option value="2">隐藏</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='评论内容'>
+			            {getFieldDecorator('content')(
+			              <Input placeholder="请输入评论内容" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='评论时间'>
+			            {getFieldDecorator('time')(
+			               <RangePicker />
+			            )}
+			          </FormItem>
+			        </Col>
+
+		        </div>
+	      	);
+	    return children;
+	}
+	function handlsearch(values){
+			if(values.time!=undefined){
+				
+				dispatch(routerRedux.push('/content/content_comment?page=1'+
+					"&content="+values.content+"&status="+values.status+"&startDate="+timeFormat(values.time[0])+
+					"&endDate="+timeFormat(values.time[1])+"&displayStatus="+values.displayStatus
+					))
+			}else{
+				dispatch(routerRedux.push('/content/content_comment?page=1'+
+					"&content="+values.content+"&status="+values.status+"&displayStatus="+values.displayStatus
+				))
+				
+				
+			}
+    }
 	return (
 			<div >
+				<WrappedAdvancedSearchForm  getFieldsFirst={getFieldsFirst} getFields = {getFields} handlsearch={handlsearch}/>
 				<Content_Comment {...Content_CommentProps}/>
 				<Content_CommentSet_Modal {...Content_CommentSet_ModalProps}/>
 				<Content_CommentSetShow_Modal {...Content_CommentSetShow_ModalProps} />

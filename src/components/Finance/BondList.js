@@ -12,9 +12,7 @@ import {
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
 import style_search from '../search.css';
 import style_pagination from '../pagination.css';
-import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
-import {options} from "../../services/common"
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
@@ -69,78 +67,35 @@ const BondList = ({
 		    </span>
 		  ),
 	}];
-	
-	function getFields(getFieldDecorator,formItemLayout){
-		const children = [];
-	    children.push(
-	    	<div key="0">
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='用户ID'>
-		            {getFieldDecorator('userId',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
-			            	]
-		            })(
-		              <Input type="text"placeholder="请输入Id" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
-			            	]
-		            })(
-		              <Input type="phone" placeholder="请输入手机号" />
-		            )}
-		          </FormItem>
-		        </Col>
-		         <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='缴纳时间'>
-		            {getFieldDecorator('time')(
-		              <RangePicker  locale={options}/>
-		            )}
-		          </FormItem>
-		        </Col>
-	        </div>
-	      );
-	    return children;
-	}
-
-
 	class TableList extends React.Component {
-			  state = {
-			    selectedRows: [], 
-			    selectedRowKeys:[],
-			    loading: false,
-			  };
-			 
-			   onShowSizeChange =(page) =>{
-			      	console.log(page)
-			      	changepage(page)
-			      }
-			   onChange = (page)=>{
-			      	changepage(page)
-			      }
-			  render() {
-			   
-		
-			    return (
-			      <div>
-			        <Table bordered columns={columns}locale={{emptyText:"暂无数据"}}  dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
-	      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
-			          
-			      </div>
-			    );
-			  }
-			}
+		state = {
+		    selectedRows: [], 
+		    selectedRowKeys:[],
+		    loading: false,
+		};
+		 
+		onShowSizeChange =(page) =>{
+		      	console.log(page)
+		      	changepage(page)
+		      }
+		onChange = (page)=>{
+		      	changepage(page)
+		      }
+		  render() {
+		return (
+		      <div>
+		        <Table bordered columns={columns}locale={{emptyText:"暂无数据"}}  dataSource={data} pagination = {false} loading={loading} rowKey={record => record.flowId} />
+      	        <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
+		          
+		      </div>
+		    );
+		  }
+		}
 
 
 
 	return (
 		<div className = {style_common.contentDiv}>
-	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 	      <div className={style_search.search_result}>
 	      	<TableList />
 	      </div>

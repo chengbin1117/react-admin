@@ -124,6 +124,54 @@ let options ={
   }
 }
 
+//图片显示位置
+let residences = [{
+      value: '1',
+      label: '首页',
+      children: [{
+            "value":'11',
+            "label":"首页banner"
+         },{
+            "value":'12',
+            "label":"首页banner下方小幅图片"
+         },{
+            "value":'13',
+            "label":"首页资讯列表横幅"
+         },{
+            "value":'14',
+            "label":"首页右侧top排行上方宽幅图片"
+         },{
+            "value":'15',
+            "label":"首页右侧热门作者下方小横幅"
+         }
+        ],
+    }, {
+      value: '2',
+      label: '栏目列表',
+      children: [{
+          "value":'21',
+          "label":"栏目页右侧top排行上方宽幅图片"
+        },{
+
+          "value":"22",
+          "label":"tag列表右侧top排行上方宽幅图片"
+        }]
+    },{
+      value: '4',
+      label: '资讯详情',
+      children: [{
+          "value":'41',
+          "label":"资讯详情页顶部通栏",
+         },
+         {
+          "value":'42',
+          "label":"资讯详情页正文声明下方横幅",
+         },
+         {
+          "value":'43',
+          "label":"资讯详情页右侧top排行上方宽幅图片",
+         },]
+    }];
 //Blob
 export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件形式
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -133,31 +181,14 @@ export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件
     }
     return new Blob([u8arr], {type:mime});
 }
+//去HTML标签正则
+export function delHtmlTag(str)
+{
+    //去掉所有的html标记
+    return str.replace(/<[^>]+>/g,"");
+}
 
-//转化Base64
-// export function getBase64(img){//传入图片路径，返回base64
-//       function getBase64Image(img,width,height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
-//         var canvas = document.createElement("canvas");
-//         canvas.width = width ? width : img.width;
-//         canvas.height = height ? height : img.height;
-
-//         var ctx = canvas.getContext("2d");
-//         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-//         var dataURL = canvas.toDataURL();
-//         return dataURL;
-//       }
-//       var image = new Image();
-//       image.crossOrigin = '';
-//       image.src = img;
-//       var deferred=$.Deferred();
-//       if(img){
-//         image.onload =function (){
-//           deferred.resolve(getBase64Image(image));//将base64传给done上传处理
-//         }
-//         return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
-//       }
-//     }  
-
+//转化base64
 export function  getBase64(img){
         function getBase64Image(img,width,height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
           var canvas = document.createElement("canvas");
@@ -180,30 +211,27 @@ export function  getBase64(img){
           return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
         }
       }
-//上传图片
 
 
  //let ImgUrl = "http://kg.btc123.com/kgapi/image/upload"; //开发
    let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
-// let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
 
 //下载图片
-
-// let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
-
-
-//下载图片
-
-  let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
-
+let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
 //let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
 // let uploadUrl = "https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/"; //生产
+
+
+//上传视频地址
+let uploadVideoUrl = "http://kg.btc123.com/kgapi/image/uploadVideo"; //开发环境地址
+//下载视频地址
+let videoUrl = "https://kgvideo.oss-cn-shenzhen.aliyuncs.com/"; //开发环境视频服务器地址
+//let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
 
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 //let urlprefix = "http://kg.btc123.com/kgapi";//开发
   let urlprefix = "https://www.kg.com"; //生产&&测试
-// let urlprefix = "https://www.kg.com"; //生产&&测试
 
 
 
@@ -215,5 +243,8 @@ export {
   ImgUrl,
   uploadUrl,
   options,
-  urlprefix
+  urlprefix,
+  residences,
+  videoUrl,
+  uploadVideoUrl
 }

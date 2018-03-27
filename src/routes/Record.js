@@ -220,6 +220,38 @@ function Record({location,dispatch,finance,router,}) {
 	      );
 	    return children;
 	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='流水号'>
+		            {getFieldDecorator('flowId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入流水号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='类型'>
+		            {getFieldDecorator('businessTypeId')(
+		               <Select  placeholder="请选择">
+		               		{BusinessType!=undefined?BusinessType.map((item,index)=>
+		               			<Option  key={index} value={item.id+''}>{item.name}</Option>
+		               			)
+		               			
+		               			:null}
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
 	function handlsearch(values){
 		if(values.time ==undefined||values.time.length ==0){
 			dispatch(routerRedux.push(
@@ -242,7 +274,7 @@ function Record({location,dispatch,finance,router,}) {
 					<Link  className = {styles.activeColor} to = '/finance/record'>钛值</Link>
 					<Link   to = '/finance/recordTxb'>钛小白</Link>
 				</div>
-				<WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
+				<WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<Transaction {...TransactionProps}/>
 			</div>
 

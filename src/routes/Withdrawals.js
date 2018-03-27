@@ -13,15 +13,18 @@ import {
 import LayoutContainer from '../components/Layout';
 import Manage from '../components/Finance/Mange';
 import ManageTi from '../components/Finance/MangeTi';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import stytes from './UserLoginPage.css';
 import ExamineModal from '../components/Finance/ExamineModal';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs,DatePicker,Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function Withdrawals({location,dispatch,finance,router,}) {
 	
@@ -38,36 +41,6 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		currentPage,
 		total:totalNumber,
 		loading,
-		handlsearch(values){
-			if(values.time ==undefined){
-				/*dispatch({
-					type:'finance/getAccountWIthdraw',
-					payload:{
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status)
-					}
-				})*/
-			dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
-				"&mobile="+values.mobile+"&status="+values.status
-				))
-			}else{
-				/*dispatch({
-					type:'finance/getAccountWIthdraw',
-					payload:{
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status),
-						startDate:timeFormat(new Date(values.time[0])),
-						endDate:timeFormat(new Date(values.time[1])),
-					}
-				})*/
-				dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
-				"&mobile="+values.mobile+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+
-				"&endDate="+timeFormat(new Date(values.time[1]))
-				))
-			}
-		},
 		Examine(reacord){
 			console.log(reacord)
 			Modal.info({
@@ -112,7 +85,88 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		}
 	}
 
-
+	function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input type="phone" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='提现时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker/>
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='提现状态'>
+		            {getFieldDecorator('status')(
+		              <Select   placeholder="请选择">
+					      <Option value="0">审核中</Option>
+					      <Option value="1">已通过</Option>
+					      <Option value="2">已撤销</Option>
+					  </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input type="phone" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function handlsearch(values){
+			if(values.time ==undefined){
+			dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
+				"&mobile="+values.mobile+"&status="+values.status
+				))
+			}else{
+				dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
+				"&mobile="+values.mobile+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+
+				"&endDate="+timeFormat(new Date(values.time[1]))
+				))
+			}
+	}
 	const  ExamineModalProps ={
 		visible:ExamineVisible,
 		selectList,
@@ -179,8 +233,9 @@ function Withdrawals({location,dispatch,finance,router,}) {
     }
 	return (
 			<div>
-				    <Manage {...ManageProps}/>
-				    <ExamineModal {...ExamineModalProps}/>
+				<WrappedAdvancedSearchForm getFieldsFirst={getFieldsFirst} getFields = {getFields} handlsearch={handlsearch}/>
+				<Manage {...ManageProps}/>
+				<ExamineModal {...ExamineModalProps}/>
 			</div>
 
 	);

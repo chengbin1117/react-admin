@@ -78,7 +78,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 		const children = [];
 	    children.push(
 	    	<div key="0">
-	    		<Col span={8} style = {{display:'block'}}>
+	    		<Col  md={8} sm={24} style = {{display:'block'}}>
 				   	<FormItem
 			          label="用户名"
 			          {...formItemLayout}
@@ -90,7 +90,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 			          )}
 	               </FormItem>
                 </Col>
-                <Col span={8} style = {{display:'block'}}>
+                <Col  md={8} sm={24} style = {{display:'block'}}>
 					 <FormItem
 			          label="手机号"
 			          {...formItemLayout}
@@ -111,11 +111,11 @@ function AccountRule({location,dispatch,setting,router,}) {
 	          {getFieldDecorator('postId', {
 	            
 	          })(
-	                <Select placeholder="请选择">
-		              {PostList.map((item,index)=>
-								<Option key={index} value={item.postId+""}>{item.postName}</Option>
-					  )}
-		            </Select>
+                <Select placeholder="请选择">
+	              {PostList.map((item,index)=>
+							<Option key={index} value={item.postId+""}>{item.postName}</Option>
+				  )}
+	            </Select>
 	          )}
 	        </FormItem>
 	    	</Col>
@@ -123,7 +123,38 @@ function AccountRule({location,dispatch,setting,router,}) {
 	      );
 	    return children;
 	}
-
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+	    		<Col  md={8} sm={24} style = {{display:'block'}}>
+				   	<FormItem
+			          label="用户名"
+			          {...formItemLayout}
+			        >
+			          {getFieldDecorator('username', {
+			          
+			          })(
+			            <Input />
+			          )}
+	               </FormItem>
+                </Col>
+                <Col  md={8} sm={24} style = {{display:'block'}}>
+					 <FormItem
+			          label="手机号"
+			          {...formItemLayout}
+			        >
+			          {getFieldDecorator('mobile', {
+			           
+			          })(
+			            <Input />
+			          )}
+		            </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
 	//添加账号
 	
 	function addUser() {
@@ -505,7 +536,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 	return (
 			<div className={styles.Indexbox}>
 				<div>
-					<WrappedAdvancedSearchForm getFields = {getFields}  handlsearch={handlsearch}/>
+					<WrappedAdvancedSearchForm getFieldsFirst ={getFieldsFirst} getFields = {getFields}  handlsearch={handlsearch}/>
 				</div>
 				<div className= {styles.addAccount}>
 					<Button type="primary" size='large' onClick = {addUser} >添加账号</Button><Button type="primary" size='large' className={styles.post} onClick = {manage}>管理岗位</Button>
