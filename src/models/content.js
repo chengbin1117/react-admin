@@ -783,7 +783,9 @@ export default {
 				var tags = "tags";
 				res[tags] = res.tagnames != null ? res.tagnames.split(",") : '';
 				if (res.videoFilename == null || res.videoFilename == "" || res.videoFilename == undefined) {
-					res['videoType'] = 2
+					res['videoType'] = 2;
+					localStorage.setItem('videoFilename',res.videoFilename);
+					localStorage.setItem('videoUrl',res.videoUrl);
 				} else {
 					res['videoType'] = 1;
 					let params = {
@@ -793,6 +795,8 @@ export default {
 						url: res.videoUrl
 					}
 					res['videoList'] = [params];
+					localStorage.setItem('videoUrl',res.videoUrl)
+					localStorage.setItem('videoFilename',res.videoFilename)
 				}
 				yield put({
 					type: 'getVideoListSuccess',

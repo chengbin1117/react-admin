@@ -2,8 +2,10 @@ const env = process.env.NODE_ENV || 'dev';
 
 let fileServerAddr = 'http://image.kmylm.com/store';
 if (env === 'dev') {
+  console.log(1)
   fileServerAddr = 'http://image.kmylm.com/store';
 } else {
+  console.log(2)
   fileServerAddr = 'http://image.kmylm.com/store';
 }
 

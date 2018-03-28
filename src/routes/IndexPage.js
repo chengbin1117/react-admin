@@ -38,7 +38,6 @@ function IndexPage({location,dispatch,user,router,content}) {
 		    })
 		},
 		onOk(data,id){
-				
 				if(data.radio == "1"){
 					dispatch({
 					type:'user/auditUser',

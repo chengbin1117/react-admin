@@ -195,3 +195,6 @@
 .pre{
 	color:rgba(0, 0, 0, 0.35);
 }
+.previewBtn{
+	border:0!important;
+}
