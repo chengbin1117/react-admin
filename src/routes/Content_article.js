@@ -360,7 +360,7 @@ function ContentArticle({location,dispatch,router,content}) {
 	//跳转发布文章
 	function release() {
 		localStorage.removeItem("articleText");
-		dispatch(routerRedux.push('/content/release_article?userId='+userId+"&page=1"));	
+		dispatch(routerRedux.push('/content/release_article?userId='+merId+"&page=1"));	
 	}
 	return (
 			<div >
