@@ -326,10 +326,24 @@ export default {
       if (data && data.code == 10000) {
         var res = data.responseBody;
         message.success('审核成功')
+        yield put({
+          type: 'hideExmianModal',
+          payload: {
+
+          }
+        });
         if (user_data != undefined) {
           yield put(routerRedux.push('/user/user_admin?page=1'));
         }else{
-           const search =GetRequest(payload.search)
+          const search =GetRequest(payload.search);
+          if (payload.audit == 0) {
+            yield put({
+              type: 'getUserList',
+              payload: {
+                auditStatus: 0
+              }
+            });
+          } else {
             yield put({
               type: 'getUserList',
               payload: {
@@ -346,29 +360,9 @@ export default {
                   pageSize: 25,
               }
             });
+          }   
         }
-        // if (audit == 0) {
-        //   yield put({
-        //     type: 'getUserList',
-        //     payload: {
-        //       auditStatus: 0
-        //     }
-        //   });
-        // } else {
-        //   yield put({
-        //     type: 'getUserList',
-        //     payload: {
-
-        //     }
-        //   });
-        // }
-
-        yield put({
-          type: 'hideExmianModal',
-          payload: {
-
-          }
-        });
+        
       } else {
         if (data.code == 10004 || data.code == 10011) {
           message.error(data.message, 2);
