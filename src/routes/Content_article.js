@@ -29,7 +29,7 @@ function ContentArticle({location,dispatch,router,content}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {ArticleStat,artice,currentArtice,BonsVisible,ArticleList,getBonusList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
+	const {ArticleStat,confirmLoading,artice,currentArtice,BonsVisible,ArticleList,getBonusList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
 	const options = ColumnList;
 	const Content_ArticleProps ={
 		dispatch,
@@ -197,6 +197,7 @@ function ContentArticle({location,dispatch,router,content}) {
 		visible:articeVisible,
 		selectList,
 		ColumnList,
+		confirmLoading,
 		onCancel(){
 			dispatch({
 				type:'content/hideArticeModal',
@@ -342,30 +343,29 @@ function ContentArticle({location,dispatch,router,content}) {
 	    return children;
 	}
 	function handlsearch(values){
-            if(values.title!=undefined){
-            	var title =Base64.encode(values.title)
+        if(values.title!=undefined){
+          var title =Base64.encode(values.title)
             	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
-				"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
-				"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
-				))	
+				      "&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
+				      "&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+				  ))	
             }else{
             	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+
 				"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
 				"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
 				))
-            }
-		            
+        }		            
 	}
 
 	//跳转发布文章
 	function release() {
 		localStorage.removeItem("articleText");
-		dispatch(routerRedux.push('/content/release_article?userId='+userId+"&page=1"));	
+		dispatch(routerRedux.push('/content/release_article?userId='+merId+"&page=1"));	
 	}
 	return (
 			<div >
 				<Button type="primary" size = 'large' onClick={release} style={{marginBottom:"20px"}}>发布文章</Button>
-                <WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
+        <WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<Content_Article {...Content_ArticleProps}/>
 				<SetModal {...SetModalProps}/>
 				<ArticleModal {...ArticleModalProps}/>

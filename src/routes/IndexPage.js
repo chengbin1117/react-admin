@@ -47,6 +47,7 @@ function IndexPage({location,dispatch,user,router,content}) {
 						auditStatus:parseInt(data.radio),
 						auditUserId:merId,
 						audit:0,
+						search:location.search
 					}
 				   })
 				}else{
@@ -58,6 +59,7 @@ function IndexPage({location,dispatch,user,router,content}) {
 							auditUserId:merId,
 							refuseReason:data.text,
 							audit:0,
+							search:location.search
 						}
 					})
 				}
@@ -142,6 +144,7 @@ function IndexPage({location,dispatch,user,router,content}) {
 	  	visible:content.AuditVisible,
 	  	selectList:content.selectList,
 	  	ColumnList:content.ColumnList,
+	  	confirmLoading:content.confirmLoading,
 	  	onCancel:function(){
 	  		dispatch({
 				type: 'content/hideModal',
@@ -157,7 +160,8 @@ function IndexPage({location,dispatch,user,router,content}) {
 						auditUser:merId,
 						refuseReason:data.text,
 					    auditStatus:parseInt(data.radio),
-					    Status:2
+					    Status:2,
+					    search:location.search
 					}
 				})
 	  		}else{
@@ -170,7 +174,8 @@ function IndexPage({location,dispatch,user,router,content}) {
 						columnId:data.column[0],
 					    secondColumn:data.column[1],
 					    auditStatus:parseInt(data.radio),
-					    Status:2
+					    Status:2,
+					    search:location.search
 					}
 				})
 	  		}

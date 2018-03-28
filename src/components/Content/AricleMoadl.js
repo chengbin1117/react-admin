@@ -42,7 +42,7 @@ const ArticleModal = ({
 	onCancel,
 	selectList,
 	ColumnList,
-	showfpModal,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -85,7 +85,8 @@ const ArticleModal = ({
 		maskClosable: false,
 		okText: "确定",
 		cancelText: "取消",
-		afterClose: afterClose
+		afterClose: afterClose,
+		confirmLoading:confirmLoading
 	};
 	function onChange(e) {
 		value = e.target.value;
