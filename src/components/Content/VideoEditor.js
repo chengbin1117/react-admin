@@ -12,7 +12,8 @@ import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
 import Editor from '../../editor/index';
-import { options, uploadUrl, ImgUrl, formatDate,videoUrl,uploadVideoUrl } from "../../services/common"
+import $ from 'jquery';
+import { uploadUrl, ImgUrl, formatDate,videoUrl,uploadVideoUrl } from "../../services/common"
 import UploadVideo from '../Upload_Video.js';
 import RelationModal from '../Setting/RelationUser';
 import imgx from '../../assets/images/article1.jpg';
@@ -27,11 +28,13 @@ const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 let artSorce = 0;
 let timeDis = true;
+let dis =false;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
 var x = 5000;
 let isVideo = 0;
+let icoType = "upload";
 const formItemLayout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 18 },
@@ -107,13 +110,20 @@ function ArticleEditor({
         } else {
           editArticle = 0
         }
-        let videoUrl = "";
+        let videoAddress = "";
         let videoFilename = "";
         if(data.upload == "1"){
-            videoUrl=videoUrl+data.videoURL[0].url;
+            videoAddress=videoUrl+data.videoURL[0].url;
             videoFilename= data.videoURL[0].name;
         }else{
-            videoUrl=data.videoUrl;
+             if(data.videoUrl.indexOf('src') != '-1') {
+              data.videoUrl = data.videoUrl.replace(new RegExp("'","gm"),'"');
+              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)"/)[1];
+             }else if(data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1'){
+              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)/)[1];
+             }
+
+            videoAddress=data.videoUrl;
             videoFilename= null;
         }
         if (ArticleList.sysUser == null) {
@@ -145,7 +155,7 @@ function ArticleEditor({
                 collectNum: data.collectNum,
                 editArticle: editArticle,
                 publishKind:2,
-                videoUrl:videoUrl,
+                videoUrl:videoAddress,
                 videoFilename:videoFilename,
                 textnum:0,
               }
@@ -178,7 +188,7 @@ function ArticleEditor({
                 collectNum: data.collectNum,
                 editArticle: editArticle,
                 publishKind:2,
-                videoUrl:videoUrl,
+                videoUrl:videoAddress,
                 videoFilename:videoFilename,
                  textnum:0,
               }
@@ -215,7 +225,7 @@ function ArticleEditor({
                 collectNum: data.collectNum,
                 editArticle: editArticle,
                 publishKind:2,
-                videoUrl:videoUrl,
+                videoUrl:videoAddress,
                 videoFilename:videoFilename,
                  textnum:0,
               }
@@ -250,7 +260,7 @@ function ArticleEditor({
                 collectNum: data.collectNum,
                 editArticle: editArticle,
                 publishKind:2,
-                videoUrl:videoUrl,
+                videoUrl:videoAddress,
                 videoFilename:videoFilename,
                 textnum:0,
               }
@@ -291,13 +301,13 @@ function ArticleEditor({
         /*if(data.publishStatus==undefined){
           data.publishStatus=ArticleList.publishStatus
         }*/
-        let videoUrl = "";
+        let videoAddress = "";
         let videoFilename = "";
         if(data.upload == "1"){
-            videoUrl=videoUrl+data.videoURL[0].url;
+            videoAddress=videoUrl+data.videoURL[0].url;
             videoFilename= data.videoURL[0].name;
         }else{
-            videoUrl=data.videoUrl;
+            videoAddress=data.videoUrl;
             videoFilename= null;
         }
         let editArticle = 0;
@@ -334,7 +344,7 @@ function ArticleEditor({
             collectNum: data.collectNum,
             editArticle: editArticle,
             publishKind:2,
-            videoUrl:videoUrl,
+            videoUrl:videoAddress,
             videoFilename:videoFilename,
             textnum:0,
           }
@@ -458,7 +468,7 @@ function ArticleEditor({
   function checkout() {
 
   }
-  function handleChange(info){
+  function handleVideoChange(info){
 
   }
   function beforeUpload(file) {
@@ -477,13 +487,22 @@ function ArticleEditor({
     }
     return isTrue && is200M
   }
+  //移除视频
+  function onRemove(file){
+    console.log(onRemove)
+    var BTN = document.getElementById("BTN");
+    BTN.innerText = '上传视频'
+    message.success('删除成功')
+    //return false
+  }
   const props = {
       action: uploadVideoUrl,
-      onChange: handleChange,
+      onChange: handleVideoChange,
       multiple: true,
       name:"file",
       accept:'.mp4',
-      beforeUpload:beforeUpload
+      beforeUpload:beforeUpload,
+      onRemove:onRemove  
     };
   //选择本地视频或视频链接
   function fixVideo(e){
@@ -649,7 +668,8 @@ function ArticleEditor({
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
     fileList = fileList.slice(-1);
-
+    icoType = "loading";
+    dis =true;
     if(info.file.status=="done"){
       if(info.file.response.errorCode==10000){
         fileList = fileList.map((file) => {
@@ -657,6 +677,10 @@ function ArticleEditor({
               // Component will show file.url as link
               file.url = file.response.data[0].filePath
             }
+             var BTN = document.getElementById("BTN");
+             BTN.innerText = '重新上传';
+             icoType = "upload";
+             dis = false;
             return file;
           });
       }
@@ -682,13 +706,29 @@ function ArticleEditor({
       //console.log(fileList)
       return fileList
   }
-  // function normFile(e){
-  //    console.log('Upload event:', e);
-  //   if (Array.isArray(e)) {
-  //     return e;
-  //   }
-  //   return e && e.fileList;
-  // }
+  //跳转预览页
+  function previewPage(){
+    const data = { ...getFieldsValue() };
+    let videoAddress = "";
+        let videoFilename = "";
+        if(data.upload == "1"){
+            videoAddress=videoUrl+data.videoURL[0].url;
+            videoFilename= data.videoURL[0].name;
+        }else{
+             if(data.videoUrl.indexOf('src') != '-1') {
+              data.videoUrl = data.videoUrl.replace(new RegExp("'","gm"),'"');
+              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)"/)[1];
+             }else if(data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1'){
+              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)/)[1];
+             }
+
+            videoAddress=data.videoUrl;
+            videoFilename= null;
+    }
+    localStorage.setItem('videoFilename',videoFilename);
+    localStorage.setItem('videoUrl',videoAddress);
+    window.open('/#/previewVideo?articleId='+ArticleList.articleId)
+  }
   return (
     <Form onSubmit={handleSubmit}>
       <FormItem label="标题" {...formItemLayout}>
@@ -759,9 +799,9 @@ function ArticleEditor({
               type:"array"
             }]
           })(
-              <Upload {...props}  >
-                <Button type="primary" size="large">
-                  <Icon type="upload" /> 上传视频
+              <Upload {...props}  listType="text" style={{width:'50%'}}>
+                <Button type="primary" size="large" id="BTN">
+                  <Icon type={icoType} />重新上传
                 </Button>
               </Upload>
           )}
@@ -1181,10 +1221,11 @@ function ArticleEditor({
       </FormItem> : null}
 
       <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
-        <Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>保存</Button>
+        <Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={dis}>保存</Button>
         {(ArticleList && ArticleList.publishStatus == 0) &&
           <Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
         }
+        <Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft:30,backgroundColor:'orange' }} className={styles.preview}disabled={dis} onClick={previewPage}>预览视频</Button>
         <RelationModal {...RelationModalProps} />
       </FormItem>
 

@@ -463,6 +463,13 @@
 .info span{
   margin-right:10px;
 }
+.videoMain{
+    width:750px;
+}
+.videoMain video{
+    width:100%;
+    border-radius: 5px;
+}
 @media only screen and (max-width:1800px){
   .login_register_modal .el-dialog{
       width:16%!important;
