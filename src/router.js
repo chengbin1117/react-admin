@@ -142,7 +142,6 @@ function RouterConfig({ history }) {
           <Route path="/content/content_comment" strict component={ContentComment}/>
           <Route path="/content/release_article" strict component={Release_article}/>
           <Route path="/content/EditorVideo" strict component={Editor_Video}/>
-          
           <Route path="/content/editor_article" strict component={Editor_Article}/>
           <Route path="/content/content_opinion"  component={ContentOpinion} />
           <Route path ='/content/opinion'  component={ContentOpinionShow}/>

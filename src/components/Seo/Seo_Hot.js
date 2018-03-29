@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination} from 'antd';
+import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Spin} from 'antd';
 import style_search from '../search.css';
 import style_pagination from '../pagination.css';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
@@ -118,6 +118,9 @@ class Seo_Hot extends React.Component{
 	      );
 	    return children;
 	}
+	function getFieldsFirst(){
+
+	}
 		const rowSelection = {
 	  onChange: (selectedRowKeys, selectedRows) => {
 	    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -132,7 +135,7 @@ class Seo_Hot extends React.Component{
 	  return (
 	    <div className = {style_common.contentDiv}>
 	      <Button type="primary" size = 'large' onClick = {this.showModal} >添加关键词</Button>
-	      <WrappedAdvancedSearchForm getFields = {getFields}/>
+	      <WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst}/>
 	      <Table bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} />
 	      <Pagination className = {style_pagination.pagination} showQuickJumper showSizeChanger  total={500} onChange={onChange} />
 	      <Button type="primary" size = 'large'>批量设置显示位置</Button>
