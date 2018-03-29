@@ -26,6 +26,7 @@ app.model(require('./models/setting'));
 app.model(require('./models/content'));
 app.model(require('./models/data_center'));
 app.model(require('./models/finance'));
+app.model(require('./models/app'));
 // 4. Router
 app.router(require('./router'));
 

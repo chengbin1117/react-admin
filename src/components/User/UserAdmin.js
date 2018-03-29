@@ -225,15 +225,15 @@ const UserAdmin = ({
 			    return (
 			      <div>
 			        <Table columns={columns} dataSource={userlist} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} 
-			        scroll={{ x:2250 }} 
+			         scroll={{ x:2250 }} 
 			        onChange={this.handleTableChange}
 			        />
-	      	 <div className="table-operations" >
+	      	  <div className="table-operations" >
 		          <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)}>批量审核</Button>
 		          <Button type="primary" size='large'style={{marginLeft:20,marginTop:20}} disabled={!hasSelected} onClick={()=>LocksModal(selectedRows)}>批量锁定</Button>
 		          <Button type="primary" size='large'style={{marginLeft:20,marginTop:20}} disabled={!hasSelected} onClick={()=>deblocking(selectedRows)}>批量解锁</Button>
 	      	      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
-			  </div>         
+			      </div>         
 			      </div>
 			    );
 			  }
