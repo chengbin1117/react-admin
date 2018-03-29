@@ -46,7 +46,7 @@ const UserAdmin = ({
 	},
 	forget
 }) => {
-	console.log(userlist)
+	//console.log(userlist)
 
 	function confirm(e) {
        //console.log(e);

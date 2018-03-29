@@ -97,6 +97,32 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		return children;
 	}
 
+	function getFieldsFirst(getFieldDecorator, formItemLayout) {
+		const children = [];
+		children.push(
+			<div key="0">
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='用户ID'>
+						{getFieldDecorator('userId', {
+							rules: [
+								{ required: false, pattern: /^[0-9]*$/, message: "用户ID只能输入数字" }
+							]
+						})(
+							<Input placeholder="请输入用户Id" />
+							)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='昵称'>
+						{getFieldDecorator('userName')(
+							<Input placeholder="请输入昵称" />
+						)}
+					</FormItem>
+				</Col>
+			</div>
+		);
+		return children;
+	}
 	//搜索
 	function handlsearch(values) {
 		if (values.time != undefined) {
@@ -208,7 +234,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		bordered={false}
 		
 		>
-			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
+			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} getFieldsFirst={getFieldsFirst}/>
 			<MasterTable {...MasterTableProps}/>
 		</Card>
 		</div>
