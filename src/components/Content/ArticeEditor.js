@@ -1027,8 +1027,11 @@ function ArticleEditor({
       </FormItem>
       {ArticleList.sysUser == null ? (getBonusList != undefined && getBonusList.length != 0) ? <FormItem label="阅读奖励" {...formItemLayout}>
         {getBonusList.map((item, index) => {
-
-          AllTotal += parseFloat(item.total)
+          if(item.kind == 1){
+            AllTotal += parseFloat(item.total);
+          }else{
+            AllTotal += parseFloat(item.value);
+          }
           return (
             <Row key={index}>
               <Col span="5">

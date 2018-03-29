@@ -82,8 +82,7 @@ function ArticleEditor({
   const options = ColumnList;
  // console.log("setting",ArticleList)
   const { RelationVisible, getRelUserList } = setting;
-  let AllTotal = 0;
-
+  let AllTotal = 0;  //发放奖励总量；
   function handleSubmit() {
     validateFields((errors, fieldsValue) => {
       if (errors) {
@@ -124,7 +123,7 @@ function ArticleEditor({
              }
 
             videoAddress=data.videoUrl;
-            videoFilename= null;
+            videoFilename= "";
         }
         if (ArticleList.sysUser == null) {
           if (data.publishStatus == "1") {
@@ -308,7 +307,7 @@ function ArticleEditor({
             videoFilename= data.videoURL[0].name;
         }else{
             videoAddress=data.videoUrl;
-            videoFilename= null;
+            videoFilename= "";
         }
         let editArticle = 0;
         const title = data.articleTitle;
@@ -1160,8 +1159,11 @@ function ArticleEditor({
       </FormItem>
       {ArticleList.sysUser == null ? (getBonusList != undefined && getBonusList.length != 0) ? <FormItem label="浏览奖励" {...formItemLayout}>
         {getBonusList.map((item, index) => {
-
-          AllTotal += parseFloat(item.total)
+          if(item.kind == 1){
+            AllTotal += parseFloat(item.total);
+          }else{
+            AllTotal += parseFloat(item.value);
+          }
           return (
             <Row key={index}>
               <Col span="5">
@@ -1173,7 +1175,7 @@ function ArticleEditor({
 
               </Col>
               <Col span="9">
-                最大奖励{item.max}人,{item.kind == 1 && <span>合计发放:{(item.total).toFixed(3)}钛值</span>}
+                最大奖励{item.max}人{item.kind == 1 && <span>,合计发放:{(item.total).toFixed(3)}钛值</span>}
               </Col>
               <Col span="5">
                 {item.status == 0 && <Badge status="Default" text="未生效" />}
@@ -1187,8 +1189,8 @@ function ArticleEditor({
         })}
         <Row className={styles.alltotal}>
           <Col>
-            总计发放：{AllTotal && AllTotal.toFixed(3)}个
-                      </Col>
+            总计发放：{AllTotal && AllTotal.toFixed(3)+'个'}
+          </Col>
         </Row>
       </FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem> : null}
       {(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
