@@ -29,7 +29,7 @@ function Editor_article({dispatch,router,content,setting}) {
   var html = '';
   let src = "";
   
-  const {ArticleList,BgVisible,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
+  const {ArticleList,dis,BgVisible,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
 
   const options = ColumnList;
   //console.log("imgUrl",getVideoList)
@@ -42,6 +42,7 @@ function Editor_article({dispatch,router,content,setting}) {
     setting,
     getBonusList,
     imgUrl,
+    dis,
     UserById,
     handlsearch(values){
        

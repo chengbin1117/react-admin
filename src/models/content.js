@@ -45,6 +45,7 @@ export default {
 		confirmLoading:false,
 		artSorce: 0,
 		getVideoList: {}, //视频详情
+		dis:false,
 	},
 
 	subscriptions: {
@@ -1926,6 +1927,20 @@ export default {
 		getPreSuccess(state, action) {
 			return {
 				...state,
+				...action.payload,
+			};
+		},
+		fixdisabeld(state, action) {
+			return {
+				...state,
+				dis:true,
+				...action.payload,
+			};
+		},
+		falsedisabeld(state, action) {
+			return {
+				...state,
+				dis:false,
 				...action.payload,
 			};
 		},

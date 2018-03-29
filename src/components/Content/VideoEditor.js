@@ -28,13 +28,13 @@ const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 let artSorce = 0;
 let timeDis = true;
-let dis =false;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
 var x = 5000;
 let isVideo = 0;
 let icoType = "upload";
+const confirm = Modal.confirm;
 const formItemLayout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 18 },
@@ -67,6 +67,7 @@ function ArticleEditor({
   ColumnList,
   UserById,
   setting,
+  dis,
   uploadImg,
   getBonusList,
   form: {
@@ -486,14 +487,26 @@ function ArticleEditor({
     }
     return isTrue && is200M
   }
+   
   //移除视频
   function onRemove(file){
-    console.log(onRemove)
-    var BTN = document.getElementById("BTN");
-    BTN.innerText = '上传视频'
-    message.success('删除成功')
-    //return false
+	//console.log(file)
+	var title= "确认删除"+file.name+"吗？"
+	const myConfirm =  ({ title, content }) => new Promise((resolve, reject) =>
+	    confirm({ 
+		    title:"确认删除"+file.name+"吗？",
+		    onOk(){
+			   resolve()
+			},
+		    onCancel(){
+			   reject()
+			}
+	}))
+	return myConfirm(title)
   }
+
+    
+
   const props = {
       action: uploadVideoUrl,
       onChange: handleVideoChange,
@@ -660,15 +673,21 @@ function ArticleEditor({
       callback()
     }
   }
+  function ModalCirm (title){
+		confirm({
+			title:title,
 
+		})
+  }
   function normFile(info){
-    //console.log('Upload event:',info);
+    console.log('Upload event:',info);
     let fileList = info.fileList; 
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
     fileList = fileList.slice(-1);
-    icoType = "loading";
-    dis =true;
+	dispatch({
+		type:"content/fixdisabeld",
+	})
     if(info.file.status=="done"){
       if(info.file.response.errorCode==10000){
         fileList = fileList.map((file) => {
@@ -678,14 +697,26 @@ function ArticleEditor({
             }
              var BTN = document.getElementById("BTN");
              BTN.innerText = '重新上传';
-             icoType = "upload";
-             dis = false;
+             //icoType = "upload";
+             dispatch({
+				type:"content/falsedisabeld",
+			})
             return file;
           });
       }
     }else if(info.file.status == undefined){
+		
+		dispatch({
+			type:"content/falsedisabeld",
+		})
       return false
-    }
+    }else if(info.file.status == "removed"){
+		dispatch({
+			type:"content/falsedisabeld",
+		})
+		
+		
+	}
     return fileList;
   }
   
@@ -778,8 +809,8 @@ function ArticleEditor({
             }]
           })(
             <Input 
-            placeholder="视频链接地址"
-            style={{width:"60%"}}
+            placeholder='请粘贴外部视频网站的视频通用代码，代码示例：<iframe frameborder="0" width="640" height="498" src="……" allowfullscreen></iframe>'
+            style={{width:"100%"}}
             />
           )}
       </FormItem>:null}
@@ -799,7 +830,7 @@ function ArticleEditor({
             }]
           })(
               <Upload {...props}  listType="text" style={{width:'50%'}}>
-                <Button type="primary" size="large" id="BTN">
+                <Button type="primary" size="large" id="BTN" disabled={dis}>
                   <Icon type={icoType} />重新上传
                 </Button>
               </Upload>
@@ -1157,7 +1188,7 @@ function ArticleEditor({
           </RadioGroup>
           )}
       </FormItem>
-      {ArticleList.sysUser == null ? (getBonusList != undefined && getBonusList.length != 0) ? <FormItem label="浏览奖励" {...formItemLayout}>
+      { (getBonusList != undefined && getBonusList.length != 0) ? <FormItem label="浏览奖励" {...formItemLayout}>
         {getBonusList.map((item, index) => {
           if(item.kind == 1){
             AllTotal += parseFloat(item.total);
@@ -1192,7 +1223,7 @@ function ArticleEditor({
             总计发放：{AllTotal && AllTotal.toFixed(3)+'个'}
           </Col>
         </Row>
-      </FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem> : null}
+      </FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem>}
       {(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
         {...formItemLayout}
         label="审核处理"
