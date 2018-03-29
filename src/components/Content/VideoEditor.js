@@ -112,7 +112,7 @@ function ArticleEditor({
         let videoAddress = "";
         let videoFilename = "";
         if(data.upload == "1"){
-            videoAddress=videoUrl+data.videoURL[0].url;
+            videoAddress=data.videoURL[0].url;
             videoFilename= data.videoURL[0].name;
         }else{
              if(data.videoUrl.indexOf('src') != '-1') {
@@ -303,7 +303,7 @@ function ArticleEditor({
         let videoAddress = "";
         let videoFilename = "";
         if(data.upload == "1"){
-            videoAddress=videoUrl+data.videoURL[0].url;
+            videoAddress=data.videoURL[0].url;
             videoFilename= data.videoURL[0].name;
         }else{
             videoAddress=data.videoUrl;
@@ -662,7 +662,7 @@ function ArticleEditor({
   }
 
   function normFile(info){
-    console.log('Upload event:',info);
+    //console.log('Upload event:',info);
     let fileList = info.fileList; 
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
@@ -674,7 +674,7 @@ function ArticleEditor({
         fileList = fileList.map((file) => {
             if (file.response) {
               // Component will show file.url as link
-              file.url = file.response.data[0].filePath
+              file.url = videoUrl+file.response.data[0].filePath
             }
              var BTN = document.getElementById("BTN");
              BTN.innerText = '重新上传';
@@ -711,7 +711,7 @@ function ArticleEditor({
     let videoAddress = "";
         let videoFilename = "";
         if(data.upload == "1"){
-            videoAddress=videoUrl+data.videoURL[0].url;
+            videoAddress=data.videoURL[0].url;
             videoFilename= data.videoURL[0].name;
         }else{
              if(data.videoUrl.indexOf('src') != '-1') {
