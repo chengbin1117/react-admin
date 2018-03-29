@@ -10,14 +10,16 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { message,Modal } from 'antd';
+import { message,Modal,Cascader,Form,Input,Select,Row, Col,Button } from 'antd';
 import LayoutContainer from '../components/Layout';
 import Content_Image from '../components/Content/Content_Image';
 import Content_ImageAdd_Modal from '../components/Content/Content_ImageAdd_Modal';
 import Content_ImageEditor_Modal from '../components/Content/Content_ImageEditor_Modal';
 import ImgShowModal from '../components/Content/ImgShowModal';
-import {GetRequest} from '../services/common'
-
+import {GetRequest,residences} from '../services/common';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
+const FormItem = Form.Item;
+const Option = Select.Option;
 function ContentImage({dispatch,content,location}) {
 	let  userId = localStorage.getItem('userId');
 	let token =localStorage.getItem("Kgtoken");
@@ -31,14 +33,6 @@ function ContentImage({dispatch,content,location}) {
 		loading,
 		total:totalNumber,
 		currentPage,
-		showModal(){
-			dispatch({
-				type:'content/showAddImgModal',
-				payload:{
-					type:"creat"
-				}
-			})
-		},
 		confirm(record) {
 			dispatch({
 				type:"content/deleteImage",
@@ -47,40 +41,6 @@ function ContentImage({dispatch,content,location}) {
 					search:location.search
 				}
 			})
-		},
-		handlsearch(values){
-			//console.log(values)
-			if(values.residence!=undefined){
-				/*dispatch({
-					type:"content/siteimagelist",
-					payload:{
-						imageType:parseInt(values.type),
-						imageStatus:parseInt(values.showStatus),
-						navigatorPos:parseInt(values.residence[0]),
-						imagePos:parseInt(values.residence[1]),
-						pageSize:25,
-
-					}
-			   })*/
-			dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
-				"&imageStatus="+values.showStatus+"&navigatorPos="+values.residence[0]+"&imagePos="+values.residence[1]
-
-				))
-
-			}else{
-				/*dispatch({
-					type:"content/siteimagelist",
-					payload:{
-						imageType:parseInt(values.type),
-						imageStatus:parseInt(values.showStatus),
-						pageSize:25,
-					}
-			   })*/
-				dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
-				"&imageStatus="+values.showStatus
-
-				))
-			}
 		},
 		editorItem(record){
 			dispatch({
@@ -244,8 +204,120 @@ function ContentImage({dispatch,content,location}) {
 			})
 		}
 	}
+
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col md={8} sm={24} style = {{display:'block'}}>
+				           <FormItem
+					          {...formItemLayout}
+					          label="显示位置"
+					        >
+					          {getFieldDecorator('residence', {
+					          
+					            rules: [{ type: 'array', required: false, message: '请选择!' }],
+					          })(
+					            <Cascader options={residences}placeholder="请选择" />
+					          )}
+					        </FormItem>
+				        </Col>
+			            <Col md={8} sm={24} style = {{display:'block'}}>
+			            <FormItem {...formItemLayout} label='类型'>
+			            {getFieldDecorator('type',{
+			            	
+			            	})(
+			              <Select placeholder="请选择">
+			               
+			              	<Option value="1">资讯</Option>
+			              	<Option value="2">广告</Option>
+			              	<Option value="3">其他</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+			     
+		        </div>
+	      	);
+	   		return children;
+	}
+	function getFields(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col md={8} sm={24} style = {{display:'block'}}>
+				           <FormItem
+					          {...formItemLayout}
+					          label="显示位置"
+					        >
+					          {getFieldDecorator('residence', {
+					          
+					            rules: [{ type: 'array', required: false, message: '请选择!' }],
+					          })(
+					            <Cascader options={residences}placeholder="请选择" />
+					          )}
+					        </FormItem>
+				        </Col>
+			            <Col md={8} sm={24} style = {{display:'block'}}>
+			            <FormItem {...formItemLayout} label='类型'>
+			            {getFieldDecorator('type',{
+			            	
+			            	})(
+			              <Select placeholder="请选择">
+			               
+			              	<Option value="1">资讯</Option>
+			              	<Option value="2">广告</Option>
+			              	<Option value="3">其他</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col md={8} sm={24} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='显示状态'>
+			            {getFieldDecorator('showStatus',{
+			            	
+			            	})(
+			               <Select placeholder="请选择">
+			               
+			              	<Option value="1">显示</Option>
+			              	<Option value="0">隐藏</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	   		return children;
+	}
+
+	function handlsearch(values){
+			if(values.residence!=undefined){
+			
+			dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
+				"&imageStatus="+values.showStatus+"&navigatorPos="+values.residence[0]+"&imagePos="+values.residence[1]
+
+				))
+
+			}else{
+				dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
+				"&imageStatus="+values.showStatus
+
+				))
+			}
+    }
+    //添加图片
+    function showModal(){
+			dispatch({
+				type:'content/showAddImgModal',
+				payload:{
+					type:"creat"
+				}
+			})
+    }
 	return (
 			<div >
+				<Button type="primary" size = 'large' onClick={showModal} style = {{marginBottom:20}}>添加图片</Button>
+			    <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} getFieldsFirst = {getFieldsFirst} handlsearch ={handlsearch}/>
 				<Content_Image {...content_imageProps}/>
 				<Content_ImageAdd_Modal {...Content_ImageAdd_ModalProps}/>
 				<Content_ImageEditor_Modal {...Content_ImageEditor_ModalProps}/>

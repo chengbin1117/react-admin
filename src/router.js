@@ -38,6 +38,8 @@ import LogUser from './routes/Log_user';
 //内容
 import ContentRouter from './routes/Content';
 import ContentArticle from './routes/Content_article';
+import ContentVideo from './routes/Content_video';
+import Editor_Video from './routes/Editor_Video';
 import ContentColumnContainer from './routes/Content_column_container';
 import ContentColumn from './routes/Content_column';
 import ContentComment from './routes/Content_comment';
@@ -50,6 +52,8 @@ import Release_article from './routes/Release_article';
 import Editor_Article from './routes/Editor_Article';
 import ArticlePreview from './routes/ArticlePreview';
 import Preview from './routes/Preview';
+import PreviewVideo from './routes/PreviewVideo';
+
 //Seo
 import Seo from './routes/Seo';
 import SeoHot from './routes/Seo_hot';
@@ -102,7 +106,8 @@ function RouterConfig({ history }) {
       <Route path="/" exact  component={UserRouter} />
       <Route path="/login" exact  component={UserRouter} />
       <Route path="/preview" exact  component={ArticlePreview} />
-      <Route path="/articlePreview" exact  component={Preview} />
+      <Route path="/preview" exact  component={Preview} />
+      <Route path="/previewVideo" exact  component={PreviewVideo} />
       <LayoutContainer location={history.location}>
           <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
           <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
@@ -130,10 +135,14 @@ function RouterConfig({ history }) {
           <Route path="/seo/top_search" component={SeoTopSearch} />
           <Route path="/content/content_column" strict component={ContentColumn} />
           <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
-          <Route path="/content/content_article" strict component={ContentArticle}/>
+          <Route path="/content/content_article" exact component={ContentArticle}/>
+          <Route path="/content/videoList" exact component={ContentVideo}/>
+          
           <Route path="/content/content_image" strict component={ContentImage}/>
           <Route path="/content/content_comment" strict component={ContentComment}/>
           <Route path="/content/release_article" strict component={Release_article}/>
+          <Route path="/content/EditorVideo" strict component={Editor_Video}/>
+          
           <Route path="/content/editor_article" strict component={Editor_Article}/>
           <Route path="/content/content_opinion"  component={ContentOpinion} />
           <Route path ='/content/opinion'  component={ContentOpinionShow}/>

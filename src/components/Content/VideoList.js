@@ -8,10 +8,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 import {message,Badge} from 'antd';
 const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList,sorterUserList}) => {
-	const options = ColumnList;
 	let userId =localStorage.getItem("userId");
-	//console.log("loading",loading)
-	
 	const columns = [{
 	  title: 'ID',
 	  dataIndex: 'articleId',
@@ -164,13 +161,13 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
   return (
     <div>
       
-      <p>当前共有文章：{total}</p>
-       <Tabs defaultActiveKey="1" onChange={onChange}>
+      <p>当前共有视频：{total}</p>
+      <Tabs defaultActiveKey="2" onChange={onChange}>
 	    <TabPane tab={<span>文章</span>} key="1">
-      	    <App />
+      	    
       	</TabPane>
       	<TabPane tab={<span>视频</span>} key="2">
-				     
+				     <App />
 	    </TabPane>
 	  </Tabs>
     </div>

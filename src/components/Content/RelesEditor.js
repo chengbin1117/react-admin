@@ -73,7 +73,7 @@ function RelesEditor({
   },
 }) {
   let merId = localStorage.getItem("userId");
-  console.log(artSorce)
+  //console.log(artSorce)
   const options = ColumnList;
   const imgArr=[imgx,imgy,imgz];  //默认背景图；
   //console.log(UserById.kgUserName)

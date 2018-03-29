@@ -246,6 +246,28 @@ function UserRealName({location,dispatch,user,router,}) {
 	    return children;
 	}
 
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='用户ID'>
+		            {getFieldDecorator('userId')(
+		              <Input placeholder="请输入用户Id" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
 	//搜索
 	function handlsearch(values){
 		if(values.time ==undefined){
@@ -261,7 +283,7 @@ function UserRealName({location,dispatch,user,router,}) {
 	}
 	return (
 			<div>
-			    <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
+			    <WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<RealName {...UserRealNameProps}/>
 				<RealNameModal {...RealNameModalProps} />
 				<RealsModal {...RealsModalProps}/>

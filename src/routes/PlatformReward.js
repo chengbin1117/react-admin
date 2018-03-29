@@ -129,6 +129,33 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		return children;
 	}
 
+	function getFieldsFirst(getFieldDecorator, formItemLayout) {
+		const children = [];
+		children.push(
+			<div key="0">
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='用户ID'>
+						{getFieldDecorator('userId', {
+							rules: [
+								{ required: false, pattern: /^[0-9]*$/, message: "用户ID只能输入数字" }
+							]
+						})(
+
+							<Input placeholder="请输入用户Id" />
+							)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='昵称'>
+						{getFieldDecorator('userName')(
+							<Input type="text" placeholder="请输入昵称" />
+						)}
+					</FormItem>
+				</Col>
+			</div>
+		);
+		return children;
+	}
 	//搜索
 	function handlsearch(data) {
 		dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + data.userId +
@@ -138,21 +165,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				"&minValue=" + data.minValue +
 				"&maxValue=" + data.maxValue 
 		))
-		// if (values.time != undefined) {
-		// 	dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + values.Id +
-		// 		"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-		// 		"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
-		// 		"&createDateStart=" + timeFormat(new Date(values.time[0])) +
-		// 		"&createDateEnd=" + timeFormat(new Date(values.time[1]))
-		// 	))
-		// } else {
-		// 	dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + values.Id +
-		// 		"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
-		// 		"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
-		// 	))
-		// }
 	}
-
 
 	//奖励列表
 	const InviteNewTableProps = {
@@ -253,7 +266,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>邀新奖励</Link>
 					<Button  className = {styles.activeColor} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
 				</div>
-			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} />
+			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
 			<InviteNewTable {...InviteNewTableProps}/>
 			<FrozenModal {...FrozenModalProps}/>
 		</div>

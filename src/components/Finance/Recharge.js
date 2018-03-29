@@ -12,7 +12,6 @@ import {
 import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,DatePicker,Popconfirm, message,Select} from 'antd';
 import style_search from '../search.css';
 import style_pagination from '../pagination.css';
-import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_common from '../common.css';
 import {options} from "../../services/common"
 const FormItem = Form.Item;
@@ -91,60 +90,7 @@ const Recharge = ({
 		console.log()
 	}
 	
-	function getFields(getFieldDecorator,formItemLayout){
-		const children = [];
-	    children.push(
-	    	<div key="0">
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='用户ID'>
-		            {getFieldDecorator('userId',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"用户ID只能输入数字"}
-			            	]
-		            })(
-		              <Input placeholder="请输入用户Id" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email"placeholder="请输入邮箱" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='手机号'>
-		            {getFieldDecorator('mobile',{
-		            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
-			            	]
-		            })(
-		              <Input type="mobile" placeholder="请输入手机号" />
-		            )}
-		          </FormItem>
-		        </Col>
-		         <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='充值时间'>
-		            {getFieldDecorator('time')(
-		              <RangePicker locale={options}/>
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='充值状态'>
-		            {getFieldDecorator('status')(
-		              <Select  placeholder="请选择">
-					      <Option value="0">充值中</Option>
-					      <Option value="1">充值成功</Option>
-					    </Select>
-		            )}
-		          </FormItem>
-		        </Col>
-	        </div>
-	      );
-	    return children;
-	}
+	
 
 	class TableList extends React.Component {
 			  state = {
@@ -171,7 +117,6 @@ const Recharge = ({
 			}
 	return (
 		<div className = {style_common.contentDiv}>
-	      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
 	      <div className={style_search.search_result}>
 	      	<TableList />
 	      </div>

@@ -42,7 +42,7 @@ const ArticleModal = ({
 	onCancel,
 	selectList,
 	ColumnList,
-	showfpModal,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -51,7 +51,7 @@ const ArticleModal = ({
 		resetFields
 	},
 }) => {
-	//console.log(ColumnList)
+	//console.log(selectList)
 
 	function handleOk(value, text) {
 		validateFields((errors) => {
@@ -85,7 +85,8 @@ const ArticleModal = ({
 		maskClosable: false,
 		okText: "确定",
 		cancelText: "取消",
-		afterClose: afterClose
+		afterClose: afterClose,
+		confirmLoading:confirmLoading
 	};
 	function onChange(e) {
 		value = e.target.value;
@@ -105,13 +106,21 @@ const ArticleModal = ({
 						</RadioGroup>
 						)}
 				</FormItem>
-				<FormItem label="选择栏目" {...formItemLayout}>
+				{selectList&&selectList.publishKind==2?<FormItem label="选择栏目" {...formItemLayout}>
+					{getFieldDecorator('column', {
+						initialValue:[360],
+						rules: [{ required: value == 1 ? true : false, message: "请选择栏目!" }],
+					})(
+						<Cascader options={ColumnList} placeholder="请选择" style={{ width: '80%' }} disabled/>
+						)}
+				</FormItem>:<FormItem label="选择栏目" {...formItemLayout}>
 					{getFieldDecorator('column', {
 						rules: [{ required: value == 1 ? true : false, message: "请选择栏目!" }],
 					})(
 						<Cascader options={ColumnList} placeholder="请选择" style={{ width: '80%' }} />
 						)}
-				</FormItem>
+				</FormItem>}
+				
 				<FormItem>
 					{getFieldDecorator('radio', {
 						rules: [{ required: true, message: "请选择!" }],

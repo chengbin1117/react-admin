@@ -172,6 +172,9 @@
 	font-size:14px!important;
 	font-family: '微软雅黑';
 }
+.bonsCneter{
+	text-align: center;
+}
 .bonsList{
 	/*text-align: center;*/
 }
@@ -191,4 +194,7 @@
 }
 .pre{
 	color:rgba(0, 0, 0, 0.35);
+}
+.previewBtn{
+	border:0!important;
 }

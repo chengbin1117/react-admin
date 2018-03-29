@@ -86,6 +86,7 @@ class LayoutContainer extends React.Component {
     if(path =="/index"){
           first ="首页";
           second = "";
+          third="";
           four = "";
       }else if(path =="/user/user_admin"){
           first= "首页";
@@ -162,6 +163,16 @@ class LayoutContainer extends React.Component {
           second= "文章管理";
           third= "编辑文章";
           four = "";
+      }else if(path =="/content/videoList"){
+          first= "首页";
+          second= "文章管理";
+          third= "视频管理";
+          four = "";
+      }else if(path =="/content/EditorVideo"){
+        first= "首页";
+        second= "文章管理";
+        third= "编辑视频";
+        four = "";
       }else if(path =="/content/content_opinion"){
           first= "首页";
           second= "意见反馈";

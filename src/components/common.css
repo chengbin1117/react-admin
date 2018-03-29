@@ -28,6 +28,14 @@
 .editorBox{
     margin: 0 auto;
 }
+
+.editor{
+    min-height:500px;
+    border:solid 1px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
 @media only screen and (max-width:1366px){
     .sideBar{
         width:180px;

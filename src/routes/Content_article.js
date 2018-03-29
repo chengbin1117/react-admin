@@ -10,14 +10,18 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { Modal,message,Row,Col} from 'antd';
+import { Modal,message,Row,Col,Tabs,Icon,Button,Form,Input,Cascader,Select} from 'antd';
 import LayoutContainer from '../components/Layout';
 import Content_Article from '../components/Content/Content_Article';
 import SetModal from '../components/Content/SetShow';
 import ArticleModal from '../components/Content/AricleMoadl';
-import {formatDate,tokenLogOut,GetRequest,options} from '../services/common';
+import {formatDate,tokenLogOut,GetRequest} from '../services/common';
 import BonsModal from '../components/Content/BonsModal';
-import  styles from "./Common.css"
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
+import  styles from "./Common.css";
+const TabPane = Tabs.TabPane;
+const FormItem = Form.Item;
+const Option = Select.Option;
 function ContentArticle({location,dispatch,router,content}) {
 	let merId =localStorage.getItem("userId");
 	let token =localStorage.getItem("Kgtoken");
@@ -25,8 +29,8 @@ function ContentArticle({location,dispatch,router,content}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {ArticleStat,artice,currentArtice,BonsVisible,ArticleList,getBonusList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
-	
+	const {ArticleStat,confirmLoading,artice,currentArtice,BonsVisible,ArticleList,getBonusList,setshow,articeVisible,selectList,ArticleListNumber,currentPage,ColumnList,loading}=content;
+	const options = ColumnList;
 	const Content_ArticleProps ={
 		dispatch,
 		loading,
@@ -36,7 +40,6 @@ function ContentArticle({location,dispatch,router,content}) {
 		total:ArticleListNumber,
 		currentPage:currentPage,
 		confirm(record){
-			
 			dispatch({
 				type:"content/deleteArticle",
 				payload:{
@@ -65,52 +68,21 @@ function ContentArticle({location,dispatch,router,content}) {
 			})
 		},
 		onShowMOdal(selectList){
-			//console.log(selectList)
 			var Ids =""
 				for(var i in selectList){
-							Ids +=selectList[i].articleId+","
+				Ids +=selectList[i].articleId+","
 			}
-			console.log(Ids)
+			//console.log(Ids)
 			dispatch({
 				type:'content/setShowModal',
 				payload:{
 					selectList:Ids
-				}
-				
+				}	
 			})
 
 		},
-		handlsearch:function(values){
-				console.log(values)
-                	/*dispatch({
-				       type: 'content/getArticleList',
-				       payload:{
-				       	articleId:values.Id,
-				       	articleTitle:values.title,
-				       	articleTag:values.tags,
-				       	publishStatus:parseInt(values.status),
-				       	displayStatus:parseInt(values.displayStatus),
-				      	columnId:values.cloumn!=undefined?parseInt(values.cloumn[0]):'',
-				      	secondColumn:values.cloumn!=undefined?parseInt(values.cloumn[1]):'',
-				       }
-		            });*/
-		            if(values.title!=undefined){
-		            	var title =Base64.encode(values.title)
-		            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
-						"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
-						"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
-						))	
-		            }else{
-		            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+
-						"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
-						"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
-						))
-		            }
-		            
-		},
+		
 		editorItem(record){
-			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
-			//window.open('/#/content/editor_article?articleId='+record.articleId);
 			dispatch({
 				type:"content/getArticleById",
 				payload:{
@@ -214,7 +186,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					articleId:selectList,
 					displayStatus:status.radio,
 					updateUser:merId,
-					search:location.search
+					search:location.search,
+					publishKind:1
 				}
 			})
 		}
@@ -224,6 +197,7 @@ function ContentArticle({location,dispatch,router,content}) {
 		visible:articeVisible,
 		selectList,
 		ColumnList,
+		confirmLoading,
 		onCancel(){
 			dispatch({
 				type:'content/hideArticeModal',
@@ -239,7 +213,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					auditUser:merId,
 					refuseReason:data.text,
 				    auditStatus:parseInt(data.radio),
-				    search:location.search
+				    search:location.search,
+				    publishKind:selectList.publishKind
 				}
 			   })
 			}else{
@@ -252,7 +227,8 @@ function ContentArticle({location,dispatch,router,content}) {
 					columnId:data.column[0],
 					secondColumn:data.column[1],
 					auditStatus:parseInt(data.radio),
-					search:location.search
+					search:location.search,
+					publishKind:selectList.publishKind
 				}
 			   })
 			}
@@ -261,6 +237,8 @@ function ContentArticle({location,dispatch,router,content}) {
 			
 		}
 	}
+
+	//阅读奖励
 	const BonsMoadlProps ={
 		visible:BonsVisible,
 		currentArtice,
@@ -272,8 +250,122 @@ function ContentArticle({location,dispatch,router,content}) {
 			})
 		}
 	}
+
+	//搜索
+	function getFields(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='文章ID'>
+			            {getFieldDecorator('Id',{
+			            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"文章ID只能输入数字"}
+			            	]
+			            })(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='标题'>
+			            {getFieldDecorator('title')(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='标签'>
+			            {getFieldDecorator('tags')(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='所属栏目'>
+			            {getFieldDecorator('cloumn')(
+			              <Cascader options={options}  placeholder="请选择文章栏目" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='状态' >
+			            {getFieldDecorator('status')(
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="0">草稿</Option>
+			              	<Option value="1">通过</Option>
+			              	<Option value="2">审核中</Option>
+			              	<Option value="3">不通过</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='显示状态' >
+			            {getFieldDecorator('displayStatus')(
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="1">正常显示</Option>
+			              	<Option value="2">首页置顶</Option>
+			              	<Option value="3">首页推荐</Option>
+			              	<Option value="4">前台隐藏</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='文章ID'>
+			            {getFieldDecorator('Id',{
+			            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"文章ID只能输入数字"}
+			            	]
+			            })(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='标题'>
+			            {getFieldDecorator('title')(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	    return children;
+	}
+	function handlsearch(values){
+        if(values.title!=undefined){
+          var title =Base64.encode(values.title)
+            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
+				      "&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
+				      "&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+				  ))	
+            }else{
+            	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+
+				"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
+				"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+				))
+        }		            
+	}
+
+	//跳转发布文章
+	function release() {
+		localStorage.removeItem("articleText");
+		dispatch(routerRedux.push('/content/release_article?userId='+merId+"&page=1"));	
+	}
 	return (
 			<div >
+				<Button type="primary" size = 'large' onClick={release} style={{marginBottom:"20px"}}>发布文章</Button>
+        <WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<Content_Article {...Content_ArticleProps}/>
 				<SetModal {...SetModalProps}/>
 				<ArticleModal {...ArticleModalProps}/>
