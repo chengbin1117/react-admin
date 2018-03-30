@@ -224,6 +224,11 @@
 }
 .article video{
   width:100%!important;
+  height:auto;
+}
+.article iframe{
+  width:100%!important;
+  height:auto;
 }
 .article img{
   width:100%;

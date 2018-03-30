@@ -84,14 +84,27 @@ function ArticlePreview({location,dispatch,content,router,}) {
               	
               	<div className={styles.container_left_pre}>
 	                <h1 className={styles.title}>{preList&&preList.articleTitle}</h1>
-	                <div>{preList&&preList.username}<span style={{marginLeft:10,marginRight:10}}>·</span>{preList&&formatDate(preList.createDate)}
-	               
-                    
+	                <div>{preList&&preList.username}<span style={{marginLeft:10,marginRight:10}}>·</span>{preList&&formatDate(preList.createDate)}     
 	                </div>
-	              	<div className={styles.abstract}>
+					<div className={styles.abstract}>
 	              	    {preList&&preList.articleDescription}
 	              	</div>
-	                <div className={styles.article} dangerouslySetInnerHTML={{__html: (preList&&preList.articleText)}}></div>
+					{(preList&&preList.publishKind == 2)&&<div>
+						<div className={styles.videoMain}>
+	                	{(preList.videoFilename!='null'&&preList.videoFilename != '')?
+	                		<video  controls="controls" autoplay="autoplay">
+                            <source src={preList.videoUrl} type="video/mp4" />
+                            </video>:<iframe style = {{width:'100%',height:'450px'}} frameborder="0" allowfullscreen="true" src={preList.videoUrl}></iframe>
+	                    }
+	                   </div>
+					</div>}
+					{(preList&&preList.publishKind == 1)&&
+					<div>
+					<div className={styles.article} dangerouslySetInnerHTML={{__html: (preList&&preList.articleText)}}></div>
+					</div>
+					}
+	              	
+	                
 		            <div className = {styles.line}>
 		            {(preList&&preList.tags!=undefined)?preList.tags.map((t,index)=>{
 		            	return(
