@@ -110,7 +110,7 @@ function RouterConfig({ history }) {
           <Route path="/" exact component={UserRouter} />
           <Route path="/login" exact component={UserRouter} />
           <Route path="/preview" exact component={ArticlePreview} />
-          <Route path="/preview" exact component={Preview} />
+          <Route path="/articlePreview" exact component={Preview} />
           <Route path="/previewVideo" exact component={PreviewVideo} />
           <LayoutContainer location={history.location}>
             <Route path="/index" exact component={IndexPage} onEnter={requireAuth} />
