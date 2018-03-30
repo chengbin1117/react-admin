@@ -102,9 +102,7 @@ function ArticlePreview({location,dispatch,content,router,}) {
 					<div>
 					<div className={styles.article} dangerouslySetInnerHTML={{__html: (preList&&preList.articleText)}}></div>
 					</div>
-					}
-	              	
-	                
+					} 
 		            <div className = {styles.line}>
 		            {(preList&&preList.tags!=undefined)?preList.tags.map((t,index)=>{
 		            	return(
