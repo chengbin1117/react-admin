@@ -194,8 +194,9 @@ function IndexPage({location,dispatch,user,router,content}) {
 			});
 	  	},
 	  	onPreview(record){
-	  		console.log(record)
-	  		dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
+				console.log(record)
+				window.open('/#/articlePreview?articleId='+record.articleId)
+	  		//dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
 	  	}
 	  }
 	  function onChange(page){
