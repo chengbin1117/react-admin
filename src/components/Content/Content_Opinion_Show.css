@@ -198,3 +198,16 @@
 .previewBtn{
 	border:0!important;
 }
+.marginL{
+	margin-left:60px;
+}
+@media only screen and (max-width:1600px){
+	.marginL{
+		margin-left:28px;
+	}
+}
+@media only screen and (max-width:1366px){
+	.marginL{
+		margin-left:18px;
+	}
+}

@@ -854,7 +854,7 @@ function ArticleEditor({
         </FormItem> : null}
 
       <Row key='2' type="flex" justify="start" >
-        <Col style={{ marginLeft: '26px' }} >
+        <Col  className={styles.marginL}>
           <span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
         </Col>
         <Col style={{ marginRight: '15px' }}>
