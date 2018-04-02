@@ -79,7 +79,7 @@ function ArticlePreview({location,dispatch,content,router,}) {
                  <div className = {styles.previewMask}>
                  <Alert message="这是预览页面，不支持任何操作" type="warning"  className={styles.text}/>
                  </div>
-              	<div className={styles.container} >
+              	<div className={styles.container} style={{minHeight:850}}>
               	
               	<div className={styles.container_left}>
 	                <p className={styles.title}>{previewTitle=='undefined'?"":previewTitle}</p>

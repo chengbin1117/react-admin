@@ -105,59 +105,60 @@ function RouterConfig({ history }) {
 
   return (
     <LocaleProvider locale={zhCN}>
-      <Router history={history}>
-        <Switch>
-          <Route path="/" exact component={UserRouter} />
-          <Route path="/login" exact component={UserRouter} />
-          <Route path="/preview" exact component={ArticlePreview} />
-          <Route path="/articlePreview" exact component={Preview} />
-          <Route path="/previewVideo" exact component={PreviewVideo} />
-          <LayoutContainer location={history.location}>
-            <Route path="/index" exact component={IndexPage} onEnter={requireAuth} />
-            <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth} />
-            <Route path="/user/user_role" exact component={UserRole} />
-            <Route path="/user/user_data" exact component={UserData} />
-            <Route path="/user/reward" exact component={RewardDetails} />
-            <Route path="/user/invite" exact component={InviteRecord} />
-            <Route path="/user/master" exact component={Master} />
-            <Route path="/user/platformReward" exact component={PlatformReward} />
-            <Route path="/user/user_login" exact component={UserLogin} />
-            <Route path="/user/user_info" exact component={UserInfo} />
-            <Route path="/user/realName" exact component={realName} />
-            <Route path="/setting/about" strict component={About} />
-            <Route path="/setting/base" strict component={BaseInfo} />
-            <Route path="/setting/account" strict component={AccountRule} />
-            <Route path="/setting/addinfo" strict component={AddInfo} />
-            <Route path="/setting/addinfoEditor" strict component={EditorInfo} />
-            <Route path="/data/data_column" strict component={DataColumn} />
-            <Route path="/data/data_user" strict component={DataUser} />
-            <Route path="/log/log_admin" strict component={LogAdmin} />
-            <Route path="/log/log_user" strict component={LogUser} />
-            <Route path="/seo/tdk" component={SeoTdk} />
-            <Route path="/seo/hot" component={SeoHot} />
-            <Route path="/seo/link" component={SeoLink} />
-            <Route path="/seo/top_search" component={SeoTopSearch} />
-            <Route path="/content/content_column" strict component={ContentColumn} />
-            <Route path='/content/content/content_column/:id' component={Content_Column_Editor} />
-            <Route path="/content/content_article" exact component={ContentArticle} />
-            <Route path="/content/videoList" exact component={ContentVideo} />
-
-            <Route path="/content/content_image" strict component={ContentImage} />
-            <Route path="/content/content_comment" strict component={ContentComment} />
-            <Route path="/content/release_article" strict component={Release_article} />
-            <Route path="/content/EditorVideo" strict component={Editor_Video} />
-            <Route path="/content/editor_article" strict component={Editor_Article} />
-            <Route path="/content/content_opinion" component={ContentOpinion} />
-            <Route path='/content/opinion' component={ContentOpinionShow} />
-            <Route path="/finance/recharge" strict component={FinanceRecharge} />
-            <Route path="/finance/withdrawals" strict component={Withdrawals} />
-            <Route path="/finance/record" strict component={Record} />
-            <Route path="/finance/recordTxb" strict component={RecordTxb} />
-            <Route path="/finance/bond" strict component={Bond} />
-            <Route path="/app/editon" exact component={AppPage} />
-          </LayoutContainer>
-        </Switch>
-      </Router>
+    <Router history={history}>
+    <Switch>
+      <Route path="/" exact  component={UserRouter} />
+      <Route path="/login" exact  component={UserRouter} />
+      <Route path="/preview" exact  component={ArticlePreview} />
+      <Route path="/articlePreview" exact  component={Preview} />
+      <Route path="/previewVideo" exact  component={PreviewVideo} />
+      <LayoutContainer location={history.location}>
+          <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
+          <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
+          <Route path="/user/user_role" exact component={UserRole} />
+          <Route path="/user/user_data" exact component={UserData}/>
+          <Route path="/user/reward" exact component={RewardDetails}/>
+          <Route path="/user/invite" exact component={InviteRecord}/>
+          <Route path="/user/master" exact component={Master}/>
+          <Route path="/user/platformReward" exact component={PlatformReward}/>
+          <Route path="/user/user_login" exact component={UserLogin} />
+          <Route path="/user/user_info" exact component={UserInfo} />
+          <Route path="/user/realName" exact component={realName} />
+          <Route path="/setting/about" strict component={About}/>
+          <Route path="/setting/base" strict component={BaseInfo}/>
+          <Route path="/setting/account" strict component={AccountRule}/>
+          <Route path="/setting/addinfo" strict component={AddInfo}/>
+          <Route path="/setting/addinfoEditor" strict  component={EditorInfo}/>
+          <Route path="/data/data_column" strict  component={DataColumn}/>
+          <Route path="/data/data_user" strict  component={DataUser}/>
+          <Route path="/log/log_admin" strict  component={LogAdmin}/>
+          <Route path="/log/log_user" strict  component={LogUser} />
+          <Route path="/seo/tdk" component={SeoTdk}/>
+          <Route path="/seo/hot" component={SeoHot} />
+          <Route path="/seo/link" component={SeoLink} />
+          <Route path="/seo/top_search" component={SeoTopSearch} />
+          <Route path="/content/content_column" strict component={ContentColumn} />
+          <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
+          <Route path="/content/content_article" exact component={ContentArticle}/>
+          <Route path="/content/videoList" exact component={ContentVideo}/>
+          
+          <Route path="/content/content_image" strict component={ContentImage}/>
+          <Route path="/content/content_comment" strict component={ContentComment}/>
+          <Route path="/content/release_article" strict component={Release_article}/>
+          <Route path="/content/EditorVideo" strict component={Editor_Video}/>
+          
+          <Route path="/content/editor_article" strict component={Editor_Article}/>
+          <Route path="/content/content_opinion"  component={ContentOpinion} />
+          <Route path ='/content/opinion'  component={ContentOpinionShow}/>
+          <Route path="/finance/recharge" strict component={FinanceRecharge}/>
+          <Route path="/finance/withdrawals"   strict component={Withdrawals} />
+          <Route path="/finance/record" strict component={Record} />
+          <Route path="/finance/recordTxb" strict component={RecordTxb} />
+          <Route path="/finance/bond" strict component={Bond} />
+      </LayoutContainer>
+      </Switch>
+    </Router>
+>>>>>>> test
     </LocaleProvider>
   );
 }

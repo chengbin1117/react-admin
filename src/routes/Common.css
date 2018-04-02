@@ -179,6 +179,7 @@
 }
 .container_left{
   width:70%;
+  margin-top: 60px;
 }
 .container_left_pre{
   width:70%;
@@ -215,10 +216,26 @@
 .article{
   color:#7f8387;
   line-height: 25px;
-  font-size:18px;
+  font-size:16px;
+  font-family: "微软雅黑";
+}
+.article p{
+  margin:8px 0;
+}
+.article video{
+  width:100%!important;
+  height:auto;
+}
+.article iframe{
+  width:100%!important;
+  height:520px;
+  border:0px;
 }
 .article img{
   width:100%;
+  display: inline-block;
+  margin: 10px 0;
+  border-radius: 5px;
 }
 .qunwen{
   color:#1d87ff;
@@ -425,7 +442,7 @@
 
 .container_left .title{
   font-size:26px;
-  margin-top: 10px;
+  margin-top: 30px;
   line-height:40px;
   overflow: hidden;
 }

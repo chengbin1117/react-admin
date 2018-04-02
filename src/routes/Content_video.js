@@ -28,7 +28,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { ArticleStat, artice, currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
+	const { ArticleStat,dis,artice, currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
 	const options = ColumnList;
 	const Content_ArticleProps = {
 		dispatch,

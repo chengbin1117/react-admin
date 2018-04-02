@@ -7,13 +7,13 @@ import {
   routerRedux,
 
 } from 'dva/router';
-import { Form, Icon, Input, Button,Badge, Checkbox, Select, Tag, Row, Col, Upload, InputNumber, Radio, Cascader, DatePicker, TimePicker, message, Modal } from 'antd';
+import { Form, Icon, Input, Button, Badge, Checkbox, Select, Tag, Row, Col, Upload, InputNumber, Radio, Cascader, DatePicker, TimePicker, message, Modal } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
 import Editor from '../../editor/index';
 import $ from 'jquery';
-import { uploadUrl, ImgUrl, formatDate,videoUrl,uploadVideoUrl } from "../../services/common"
+import { uploadUrl, ImgUrl, formatDate, videoUrl, uploadVideoUrl } from "../../services/common"
 import UploadVideo from '../Upload_Video.js';
 import RelationModal from '../Setting/RelationUser';
 import imgx from '../../assets/images/article1.jpg';
@@ -28,13 +28,13 @@ const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 let artSorce = 0;
 let timeDis = true;
-let dis =false;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
 var x = 5000;
 let isVideo = 0;
 let icoType = "upload";
+const confirm = Modal.confirm;
 const formItemLayout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 18 },
@@ -67,6 +67,7 @@ function ArticleEditor({
   ColumnList,
   UserById,
   setting,
+  dis,
   uploadImg,
   getBonusList,
   form: {
@@ -80,7 +81,7 @@ function ArticleEditor({
   const imgArr = [imgx, imgy, imgz];  //默认背景图；
 
   const options = ColumnList;
- // console.log("setting",ArticleList)
+  // console.log("setting",ArticleList)
   const { RelationVisible, getRelUserList } = setting;
   let AllTotal = 0;  //发放奖励总量；
   function handleSubmit() {
@@ -90,7 +91,7 @@ function ArticleEditor({
       } else {
         const data = { ...getFieldsValue() };
         console.log(data);
-        
+
         var tagsName = "";
         if (data.tag4 == undefined && data.tag5 == undefined) {
           tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
@@ -111,19 +112,19 @@ function ArticleEditor({
         }
         let videoAddress = "";
         let videoFilename = "";
-        if(data.upload == "1"){
-            videoAddress=data.videoURL[0].url;
-            videoFilename= data.videoURL[0].name;
-        }else{
-             if(data.videoUrl.indexOf('src') != '-1') {
-              data.videoUrl = data.videoUrl.replace(new RegExp("'","gm"),'"');
-              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)"/)[1];
-             }else if(data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1'){
-              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)/)[1];
-             }
+        if (data.upload == "1") {
+          videoAddress = data.videoURL[0].url;
+          videoFilename = data.videoURL[0].name;
+        } else {
+          if (data.videoUrl.indexOf('src') != '-1') {
+            data.videoUrl = data.videoUrl.replace(new RegExp("'", "gm"), '"');
+            data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)"/)[1];
+          } else if (data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1') {
+            data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)/)[1];
+          }
 
-            videoAddress=data.videoUrl;
-            videoFilename= "";
+          videoAddress = data.videoUrl;
+          videoFilename = "";
         }
         if (ArticleList.sysUser == null) {
           if (data.publishStatus == "1") {
@@ -133,8 +134,8 @@ function ArticleEditor({
                 articleId: ArticleList.articleId,
                 articleTitle: data.articleTitle,
                 tagnames: tagsName,
-                articleText:"视频文件",
-                description:data.artic,
+                articleText: "视频文件",
+                description: data.artic,
                 image: imgUrl == '' ? data.image : imgUrl,
                 type: parseInt(data.type),
                 columnId: parseInt(data.column[0]),
@@ -142,21 +143,21 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet:0,
+                publishSet: 0,
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
                 articleLink: data.articleLink,
-                sysUser:merId,
+                sysUser: merId,
                 publishStatus: parseInt(data.publishStatus),
                 browseNum: data.browseNum,
                 thumbupNum: data.thumbupNum,
                 collectNum: data.collectNum,
                 editArticle: editArticle,
-                publishKind:2,
-                videoUrl:videoAddress,
-                videoFilename:videoFilename,
-                textnum:0,
+                publishKind: 2,
+                videoUrl: videoAddress,
+                videoFilename: videoFilename,
+                textnum: 0,
               }
             })
           } else {
@@ -165,7 +166,7 @@ function ArticleEditor({
               payload: {
                 articleId: ArticleList.articleId,
                 articleTitle: data.articleTitle,
-                articleText:"视频文件",
+                articleText: "视频文件",
                 tagnames: tagsName,
                 description: data.artic,
                 image: imgUrl == '' ? data.image : imgUrl,
@@ -175,7 +176,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet:0,
+                publishSet: 0,
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
@@ -186,10 +187,10 @@ function ArticleEditor({
                 thumbupNum: data.thumbupNum,
                 collectNum: data.collectNum,
                 editArticle: editArticle,
-                publishKind:2,
-                videoUrl:videoAddress,
-                videoFilename:videoFilename,
-                 textnum:0,
+                publishKind: 2,
+                videoUrl: videoAddress,
+                videoFilename: videoFilename,
+                textnum: 0,
               }
             })
           }
@@ -202,7 +203,7 @@ function ArticleEditor({
                 articleId: ArticleList.articleId,
                 articleTitle: data.articleTitle,
                 tagnames: tagsName,
-                articleText:"视频文件",
+                articleText: "视频文件",
                 description: data.artic,
                 image: imgUrl == '' ? data.image : imgUrl,
                 type: parseInt(data.type),
@@ -211,7 +212,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet:0,
+                publishSet: 0,
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
@@ -223,10 +224,10 @@ function ArticleEditor({
                 thumbupNum: data.thumbupNum,
                 collectNum: data.collectNum,
                 editArticle: editArticle,
-                publishKind:2,
-                videoUrl:videoAddress,
-                videoFilename:videoFilename,
-                 textnum:0,
+                publishKind: 2,
+                videoUrl: videoAddress,
+                videoFilename: videoFilename,
+                textnum: 0,
               }
             })
           } else {
@@ -235,9 +236,9 @@ function ArticleEditor({
               payload: {
                 articleId: ArticleList.articleId,
                 articleTitle: data.articleTitle,
-                articleText:"视频文件",
+                articleText: "视频文件",
                 tagnames: tagsName,
-                description:data.artic,
+                description: data.artic,
                 image: imgUrl == '' ? data.image : imgUrl,
                 type: parseInt(data.type),
                 columnId: parseInt(data.column[0]),
@@ -245,7 +246,7 @@ function ArticleEditor({
                 displayStatus: parseInt(data.radioT),
                 displayOrder: parseInt(data.sort),
                 commentSet: data.commentSet == "true" ? true : false,
-                publishSet:0,
+                publishSet: 0,
                 createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
                 sysUser: merId,
                 bonusStatus: parseInt(data.bonusStatus),
@@ -258,10 +259,10 @@ function ArticleEditor({
                 thumbupNum: data.thumbupNum,
                 collectNum: data.collectNum,
                 editArticle: editArticle,
-                publishKind:2,
-                videoUrl:videoAddress,
-                videoFilename:videoFilename,
-                textnum:0,
+                publishKind: 2,
+                videoUrl: videoAddress,
+                videoFilename: videoFilename,
+                textnum: 0,
               }
             })
           }
@@ -282,7 +283,7 @@ function ArticleEditor({
       } else {
         const data = { ...getFieldsValue() };
         //console.log(data.text);
-        
+
 
         var tagsName = "";
         if (data.tag4 == undefined && data.tag5 == undefined) {
@@ -302,12 +303,12 @@ function ArticleEditor({
         }*/
         let videoAddress = "";
         let videoFilename = "";
-        if(data.upload == "1"){
-            videoAddress=data.videoURL[0].url;
-            videoFilename= data.videoURL[0].name;
-        }else{
-            videoAddress=data.videoUrl;
-            videoFilename= "";
+        if (data.upload == "1") {
+          videoAddress = data.videoURL[0].url;
+          videoFilename = data.videoURL[0].name;
+        } else {
+          videoAddress = data.videoUrl;
+          videoFilename = "";
         }
         let editArticle = 0;
         const title = data.articleTitle;
@@ -322,8 +323,8 @@ function ArticleEditor({
             articleId: ArticleList.articleId,
             articleTitle: data.articleTitle,
             tagnames: tagsName,
-            articleText:"视频文件",
-            description:data.artic,
+            articleText: "视频文件",
+            description: data.artic,
             image: imgUrl == '' ? data.image : imgUrl,
             type: parseInt(data.type),
             columnId: parseInt(data.column[0]),
@@ -342,10 +343,10 @@ function ArticleEditor({
             thumbupNum: data.thumbupNum,
             collectNum: data.collectNum,
             editArticle: editArticle,
-            publishKind:2,
-            videoUrl:videoAddress,
-            videoFilename:videoFilename,
-            textnum:0,
+            publishKind: 2,
+            videoUrl: videoAddress,
+            videoFilename: videoFilename,
+            textnum: 0,
           }
         })
       }
@@ -467,11 +468,11 @@ function ArticleEditor({
   function checkout() {
 
   }
-  function handleVideoChange(info){
+  function handleVideoChange(info) {
 
   }
   function beforeUpload(file) {
-   var isTrue = false;
+    var isTrue = false;
     if (file.type == 'video/mp4') {
       isTrue = true
     } else {
@@ -482,31 +483,57 @@ function ArticleEditor({
     const is200M = file.size / 1024 / 1024 < 200;
     //console.log('is200M', is200M)
     if (!is200M) {
-       message.error('视频大小不超过200M');
+      message.error('视频大小不超过200M');
     }
     return isTrue && is200M
   }
+
   //移除视频
-  function onRemove(file){
-    console.log(onRemove)
-    var BTN = document.getElementById("BTN");
-    BTN.innerText = '上传视频'
-    message.success('删除成功')
-    //return false
+  function onRemove(file) {
+    //console.log(file)
+    var title = "确认删除" + file.name + "吗？"
+    const myConfirm = ({ title, content }) => new Promise((resolve, reject) =>
+      confirm({
+        title: "确认删除" + file.name + "吗？",
+        onOk() {
+          resolve()
+        },
+        onCancel() {
+          reject()
+        }
+      }))
+    return myConfirm(title)
   }
+
+
+
   const props = {
-      action: uploadVideoUrl,
-      onChange: handleVideoChange,
-      multiple: true,
-      name:"file",
-      accept:'.mp4',
-      beforeUpload:beforeUpload,
-      onRemove:onRemove  
-    };
+    action: uploadVideoUrl,
+    onChange: handleVideoChange,
+    multiple: true,
+    name: "file",
+    accept: '.mp4',
+    beforeUpload: beforeUpload,
+    onRemove: onRemove
+  };
   //选择本地视频或视频链接
-  function fixVideo(e){
-   // console.log(e)
+  function fixVideo(e) {
+    // console.log(e)
     ArticleList.videoType = parseInt(e.target.value)
+  }
+
+  //失去焦点视频链接地址
+  function handleInputBlur(e) {
+    console.log(e.target.value)
+    var value = e.target.value;
+    if (value.indexOf('src') != '-1') {
+      value = value.replace(new RegExp("'", "gm"), '"');
+      value = 'https://' + value.match(/:\/\/(\S*)"/)[1];
+    } else if (value.indexOf('http') != '-1' && value.indexOf('src') == '-1') {
+      value = 'https://' + value.match(/:\/\/(\S*)/)[1];
+    }
+    console.log(value)
+    ArticleList.videoUrl = value;
   }
   function tagValue1(rule, value, callback) {
     //console.log(value)
@@ -660,73 +687,91 @@ function ArticleEditor({
       callback()
     }
   }
+  function ModalCirm(title) {
+    confirm({
+      title: title,
 
-  function normFile(info){
-    //console.log('Upload event:',info);
-    let fileList = info.fileList; 
+    })
+  }
+  function normFile(info) {
+    console.log('Upload event:', info);
+    let fileList = info.fileList;
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
     fileList = fileList.slice(-1);
-    icoType = "loading";
-    dis =true;
-    if(info.file.status=="done"){
-      if(info.file.response.errorCode==10000){
+    dispatch({
+      type: "content/fixdisabeld",
+    })
+    if (info.file.status == "done") {
+      if (info.file.response.errorCode == 10000) {
         fileList = fileList.map((file) => {
-            if (file.response) {
-              // Component will show file.url as link
-              file.url = videoUrl+file.response.data[0].filePath
-            }
-             var BTN = document.getElementById("BTN");
-             BTN.innerText = '重新上传';
-             icoType = "upload";
-             dis = false;
-            return file;
-          });
+          if (file.response) {
+            // Component will show file.url as link
+            file.url = videoUrl + file.response.data[0].filePath
+          }
+          var BTN = document.getElementById("BTN");
+          BTN.innerText = '重新上传';
+          //icoType = "upload";
+          dispatch({
+            type: "content/falsedisabeld",
+          })
+          return file;
+        });
       }
-    }else if(info.file.status == undefined){
+    } else if (info.file.status == undefined) {
+
+      dispatch({
+        type: "content/falsedisabeld",
+      })
       return false
+    } else if (info.file.status == "removed") {
+      dispatch({
+        type: "content/falsedisabeld",
+      })
+
+
     }
     return fileList;
   }
-  
+
   //验证视频链接是否为MP4格式;
 
-  function videoUrlChange(rule, value, callback){
+  function videoUrlChange(rule, value, callback) {
     console.log(value)
-    var reg= RegExp(/src/);
-    if(!reg.exec(value)){
+    var reg = RegExp(/src/);
+    if (!reg.exec(value)) {
       callback('请输入有效的视频链接')
 
     }
     callback();
   }
   //验证视频
-  function fileVideo(fileList){
-      //console.log(fileList)
-      return fileList
+  function fileVideo(fileList) {
+    //console.log(fileList)
+    return fileList
   }
   //跳转预览页
-  function previewPage(){
+  function previewPage() {
     const data = { ...getFieldsValue() };
     let videoAddress = "";
-        let videoFilename = "";
-        if(data.upload == "1"){
-            videoAddress=data.videoURL[0].url;
-            videoFilename= data.videoURL[0].name;
-        }else{
-             if(data.videoUrl.indexOf('src') != '-1') {
-              data.videoUrl = data.videoUrl.replace(new RegExp("'","gm"),'"');
-              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)"/)[1];
-             }else if(data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1'){
-              data.videoUrl = 'https://'+data.videoUrl.match(/:\/\/(\S*)/)[1];
-             }
+    let videoFilename = "";
+    if (data.upload == "1") {
+      videoAddress = data.videoURL[0].url;
+      videoFilename = data.videoURL[0].name;
+    } else {
+      if (data.videoUrl.indexOf('src') != '-1') {
+        data.videoUrl = data.videoUrl.replace(new RegExp("'", "gm"), '"');
+        data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)"/)[1];
+      } else if (data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1') {
+        data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)/)[1];
+      }
 
-            videoAddress=data.videoUrl;
-            videoFilename= null;
+      videoAddress = data.videoUrl;
+      videoFilename = null;
     }
-    localStorage.setItem('videoFilename',videoFilename);
-    localStorage.setItem('videoUrl',videoAddress);
-    window.open('/#/previewVideo?articleId='+ArticleList.articleId)
+    localStorage.setItem('videoFilename', videoFilename);
+    localStorage.setItem('videoUrl', videoAddress);
+    window.open('/#/previewVideo?articleId=' + ArticleList.articleId)
   }
   return (
     <Form onSubmit={handleSubmit}>
@@ -745,70 +790,71 @@ function ArticleEditor({
           ],
         })(
           <Input type="text" placeholder="输入标题" style={{ width: '60%' }} />
-          )}
+        )}
         <span style={{ color: "#aaa", marginLeft: 20 }}>1-64个字符</span>
       </FormItem>
       <FormItem
-          {...formItemLayout}
-          label="视频"
-        >
-          {getFieldDecorator('upload', {
-            initialValue:ArticleList.videoType+"",
-            rules:[{
-              required:true,'message':"请选择"
-            }]
-          })(
-            <RadioGroup onChange={fixVideo}>
-              <Radio value="1">本地上传</Radio>
-              <Radio value="2">视频链接</Radio>
-            </RadioGroup>
-          )}
+        {...formItemLayout}
+        label="视频"
+      >
+        {getFieldDecorator('upload', {
+          initialValue: ArticleList.videoType + "",
+          rules: [{
+            required: true, 'message': "请选择"
+          }]
+        })(
+          <RadioGroup onChange={fixVideo}>
+            <Radio value="1">本地上传</Radio>
+            <Radio value="2">视频链接</Radio>
+          </RadioGroup>
+        )}
       </FormItem>
-      {ArticleList&&ArticleList.videoType==2?
-          <FormItem
+      {ArticleList && ArticleList.videoType == 2 ?
+        <FormItem
           {...formItemLayout}
           label="&emsp;"
-          colon ={false}
+          colon={false}
         >
           {getFieldDecorator('videoUrl', {
-            initialValue:(ArticleList.videoFilename==null||ArticleList.videoFilename=="")?ArticleList.videoUrl:"",
-            rules:[{
-              required:true,'message':"请输入视频链接",
+            initialValue: (ArticleList.videoFilename == null || ArticleList.videoFilename == "") ? ArticleList.videoUrl : "",
+            rules: [{
+              required: true, 'message': "请输入视频链接",
 
             }]
           })(
-            <Input 
-            placeholder="视频链接地址"
-            style={{width:"60%"}}
+            <Input
+              placeholder='请粘贴外部视频网站的视频通用代码，代码示例：<iframe frameborder="0" width="640" height="498" src="……" allowfullscreen></iframe>'
+              style={{ width: "100%" }}
+              onBlur={handleInputBlur}
             />
           )}
-      </FormItem>:null}
-      {ArticleList&&ArticleList.videoType==1?
-      <FormItem
+        </FormItem> : null}
+      {ArticleList && ArticleList.videoType == 1 ?
+        <FormItem
           {...formItemLayout}
           label="&emsp;"
-          colon ={false}
+          colon={false}
         >
           {getFieldDecorator('videoURL', {
-            initialValue:ArticleList.videoList,
+            initialValue: ArticleList.videoList,
             valuePropName: 'fileList',
-            getValueFromEvent:normFile,
-            rules:[{
-              required:true,'message':"请上传视频",
-              type:"array"
+            getValueFromEvent: normFile,
+            rules: [{
+              required: true, 'message': "请上传视频",
+              type: "array"
             }]
           })(
-              <Upload {...props}  listType="text" style={{width:'50%'}}>
-                <Button type="primary" size="large" id="BTN">
-                  <Icon type={icoType} />重新上传
+            <Upload {...props} listType="text" style={{ width: '50%' }}>
+              <Button type="primary" size="large" id="BTN" disabled={dis}>
+                <Icon type={icoType} />重新上传
                 </Button>
-              </Upload>
+            </Upload>
           )}
           <span>限200m以内mp4格式视频</span>
-      </FormItem>:null  }
-      
+        </FormItem> : null}
+
       <Row key='2' type="flex" justify="start" >
-        <Col style={{ marginLeft: '26px' }} >
+        <Col  className={styles.marginL}>
           <span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
         </Col>
         <Col style={{ marginRight: '15px' }}>
@@ -824,7 +870,7 @@ function ArticleEditor({
                 }],
             })(
               <Input style={{ width: '140px', marginRight: '50px' }} />
-              )}
+            )}
 
           </FormItem>
         </Col>
@@ -841,7 +887,7 @@ function ArticleEditor({
                 }],
             })(
               <Input style={{ width: '140px', }} />
-              )}
+            )}
 
           </FormItem>
         </Col>
@@ -858,7 +904,7 @@ function ArticleEditor({
                 }],
             })(
               <Input style={{ width: '140px', }} />
-              )}
+            )}
 
           </FormItem>
         </Col>
@@ -871,7 +917,7 @@ function ArticleEditor({
               }],
             })(
               <Input style={{ width: '140px', }} />
-              )}
+            )}
 
           </FormItem>
         </Col>
@@ -884,7 +930,7 @@ function ArticleEditor({
               }],
             })(
               <Input style={{ width: '140px', }} />
-              )}
+            )}
 
           </FormItem>
         </Col>
@@ -896,7 +942,7 @@ function ArticleEditor({
           rules: [{ required: true, min: 10, max: 100, message: '摘要10-100字,支持中英文,数字，符号，不区分大小写!' }],
         })(
           <TextArea style={{ minHeight: "100px" }}></TextArea>
-          )}
+        )}
       </FormItem>
       <FormItem
         {...formItemLayout}
@@ -916,7 +962,7 @@ function ArticleEditor({
               <img onClick={showModal} src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
             }
           </div>
-          )}
+        )}
       </FormItem>
       <FormItem
         {...formItemLayout}
@@ -942,7 +988,7 @@ function ArticleEditor({
             <Radio value="1">原创</Radio>
             <Radio value="2">转载</Radio>
           </RadioGroup>
-          )}
+        )}
       </FormItem> :
         <FormItem
           {...formItemLayout}
@@ -957,7 +1003,7 @@ function ArticleEditor({
               <Radio value="1">原创</Radio>
               <Radio value="2">转载</Radio>
             </RadioGroup>
-            )}
+          )}
         </FormItem>
       }
 
@@ -971,7 +1017,7 @@ function ArticleEditor({
           ],
         })(
           <Input style={{ width: "60%" }} />
-          )}
+        )}
 
       </FormItem> : null}
       {ArticleList && ArticleList.articleType == 2 ? <FormItem
@@ -984,7 +1030,7 @@ function ArticleEditor({
           ],
         })(
           <Input style={{ width: "60%" }} />
-          )}
+        )}
       </FormItem> : null}
 
       <FormItem
@@ -993,14 +1039,14 @@ function ArticleEditor({
 
       >
         {getFieldDecorator('column', {
-          initialValue:[360],
+          initialValue: [360],
           rules: [
             { required: true, message: '请选择文章栏目!' },
             { type: 'array' }
           ],
         })(
           <Cascader options={options} disabled placeholder="请选择文章栏目" style={{ width: '20%' }} />
-          )}
+        )}
       </FormItem>
       <FormItem
         {...formItemLayout}
@@ -1018,7 +1064,7 @@ function ArticleEditor({
             <Radio value="3">首页推荐</Radio>
             <Radio value="4">前台隐藏</Radio>
           </RadioGroup>
-          )}
+        )}
       </FormItem>
       <FormItem
         {...formItemLayout}
@@ -1032,7 +1078,7 @@ function ArticleEditor({
         })(
           <Input style={{ width: '10%' }} />
 
-          )}
+        )}
         <span style={{ marginLeft: 20 }} className={styles.pre}>越小越靠前</span>
       </FormItem>
       <FormItem
@@ -1047,7 +1093,7 @@ function ArticleEditor({
         })(
           <InputNumber style={{ width: "20%" }} min={0}
             max={5000000} />
-          )}
+        )}
         <span className={styles.pre}>输入限制:0-500万</span>
       </FormItem>
       <FormItem
@@ -1062,7 +1108,7 @@ function ArticleEditor({
         })(
           <InputNumber style={{ width: "20%" }} min={0}
             max={500000} />
-          )}
+        )}
         <span className={styles.pre}>输入限制:0-50万</span>
       </FormItem>
       <FormItem
@@ -1077,7 +1123,7 @@ function ArticleEditor({
         })(
           <InputNumber style={{ width: "20%" }} min={0}
             max={500000} />
-          )}
+        )}
         <span className={styles.pre}>输入限制:0-50万</span>
       </FormItem>
       <FormItem
@@ -1091,7 +1137,7 @@ function ArticleEditor({
             <Radio value="true">开启评论</Radio>
             <Radio value="false">关闭评论</Radio>
           </RadioGroup>
-          )}
+        )}
       </FormItem>
       {(ArticleList.sysUser != null && ArticleList.createUser != null) && <FormItem
         {...formItemLayout}
@@ -1105,7 +1151,7 @@ function ArticleEditor({
           ],
         })(
           <Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} />
-          )}
+        )}
       </FormItem>}
       {(ArticleList.sysUser == null && ArticleList.createUser != null) && <FormItem
         {...formItemLayout}
@@ -1119,7 +1165,7 @@ function ArticleEditor({
           ],
         })(
           <Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} />
-          )}
+        )}
       </FormItem>}
       {(ArticleList.sysUser != null && ArticleList.createUser == null) && <FormItem
         {...formItemLayout}
@@ -1136,7 +1182,7 @@ function ArticleEditor({
               <Option value={item.kgUserId + ""} key={index}>{item.kgUsername}</Option>
             )}
           </Select>
-          )}
+        )}
       </FormItem>}
 
       <FormItem
@@ -1155,13 +1201,13 @@ function ArticleEditor({
             <br />
             <Radio value='0'>不开启</Radio>
           </RadioGroup>
-          )}
+        )}
       </FormItem>
-      {ArticleList.sysUser == null ? (getBonusList != undefined && getBonusList.length != 0) ? <FormItem label="浏览奖励" {...formItemLayout}>
+      {(getBonusList != undefined && getBonusList.length != 0) ? <FormItem label="浏览奖励" {...formItemLayout}>
         {getBonusList.map((item, index) => {
-          if(item.kind == 1){
+          if (item.kind == 1) {
             AllTotal += parseFloat(item.total);
-          }else{
+          } else {
             AllTotal += parseFloat(item.value);
           }
           return (
@@ -1189,10 +1235,10 @@ function ArticleEditor({
         })}
         <Row className={styles.alltotal}>
           <Col>
-            总计发放：{AllTotal && AllTotal.toFixed(3)+'个'}
+            总计发放：{AllTotal && AllTotal.toFixed(3) + '个'}
           </Col>
         </Row>
-      </FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem> : null}
+      </FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem>}
       {(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
         {...formItemLayout}
         label="审核处理"
@@ -1208,7 +1254,7 @@ function ArticleEditor({
             <Radio value="3">不通过</Radio>
 
           </RadioGroup>
-          )}
+        )}
       </FormItem> : null}
       {(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
         {getFieldDecorator('refuseReason', {
@@ -1219,7 +1265,7 @@ function ArticleEditor({
         })(
           <TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={value == 3 ? false : true
           } />
-          )}
+        )}
       </FormItem> : null}
 
       <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
@@ -1227,7 +1273,7 @@ function ArticleEditor({
         {(ArticleList && ArticleList.publishStatus == 0) &&
           <Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
         }
-        <Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft:30,backgroundColor:'orange' }} className={styles.preview}disabled={dis} onClick={previewPage}>预览视频</Button>
+        <Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30, backgroundColor: 'orange' }} className={styles.preview} disabled={dis} onClick={previewPage}>预览视频</Button>
         <RelationModal {...RelationModalProps} />
       </FormItem>
 
