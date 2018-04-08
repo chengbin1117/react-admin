@@ -12,7 +12,7 @@ import {
 } from 'dva/router';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
-import RealnameAwardTable from '../components/User/RealnameAwardTable';
+import ColumnAwardTable from '../components/User/ColumnAwardTable';
 import { timeFormat, GetRequest } from '../services/common';
 import './font.less';
 import styles from './Record.css'
@@ -170,7 +170,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<Button  className = {styles.activeBtn} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
-			<RealnameAwardTable {...InviteNewTableProps}/>
+			<ColumnAwardTable {...InviteNewTableProps}/>
 		</div>
 
 	);
