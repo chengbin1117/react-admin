@@ -1,9 +1,6 @@
 import pathToRegexp from 'path-to-regexp';
 import {
-	getBaseinfoList, deleteBaseinfo, getSysUserList, sysuserSetStatus, resetPassword, getPostList,
-	getPost, getAuthTree, postSetStatus, addSysUser, setKgUser, addBaseinfo, addPost, setInfoStatus,
-	getUserId, getRelUser, unsetKgUser
-
+	appvmList,deleteAppvm,AppDetail,createApp
 } from '../services/app';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
 import {
@@ -15,8 +12,13 @@ export default {
 	namespace: 'app',
 
 	state: {
-		BaseInfoList: [],
+		appList: [], //APP版本列表
 		isSys: 1,
+		currentPage: 1,
+		totalNumber: 0,
+		loading:false,
+		AppDetailItem:{}, //查看版本详情
+		loging:false,
 	},
 
 	subscriptions: {
@@ -27,10 +29,22 @@ export default {
 			history.listen(location => {
 				let match = pathToRegexp('/app/editon').exec(location.pathname);
 				if (match) {
+					const search = GetRequest(location.search);
 					dispatch({
-						type: 'getBaseinfoList',
+						type: 'appvmList',
 						payload: {
-
+							currentPage:search.page,
+							pageSize:25
+						}
+					});
+				}
+				match = pathToRegexp('/app/detail').exec(location.pathname);
+				if (match) {
+					const search = GetRequest(location.search);
+					dispatch({
+						type: 'AppDetail',
+						payload: {
+							id:search.id,
 						}
 					});
 				}
@@ -39,20 +53,21 @@ export default {
 	},
 
 	effects: {
-		*getBaseinfoList({ payload }, { call, put }) {
+		*appvmList({ payload }, { call, put }) {
 			yield put({
 				type: 'showLoading',
 			});
-
-			const { data } = yield call(getBaseinfoList, payload);
-
+			const { data } = yield call(appvmList, payload);
+			console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				yield put({
-					type: 'getBaseinfoListSuccess',
+					type: 'appvmListSuccess',
 					payload: {
-						BaseInfoList: res,
-						loading: false
+					    appList: res.data,
+						loading: false,
+						currentPage:res.currentPage,
+						totalNumber:res.totalNumber
 					}
 				})
 			} else {
@@ -75,6 +90,90 @@ export default {
 				}
 			})
 		},
+		*deleteAppvm({ payload }, { call, put }) {
+			let params ={
+				id:payload.id
+			}
+			const { data } = yield call(deleteAppvm, params);
+			console.log(data)
+			if (data && data.code == 10000) {
+				message.success('删除成功');
+				const search = GetRequest(payload.search);
+				yield put({
+					type: 'appvmList',
+					payload: {
+					    page: search.page,
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+			}
+		},
+		*AppDetail({ payload }, { call, put }) {
+			yield put({
+				type: 'showLoading',
+			});
+			const { data } = yield call(AppDetail, payload);
+			console.log(data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				yield put({
+					type: 'AppDetailSuccess',
+					payload: {
+					    AppDetailItem: res,
+						loading: false,
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+				yield put({
+					type: 'hideLoading',
+				});
+			}
+		},
+		*createApp({ payload }, { call, put }) {
+			yield put({
+				type:"showCofiomLoding"
+			})
+			const { data } = yield call(createApp, payload);
+			console.log(data)
+			if (data && data.code == 10000) {
+				message.success('新建成功');
+				
+				yield put({
+					type: 'hideCofiomLoding',
+				});
+				yield put({
+					type: 'hideModal',
+				});
+				yield put({
+					type: 'appvmList',
+					payload: {
+					    page: 1
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+				yield put({
+					type: 'hideCofiomLoding',
+				});
+			}
+		},
 
 	},
 	reducers: {
@@ -85,12 +184,24 @@ export default {
 			return { ...state, loading: true };
 		},
 		showModal(state, action) {
-			return { ...state, addModal: true };
+			return { ...state, addModal: true,isSys:1 };
 		},
 		hideModal(state, action) {
 			return { ...state, addModal: false };
 		},
+		showCofiomLoding(state, action) {
+			return {...state,loging: true};
+		},
+		hideCofiomLoding(state, action) {
+			return {...state,loging: false};
+		},
 		selectTypeSuccess(state, action) {
+			return { ...state,...action.payload};
+		},
+		appvmListSuccess(state, action) {
+			return { ...state,...action.payload};
+		},
+		AppDetailSuccess(state, action) {
 			return { ...state,...action.payload};
 		},
 	}

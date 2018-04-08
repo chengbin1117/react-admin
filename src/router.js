@@ -88,6 +88,8 @@ import Bond from './routes/Bond';
 
 //APP版本管理
 import AppPage from './routes/AppPage';
+import AppDetail from './routes/AppDetail';
+
 
 function requireAuth(nextState, replace, callback) {
   let token = localStorage.getItem('Kgtoken');
@@ -163,6 +165,7 @@ function RouterConfig({ history }) {
           <Route path="/finance/recordTxb" strict component={RecordTxb} />
           <Route path="/finance/bond" strict component={Bond} />
           <Route path="/app/editon" strict component={AppPage} />
+          <Route path="/app/detail" strict component={AppDetail} />
       </LayoutContainer>
       </Switch>
     </Router>

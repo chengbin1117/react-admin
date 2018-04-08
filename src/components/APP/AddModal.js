@@ -11,6 +11,7 @@ import {
 	Button,
 	Icon
 } from 'antd';
+import {apkUrl} from '../../services/common'
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const TextArea = Input.TextArea;
@@ -32,6 +33,7 @@ const AdduserModal = ({
 	onCancel,
 	isSys,
 	checkSysteme,
+	loging,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -72,10 +74,11 @@ const AdduserModal = ({
 		cancelText:"取消",
 		afterClose:afterClose,
 		width:"50%",
+		confirmLoading:loging
 
 	};
 	const props = {
-		action: "1",
+		action: apkUrl,
 		multiple: true,
 		name: "file",
 		accept: '.apk',
@@ -84,15 +87,48 @@ const AdduserModal = ({
 	// 	var value =e.target.value;
 	// 	isSys = parseInt(value)
 	// }
+	function normFile(info){
+		console.log('Upload event:', info);
+			let fileList = info.fileList;
+			// 1. Limit the number of uploaded files
+			//    Only to show two recent uploaded files, and old ones will be replaced by the new
+			fileList = fileList.slice(-1);
+			// dispatch({
+			// type: "content/fixdisabeld",
+			// })
+			if (info.file.status == "done") {
+			if (info.file.response.errorCode == 10000) {
+				fileList = fileList.map((file) => {
+				if (file.response) {
+					// Component will show file.url as link
+					file.url = file.response.data[0].filePath
+				}
+				// var BTN = document.getElementById("BTN");
+				// BTN.innerText = '重新上传';
+				//icoType = "upload";
+				// dispatch({
+				// 	type: "content/falsedisabeld",
+				// })
+				return file;
+				});
+			}
+			} else if (info.file.status == undefined) {
+
+			// dispatch({
+			// 	type: "content/falsedisabeld",
+			// })
+			return false
+			}
+        return fileList;
+	}
 	return (
 		<Modal {...modalOpts}>
 	        <Form>
 				<FormItem
 					label="版本号 "
 					{...formItemLayout}
-					hasFeedback
 				>
-					{getFieldDecorator('username', {
+					{getFieldDecorator('versionNum', {
 						initialValue: '',
 						rules: [
 							{required: true, message: '请填写版本号'},
@@ -105,31 +141,30 @@ const AdduserModal = ({
 				<FormItem
 					label="更新提示语(内容) "
 					{...formItemLayout}
-					hasFeedback
 				>
-					{getFieldDecorator('text', {
+					{getFieldDecorator('prompt', {
 						initialValue: '',
 						rules: [
 							{required: true, message: '请填写更新提示语'},
 							{type: "string",max:1000,min:1,message: '1-1000个文字，格式不限'},
 						],
 					})(
-						<TextArea style={{minHeight:100}}/>
+						<TextArea style={{minHeight:150}}/>
 					)}
 				</FormItem>
 				<FormItem
 					label="是否强制更新"
 					{...formItemLayout}
 				>
-					{getFieldDecorator('update', {
-						initialValue: '1',
+					{getFieldDecorator('forced', {
+						initialValue: '0',
 						rules: [
 							{required: true, message: '请选择'}
 						],
 					})(
 						<RadioGroup>
 							<Radio value="1">是</Radio>
-							<Radio value="2">否</Radio>
+							<Radio value="0">否</Radio>
 						</RadioGroup>
 					)}
 				</FormItem>
@@ -138,7 +173,7 @@ const AdduserModal = ({
 					{...formItemLayout}
 					
 				>
-					{getFieldDecorator('system', {
+					{getFieldDecorator('systemType', {
 						initialValue: '1',
 						rules: [
 							{required: true, message: '请选择'}
@@ -155,9 +190,10 @@ const AdduserModal = ({
 					{...formItemLayout}
 				>
 					{getFieldDecorator('upload', {
-						initialValue: '1',
+						valuePropName: 'fileList',
+                        getValueFromEvent: normFile,
 						rules: [
-							{required: true, message: '请选择'}
+							{required: true, message: '请上传APK',type: "array"}
 						],
 					})(
 						<Upload {...props} listType="text" style={{ width: '50%' }}>
@@ -171,13 +207,13 @@ const AdduserModal = ({
 					{...formItemLayout}
 					hasFeedback
 				>
-					{getFieldDecorator('url', {
+					{getFieldDecorator('downloadUrl', {
 						initialValue: '',
 						rules: [
 							{required: true, message: '请输入下载地址'}
 						],
 					})(
-						<Input />
+						<Input placeholder="请输入下载地址"/>
 					)}
 				</FormItem>}
 			</Form>

@@ -247,7 +247,17 @@ class LayoutContainer extends React.Component {
           second= "保证金记录";
           third="";
           four = "";
-      }
+      }else if(path =="/app/editon"){
+        first= "首页";
+        second= "APP版本管理";
+        third="";
+        four = "";
+        }else if(path =="/app/detail"){
+            first= "首页";
+            second= "APP版本管理";
+            third="查看版本详情";
+            four = "";
+        }
 
     return (
       <Layout style={{ minHeight: '100vh' }}>

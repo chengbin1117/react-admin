@@ -12,7 +12,7 @@ export default {
 	state: {
 		loading: false,
 		deskUserId: '',
-		currentPage: 0,
+		currentPage: 1,
 		totalNumber: 0,
 		ArticleBonusList: [],//发文奖励列表
 		currentItem:{},
@@ -29,7 +29,7 @@ export default {
 			history.listen(location => {
 				let match = pathToRegexp('/user/writingAward').exec(location.pathname);
 				const search = GetRequest(location.search);
-				console.log(search.publisher)
+				//console.log(search.publisher)
 				if (match) {
 					dispatch({
 						type: 'publishArticleBonus',

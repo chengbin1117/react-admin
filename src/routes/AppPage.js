@@ -13,9 +13,10 @@ import Layout from '../components/Layout';
 import styles from './IndexPage.css';
 import AppTable from '../components/APP/AppTable';
 import AddModal from '../components/APP/AddModal';
+import {uploadUrl} from '../services/common'
 function AppPage({ location, dispatch, app }) {
 	
-	const {addModal,isSys} = app;
+	const {addModal,isSys,appList,totalNumber,currentPage,loading,loging} = app;
 	//新建版本
 	function AddModalBox(){
 		dispatch({
@@ -25,8 +26,24 @@ function AppPage({ location, dispatch, app }) {
 	const AddModalProps = {
 		visible:addModal,
 		isSys:isSys,
-		onOk(){
-
+		loging:loging,
+		onOk(data){
+			let downloadUrl = "";
+			if(data.systemType == "1"){
+				downloadUrl = uploadUrl+data.upload[0].url
+			}else{
+				downloadUrl= data.downloadUrl
+			}
+			dispatch({
+				type:"app/createApp",
+				payload:{
+					versionNum:data.versionNum,
+					prompt:data.prompt,
+					forced:parseInt(data.forced),
+					systemType:parseInt(data.systemType),
+					downloadUrl:downloadUrl,
+				}
+			})
 		},
 		onCancel(){
 			dispatch({
@@ -46,7 +63,25 @@ function AppPage({ location, dispatch, app }) {
 	}
 	//APP版本管理列表
 	const AppTableProps ={
-		
+		data:appList,
+		loading:loading,
+		currentPage:currentPage,
+		total:totalNumber,
+		handelchande(page){
+			dispatch(routerRedux.push('/app/editon?page='+page))
+		},
+		deleteItem(record){
+			dispatch({
+				type:"app/deleteAppvm",
+				payload:{
+					id:record.id,
+					search:location.search
+				}
+			})
+		},
+		lookOver(record){
+			dispatch(routerRedux.push('/app/detail?id='+record.id))
+		}
 	}
 	return (
 		<div>
