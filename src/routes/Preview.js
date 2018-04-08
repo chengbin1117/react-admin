@@ -31,6 +31,7 @@ function ArticlePreview({location,dispatch,content,router,}) {
 	var previewText =localStorage.getItem("previewText");
 	var previewartic =localStorage.getItem("previewartic");
 	var previewdec =localStorage.getItem("previewdec");
+
 	//var H = document.body.clientHeight + 'px'
 	//console.log(previewTitle,previewartic)
 	return (
@@ -103,6 +104,11 @@ function ArticlePreview({location,dispatch,content,router,}) {
 					<div className={styles.article} dangerouslySetInnerHTML={{__html: (preList&&preList.articleText)}}></div>
 					</div>
 					} 
+					
+					{preList&&preList.articleType==2?<div className={styles.articleSource}>
+					<span>本文来源：{preList.articleSource}</span>
+					<a target = "_blank" href={preList.articleLink} className={styles.articlwe}>阅读原文</a>
+					</div>:null}
 		            <div className = {styles.line}>
 		            {(preList&&preList.tags!=undefined)?preList.tags.map((t,index)=>{
 		            	return(

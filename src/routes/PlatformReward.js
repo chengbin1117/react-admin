@@ -158,9 +158,13 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//搜索
 	function handlsearch(data) {
+		if(data.userName==""||data.userName==undefined){
+			data.userName = undefined;
+		}else{
+			data.userName = Base64.encode(data.userName)
+		}
 		dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + data.userId +
-				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole +
-				"&userLevel=" + data.userLevel + "&bonusStatus=" + data.bonusStatus +
+				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole + "&bonusStatus=" + data.bonusStatus +
 				"&inviteStatus=" + data.inviteStatus +
 				"&minValue=" + data.minValue +
 				"&maxValue=" + data.maxValue 
@@ -185,7 +189,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			const data = GetRequest(location.search)
 			dispatch(routerRedux.push('/user/platformReward?page='+ page + "&userId=" + data.userId +
 				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole +
-				"&userLevel=" + data.userLevel + "&bonusStatus=" + data.bonusStatus +
+			    "&bonusStatus=" + data.bonusStatus +
 				"&inviteStatus=" + data.inviteStatus +
 				"&minValue=" + data.minValue +
 				"&maxValue=" + data.maxValue 

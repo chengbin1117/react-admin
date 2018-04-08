@@ -487,6 +487,14 @@
     width:100%;
     border-radius: 5px;
 }
+.articleSource{
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+.articlwe{
+  display: inline-block;
+  margin-left: 30px;
+}
 @media only screen and (max-width:1800px){
   .login_register_modal .el-dialog{
       width:16%!important;
