@@ -3,7 +3,7 @@ import { routerRedux, hashHistory } from 'dva/router';
 import {
   login, getUserList, getUserInfo, auditUser, setHotUser, lockUser, siteinfoservice, getRoleList, roleSetStatus, getRoleProfile, loginSet,
   userInfoSet, getSysMenu, getUserCert, auditUserCert, getSiteInfo, logOut,getInviteBonus,freezeUser,getInviteUserList,checkUser,getParentUserInfo,
-  getSubUserList,unBindUser
+  getSubUserList,unBindUser,realnameBonus,userColumnBonus
 } from '../services/user';
 import { formatDate, GetRequest } from '../services/common'
 import {
@@ -33,6 +33,9 @@ export default {
     ParentUserInfo:{},  //师傅
     SubUserList:[],     //徒弟列表
     total:0,     //总数
+    RealnameAwardList:[],  //实名认证奖励
+    ColumnBonusList:[],  //专栏作者奖励
+    confirmLoading:false,
   },
   subscriptions: {
     setup({
@@ -191,6 +194,39 @@ export default {
             type: 'getParentUserInfo',
             payload: {
               userId:search.inviteUserId != "undefined" ? search.inviteUserId : null,
+            }
+          });
+        }
+        match = pathToRegexp('/user/realnameAward').exec(location.pathname);
+        if (match) {
+          const search = GetRequest(location.search);
+          ///console.log(location.search)
+          dispatch({
+            type: 'realnameBonus',
+            payload: {
+              currentPage: search.page,
+              pageSize:25,
+              userId: search.userId != "undefined" ? search.userId : null,
+              userName:search.userName != "undefined" ? search.userName : null,
+              mobile:search.mobile != "undefined" ? search.mobile : null,
+              userRole:search.userRole != "undefined" ? parseInt(search.userRole) : null,
+            }
+          });
+        }
+        //专栏奖励
+        match = pathToRegexp('/user/columnAward').exec(location.pathname);
+        if (match) {
+          const search = GetRequest(location.search);
+          ///console.log(location.search)
+          dispatch({
+            type: 'userColumnBonus',
+            payload: {
+              currentPage: search.page,
+              pageSize:25,
+              userId: search.userId != "undefined" ? search.userId : null,
+              userName:search.userName != "undefined" ? search.userName : null,
+              mobile:search.mobile != "undefined" ? search.mobile : null,
+              userRole:search.userRole != "undefined" ? parseInt(search.userRole) : null,
             }
           });
         }
@@ -822,7 +858,9 @@ export default {
         }
       }
       
-
+      yield put({
+        type:"showSubmitLoading",
+      })
       const { data } = yield call(freezeUser, params);
 
       if (data && data.code == 10000) {
@@ -831,6 +869,9 @@ export default {
           }else{
             message.success("解冻成功");
           }
+          yield put({
+            type:"hideSubmitLoading",
+          })
           yield put({
             type:"hideFrozenModal",
             payload:{
@@ -854,6 +895,9 @@ export default {
             }
           })
       } else {
+        yield put({
+          type:"hideSubmitLoading",
+        })
         if (data.code == 10004 || data.code == 10011) {
           message.error(data.message, 2);
           yield put(routerRedux.push('/'));
@@ -879,8 +923,9 @@ export default {
           bonusFreezeReason:payload.bonusFreezeReason
         }
       }
-      
-
+	  yield put({
+        type:"showSubmitLoading",
+      })
       const { data } = yield call(freezeUser, params);
 
       if (data && data.code == 10000) {
@@ -888,7 +933,10 @@ export default {
             message.success("冻结成功");
           }else{
             message.success("解冻成功");
-          }
+		  }
+		  yield put({
+            type:"hideSubmitLoading",
+          })
          // const search =GetRequest(payload.search)
           yield put({
             type:"getUserInfo",
@@ -897,6 +945,9 @@ export default {
             }
           })
       } else {
+		yield put({
+            type:"hideSubmitLoading",
+          })
         if (data.code == 10004 || data.code == 10011) {
           message.error(data.message, 2);
           yield put(routerRedux.push('/'));
@@ -1037,6 +1088,66 @@ export default {
         }
       }
     },
+    *realnameBonus({ payload }, { call, put }) {
+      yield put({
+        type: 'showLoading',
+      });
+      const { data } = yield call(realnameBonus, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        var res = data.responseBody;
+        //console.log(res)
+        yield put({
+          type: 'RealnameAwardListSuccess',
+          payload: {
+            RealnameAwardList: res.data,
+            loading: false,
+            totalNumber:res.totalNumber,
+            currentPage:res.currentPage
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
+      }
+    },
+    *userColumnBonus({ payload }, { call, put }) {
+      yield put({
+        type: 'showLoading',
+      });
+      const { data } = yield call(userColumnBonus, payload);
+      //console.log("11",data)
+      if (data && data.code == 10000) {
+        var res = data.responseBody;
+        //console.log(res)
+        yield put({
+          type: 'ColumnBonusListSuccess',
+          payload: {
+            ColumnBonusList: res.data,
+            loading: false,
+            totalNumber:res.totalNumber,
+            currentPage:res.currentPage
+          }
+        });
+      } else {
+        if (data.code == 10004 || data.code == 10011) {
+          message.error(data.message, 2);
+          yield put(routerRedux.push('/'));
+        } else {
+          message.error(data.message, 2);
+        }
+        yield put({
+          type: 'hideLoading',
+        });
+      }
+    },
   },
   reducers: {
     // showLogging(state) {
@@ -1071,6 +1182,14 @@ export default {
       return {
         ...state,
         ...action.payload
+      };
+    },
+    RealnameAwardListSuccess(state, action) { 
+      return {...state,...action.payload
+      };
+    },
+    ColumnBonusListSuccess(state, action) { 
+      return {...state,...action.payload
       };
     },
     getInviteBonusSuccess(state, action) {
@@ -1243,6 +1362,21 @@ export default {
         ...action.payload
       };
     },
+    showSubmitLoading(state, action) {
+			return {
+				...state,
+				...action.payload,
+				confirmLoading: true
+			};
+		},
+		hideSubmitLoading(state, action) {
+			return {
+				...state,
+				...action.payload,
+				confirmLoading: false
+			};
+		},
+
   },
 
 }

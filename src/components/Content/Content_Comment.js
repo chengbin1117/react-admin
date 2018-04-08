@@ -44,6 +44,10 @@ function Content_Comment({ data, opinionSetModal, changepage, showSet, confirm, 
 		dataIndex: 'displayStatusDisplay',
 		key: 'displayStatusDisplay',
 	}, {
+		title: '评论人',
+		dataIndex: 'userName',
+		key: 'userName',
+	}, {
 		title: '操作',
 		dataIndex: '3address',
 		key: '3address',

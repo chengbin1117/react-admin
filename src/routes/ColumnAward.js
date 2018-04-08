@@ -12,8 +12,7 @@ import {
 } from 'dva/router';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
-import InviteNewTable from '../components/User/InviteNewTable';
-import FrozenModal from '../components/User/FrozenModal';
+import RealnameAwardTable from '../components/User/RealnameAwardTable';
 import { timeFormat, GetRequest } from '../services/common';
 import './font.less';
 import styles from './Record.css'
@@ -26,14 +25,13 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({ location, dispatch, user, router, }) {
-	const { FrozenVisible,loading, totalNumber, currentPage,InviteBonusList,currentItem,confirmLoading} = user;
+	const {loading, totalNumber, currentPage,ColumnBonusList,currentItem} = user;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	
 	function getFields(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
@@ -45,7 +43,6 @@ function UserAdmin({ location, dispatch, user, router, }) {
 								{ required: false, pattern: /^[0-9]*$/, message: "用户ID只能输入数字" }
 							]
 						})(
-
 							<Input placeholder="请输入用户Id" />
 							)}
 					</FormItem>
@@ -81,49 +78,6 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						)}
 					</FormItem>
 				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='奖励状态'>
-						{getFieldDecorator('bonusStatus')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="0">冻结</Option>
-								<Option value="1">可用</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='邀新状态'>
-						{getFieldDecorator('inviteStatus')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="0">不需要</Option>
-								<Option value="1">需审查</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				 <Col span={8} style = {{display:'block'}}>
-				  <Col span={5} className={styles.rewNum}>
-				  	邀新数量:
-				  </Col>
-		          <Col span={8}>
-		          	<FormItem>
-		            {getFieldDecorator('minValue')(
-		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
-		              	
-		            )}
-		          </FormItem>
-		          </Col>
-		          <Col span={2} style={{ textAlign: 'center',lineHeight:30+"px"}}>
-		          	<span >~</span>
-		          </Col>
-		          <Col span={8}>
-		          		<FormItem {...formItemLayout}>
-				            {getFieldDecorator('maxValue')(
-				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
-				            )}
-				          </FormItem>
-		         </Col>
-		        </Col>
 			</div>
 		);
 		return children;
@@ -158,83 +112,26 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//搜索
 	function handlsearch(data) {
-		dispatch(routerRedux.push('/user/platformReward?page=1' + "&userId=" + data.userId +
-				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole +
-				"&userLevel=" + data.userLevel + "&bonusStatus=" + data.bonusStatus +
-				"&inviteStatus=" + data.inviteStatus +
-				"&minValue=" + data.minValue +
-				"&maxValue=" + data.maxValue 
+		dispatch(routerRedux.push('/user/columnAward?page=1' + "&userId=" + data.userId +
+				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole
 		))
 	}
 
 	//奖励列表
 	const InviteNewTableProps = {
-		data:InviteBonusList,
+		data:ColumnBonusList,
 		loading:loading,
 		total:totalNumber,
 		currentPage:currentPage,
-		showModal(record){
-			dispatch({
-				type:"user/showFrozenModal",
-				payload:{
-					currentItem:record
-				}
-			})
-		},
 		handelchande(page){
 			const data = GetRequest(location.search)
-			dispatch(routerRedux.push('/user/platformReward?page='+ page + "&userId=" + data.userId +
-				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole +
-				"&userLevel=" + data.userLevel + "&bonusStatus=" + data.bonusStatus +
-				"&inviteStatus=" + data.inviteStatus +
-				"&minValue=" + data.minValue +
-				"&maxValue=" + data.maxValue 
+			dispatch(routerRedux.push('/user/columnAward?page='+ page + "&userId=" + data.userId +
+				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole
 		    ))
 		},
 		getUserData(record){
 			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
 
-		},
-		InviteUserListData(record){
-			dispatch(routerRedux.push('/user/invite?page=1'+"&inviteUserId="+record.userId))
-		},
-		confirm(data){
-			dispatch({
-				type:"user/freezeUser",
-				payload:{
-					auditUserId:merId,
-					userId:data.userId,
-					bonusStatus:1,
-					search:location.search
-				}	
-			})
-		}
-	}
-
-	//冻结模态框
-	const FrozenModalProps = {
-		visible:FrozenVisible,
-		item:currentItem,
-		confirmLoading:confirmLoading,
-		onCancel(){
-			dispatch({
-				type:"user/hideFrozenModal",
-				payload:{
-					currentItem:{}
-				}
-			})
-		},
-		onOk(data){
-			dispatch({
-				type:"user/freezeUser",
-				payload:{
-					auditUserId:merId,
-					userId:data.userId,
-					bonusStatus:0,
-					bonusFreezeReason:data.bonusFreezeReason,
-					search:location.search
-				}	
-			})
 		}
 	}
 	//奖励说明
@@ -264,17 +161,16 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	return (
 		<div>
 			<div className = {styles.changeAward}>
-					<Link  className = {styles.activeAward} to = '/user/platformReward?page=1'>邀新奖励</Link>
-					<Link   to = '/user/realnameAward?page=1'>实名认证奖励</Link>
-					<Link   to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
-					<Link   to = '/user/writingAward?page=1'>发文奖励</Link>
-					{/* <Link   to = '/user/platformReward?page=1'>平台阅读奖励</Link>
-					<Link   to = '/user/platformReward?page=1'>分享奖励</Link> */}
+					<Link  to = '/user/platformReward?page=1'>邀新奖励</Link>
+					<Link  to = '/user/realnameAward?page=1'>实名认证奖励</Link>
+					<Link  className = {styles.activeAward} to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
+					<Link  className = {styles.activeColor} to = '/user/writingAward?page=1'>发文奖励</Link>
+					{/* <Link  className = {styles.activeColor} to = '/user/columnAward?page=1'>平台阅读奖励</Link>
+					<Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>分享奖励</Link> */}
 					<Button  className = {styles.activeBtn} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
-			<InviteNewTable {...InviteNewTableProps}/>
-			<FrozenModal {...FrozenModalProps}/>
+			<RealnameAwardTable {...InviteNewTableProps}/>
 		</div>
 
 	);

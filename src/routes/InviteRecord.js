@@ -14,6 +14,7 @@ import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
 import InviteTable from '../components/User/InviteTable';
 import { timeFormat, GetRequest } from '../services/common';
+import FrozenModal from '../components/User/FrozenModal';
 import { Form, Row, Col, Input, Button,Card,DatePicker, Icon, Table, Pagination, Modal, Radio, Select, message } from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
@@ -29,12 +30,38 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		dispatch(routerRedux.push('/'))
 	}
 
-	const { InviteBonusList,InviteUserList,currentPage,loading,total,userInfo } =user;
+	const { InviteBonusList,InviteUserList,currentPage,loading,total,userInfo,FrozenVisible,currentItem,confirmLoading } =user;
 	let userData = {};
 	if(InviteBonusList.length>0){
 		userData=InviteBonusList[0]
 	}
 	const urlSelect = GetRequest(location.search);
+	//冻结模态框
+	const FrozenModalProps = {
+		visible:FrozenVisible,
+		item:currentItem,
+		confirmLoading:confirmLoading,
+		onCancel(){
+			dispatch({
+				type:"user/hideFrozenModal",
+				payload:{
+					currentItem:{}
+				}
+			})
+		},
+		onOk(data){
+			dispatch({
+				type:"user/freezeUserData",
+				payload:{
+					auditUserId:merId,
+					userId:data.userId,
+					bonusStatus:0,
+					bonusFreezeReason:data.bonusFreezeReason,
+					search:location.search
+				}	
+			})
+		}
+	}
 	function getFields(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
@@ -46,7 +73,6 @@ function UserAdmin({ location, dispatch, user, router, }) {
 								{ required: false, pattern: /^[0-9]*$/, message: "用户ID只能输入数字" }
 							]
 						})(
-
 							<Input placeholder="请输入用户Id" />
 							)}
 					</FormItem>
@@ -149,8 +175,6 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				"&userName=" + values.userName + "&userMobile=" + values.userMobile + "&userRole=" + values.userRole +
 				"&createDateStart=" + values.createDateStart+
 				"&createDateEnd=" + values.createDateEnd
-
-
 			))
 		},
 		userData(record){
@@ -175,21 +199,27 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//冻结
 	function frozen(data){
-		confirm({
-			title:"确认冻结吗？",
-			onOk(){
-				dispatch({
-					type:"user/freezeUserData",
-					payload:{
-						auditUserId:merId,
-						userId:data.userId,
-						bonusStatus:0,
-						bonusFreezeReason:data.bonusFreezeReason,
-						search:location.search
-					}	
-				})
+		dispatch({
+			type:"user/showFrozenModal",
+			payload:{
+				currentItem:data
 			}
-	})
+		})
+		// confirm({
+		// 	title:"确认冻结吗？",
+		// 	onOk(){
+		// 		dispatch({
+		// 			type:"user/freezeUserData",
+		// 			payload:{
+		// 				auditUserId:merId,
+		// 				userId:data.userId,
+		// 				bonusStatus:0,
+		// 				bonusFreezeReason:data.bonusFreezeReason,
+		// 				search:location.search
+		// 			}	
+		// 		})
+		// 	}
+	    // })
 		
 	}
 	return (
@@ -210,6 +240,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		>
 			<WrappedAdvancedSearchForm getFields={getFields} handlsearch={handlsearch} getFieldsFirst={getFieldsFirst}/>
 			<InviteTable {...InviteTableProps}/>
+			<FrozenModal {...FrozenModalProps}/>
 		</Card>
 
 	);

@@ -209,13 +209,6 @@ function UserRealName({location,dispatch,user,router,}) {
 		          </FormItem>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email"placeholder="请输入邮箱" />
-		            )}
-		          </FormItem>
-		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
 		          <FormItem {...formItemLayout} label='手机号'>
 		            {getFieldDecorator('mobile')(
 		              <Input type="phone" placeholder="请输入手机号" />
@@ -257,10 +250,10 @@ function UserRealName({location,dispatch,user,router,}) {
 		            )}
 		          </FormItem>
 		        </Col>
-		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email"placeholder="请输入邮箱" />
+						<Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile')(
+		              <Input type="phone" placeholder="请输入手机号" />
 		            )}
 		          </FormItem>
 		        </Col>

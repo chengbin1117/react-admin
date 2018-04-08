@@ -117,6 +117,7 @@ const Recharge = ({
 			}
 	return (
 		<div className = {style_common.contentDiv}>
+				<div>当前用户充值总数：{total}</div>
 	      <div className={style_search.search_result}>
 	      	<TableList />
 	      </div>

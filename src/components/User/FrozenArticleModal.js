@@ -49,7 +49,7 @@ const RealsModal = ({
 			}
 
 			const data = {
-				userId:item.userId,
+				articleId:item.articleId,
 				...getFieldsValue()
 
 			};

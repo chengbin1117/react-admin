@@ -93,18 +93,19 @@ function ContentArticle({location,dispatch,router,content}) {
 		},
 		changepage(page){
 			 const search =GetRequest(location.search);
-			 console.log(search)
+			
 			 if(search.articleTitle=="undefined"||search.articleTitle==undefined){
 			 	dispatch(routerRedux.push('/content/content_article?page='+page+
 			 	"&articleId="+search.articleId+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&displayStatus="+search.displayStatus+"&secondColumn="+search.secondColumn
-				+'&orderByClause='+search.orderByClause
+				+'&orderByClause='+search.orderByClause+"&createUser="+search.createUser
 			 	))
 			 }else{
 			 	dispatch(routerRedux.push('/content/content_article?page='+page+
 			 	"&articleId="+search.articleId
 				+"&articleTitle="+search.articleTitle+"&articleTag="+search.articleTag+"&publishStatus="+search.publishStatus+
 				"&displayStatus="+search.displayStatus+"&columnId="+search.columnId+"&secondColumn="+search.secondColumn+'&orderByClause='+search.orderByClause
+				+"&createUser="+search.createUser
 			 	))
 			 }
 			 
@@ -312,6 +313,13 @@ function ContentArticle({location,dispatch,router,content}) {
 			            )}
 			          </FormItem>
 			        </Col>
+							<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='发布人' >
+			            {getFieldDecorator('createUser')(
+										<Input placeholder="请输入发布人" />
+			            )}
+			          </FormItem>
+			        </Col>
 		        </div>
 	      	);
 	    return children;
@@ -343,16 +351,23 @@ function ContentArticle({location,dispatch,router,content}) {
 	    return children;
 	}
 	function handlsearch(values){
+			if(values.createUser==""||values.createUser==undefined){
+				values.createUser = undefined;
+			}else{
+				values.createUser = Base64.encode(values.createUser)
+			}
         if(values.title!=undefined){
           var title =Base64.encode(values.title)
             	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+"&articleTitle="+title+
 				      "&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
-				      "&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+							"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)+
+							"&createUser="+values.createUser
 				  ))	
             }else{
             	dispatch(routerRedux.push('/content/content_article?page=1'+"&articleId="+values.Id+
-				"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
-				"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)
+			       	"&articleTag="+values.tags+"&publishStatus="+values.status+"&displayStatus="+values.displayStatus+
+							"&columnId="+(values.cloumn!=undefined?parseInt(values.cloumn[0]):null)+"&secondColumn="+(values.cloumn!=undefined?parseInt(values.cloumn[1]):null)+
+							"&createUser="+values.createUser
 				))
         }		            
 	}
