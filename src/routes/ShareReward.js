@@ -12,7 +12,7 @@ import {
 } from 'dva/router';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
-import RealnameAwardTable from '../components/User/RealnameAwardTable';
+import ShareAwardTable from '../components/User/ShareAwardTable';
 import { timeFormat, GetRequest } from '../services/common';
 import './font.less';
 import styles from './Record.css'
@@ -25,7 +25,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({ location, dispatch, user, router, }) {
-	const {loading, totalNumber, currentPage,ColumnBonusList,currentItem} = user;
+	const {loading, totalNumber, currentPage,RealnameAwardList,currentItem} = user;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
@@ -112,20 +112,20 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//搜索
 	function handlsearch(data) {
-		dispatch(routerRedux.push('/user/columnAward?page=1' + "&userId=" + data.userId +
+		dispatch(routerRedux.push('/user/realnameAward?page=1' + "&userId=" + data.userId +
 				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole
 		))
 	}
 
 	//奖励列表
-	const InviteNewTableProps = {
-		data:ColumnBonusList,
+	const ShareAwardTableProps = {
+		data:RealnameAwardList,
 		loading:loading,
 		total:totalNumber,
 		currentPage:currentPage,
 		handelchande(page){
 			const data = GetRequest(location.search)
-			dispatch(routerRedux.push('/user/columnAward?page='+ page + "&userId=" + data.userId +
+			dispatch(routerRedux.push('/user/realnameAward?page='+ page + "&userId=" + data.userId +
 				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole
 		    ))
 		},
@@ -134,18 +134,19 @@ function UserAdmin({ location, dispatch, user, router, }) {
 
 		}
 	}
+
 	return (
 		<div>
 			<div className = {styles.changeAward}>
-					<Link  to = '/user/platformReward?page=1'>邀新奖励</Link>
-					<Link  to = '/user/realnameAward?page=1'>实名认证奖励</Link>
-					<Link  className = {styles.activeAward} to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
+					<Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>邀新奖励</Link>
+					<Link  className = {styles.activeAward} to = '/user/realnameAward?page=1'>实名认证奖励</Link>
+					<Link  to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
 					<Link  className = {styles.activeColor} to = '/user/writingAward?page=1'>发文奖励</Link>
-					{/* <Link  className = {styles.activeColor} to = '/user/columnAward?page=1'>平台阅读奖励</Link> */}
-					<Link  className = {styles.activeColor} to = '/user/shareReward?page=1'>分享奖励</Link>
+					{/* <Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>平台阅读奖励</Link> */}
+					<Link  className = {styles.activeAward} to = '/user/shareReward?page=1'>分享奖励</Link>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
-			<RealnameAwardTable {...InviteNewTableProps}/>
+			<ShareAwardTable {...ShareAwardTableProps}/>
 		</div>
 
 	);

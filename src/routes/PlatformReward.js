@@ -268,11 +268,11 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<Link   to = '/user/realnameAward?page=1'>实名认证奖励</Link>
 					<Link   to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
 					<Link   to = '/user/writingAward?page=1'>发文奖励</Link>
-					{/* <Link   to = '/user/platformReward?page=1'>平台阅读奖励</Link>
-					<Link   to = '/user/platformReward?page=1'>分享奖励</Link> */}
-					<Button  className = {styles.activeBtn} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
+					{/* <Link   to = '/user/platformReward?page=1'>平台阅读奖励</Link> */}
+					<Link   to = '/user/shareReward?page=1'>分享奖励</Link>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
+			<Button  className = {styles.activeBtn} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
 			<InviteNewTable {...InviteNewTableProps}/>
 			<FrozenModal {...FrozenModalProps}/>
 		</div>

@@ -32,6 +32,8 @@ import PlatformReward from './routes/PlatformReward'; //邀新奖励
 import RealNameAward from './routes/RealNameAward'; //实名认证奖励
 import ColumnAward from './routes/ColumnAward'; //成为专栏作家奖励
 import WritingAward from './routes/WritingAward'; //发文奖励
+import ReadingReward from './routes/ReadingReward'; //阅读奖励
+import ShareReward from './routes/ShareReward'; //分享奖励
 
 //日志
 import Log from './routes/Log';
@@ -127,6 +129,7 @@ function RouterConfig({ history }) {
           <Route path="/user/realnameAward" exact component={RealNameAward}/>
           <Route path="/user/columnAward" exact component={ColumnAward}/>
           <Route path="/user/writingAward" exact component={WritingAward}/>
+          <Route path="/user/shareReward" exact component={ShareReward}/>
           <Route path="/user/user_login" exact component={UserLogin} />
           <Route path="/user/user_info" exact component={UserInfo} />
           <Route path="/user/realName" exact component={realName} />

@@ -30,6 +30,8 @@ const AdduserModal = ({
 	PostList,
 	onOk,
 	onCancel,
+	isSys,
+	checkSysteme,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -38,7 +40,7 @@ const AdduserModal = ({
 		resetFields,
 	},
 }) => {
-	let isSys = 1;
+	//console.log("isSys",isSys)
 	function handleOk() {
 		validateFields((errors) => {
 			if (errors) {
@@ -78,10 +80,10 @@ const AdduserModal = ({
 		name: "file",
 		accept: '.apk',
 	  };
-	function checkSysteme(e){
-		var value =e.target.value;
-		isSys = parseInt(value)
-	}
+	// function checkSysteme(e){
+	// 	var value =e.target.value;
+	// 	isSys = parseInt(value)
+	// }
 	return (
 		<Modal {...modalOpts}>
 	        <Form>
@@ -112,7 +114,7 @@ const AdduserModal = ({
 							{type: "string",max:1000,min:1,message: '1-1000个文字，格式不限'},
 						],
 					})(
-						<TextArea />
+						<TextArea style={{minHeight:100}}/>
 					)}
 				</FormItem>
 				<FormItem
@@ -149,7 +151,7 @@ const AdduserModal = ({
 					)}
 				</FormItem>
 				{isSys == 1?<FormItem
-					label="上传"
+					label="上传APK"
 					{...formItemLayout}
 				>
 					{getFieldDecorator('upload', {

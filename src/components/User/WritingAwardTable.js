@@ -83,6 +83,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 		}, {
 			title: '奖励状态',
 			dataIndex: 'publishBonusStatus',
+			width:100,
 			render: val => <span>{val == 0 && <Badge status="error"text="冻结"/>}{val == 1 && <Badge status="success" text="已发放" />}{val == 2 &&<Badge status="default" text="未发放" />}</span>,
 		},
 		{

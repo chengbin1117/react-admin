@@ -364,30 +364,6 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			})
 		}
 	}
-	//奖励说明
-	function RweInfo(){
-		Modal.info({
-			title:"奖励说明",
-			width:"600",
-			content: (
-		      <div>
-		        <h2>规则：</h2>
-		        <h4>1.奖励兑换</h4>
-		        <p>有效邀请数>=10即可领取1TV</p>
-		        <p>有效邀请数>=30即可领取5TV</p>
-		        <p>有效邀请数>=50即可领取15TV</p>
-		        <p>有效邀请数>=80即可领取30TV</p>
-		        <p>2.领取奖励后，将扣除相应的邀请数值，如：成功邀请12人，选择领取奖励将获得10人对应的1TV
-                奖励并扣除10人成功邀请数，剩余2人。</p>
-		        <p>3.什么是有效邀请：好友通过您的邀请链接或者邀请码注册并登录，算为一次有效邀请。</p>
-		        <p>4.成功邀请的新用户将自动成为您的徒弟。</p>
-		        <p>5.邀请好友仅对于邀请新用户，老用户无效。</p>
-		        <p>6.邀请真实用户才会增加有效次数。</p>
-		        <p>7.活动最终解释权归千氪财经所有。</p>
-		      </div>
-		    ),
-		})
-	}
 	//冻结
 	const FrozenModalProps = {
 		visible:FrozenVisible,
@@ -474,9 +450,8 @@ function UserAdmin({ location, dispatch, award, content, }) {
 					<Link  to = '/user/realnameAward?page=1'>实名认证奖励</Link>
 					<Link  to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
 					<Link  className = {styles.activeAward} to = '/user/writingAward?page=1'>发文奖励</Link>
-					{/* <Link  to = '/user/platformReward?page=1'>平台阅读奖励</Link>
-					<Link  to = '/user/platformReward?page=1'>分享奖励</Link> */}
-					<Button  className = {styles.activeBtn} onClick={RweInfo} size="large" icon="question-circle-o">奖励说明</Button>
+					{/* <Link  to = '/user/platformReward?page=1'>平台阅读奖励</Link> */}
+					<Link  to = '/user/shareReward?page=1'>分享奖励</Link>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
 			<WritingAwardTable {...InviteNewTableProps}/>

@@ -15,7 +15,7 @@ import AppTable from '../components/APP/AppTable';
 import AddModal from '../components/APP/AddModal';
 function AppPage({ location, dispatch, app }) {
 	
-	const {addModal} = app;
+	const {addModal,isSys} = app;
 	//新建版本
 	function AddModalBox(){
 		dispatch({
@@ -24,6 +24,7 @@ function AppPage({ location, dispatch, app }) {
 	}
 	const AddModalProps = {
 		visible:addModal,
+		isSys:isSys,
 		onOk(){
 
 		},
@@ -31,6 +32,16 @@ function AppPage({ location, dispatch, app }) {
 			dispatch({
 				type:"app/hideModal"
 			})
+		},
+		checkSysteme(e){
+			var value = parseInt(e.target.value);
+			dispatch({
+				type:"app/selectType",
+				payload:{
+					isSys:value
+				}
+			})
+		
 		}
 	}
 	//APP版本管理列表
