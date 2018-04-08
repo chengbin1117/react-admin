@@ -79,10 +79,17 @@ const LockModal = ({
 		    }
 		  }
 		  handleNumberChange = (e) => {
-		    const number = parseInt(e.target.value || 0, 10);
+				const number = e.target.value;
+				//console.log(number)
+			
+			
 		    if (isNaN(number)) {
 		      return;
-		    }
+				}
+				// if(!reg.test(number)){
+				// 	console.log(1)
+				// 	return;
+				// }
 		    if (!('value' in this.props)) {
 		      this.setState({ number });
 		    }
@@ -148,11 +155,28 @@ const LockModal = ({
 			    });
 			  }
 			  checkPrice = (rule, value, callback) => {
-			    if (value.number > 0) {
-			      callback();
-			      return;
-			    }
-			    callback('奖励数量必须大于0!');
+					var number = value.number;
+					if(number !=''&& number.substr(0,1) == '.'){  
+            number=0;  
+					}
+					  
+					number = number.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+					number = number.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+					if(number.indexOf(".")< 0 &&number !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+            if(number.substr(0,1) == '0'){  
+							callback('奖励数量必须大于0!');
+            }  
+          }  
+					var reg = /^\d+(\.\d{1,3})?$/;
+					if(number == 0){
+						
+						callback('奖励数量必须大于0!');
+					}else if(!reg.test(number)){
+						callback('最多三位小数!');
+					}else{
+						callback()
+					}
+			 
 			  }
 			  render() {
 			    const { getFieldDecorator } = this.props.form;
@@ -166,6 +190,7 @@ const LockModal = ({
 			        </FormItem>
 							<FormItem>
 			          {getFieldDecorator('bonusReason', {
+									rules: [{ min:1,max:200,message:'最多200个字符' }],
 			          })(<TextArea rows={4}  placeholder="奖励原因(选填)"/>)}
 			        </FormItem>
 			        <FormItem style={{marginLeft:0+'px',textAlign:"right"}} >
