@@ -19,6 +19,7 @@ import RelationModal from '../Setting/RelationUser';
 import imgx from '../../assets/images/article1.jpg';
 import imgy from '../../assets/images/article2.jpg';
 import imgz from '../../assets/images/article3.jpg';
+import imgw from '../../assets/images/article4.jpg';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -78,7 +79,7 @@ function ArticleEditor({
   },
 }) {
   let merId = localStorage.getItem("userId");
-  const imgArr = [imgx, imgy, imgz];  //默认背景图；
+  const imgArr = [imgx, imgy, imgz,imgw];  //默认背景图；
 
   const options = ColumnList;
   // console.log("setting",ArticleList)
