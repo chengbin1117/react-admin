@@ -90,8 +90,8 @@ const FormItem = Form.Item;
 		width:'800px',
 		okText:"确定",
 		cancelText:"取消",
-		afterClose:afterClose
-
+		afterClose:afterClose,
+		destroyOnClose:true
 	};
 
 	 const formItemLayout = {
@@ -129,26 +129,32 @@ const FormItem = Form.Item;
             arr.push(params)
         }  
         return arr
-    }
+	}
+	class TreeAccountList extends React.Component {
+
+		render(){
+			return(
+				<Form>
+					<FormItem label="岗位名称" {...formItemLayout}>
+						{getFieldDecorator('name', {
+							initialValue:item.name,
+							rules: [{ required: true, message: '请填写岗位名称!' }],
+						})(<Input />)}
+					</FormItem>
+					<FormItem>
+					<div id="checkList">{TreeList&&TreeItem(TreeList).map((t,index)=>
+							<RuleList key={index} item = {t} defValue ={item.authIds} child={t.children} value={t.value}/>
+							)}
+					</div>
+					</FormItem>	
+				</Form>
+			)
+		}
+	}
 	return (
 
 		<Modal {...modalOpts}>
-			<Form>
-				<FormItem label="岗位名称" {...formItemLayout}>
-			        {getFieldDecorator('name', {
-			        	initialValue:item.name,
-			            rules: [{ required: true, message: '请填写岗位名称!' }],
-			        })(<Input />)}
-			    </FormItem>
-			    <FormItem>
-			       <div id="checkList">{TreeList&&TreeItem(TreeList).map((t,index)=>
-			        	<RuleList key={index} item = {t} defValue ={item.authIds} child={t.children} value={t.value}/>
-			        	)}
-			       </div>
-			     </FormItem>
-			    
-			</Form>
-			
+			<TreeAccountList />
 		</Modal>
 	);
 };
