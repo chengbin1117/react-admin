@@ -226,26 +226,18 @@ import styles from '../common.css'
     };
     componentDidMount(){
       if(this.props.defValue!=undefined){
-         var defout = [...(this.props.defValue).split(",")];
-       
-        console.log(defout)
-       for(var i in defout){
+        var defout = [...(this.props.defValue).split(",")];
+        for(var i in defout){
           var CX =$("input[name=parentBox"+defout[i]+"]")
           //console.log(CX)
           CX[0].checked=true;
-          if(CX[1]!=undefined){
+        if(CX[1]!=undefined){
             CX[1].checked=true;
           }
           
        }
       }
-      
-       
-        
-    }
-    componentWillUnmount(){
-      console.log("jieshu")
-    }
+	}
     defaultV(value){
            // console.log("value",value);
             if(value!=undefined){
@@ -264,8 +256,6 @@ import styles from '../common.css'
       // console.log(this.props.item)
       return (
         <div className={styles.checkAll}>
-
-          
             <input
               type="checkbox"
               onChange={this.onCheckAllChange}
@@ -275,9 +265,7 @@ import styles from '../common.css'
               className="regularCheckbox"
              /
             >
-            {this.props.item.label}            
-           
-         
+            {this.props.item.label}    
           <br />
           <div style={{ borderBottom: '1px solid #E9E9E9',paddingBottom:20 }}>
           {this.props.child.map((x,index)=>
@@ -303,7 +291,8 @@ import styles from '../common.css'
           }
         }
       }
-      //console.log(this.state.arrs)
+	  var CX = $("input[name^='parentBox']")  
+      console.log(CX)
       this.setState({
         childCheck:e.target.checked,
         checkAll: (this.state.arrs.length)>0?true:false,
