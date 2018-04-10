@@ -8,7 +8,8 @@
 }
 .search_result{
 	/*background:#eee;*/
-	padding-bottom:50px;
+  padding-bottom:50px;
+  margin-top: 20px;
 }
 .NoImg{
 	width:150px;

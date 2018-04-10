@@ -370,7 +370,7 @@ export default {
     *getBusinessType({ payload }, {call , put}) {
      
       const { data } = yield call(getBusinessType, payload);
-      console.log(data)
+      //console.log(data)
       if (data && data.code == 10000) {
           var res = data.responseBody;
           yield put({

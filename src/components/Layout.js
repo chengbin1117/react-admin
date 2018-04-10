@@ -116,7 +116,7 @@ class LayoutContainer extends React.Component {
       }else if(path =="/user/platformReward"){
           first= "首页";
           second= "平台奖励管理";
-          third="";
+          third="邀新奖励";
           four = "";
       }else if(path =="/user/user_data"){
           first= "首页";
@@ -133,6 +133,21 @@ class LayoutContainer extends React.Component {
           second= "用户管理";
           third="查看用户信息"
           four = "邀新记录";
+      }else if(path =="/user/realnameAward"){
+        first= "首页";
+        second= "平台奖励管理";
+        third="实名认证奖励"
+        four = "";
+      }else if(path =="/user/columnAward"){
+        first= "首页";
+        second= "平台奖励管理";
+        third="成为专栏作家奖励"
+        four = "";
+      }else if(path =="/user/writingAward"){
+        first= "首页";
+        second= "平台奖励管理";
+        third="发文奖励"
+        four = "";
       }else if(path =="/user/master"){
           first= "首页";
           second= "用户管理";

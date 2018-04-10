@@ -274,3 +274,85 @@ export async function unBindUser(params) {
 	     }
 	);
 }
+
+//实名认证奖励列表
+export async function realnameBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/realnameBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//成为专栏作家奖励
+export async function userColumnBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/userColumnBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//发文奖励列表
+export async function publishArticleBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/publishArticleBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//解冻/冻结发文奖励
+export async function freezePublishBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/freezePublishBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//优质文章标记
+export async function markHighQualityArticles(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/markHighQualityArticles?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//额外奖励
+export async function addedBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/addedBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//后台管理用户列表
+export async function getSysUsers(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/sysuser/getSysUsers?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+

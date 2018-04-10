@@ -33,49 +33,20 @@ function StandardTable({data,loading,pageSize,handelchande,getUserData,currentPa
         dataIndex: 'levelDisplay',
         align: 'left',
       },{
-        title: '邀新数量',
-        dataIndex: 'inviteCount',
-        align: 'left',
+        title: '专栏作家奖励',
+        dataIndex: 'bonusValue',
+        render: val => <span>{val==null?"——":val+'TV'}</span>,
       },{
-        title: '邀新状态',
-        dataIndex: 'inviteStatus',
-        align: 'left',
-        render:(text,record)=>(
-          <span>
-            {text ==0 && "无需审查"}
-            {text ==1 && <span style={{color:"#f5222d"}}>需审查</span>}
-          </span>
-          )
-      },{
-        title: '已获得奖励',
-        dataIndex: 'getAmount',
-      },{
-        title: '奖励提取发起时间',
-        dataIndex: 'bonusWithdrawDate',
+        title: '专栏作家奖励获得时间',
+        dataIndex: 'bonusDate',
         render: val => <span>{val==null?"——":moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-      },
-      {
-        title: '奖励状态',
-        dataIndex: 'bonusStatus',
-        render:(text,record)=>(
-          <span>
-            {text ==0 && <span style={{color:"#f5222d"}}>冻结</span>}
-            {text ==1 && <span style={{color:"#52c41a"}}>可用</span>}
-          </span>
-          )
       },
       {
         title: '操作',
         dataIndex: 'action',
         render: (text, record) => (
         <span>
-            {record.bonusStatus == 0?<Popconfirm placement="topRight" title="确定解冻吗？" onConfirm={()=>confirm(record)} okText="确定" cancelText="取消">
-              <a>解冻</a>
-            </Popconfirm>:  <a onClick={()=>showModal(record)}>冻结</a>}
-            <Divider type="vertical" />
             <a onClick={()=>getUserData(record)}>查看详细信息</a>
-            <Divider type="vertical" />
-            <a onClick={()=>InviteUserListData(record)}>查看邀新记录</a>
         </span>
       ),
       },

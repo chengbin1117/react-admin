@@ -61,6 +61,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: search.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
@@ -89,6 +90,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: search.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
@@ -258,12 +260,15 @@ export default {
 				if (match) {
 
 					const search = GetRequest(location.search);
-
+					console.log(search.content)
 					dispatch({
 						type: 'getCommentList',
 						payload: {
 							currentPage: parseInt(search.page),
-							content: search.content != "undefined" ? search.content : null,
+							content: (search.content == "undefined"|| search.content ==undefined) ? null : Base64.decode(search.content),
+							articleTitle: (search.articleTitle == "undefined"|| search.articleTitle==undefined )?  null: Base64.decode(search.articleTitle),
+							commentUser: (search.commentUser == "undefined" ||search.commentUser==undefined)?null : Base64.decode(search.commentUser) ,
+							userMobile: search.userMobile != "undefined" ? search.userMobile : null,
 							status: search.status != "undefined" ? search.status : null,
 							startDate: search.startDate != "undefined" ? search.startDate : null,
 							endDate: search.endDate != "undefined" ? search.endDate : null,
@@ -365,6 +370,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: search.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
@@ -382,6 +388,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: search.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
@@ -423,6 +430,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: sea.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: sea.articleId != 'undefined' ? sea.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
@@ -440,6 +448,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: sea.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: sea.articleId != 'undefined' ? sea.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
@@ -547,6 +556,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: search.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
 							articleTag: search.articleTag != 'undefined' ? search.articleTag : null,
@@ -563,6 +573,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							currentPage: search.page,
+							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
 							articleTag: search.articleTag != 'undefined' ? search.articleTag : null,
@@ -1203,7 +1214,10 @@ export default {
 					type: 'getCommentList',
 					payload: {
 						currentPage: search.page,
-						content: search.content != "undefined" ? search.content : null,
+						content: (search.content == "undefined"|| search.content ==undefined) ? null : Base64.decode(search.content),
+						articleTitle: (search.articleTitle == "undefined"|| search.articleTitle==undefined )?  null: Base64.decode(search.articleTitle),
+						commentUser: (search.commentUser == "undefined" ||search.commentUser==undefined)?null : Base64.decode(search.commentUser) ,
+						userMobile: search.userMobile != "undefined" ? search.userMobile : null,
 						status: search.status != "undefined" ? search.status : null,
 						startDate: search.startDate != "undefined" ? search.startDate : null,
 						endDate: search.endDate != "undefined" ? search.endDate : null,
@@ -1237,7 +1251,10 @@ export default {
 					type: 'getCommentList',
 					payload: {
 						currentPage: search.page,
-						content: search.content != "undefined" ? search.content : null,
+						content: (search.content == "undefined"|| search.content ==undefined) ? null : Base64.decode(search.content),
+                        articleTitle: (search.articleTitle == "undefined"|| search.articleTitle==undefined )?  null: Base64.decode(search.articleTitle),
+						commentUser: (search.commentUser == "undefined" ||search.commentUser==undefined)?null : Base64.decode(search.commentUser) ,
+						userMobile: search.userMobile != "undefined" ? search.userMobile : null,
 						status: search.status != "undefined" ? search.status : null,
 						startDate: search.startDate != "undefined" ? search.startDate : null,
 						endDate: search.endDate != "undefined" ? search.endDate : null,
@@ -1294,7 +1311,10 @@ export default {
 					type: 'getCommentList',
 					payload: {
 						currentPage: search.page,
-						content: search.content != "undefined" ? search.content : null,
+						content: (search.content == "undefined"|| search.content ==undefined) ? null : Base64.decode(search.content),
+						articleTitle: (search.articleTitle == "undefined"|| search.articleTitle==undefined )?  null: Base64.decode(search.articleTitle),
+						commentUser: (search.commentUser == "undefined" ||search.commentUser==undefined)?null : Base64.decode(search.commentUser) ,
+						userMobile: search.userMobile != "undefined" ? search.userMobile : null,
 						status: search.status != "undefined" ? search.status : null,
 						startDate: search.startDate != "undefined" ? search.startDate : null,
 						endDate: search.endDate != "undefined" ? search.endDate : null,

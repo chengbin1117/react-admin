@@ -10,6 +10,9 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
 }
+.pag{
+    height:60px;
+}
 .conten{
 	width:500px;
 	white-space: nowrap;

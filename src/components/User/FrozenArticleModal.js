@@ -49,7 +49,7 @@ const RealsModal = ({
 			}
 
 			const data = {
-				userId:item.userId,
+				articleId:item.articleId,
 				...getFieldsValue()
 
 			};
@@ -89,7 +89,7 @@ const RealsModal = ({
 		        <FormItem>
 		          {getFieldDecorator('bonusFreezeReason',{
 		          	 rules: [{
-			              required: false, message: '请输入!',
+			              required: false, message: '最多输入200个字符!',min:1,max:200,
 			            }], 
 		          })(
 		          <TextArea  style={{ width: "100%",minHeight:'100px'}} placeholder="请输入冻结原因（选填，填写结果将发送给用户)"/> 
