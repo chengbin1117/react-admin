@@ -184,13 +184,13 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			if(data.publishDate!=undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&title='+title+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
 				'&auditEndDate='+timeFormat(new Date(data.auditDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate!=undefined&&data.auditDate==undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&title='+title+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate==undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+'&columnId='+columnId+
@@ -207,13 +207,13 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			if(data.publishDate!=undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&title='+title+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
 				'&auditEndDate='+timeFormat(new Date(data.auditDate[1]))+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate!=undefined&&data.auditDate==undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&title='+title+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate==undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+'&columnId='+columnId+
@@ -230,13 +230,13 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			if(data.publishDate!=undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
 				'&auditEndDate='+timeFormat(new Date(data.auditDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate!=undefined&&data.auditDate==undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&publisher='+publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate==undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+'&columnId='+columnId+
@@ -252,13 +252,13 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			if(data.publishDate!=undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&auditStartDate='+timeFormat(new Date(data.auditDate[0]))+
 				'&auditEndDate='+timeFormat(new Date(data.auditDate[1]))+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate!=undefined&&data.auditDate==undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+columnId+
-				'&publishStastDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+				'&publishStartDate='+timeFormat(new Date(data.publishDate[0]))+'&publishEndDate='+timeFormat(new Date(data.publishDate[1]))+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 				))
 			}else if(data.publishDate==undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+'&columnId='+columnId+
@@ -286,24 +286,24 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			if(data.title=="undefined"||data.title==undefined){
 				if(data.publisher=="undefined"||data.publisher==undefined){
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
-					'&publishStastDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
 					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 					))
 			    }else{
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
-					'&publishStastDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
 					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 					))	
 				}
 		    }else{
 				if(data.publisher=="undefined"||data.publisher==undefined){
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&title='+data.title+'&adminId='+data.adminId+'&columnId='+data.columnId+
-					'&publishStastDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
 					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 					))
 				}else{
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&title='+data.title+'&adminId='+data.adminId+'&columnId='+data.columnId+
-					'&publishStastDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
 					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
 					))
 				}

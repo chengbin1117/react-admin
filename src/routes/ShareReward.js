@@ -139,7 +139,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		<div>
 			<div className = {styles.changeAward}>
 					<Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>邀新奖励</Link>
-					<Link  className = {styles.activeAward} to = '/user/realnameAward?page=1'>实名认证奖励</Link>
+					<Link  to = '/user/realnameAward?page=1'>实名认证奖励</Link>
 					<Link  to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
 					<Link  className = {styles.activeColor} to = '/user/writingAward?page=1'>发文奖励</Link>
 					{/* <Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>平台阅读奖励</Link> */}

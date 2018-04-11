@@ -21,6 +21,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 		{
 			title: '标题',
 			dataIndex: 'articleTitle',
+			width:150,
 		},
 		{
 			title: '所属分类',
@@ -51,6 +52,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 			title: '访问量',
 			dataIndex: 'bowseNum',
 			align: 'left',
+			width:80,
 		}, {
 			title: '分享量',
 			dataIndex: 'shareNum',
@@ -76,10 +78,12 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 		}, {
 			title: '标识',
 			dataIndex: 'isMarkArticle',
+			width:70,
 			render: val => <span>{val == 1 ? "优质原创文章" : "无"}</span>,
 		}, {
 			title: '额外奖励发放人',
 			dataIndex: 'checkMan',
+			width:80,
 		}, {
 			title: '奖励状态',
 			dataIndex: 'publishBonusStatus',
@@ -170,7 +174,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 
 			return (
 				<div>
-					<div>当前发出奖励：{totalPrice&&totalPrice}TV</div>
+					<div>当前发出奖励：{totalPrice&&totalPrice}</div>
 					<Table columns={columns} dataSource={data} rowKey={record => record.articleId} loading={loading} pagination={paginationProps} />
 				</div>
 			);

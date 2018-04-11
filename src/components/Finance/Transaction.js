@@ -46,11 +46,17 @@ const Transaction = ({
 		}, {
 		  title: '钛值数额',
 		  dataIndex: 'amount',
-		  key: 'amount',
+			key: 'amount',
+			render:(text,record)=> (
+		  	<span>{record.freezeAmount!=0?record.freezeAmount:text}</span>
+		  	)
 		}, {
 		  title: '实际数额',
 		  dataIndex: 'accountAmount',
-		  key: 'accountAmount',
+			key: 'accountAmount',
+			render:(text,record)=> (
+		  	<span>{record.freezeAmount!=0?record.freezeAmount:text}</span>
+		  	)
 		}, {
 		  title: '创建时间',
 		  dataIndex: 'flowDate',

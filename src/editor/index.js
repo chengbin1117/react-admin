@@ -72,6 +72,7 @@ import styles from '../components/common.css';
          editor.customConfig.menus = [
               'head',
               'bold',
+              'fontName',  // 字体
               'italic',
               'strikeThrough',
               'underline',
@@ -81,6 +82,7 @@ import styles from '../components/common.css';
               'quote',  // 引用
               'emoticon',  // 表情
               'link',  // 插入链接
+              'quote',  // 引用
               'table',  // 表格
               'image',
               'video',  // 插入视频

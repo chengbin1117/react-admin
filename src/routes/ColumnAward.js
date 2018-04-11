@@ -12,7 +12,7 @@ import {
 } from 'dva/router';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
-import RealnameAwardTable from '../components/User/RealnameAwardTable';
+import ColumnAwardTable from '../components/User/ColumnAwardTable';
 import { timeFormat, GetRequest } from '../services/common';
 import './font.less';
 import styles from './Record.css'
@@ -145,7 +145,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<Link  className = {styles.activeColor} to = '/user/shareReward?page=1'>分享奖励</Link>
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
-			<RealnameAwardTable {...InviteNewTableProps}/>
+			<ColumnAwardTable {...InviteNewTableProps}/>
 		</div>
 
 	);
