@@ -119,7 +119,7 @@ const LockModal = ({
 			          onChange={this.handleCurrencyChange}
 			        >
 			          <Option value="0">TV</Option>
-			          <Option value="1">TXB</Option>
+			          <Option value="1">KG</Option>
 			          
 			        </Select>
 				); 

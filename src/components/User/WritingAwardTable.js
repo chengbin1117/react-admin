@@ -71,7 +71,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 			render: (text, record) => (
 				<span>
 					{record.tvAmount !=null && record.tvAmount + 'TV'}
-					{record.txbAmount !=null && record.txbAmount + "TXB"}
+					{record.txbAmount !=null && record.txbAmount + "KG"}
 					{(record.tvAmount == null && record.txbAmount==null )&&"无"}
 				</span>
 			)

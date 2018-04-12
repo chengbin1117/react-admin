@@ -49,6 +49,7 @@ function StandardTable({data,loading,pageSize,handelchande,getUserData,currentPa
       },{
         title: '已获得奖励',
         dataIndex: 'getAmount',
+        render: val => <span>{val==null?"——":val+"TV"}</span>,
       },{
         title: '奖励提取发起时间',
         dataIndex: 'bonusWithdrawDate',
