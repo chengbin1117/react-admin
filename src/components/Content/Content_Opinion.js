@@ -41,11 +41,6 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 	  dataIndex: 'statusDisplay',
 	  key: 'statusDisplay',
 	},{
-	  title: '来源',
-	  dataIndex: 'fromType',
-		key: 'fromType',
-		render: val => <span>{val==1&&"WEB"}{val==2&&"APP"}</span>,	
-	},{
 	  title: '操作',
 	  dataIndex: '3address',
 	  key: '3address',
@@ -129,3 +124,10 @@ Content_Opinion.propTypes = {
 };
 
 export default Content_Opinion;
+
+// ,{
+// 	title: '来源',
+// 	dataIndex: 'fromType',
+// 	key: 'fromType',
+// 	render: val => <span>{val==1&&"WEB"}{val==2&&"APP"}</span>,	
+// }

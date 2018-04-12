@@ -1,5 +1,5 @@
 import pathToRegexp from 'path-to-regexp';
-import { publishArticleBonus,markHighQualityArticles,freezePublishBonus,addedBonus,getSysUsers } from '../services/user';
+import { publishArticleBonus,markHighQualityArticles,freezePublishBonus,addedBonus,getSysUsers,shareArticleBonus } from '../services/user';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
 import {
 	message
@@ -19,6 +19,7 @@ export default {
 		totalPrice:0,   //发出总奖励
 		loging:false,
 		SysUsersList:[], //后台用户列表
+		ShareBonusList:[], //分享奖励列表
 	},
 
 	subscriptions: {
@@ -62,6 +63,21 @@ export default {
 
 						}
 					})
+				}
+				match = pathToRegexp('/user/shareReward').exec(location.pathname);
+				if (match) {
+					dispatch({
+						type: 'shareArticleBonus',
+						payload: {
+							currentPage: search.page,
+							pageSize:25,
+							userId: search.userId != 'undefined' ? search.userId : null,
+							nickName: (search.nickName == undefined||search.nickName=="undefined") ? null : Base64.decode(search.nickName),
+							userPhone: search.userPhone != 'undefined' ? search.userPhone : null,
+							userRoleId: search.userRoleId != 'undefined' ? search.userRoleId : null,
+							userLevel: search.userLevel != 'undefined' ? search.userLevel : null,
+						}
+					});
 				}
 			})
 		},
@@ -302,7 +318,38 @@ export default {
 					message.error(data.message, 2);
 				}
 			}
-		}
+		},
+		*shareArticleBonus({ payload }, { call, put }) {
+			yield put({
+				type: 'showLoading',
+			});
+			const { data } = yield call(shareArticleBonus, payload);
+			console.log(data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				
+				yield put({
+					type: 'shareArticleBonusSuccess',
+					payload: {
+						ShareBonusList: res.data,
+						loading: false,
+						totalNumber: res.totalNumber,
+						currentPage: res.currentPage,
+						totalPrice:res.totalPrice,
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+				yield put({
+					type: 'hideLoading',
+				});
+			}
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -333,6 +380,9 @@ export default {
 			return {...state,...action.payload,AdditionalVisible:false};
 		},
 		getSysUsersSuccess(state, action) {
+			return {...state,...action.payload};
+		},
+		shareArticleBonusSuccess(state, action) {
 			return {...state,...action.payload};
 		},
 	},

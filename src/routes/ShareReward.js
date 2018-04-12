@@ -24,8 +24,8 @@ const Option = Select.Option;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
-function UserAdmin({ location, dispatch, user, router, }) {
-	const {loading, totalNumber, currentPage,RealnameAwardList,currentItem} = user;
+function UserAdmin({ location, dispatch, award, router, }) {
+	const {loading, totalNumber, currentPage,ShareBonusList,currentItem} = award;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
@@ -49,14 +49,14 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='昵称'>
-						{getFieldDecorator('userName')(
+						{getFieldDecorator('nickName')(
 							<Input type="text" placeholder="请输入昵称" />
 						)}
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='手机号'>
-						{getFieldDecorator('mobile', {
+						{getFieldDecorator('userPhone', {
 							rules: [
 								{ required: false, pattern: /^[0-9]*$/, message: "手机号只能为数字" }
 							]
@@ -67,7 +67,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='用户角色'>
-						{getFieldDecorator('userRole')(
+						{getFieldDecorator('userRoleId')(
 							<Select placeholder="请选择" allowClear={true}>
 								<Option value="1">普通用户</Option>
 								<Option value="2">个人</Option>
@@ -101,7 +101,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='昵称'>
-						{getFieldDecorator('userName')(
+						{getFieldDecorator('nickName')(
 							<Input type="text" placeholder="请输入昵称" />
 						)}
 					</FormItem>
@@ -112,20 +112,25 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//搜索
 	function handlsearch(data) {
-		dispatch(routerRedux.push('/user/realnameAward?page=1' + "&userId=" + data.userId +
-				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole
+		if(data.nickName==""||data.nickName==undefined){
+			data.nickName = undefined;
+		}else{
+			data.nickName = Base64.encode(data.nickName)
+		}
+		dispatch(routerRedux.push('/user/shareReward?page=1' + "&userId=" + data.userId +
+				"&nickName=" + data.nickName + "&userPhone=" + data.userPhone + "&userRoleId=" + data.userRoleId
 		))
 	}
 
 	//奖励列表
 	const ShareAwardTableProps = {
-		data:RealnameAwardList,
+		data:ShareBonusList,
 		loading:loading,
 		total:totalNumber,
 		currentPage:currentPage,
 		handelchande(page){
 			const data = GetRequest(location.search)
-			dispatch(routerRedux.push('/user/realnameAward?page='+ page + "&userId=" + data.userId +
+			dispatch(routerRedux.push('/user/shareReward?page='+ page + "&userId=" + data.userId +
 				"&userName=" + data.userName + "&mobile=" + data.mobile + "&userRole=" + data.userRole
 		    ))
 		},
@@ -157,10 +162,10 @@ UserAdmin.propTypes = {
 };
 
 function mapStateToProps({
-	user
+	award
 }) {
 	return {
-		user
+		award
 	};
 }
 

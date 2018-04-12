@@ -160,7 +160,7 @@ export default {
               pageSize:25,
               inviteUserId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
               userId:search.userId != "undefined" ? search.userId : null,
-              userName:search.userName != "undefined" ? search.userName : null,
+              userName:(search.userName == "undefined" || search.userName == undefined)? null:  Base64.decode(search.userName),
               userMobile:search.userMobile != "undefined" ? search.userMobile : null,
               userRole:search.userRole != "undefined" ? search.userRole : null,
               createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,

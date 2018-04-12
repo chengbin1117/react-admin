@@ -149,6 +149,11 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//搜索
 	function handlsearch(values) {
+		if(values.userName==""||values.userName==undefined){
+			values.userName = undefined;
+		}else{
+			values.userName = Base64.encode(values.userName)
+		}
 		if (values.time != undefined) {
 			dispatch(routerRedux.push('/user/invite?page=1' +'&inviteUserId='+urlSelect.inviteUserId+ "&userId=" + values.Id +
 				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +

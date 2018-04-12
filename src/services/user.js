@@ -356,3 +356,16 @@ export async function getSysUsers(params) {
 	);
 }
 
+
+//分享奖励列表
+
+export async function shareArticleBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/shareArticleBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
