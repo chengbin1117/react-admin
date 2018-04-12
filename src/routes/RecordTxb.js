@@ -164,7 +164,7 @@ function Record({location,dispatch,finance,router,}) {
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
 		          <Col span={12} style={{paddingLeft:50+"px"}}>
-		          	<FormItem {...formItemLayout} label='钛小白'>
+		          	<FormItem {...formItemLayout} label='氪金'>
 		            {getFieldDecorator('minAmount')(
 		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
 		              	
@@ -277,7 +277,7 @@ function Record({location,dispatch,finance,router,}) {
 			<div>
 				<div  className = {styles.changCoinType}>
 					<Link  to = '/finance/record'>钛值</Link>
-					<Link className = {styles.activeColor} to = '/finance/recordTxb'>钛小白</Link>
+					<Link className = {styles.activeColor} to = '/finance/recordTxb'>氪金</Link>
 				</div>
 				<WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<TransactionTi {...TransactionProps}/>
