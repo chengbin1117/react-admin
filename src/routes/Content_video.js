@@ -28,7 +28,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { ArticleStat,dis,artice, currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
+	const { ArticleStat,dis,artice,confirmLoading,currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
 	const options = ColumnList;
 	const Content_ArticleProps = {
 		dispatch,
@@ -172,7 +172,8 @@ function ContentArticle({ location, dispatch, router, content }) {
 	}
 	const SetModalProps = {
 		visible: setshow,
-		selectList,
+		selectList:selectList,
+		confirmLoading:confirmLoading,
 		onCancel() {
 			dispatch({
 				type: 'content/hideShowModal',

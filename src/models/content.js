@@ -419,12 +419,18 @@ export default {
 				displayStatus: displayStatus,
 				updateUser: updateUser
 			}
+			yield put({
+				type:"showSubmitLoading"
+			})
 			const { data } = yield call(setDisplayStatus, params);
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				const sea = GetRequest(search)
 				message.success('设置成功')
-				console.log(payload.publishKind)
+				yield put({
+					type:"hideSubmitLoading"
+				})
+				//console.log(payload.publishKind)
 				if (payload.publishKind == 2) {
 					yield put({
 						type: 'getArticleList',
@@ -470,6 +476,9 @@ export default {
 					}
 				});
 			} else {
+				yield put({
+					type:"hideSubmitLoading"
+				})
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));

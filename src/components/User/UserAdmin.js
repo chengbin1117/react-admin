@@ -57,12 +57,13 @@ const UserAdmin = ({
 		title: '用户ID',
 		dataIndex: 'userId',
 		key: 'userId',
-		fixed: 'left',
+		width: 100,
 		render: text => <span>{text}</span>,
 	}, {
 		title: '用户名',
 		dataIndex: 'userName',
 		key: 'userName',
+		width: 80,
 		render: text => <span>{text}</span>,
 	}, {
 		title: '邮箱',
@@ -72,19 +73,23 @@ const UserAdmin = ({
 		title: '手机号',
 		dataIndex: 'userMobile',
 		key: 'userMobile',
+		width: 75,
 	}, {
 		title: '注册时间',
 		dataIndex: 'createDate',
 		key: 'createDate',
+		width: 100,
 	}, {
 		title: "师傅",
 		dataIndex: 'parentUser',
+		width: 80,
 		render: (text, record) => (
 			<span>{text != null ? text : "无"}</span>
 		)
 	}, {
 		title: "邀新状态",
 		dataIndex: 'inviteStatus',
+		width: 60,
 		render: (text, record) => (
 			<span>
 				{text == 0 && "无需审查"}
@@ -95,42 +100,46 @@ const UserAdmin = ({
 		title: '角色',
 		dataIndex: 'userRoleDisplay',
 		key: 'userRoleDisplay',
+		width: 60,
 	}, {
 		title: '级别',
 		dataIndex: 'userLevelDisplay',
 		key: 'userLevelDisplay',
+		width: 60,
 	}, {
 		title: '最后活动时间',
 		dataIndex: 'lastActiveTime',
 		key: 'lastActiveTime',
+		width: 100,
 	}, {
 		title: '发文量',
 		dataIndex: 'articleNum',
 		key: 'articleNum',
 		sorter: true,
-		width: 100
+		width: 80
 	}, {
 		title: '评论量',
 		dataIndex: 'commentNum',
 		key: 'commentNum',
 		sorter: true,
-		width: 100
+		width: 80
 	}, {
 		title: '收藏量',
 		dataIndex: 'collectNum',
 		key: 'collectNum',
 		sorter: true,
-		width: 100
+		width: 80
 	}, {
 		title: '分享量',
 		dataIndex: 'shareNum',
 		key: 'shareNum',
 		sorter: true,
-		width: 100
+		width: 80
 	}, {
 		title: '审核状态',
 		dataIndex: 'auditStatus',
 		key: 'auditStatus',
+		width: 80,
 		render: (text, record) => {
 			//console.log(text,record)
 			return (
@@ -145,28 +154,27 @@ const UserAdmin = ({
 		title: '审核人',
 		dataIndex: 'auditor',
 		key: 'auditor',
+		width: 80,
 	}, {
 		title: '审核时间',
 		dataIndex: 'auditDate',
 		key: 'auditDate',
+		width: 100,
 	}, {
 		title: '锁定状态',
 		dataIndex: 'lockStatusDisplay',
 		key: 'lockStatusDisplay',
+		width: 60
 	}, {
 		title: '是否推荐',
 		dataIndex: 'hotUser',
 		key: 'hotUser',
+		width: 60,
 		render: text => <span>{text == true ? "是" : '否'}</span>,
-	}, {
-		title: '排序',
-		dataIndex: 'userOrder',
-		key: 'userOrder',
-		render: text => <span>{text}</span>,
 	}, {
 		title: '操作',
 		key: 'action',
-		fixed: 'right',
+		width: 160,
 		render: (text, record) => (
 			<span>
 				<a onClick={() => userData(record)}>查看</a>
@@ -225,7 +233,6 @@ const UserAdmin = ({
 			return (
 				<div>
 					<Table columns={columns} dataSource={userlist} pagination={false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId}
-						scroll={{ x: 2450 }}
 						onChange={this.handleTableChange}
 					/>
 					<div className="table-operations" >
