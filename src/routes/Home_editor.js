@@ -15,7 +15,7 @@ import styles from './Common.css';
 import BgModal from '../components/Content/BgModal';
 import FtModal from '../components/Content/FtModal'; 
 import { dataURLtoBlob, ImgUrl, uploadUrl, getBase64 } from '../services/common'
-import ArticleEditor from '../components/Content/ArticeEditor';
+import ArticleEditor from '../components/Content/EditorArticle';
 import { Form, Icon, Input, Button, Checkbox, Tag, Row, Col, Upload, Radio, Cascader, DatePicker, TimePicker, message } from 'antd';
 import axios from 'axios';
 function Editor_article({ dispatch, router, content, setting }) {
@@ -29,10 +29,9 @@ function Editor_article({ dispatch, router, content, setting }) {
     var html = '';
     let src = "";
 
-    const { ArticleList, BgVisible, UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords} = content;
+    const { ArticleList, BgVisible, UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,status_Article} = content;
 
     const options = ColumnList;
-    console.log("imgUrl", SensitiveWords)
     const ArticleEditorProps = {
         ColumnList,
         dispatch,
@@ -43,7 +42,7 @@ function Editor_article({ dispatch, router, content, setting }) {
         getBonusList,
         imgUrl,
         UserById,
-        SensitiveWords,
+        status_Article,
         handlsearch(values) {
 
 

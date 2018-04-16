@@ -148,7 +148,7 @@ function ContentArticle({location,dispatch,router,content}) {
 			})
 		},
 		sorterUserList(sorter){
-			console.log(sorter)
+		
 			let orderByClause = "";
 			if(sorter.order=="descend"){
 					orderByClause = "bowse_num desc"

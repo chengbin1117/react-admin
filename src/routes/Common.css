@@ -232,7 +232,7 @@
   border:0px;
 }
 .article img{
-  width:100%;
+  /* width:100%; */
   display: inline-block;
   margin: 10px 0;
   border-radius: 5px;
@@ -453,7 +453,7 @@
   font-size:18px;
 }
 .article img{
-  width:100%;
+  /* width:100%; */
 }
 .footer{
   position: relative;

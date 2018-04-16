@@ -1,11 +1,12 @@
 import pathToRegexp from 'path-to-regexp';
+import $ from 'jquery';
 import {
 	getArticleList, setDisplayStatus, articleservice, auditArticle, getColumnList, deleteArticle, publishArticle, getArticleById, siteimagelist, addImage, deleteImage,
 	getFeedbackList, deleteFeedback, setStatus, replay, ImageSetStatus, getCommentList, commentSet, deleteComment, setcommentStatus, auditComment, addColumn, deleteColumn,
 	sendEmail, getSysUserById, getBonus, getArticleStat, setDisplayOrder
 } from '../services/content';
 import {
-	message
+	message,Modal
 } from 'antd';
 import { routerRedux } from 'dva/router';
 import { formatDate, tokenLogOut, GetRequest, videoUrl } from '../services/common'
@@ -46,6 +47,9 @@ export default {
 		artSorce: 0,
 		getVideoList: {}, //视频详情
 		dis:false,
+		SensitiveWords:'',
+		titleWords:null, //标题中的敏感词
+		status_Article:1
 	},
 
 	subscriptions: {
@@ -123,7 +127,8 @@ export default {
 					dispatch({
 						type: "typeChange",
 						payload: {
-							artSorce: 0
+							artSorce: 0,
+							titleWords:null
 						}
 					})
 					dispatch({
@@ -157,6 +162,7 @@ export default {
 							sysUserId: merId
 						}
 					})
+					
 					/* dispatch({
 					   type:'getSysUserById',
 					   payload:{
@@ -167,6 +173,42 @@ export default {
 						type: 'getColumnList',
 						payload: {
 
+						}
+					})
+				}
+				match = pathToRegexp('/index/editor').exec(location.pathname);
+				if (match) {
+					const search = GetRequest(location.search);
+					let merId = localStorage.getItem("userId");
+					// console.log("search",search.articleId)
+					dispatch({
+						type: 'getBonus',
+						payload: {
+							articleId: search.articleId
+						}
+					});
+					dispatch({
+						type: 'setting/getRelUser',
+						payload: {
+							sysUserId: merId
+						}
+					})
+					/*dispatch({
+					  type:'getSysUserById',
+					  payload:{
+						userId:merId
+					  }
+					})*/
+					dispatch({
+						type: 'getColumnList',
+						payload: {
+
+						}
+					})
+					dispatch({
+						type: "statusChange",
+						payload: {
+							status_Article: 1,
 						}
 					})
 				}
@@ -295,6 +337,7 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							publishStatus: 2,
+							publishKind:1
 						}
 					});
 					dispatch({
@@ -599,7 +642,39 @@ export default {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));
-				} else {
+				}else if(data.code==29001){
+					if(payload.publishKind == 2){
+						message.success('检测到视频标题有敏感词：'+data.message);
+					}else{
+						message.success('检测到文章标题有敏感词：'+data.message);
+					}
+				}else if(data.code==29002){
+					message.success('检测到正文有敏感词：'+data.message);
+				}else if(data.code==29003){
+					if(payload.publishKind == 2){
+						message.success('检测到视频TAG标签有敏感词：'+data.message);
+					}else{
+						message.success('检测到文章TAG标签有敏感词：'+data.message);
+					}
+				}else if(data.code==29004){
+					if(payload.publishKind == 2){
+						message.success('检测到视频摘要有敏感词：'+data.message);
+					}else{
+						message.success('检测到文章摘要有敏感词：'+data.message);
+					}
+				}else if(data.code==29005){
+					if(payload.publishKind == 2){
+						message.success('检测到视频链接有敏感词：'+data.message);
+					}else{
+						message.success('检测到文章链接有敏感词：'+data.message);
+					}
+				}else if(data.code==29006){
+					if(payload.publishKind == 2){
+						message.success('检测到视频来源有敏感词：'+data.message);
+					}else{
+						message.success('检测到文章来源有敏感词：'+data.message);
+					}
+				}else {
 					message.error(data.message, 3);
 				}
 			}
@@ -636,10 +711,181 @@ export default {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));
-				} else {
+				}else if(data.code=='29002'){
+					//var content = localStorage.getItem('')
+					//console.log(data.message)
+					Modal.warn({
+						title:'检测文章正文有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+			        let articleText = localStorage.getItem('articleText');
+					var str = data.message;
+					var arr = str.split(',')
+					$.each(arr, function (i, e) {
+						console.log(i,e)
+						if(articleText.indexOf(e) > 0){
+							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
+							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
+							console.log(articleText)
+							$('.w-e-text').html(articleText);
+							localStorage.setItem('articleText',articleText);
+						}
+					})
+					yield put({
+						type: 'SensitiveMessage',
+						payload: {
+							SensitiveWords:data.message,
+						}
+					});
+				}else if(data.code ==29001){
+					Modal.warn({
+						title:'检测标题有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测标题有敏感词：'+data.message,3);
+
+					
+				}else if(data.code ==29003){
+					Modal.warn({
+						title:'检测TAG标签有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测TAG标签有敏感词：'+data.message,3);
+					
+				}else if(data.code ==29004){
+					Modal.warn({
+						title:'检测摘要有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测摘要有敏感词：'+data.message,3);
+					
+				}else if(data.code ==29006){
+					Modal.warn({
+						title:'检测文章来源有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测文章来源有敏感词：'+data.message,3);
+					
+				}else {
+					
 					message.error(data.message, 3);
 				}
 			}
+		},
+		*publishHomeArticle({ payload }, { call, put }) {
+			const { data } = yield call(publishArticle, payload);
+			//console.log("11",data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+
+				message.success('成功');
+				var userId =localStorage.getItem('userId');
+				yield put(routerRedux.push('/index?userId='+userId))
+			} else {
+				yield put({
+					type: 'hideLoading',
+				});
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 3);
+					yield put(routerRedux.push('/'));
+				}else if(data.code=='29002'){
+					//var content = localStorage.getItem('')
+					//console.log(data.message)
+					Modal.warn({
+						title:'检测文章正文有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+			        let articleText = localStorage.getItem('articleText');
+					var str = data.message;
+					var arr = str.split(',')
+					$.each(arr, function (i, e) {
+						console.log(i,e)
+						if(articleText.indexOf(e) > 0){
+							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
+							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
+							console.log(articleText)
+							$('.w-e-text').html(articleText);
+							localStorage.setItem('articleText',articleText);
+						}
+					})
+					yield put({
+						type: 'SensitiveMessage',
+						payload: {
+							SensitiveWords:data.message,
+						}
+					});
+				}else if(data.code ==29001){
+					Modal.warn({
+						title:'检测标题有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测标题有敏感词：'+data.message,3);
+
+					
+				}else if(data.code ==29003){
+					Modal.warn({
+						title:'检测TAG标签有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测TAG标签有敏感词：'+data.message,3);
+					
+				}else if(data.code ==29004){
+					Modal.warn({
+						title:'检测摘要有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测摘要有敏感词：'+data.message,3);
+					
+				}else if(data.code ==29006){
+					Modal.warn({
+						title:'检测文章来源有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测文章来源有敏感词：'+data.message,3);
+					
+				}else {
+					
+					message.error(data.message, 3);
+				}
+			}
+		},
+		*statusChange({ payload }, { call, put }) {
+			yield put({
+				type:"statusChangeuccess",
+				payload:{
+					status_Article:payload.status_Article
+				}
+			})
 		},
 		*publishVideo({ payload }, { call, put }) {
 
@@ -673,7 +919,49 @@ export default {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));
-				} else {
+				}else if(data.code ==29001){
+					Modal.warn({
+						title:'检测视频有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测标题有敏感词：'+data.message,3);
+
+					
+				}else if(data.code ==29003){
+					Modal.warn({
+						title:'检测视频TAG标签有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测TAG标签有敏感词：'+data.message,3);
+					
+				}else if(data.code ==29004){
+					Modal.warn({
+						title:'检测视频摘要有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测摘要有敏感词：'+data.message,3);
+					
+				}else if(data.code ==29006){
+					Modal.warn({
+						title:'检测视频来源有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+					//message.error('检测文章来源有敏感词：'+data.message,3);
+					
+				}else {
+					
 					message.error(data.message, 3);
 				}
 			}
@@ -870,6 +1158,55 @@ export default {
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + "&pageSize=25" + '&orderByClause=' + search.orderByClause
 
 				))
+
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 3);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 3);
+				}
+			}
+		},
+		*getById({ payload }, { call, put }) {
+			let merId = localStorage.getItem("userId");
+			let params = {
+				articleId: payload.articleId
+			}
+			const { data } = yield call(getArticleById, params);
+			//console.log("栏目",data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				var tags = "tags";
+				res[tags] = res.tagnames != null ? res.tagnames.split(",") : '';
+				yield put({
+					type: 'getArticleListSuccess',
+					payload: {
+						editorList: res,
+						loading: false,
+					}
+				});
+				if (res.createUser == null) {
+					yield put({
+						type: 'getSysUserById',
+						payload: {
+							userId: merId,
+						}
+					});
+				}
+				if (res.sysUser == null || res.sysUser != "") {
+					yield put({
+						type: 'getBonus',
+						payload: {
+							articleId: res.articleId,
+						}
+					});
+				}
+				/*window.location.reload()*/
+				localStorage.setItem("articleList", JSON.stringify(res));
+				localStorage.setItem("articleText", res.articleText);
+			
+				yield put(routerRedux.push('/index/editor?articleId=' + payload.articleId ))
 
 			} else {
 				if (data.code == 10004 || data.code == 10011) {
@@ -1736,6 +2073,13 @@ export default {
 				...action.payload,
 			};
 		},
+		SensitiveMessage(state, action) {
+			console.log(action.payload)
+			return {
+				...state,
+				...action.payload,
+			};
+		},
 		siteimagelistSuccess(state, action) {
 			return {
 				...state,
@@ -1961,6 +2305,18 @@ export default {
 			return {
 				...state,
 				dis:false,
+				...action.payload,
+			};
+		},
+		titleSensitiveMessage(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		statusChangeuccess(state, action) {
+			return {
+				...state,
 				...action.payload,
 			};
 		},

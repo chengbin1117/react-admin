@@ -168,6 +168,17 @@ function UserAdmin({ location, dispatch, award, content, }) {
 	}
 	//搜索
 	function handlsearch(data) {
+		
+		if(data.publishDate!=undefined){
+			if(data.publishDate.length==0){
+					data.publishDate=undefined
+			}
+		}
+		if(data.auditDate!=undefined){
+			if(data.auditDate.length==0){
+					data.auditDate=undefined
+			}
+		}
 		var columnId = data.columnId;
 		if(columnId== undefined){
 			columnId = null;
@@ -181,6 +192,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 		if(data.title !=undefined&&data.publisher!=undefined){
 			var title =Base64.encode(data.title);
 			var publisher =Base64.encode(data.publisher);
+		
 			if(data.publishDate!=undefined&&data.auditDate!=undefined){
 				dispatch(routerRedux.push('/user/writingAward?page=1'+
 				'&articleId='+data.articleId+'&title='+title+'&adminId='+data.adminId+'&columnId='+columnId+
