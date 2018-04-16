@@ -18,6 +18,7 @@ export async function getAccountRecharge(params) {
 		);
 }
 
+
 //获得提币列表接口
 export async function getAccountWIthdraw(params) {
 
@@ -50,6 +51,18 @@ export async function getAccount(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
 	let url = '/admin/account/getAccount?data='+data+"&sign="+sign;
+
+	return request(url,{
+		method:"post"
+	}
+		);
+}
+//获得钛小白交易记录列表接口
+export async function getAccountTxb(params) {
+
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/account/getTxbAccount?data='+data+"&sign="+sign;
 
 	return request(url,{
 		method:"post"

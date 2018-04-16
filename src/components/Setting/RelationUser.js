@@ -46,11 +46,11 @@ const RelationModal = ({
 			const data = {
 				...getFieldsValue(),
 			}
-			console.log(data)
-			if(deskUserId == ""){
+			//console.log(data)
+			if(deskUserId.userId== ""){
 				message.warn('无此前台账户')
 			}else{
-				onOk(item,deskUserId);
+				onOk(item,deskUserId.userId);
 			}
 			
 		});
@@ -85,12 +85,12 @@ const RelationModal = ({
 					{getFieldDecorator('kgId', {
 						initialValue: '',
 						rules: [
-							{required: true, message: '请输入正确手机号',pattern:/^1[3|4|5|8][0-9]\d{4,8}$/},
+							{required: true, message: '请输入正确手机号',pattern:/^1[3|4|5|7|8][0-9]\d{4,8}$/},
 						],
 					})(
 						<Input type="text" onChange={handleBlur}/>
 					)}
-					<span>该用户ID：{deskUserId}</span>
+					<span>专栏名称：{deskUserId.userName}</span>
 				</FormItem>	
 			</Form>
 		</Modal>

@@ -108,7 +108,31 @@ export async function setKgUser(params) {
 	}
 		);
 }
-//添加/编辑账户接口
+
+//查看关联前台用户
+export async function getRelUser(params) {
+
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/sysuser/getRelUser?data='+data+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	}
+		);
+}
+
+//解绑前台用户
+export async function unsetKgUser(params) {
+
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/sysuser/unsetKgUser?data='+data+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	}
+		);
+}
+//添加账号
 export async function addSysUser(params) {
     var data = Base64Url(params)
     var sign = SignUrl(data)

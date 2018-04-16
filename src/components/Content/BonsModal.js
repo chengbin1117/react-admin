@@ -13,6 +13,7 @@ import {
 	Steps,
 	Col,
 	Row,
+	Icon,
 	Badge
 } from 'antd';
 import styles from './Content_Opinion_Show.css'
@@ -44,7 +45,7 @@ const BonsModal = ({
 	
 }) => {
 	let total =0;
-	console.log("artice",artice)
+	//console.log("artice",artice)
 	function handleOk(value,text) {
 			
 			//console.log(value,text)
@@ -110,7 +111,9 @@ const BonsModal = ({
 				    						{item.name}
 				    					</Col>
 				    					<Col span={7}>
-				    						奖励钛值{item.value}/人
+				    					{item.kind==2&&<span>总奖励钛值{(item.value).toFixed(3)}</span>}
+                                        {item.kind==1&&<span>奖励钛值{item.value}个/人</span>}
+				    						
 				    					</Col>
 				    					<Col span={7}>
 				    						最大奖励人数{item.max}人
@@ -129,15 +132,15 @@ const BonsModal = ({
 				    			)}
 				    	</Col>
 				    	<Col  span={7}>
-				    		{total}钛值
+				    		{ArticleStat!=null?ArticleStat.bonusTotal:0}钛值
 				    	</Col>
 				    </Row>
 				    <Row className={styles.bonsFooter}>
 				    	<Col  span={24}>
-				    		截止目前,已有{ArticleStat!=null?ArticleStat.bonusNum:0}个用户获得了他的奖励,剩余奖励数{(ArticleStat!=null&&ArticleStat.bonusTotal)-(ArticleStat!=null&&ArticleStat.bonusValue)}
+				    		截止目前,已有{ArticleStat!=null?ArticleStat.bonusNum:0}个用户获得了他的奖励,剩余奖励数{((ArticleStat!=null&&ArticleStat.bonusTotal)-(ArticleStat!=null&&ArticleStat.bonusValue)).toFixed(3)}
 				    	</Col>
 				    </Row>
-               </div>:<div>该文章暂未设置阅读奖励</div>}
+               </div>:<div className={styles.bonsCneter}><Icon type="frown-o"/>该文章暂未设置阅读奖励</div>}
 				    
 		    </div>
         );

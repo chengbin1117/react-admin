@@ -18,7 +18,7 @@ import FtModal from '../components/Content/FtModal';
 import Editor from '../editor/index';
 import RelesEditor from '../components/Content/RelesEditor';
 import { Form, Icon, Input, Button, Checkbox,Tag,Row,Col,Upload,Radio,Cascader,DatePicker, TimePicker, message  } from 'antd';
-import {dataURLtoBlob,ImgUrl} from '../services/common'
+import {dataURLtoBlob,ImgUrl,getBase64} from '../services/common'
 
 
 
@@ -30,10 +30,10 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
+  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords} =content;
   //console.log(ColumnList)
   const options = ColumnList;
-
+  //const {getRelUserList} =setting;
   const ArticleEditorProps = {
     ColumnList,
     firstC,
@@ -46,24 +46,48 @@ function Release_article({location,dispatch,router,content,setting}) {
     setting,
     saveId,
     location,
+    artSorce,
+    SensitiveWords,
+    titleWords,
     handlsearch(values){
        
-        //var ImgSrc = localStorage.getItem("img");
-        var Html = localStorage.getItem("html");
-        var Text = localStorage.getItem("text");
-        //console.log(Html)
-       
-        
-        if(Text == '') {
-          message.warn('请输入正文')
-          return false
-        }
-       // console.log(values)
-        
     },
     editorText(h,t){
         text  = t;
         html  = h;
+    },
+    uploadImg(img){
+      //console.log(e.target.src)
+      //var img = e.target.src;
+      getBase64(img)
+            .then(function(base64){
+              //console.log(base64);//处理成功打印在控制台
+              var s = dataURLtoBlob(base64)
+              let formData = new FormData();
+                    formData.append('name', 'file');
+                    formData.append('file', s);
+                    let config = {
+                        headers: {
+                          'Content-Type': 'multipart/form-data'
+                        }
+                    }
+              axios.post(ImgUrl, formData, config).then(res=>{
+                       res =res.data; 
+                      
+                        if (res.errorCode == 10000) {
+                            console.log(res) 
+                           //imgUrl =res.data[0].filePath;
+                            dispatch({
+                              type:'content/hidefpModal',
+                              payload:{
+                                imgUrl:res.data[0].filePath
+                              }
+                            })    
+                        }
+                    })
+            },function(err){
+                  console.log(err);//打印异常信息
+            });      
     }
   }
   const BgModalProps ={

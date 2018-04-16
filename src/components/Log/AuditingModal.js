@@ -31,11 +31,13 @@ const AuditingModal = ({
 	selectList,
 	ColumnList,
 	onCancel,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -62,12 +64,17 @@ const AuditingModal = ({
 			name: ''
 		});
 	}
+	function afterClose() {
+		resetFields()
+	}
 	const modalOpts = {
 		title: '审核处理',
 		visible,
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
+		confirmLoading:confirmLoading,
+		afterClose: afterClose,
 
 	};
 	

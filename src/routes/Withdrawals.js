@@ -12,15 +12,19 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import Manage from '../components/Finance/Mange';
+import ManageTi from '../components/Finance/MangeTi';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import stytes from './UserLoginPage.css';
 import ExamineModal from '../components/Finance/ExamineModal';
 import {timeFormat,GetRequest} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,Tabs,DatePicker,Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const TabPane = Tabs.TabPane;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function Withdrawals({location,dispatch,finance,router,}) {
 	
@@ -29,7 +33,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {WIthdrawList,currentPage,totalNumber,loading,ExamineVisible,selectList} =finance;
+	const {WIthdrawList,currentPage,totalNumber,loading,ExamineVisible,selectList,ActiveKey} =finance;
 
 
 	const ManageProps ={
@@ -37,36 +41,6 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		currentPage,
 		total:totalNumber,
 		loading,
-		handlsearch(values){
-			if(values.time ==undefined){
-				/*dispatch({
-					type:'finance/getAccountWIthdraw',
-					payload:{
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status)
-					}
-				})*/
-			dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
-				"&mobile="+values.mobile+"&status="+values.status
-				))
-			}else{
-				/*dispatch({
-					type:'finance/getAccountWIthdraw',
-					payload:{
-						email:values.email,
-						mobile:values.mobile,
-						status:parseInt(values.status),
-						startDate:timeFormat(new Date(values.time[0])),
-						endDate:timeFormat(new Date(values.time[1])),
-					}
-				})*/
-				dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
-				"&mobile="+values.mobile+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+
-				"&endDate="+timeFormat(new Date(values.time[1]))
-				))
-			}
-		},
 		Examine(reacord){
 			console.log(reacord)
 			Modal.info({
@@ -78,7 +52,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 				    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>提币地址</td><td>{reacord.toAddress}</td></tr>
 				    			<tr><td>提币数量</td><td>{reacord.withdrawAmount}</td><td>手续费</td><td>{reacord.poundageAmount}</td></tr>
 				    			<tr><td>实际到账数量</td><td>{reacord.accountAmount}</td><td>当前状态</td><td>{reacord.statusDisplay}</td></tr>
-				    			<tr><td>到账时间</td><td>{reacord.accountTime==null?"——":reacord.accountTime}</td></tr>
+				    			<tr><td>到账时间</td><td>{reacord.accountTime==null?"——":reacord.accountTime}</td><td>备注</td><td>{reacord.remark==null?"——":reacord.remark}</td></tr>
 			    			</tbody>
 			    	      </table>
 			    	),
@@ -111,7 +85,88 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		}
 	}
 
-
+	function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input type="phone" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='提现时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker/>
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='提现状态'>
+		            {getFieldDecorator('status')(
+		              <Select   placeholder="请选择">
+					      <Option value="0">审核中</Option>
+					      <Option value="1">已通过</Option>
+					      <Option value="2">已撤销</Option>
+					  </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email"placeholder="请输入邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input type="phone" placeholder="请输入手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function handlsearch(values){
+			if(values.time ==undefined){
+			dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
+				"&mobile="+values.mobile+"&status="+values.status
+				))
+			}else{
+				dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
+				"&mobile="+values.mobile+"&status="+values.status+"&startDate="+timeFormat(new Date(values.time[0]))+
+				"&endDate="+timeFormat(new Date(values.time[1]))
+				))
+			}
+	}
 	const  ExamineModalProps ={
 		visible:ExamineVisible,
 		selectList,
@@ -145,10 +200,42 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		}
 
 	}
+
+	function callback(key){
+		console.log(key)
+		dispatch({
+			type:"finance/selectActiveKey",
+			payload:{
+				ActiveKey:key
+			}
+		})
+	}
+	class TableList extends React.Component {
+			  state = {
+			    defaultActiveKey: ActiveKey, 
+			    selectedRowKeys:[],
+			  };
+			  render() {
+			   const {defaultActiveKey}=this.state
+			    return (
+			      <Tabs defaultActiveKey={defaultActiveKey} onChange={callback}>
+				    <TabPane tab="钛值TV" key="1">
+				    <Manage {...ManageProps}/>
+				    <ExamineModal {...ExamineModalProps}/>
+				    </TabPane>
+				    <TabPane tab="钛小白" key="2">
+				    <ManageTi />
+				    <ExamineModal {...ExamineModalProps}/>
+				    </TabPane>
+				</Tabs>
+			    );
+			  }
+    }
 	return (
 			<div>
-						<Manage {...ManageProps}/>
-						<ExamineModal {...ExamineModalProps}/>
+				<WrappedAdvancedSearchForm getFieldsFirst={getFieldsFirst} getFields = {getFields} handlsearch={handlsearch}/>
+				<Manage {...ManageProps}/>
+				<ExamineModal {...ExamineModalProps}/>
 			</div>
 
 	);

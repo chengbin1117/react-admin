@@ -10,111 +10,101 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { Modal,message} from 'antd';
+import { Form, Row, Col, Input, Button, Modal, message, Select, DatePicker } from 'antd';
 import LayoutContainer from '../components/Layout';
 import Content_Comment from '../components/Content/Content_Comment';
 import Content_CommentSet_Modal from '../components/Content/Content_CommentSet_Modal';
 import Content_CommentSetShow_Modal from '../components/Content/Content_CommentSetShow_Modal';
 import ExamineModal from '../components/Content/ExamineModal';
-import {timeFormat,GetRequest} from '../services/common';
+import { timeFormat, GetRequest } from '../services/common';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
+const Option = Select.Option;
+const FormItem = Form.Item;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
+function ContentComment({ location, dispatch, router, content }) {
 
-function ContentComment({location,dispatch,router,content}) {
-    
-    const {CommentList,CommentSetVisible,showSetVisible,selectList,ExamineVisible,loading,totalNumber,currentPage} = content;
+	const { CommentList, CommentSetVisible, showSetVisible, selectList, ExamineVisible, loading, totalNumber, currentPage } = content;
 
-	let token =localStorage.getItem("Kgtoken");
-	if(!token) {
+	let token = localStorage.getItem("Kgtoken");
+	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
 
-	const Content_CommentProps ={
-		data:CommentList,
+	const Content_CommentProps = {
+		data: CommentList,
 		loading,
 		currentPage,
-		total:totalNumber,
-		opinionSetModal(){
+		total: totalNumber,
+		opinionSetModal() {
 			dispatch({
-				type:"content/showCommentSet"
+				type: "content/showCommentSet"
 			})
 		},
-		showSet(record){
+		showSet(record) {
 			dispatch({
-				type:"content/showSetModal",
-				payload:{
-					selectList:record
+				type: "content/showSetModal",
+				payload: {
+					selectList: record
 				}
 			})
 		},
-		confirm(record){
+		confirm(record) {
 			dispatch({
-				type:"content/deleteComment",
-				payload:{
-					commentId:record.commentId,
-					search:location.search
+				type: "content/deleteComment",
+				payload: {
+					commentId: record.commentId,
+					search: location.search
 				}
 			})
 		},
-		showSets(selectList){
+		showSets(selectList) {
 			console.log(selectList)
-			var Ids =""
-				for(var i in selectList){
-				    Ids +=selectList[i].commentId+","
+			var Ids = ""
+			for (var i in selectList) {
+				Ids += selectList[i].commentId + ","
 			}
 
 			dispatch({
-				type:"content/showSetModal",
-				payload:{
-					selectList:Ids
+				type: "content/showSetModal",
+				payload: {
+					selectList: Ids
 				}
 			})
 		},
-		audit(record){
+		audit(record) {
 			dispatch({
-				type:"content/showExamineModal",
-				payload:{
-					selectList:record.commentId
+				type: "content/showExamineModal",
+				payload: {
+					selectList: record.commentId
 				}
 
 			})
 		},
-		handlsearch(values){
-			if(values.time!=undefined){
-				
-				dispatch(routerRedux.push('/content/content_comment?page=1'+
-					"&content="+values.content+"&status="+values.status+"&startDate="+timeFormat(values.time[0])+
-					"&endDate="+timeFormat(values.time[1])+"&displayStatus="+values.displayStatus
-					))
-			}else{
-				dispatch(routerRedux.push('/content/content_comment?page=1'+
-					"&content="+values.content+"&status="+values.status+"&displayStatus="+values.displayStatus
-				))
-				
-				
-			}
-		},
-		changepage(page){
-			const search =GetRequest(location.search);
-			dispatch(routerRedux.push('/content/content_comment?page='+page+
-				"&content="+search.content+"&status="+search.status+"&startDate="+search.startDate+
-					"&endDate="+search.endDate+"&displayStatus="+search.displayStatus
-				))
+		changepage(page) {
+			const search = GetRequest(location.search);
+			dispatch(routerRedux.push('/content/content_comment?page=' + page +
+				"&content=" + search.content + "&status=" + search.status + "&startDate=" + search.startDate +
+				"&endDate=" + search.endDate + "&displayStatus=" + search.displayStatus+ "&commentUser=" + search.commentUser
+				+ "&userMobile=" + search.userMobile+ '&articleTitle='+search.articleTitle
+			))
 		}
 	}
 
 	//评论设置
-	const Content_CommentSet_ModalProps ={
-		visible:CommentSetVisible,
-		onCancel(){
+	const Content_CommentSet_ModalProps = {
+		visible: CommentSetVisible,
+		onCancel() {
 			dispatch({
-				type:"content/hideCommentSet"
+				type: "content/hideCommentSet"
 			})
 		},
-		onOk(values){
+		onOk(values) {
 			//console.log(values)
 			dispatch({
-				type:"content/commentSet",
-				payload:{
-					commentSet:values.set == "public"?true:false,
+				type: "content/commentSet",
+				payload: {
+					commentSet: values.set == "public" ? true : false,
 				}
 			})
 		}
@@ -122,23 +112,23 @@ function ContentComment({location,dispatch,router,content}) {
 	}
 
 	//显示设置
-	const Content_CommentSetShow_ModalProps ={
-		visible:showSetVisible,
+	const Content_CommentSetShow_ModalProps = {
+		visible: showSetVisible,
 		selectList,
-		onOk(values,selectList){
+		onOk(values, selectList) {
 			console.log(selectList)
 			dispatch({
-				type:"content/setcommentStatus",
-				payload:{
-					commentIds:String(selectList),
-					displayStatus:values.set =="public"?true:false,
-					search:location.search,
+				type: "content/setcommentStatus",
+				payload: {
+					commentIds: String(selectList),
+					displayStatus: values.set == "public" ? true : false,
+					search: location.search,
 				}
 			})
 		},
-		onCancel(){
+		onCancel() {
 			dispatch({
-				type:"content/hideSetModal"
+				type: "content/hideSetModal"
 			})
 		},
 
@@ -146,47 +136,168 @@ function ContentComment({location,dispatch,router,content}) {
 
 	//审核
 	const ExamineModalProps = {
-		visible:ExamineVisible,
+		visible: ExamineVisible,
 		selectList,
-		onCancel(){
+		onCancel() {
 			dispatch({
-				type:"content/hideExamineModal",
+				type: "content/hideExamineModal",
 			})
 		},
-		onOk(data,record){
+		onOk(data, record) {
 			console.log(record)
-			if(data.radio =="1"){
+			if (data.radio == "1") {
 				dispatch({
-					type:'content/auditComment',
-					payload:{
-						commentId:record,
-						status:parseInt(data.radio),
-						search:location.search
+					type: 'content/auditComment',
+					payload: {
+						commentId: record,
+						status: parseInt(data.radio),
+						search: location.search
 					}
 				})
-			}else{
+			} else {
 
 				dispatch({
-					type:'content/auditComment',
-					payload:{
-						commentId:record,
-						status:parseInt(data.radio),
-						refuseReason:data.text,
-						search:location.search
+					type: 'content/auditComment',
+					payload: {
+						commentId: record,
+						status: parseInt(data.radio),
+						refuseReason: data.text,
+						search: location.search
 					}
 				})
-				
-			
-		    }
-	    }
+
+
+			}
+		}
+	}
+
+	function getFields(getFieldDecorator, formItemLayout) {
+		const children = [];
+		children.push(
+			<div key="0">
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='评论内容'>
+						{getFieldDecorator('content')(
+							<Input placeholder="请输入评论内容" />
+						)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='评论时间'>
+						{getFieldDecorator('time')(
+							<RangePicker />
+						)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='状态'>
+						{getFieldDecorator('status')(
+							<Select placeholder="请选择" allowClear={true}>
+								<Option value="0" >审核中</Option>
+								<Option value="1">已通过</Option>
+								<Option value="2">未通过</Option>
+							</Select>
+						)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='显示状态'>
+						{getFieldDecorator('displayStatus')(
+							<Select placeholder="请选择" allowClear={true}>
+								<Option value="1">显示</Option>
+								<Option value="2">隐藏</Option>
+							</Select>
+						)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='文章标题'>
+						{getFieldDecorator('articleTitle')(
+							<Input placeholder="请输入文章标题" />
+						)}
+					</FormItem>
+				</Col>
+				<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='评论人'>
+			            {getFieldDecorator('commentUser')(
+			              <Input placeholder="请输入评论人" />
+			            )}
+			          </FormItem>
+			    </Col>
+				<Col span={8} style = {{display:'block'}}>
+			        <FormItem {...formItemLayout} label='手机号'>
+			            {getFieldDecorator('userMobile')(
+			              <Input placeholder="请输入手机号" />
+			            )}
+			        </FormItem>
+			    </Col>
+			</div>
+		);
+		return children;
+	}
+	function getFieldsFirst(getFieldDecorator, formItemLayout) {
+		const children = [];
+		children.push(
+			<div key="0">
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='评论内容'>
+						{getFieldDecorator('content')(
+							<Input placeholder="请输入评论内容" />
+						)}
+					</FormItem>
+				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='评论时间'>
+						{getFieldDecorator('time')(
+							<RangePicker />
+						)}
+					</FormItem>
+				</Col>
+
+			</div>
+		);
+		return children;
+	}
+	function handlsearch(values) {
+		if(values.content==""||values.content==undefined){
+			values.content = undefined
+		}else{
+			values.content = Base64.encode(values.content)  
+		}
+		if(values.articleTitle==''||values.articleTitle==undefined){
+			values.articleTitle = undefined
+		}else{
+			values.articleTitle = Base64.encode(values.articleTitle)  
+		}
+		if(values.commentUser == ""||values.commentUser==undefined){
+			values.commentUser = undefined
+		}else{
+			values.commentUser = Base64.encode(values.commentUser)
+		}
+		if (values.time != undefined) {
+
+			dispatch(routerRedux.push('/content/content_comment?page=1' +
+				"&content=" + values.content + "&status=" + values.status + '&articleTitle='+values.articleTitle+"&startDate=" + timeFormat(values.time[0]) +
+				"&endDate=" + timeFormat(values.time[1]) + "&displayStatus=" + values.displayStatus+ "&commentUser=" + values.commentUser
+				+ "&userMobile=" + values.userMobile
+			))
+		} else {
+			dispatch(routerRedux.push('/content/content_comment?page=1' +
+				"&content=" + values.content + "&status=" + values.status + "&displayStatus=" + values.displayStatus+ "&commentUser=" + values.commentUser
+				+ "&userMobile=" + values.userMobile+ '&articleTitle='+values.articleTitle
+			))
+
+
+		}
 	}
 	return (
-			<div >
-				<Content_Comment {...Content_CommentProps}/>
-				<Content_CommentSet_Modal {...Content_CommentSet_ModalProps}/>
-				<Content_CommentSetShow_Modal {...Content_CommentSetShow_ModalProps} />
-				<ExamineModal {...ExamineModalProps}/>
-			</div>
+		<div >
+			<WrappedAdvancedSearchForm getFieldsFirst={getFieldsFirst} getFields={getFields} handlsearch={handlsearch} />
+			<Content_Comment {...Content_CommentProps} />
+			<Content_CommentSet_Modal {...Content_CommentSet_ModalProps} />
+			<Content_CommentSetShow_Modal {...Content_CommentSetShow_ModalProps} />
+			<ExamineModal {...ExamineModalProps} />
+		</div>
 
 	);
 }

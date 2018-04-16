@@ -20,15 +20,17 @@
   float: left;
 
 }
-.trigger{
-	font-size:26px;
-	margin-left: 20px;
-	cursor: pointer;
-
+.trigger {
+  font-size: 20px;
+  line-height: 64px!important;
+  cursor: pointer;
+  transition: all .3s, padding 0s;
+  padding: 0 24px;
+  
 }
 .trigger:hover{
-	color:#1890ff;
-
+  background: #e6f7ff;
+  color:#1890ff;
 }
 .rename{
 	font-family: "微软雅黑"
@@ -208,6 +210,12 @@
 	padding-right:20px; 
 	cursor: pointer;
 	color:#1890ff;
+}
+.sider {
+  min-height: 100vh;
+  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+  position: relative;
+  z-index: 10;
 }
 .footer{
 	width:100%;

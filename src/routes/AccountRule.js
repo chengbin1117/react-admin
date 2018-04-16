@@ -17,6 +17,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 import UserList from '../components/Setting/UserList';
 import AdduserModal from '../components/Setting/AddUserModal.js';
+import GetRelUser from '../components/Setting/GetRelUser.js';
 import EditoruserModal from '../components/Setting/EditorUserModal.js';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import ManageModal from '../components/Setting/ManageModal';
@@ -31,7 +32,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
+	const { getRelUserList,GetRelUserViible,deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
 	//console.log('getAuthTree',getAuthTree)
 	//生成随机密码
 	function upsetArr(arr){
@@ -77,7 +78,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 		const children = [];
 	    children.push(
 	    	<div key="0">
-	    		<Col span={8} style = {{display:'block'}}>
+	    		<Col  md={8} sm={24} style = {{display:'block'}}>
 				   	<FormItem
 			          label="用户名"
 			          {...formItemLayout}
@@ -89,7 +90,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 			          )}
 	               </FormItem>
                 </Col>
-                <Col span={8} style = {{display:'block'}}>
+                <Col  md={8} sm={24} style = {{display:'block'}}>
 					 <FormItem
 			          label="手机号"
 			          {...formItemLayout}
@@ -110,11 +111,11 @@ function AccountRule({location,dispatch,setting,router,}) {
 	          {getFieldDecorator('postId', {
 	            
 	          })(
-	                <Select placeholder="请选择">
-		              {PostList.map((item,index)=>
-								<Option key={index} value={item.postId+""}>{item.postName}</Option>
-					  )}
-		            </Select>
+                <Select placeholder="请选择">
+	              {PostList.map((item,index)=>
+							<Option key={index} value={item.postId+""}>{item.postName}</Option>
+				  )}
+	            </Select>
 	          )}
 	        </FormItem>
 	    	</Col>
@@ -122,7 +123,38 @@ function AccountRule({location,dispatch,setting,router,}) {
 	      );
 	    return children;
 	}
-
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+	    		<Col  md={8} sm={24} style = {{display:'block'}}>
+				   	<FormItem
+			          label="用户名"
+			          {...formItemLayout}
+			        >
+			          {getFieldDecorator('username', {
+			          
+			          })(
+			            <Input />
+			          )}
+	               </FormItem>
+                </Col>
+                <Col  md={8} sm={24} style = {{display:'block'}}>
+					 <FormItem
+			          label="手机号"
+			          {...formItemLayout}
+			        >
+			          {getFieldDecorator('mobile', {
+			           
+			          })(
+			            <Input />
+			          )}
+		            </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
 	//添加账号
 	
 	function addUser() {
@@ -376,29 +408,42 @@ function AccountRule({location,dispatch,setting,router,}) {
 				})
 
 			}else{
-				Modal.confirm({
-					title: "关联前台用户",
-					iconType:null,
-					content:(
-						      <div>
-						      	   <p>手机号：{record.kgUsername}</p>
-						      </div>
-						   ),
-					okText : '修改',
-					cancelText:"取消",
-					onOk() {
-					    dispatch({
-					    	type:"setting/showRelationModal",
-					    	payload:{
-					    		item:record
-					    	}
-					    })
+				dispatch({
+					type:"setting/getRelUser",
+					payload:{
+						sysUserId:record.id
+					}
 
-					},
-					onCancel() {
-					      console.log('Cancel');
-					},			
 				})
+				dispatch({
+					type:"setting/showGetRelUserModal",
+					payload:{
+						item:record
+					}
+				})
+				// Modal.confirm({
+				// 	title: "关联前台用户",
+				// 	iconType:null,
+				// 	content:(
+				// 		      <div>
+				// 		      	   <p>手机号：{record.kgUsername}</p>
+				// 		      </div>
+				// 		   ),
+				// 	okText : '修改',
+				// 	cancelText:"取消",
+				// 	onOk() {
+				// 	    dispatch({
+				// 	    	type:"setting/showRelationModal",
+				// 	    	payload:{
+				// 	    		item:record
+				// 	    	}
+				// 	    })
+
+				// 	},
+				// 	onCancel() {
+				// 	      console.log('Cancel');
+				// 	},			
+				// })
 			}
 
 
@@ -448,10 +493,50 @@ function AccountRule({location,dispatch,setting,router,}) {
 			}
 		
 	}
+
+	//已关联的用户列表
+	//console.log(getRelUserList)
+	const GetRelUserProps ={
+		visible:GetRelUserViible,
+		data:getRelUserList,
+		item,
+		onCancel(){
+			dispatch({
+				type:"setting/hideGetRelUserModal",
+				payload:{
+					item:{}
+				}
+			})
+		},
+		handleDel(record,item){
+			dispatch({
+				type:"setting/unsetKgUser",
+				payload:{
+					relId:record.relId,
+					sysUserId:item.id,
+				}
+			})
+		},
+		addGetUser(item){
+			dispatch({
+				type:"setting/hideGetRelUserModal",
+				payload:{
+					//item:{}
+				}
+			})
+			dispatch({
+				type:"setting/showRelationModal",
+				payload:{
+					item:item
+				}
+			})
+		}
+
+	}
 	return (
 			<div className={styles.Indexbox}>
 				<div>
-					<WrappedAdvancedSearchForm getFields = {getFields}  handlsearch={handlsearch}/>
+					<WrappedAdvancedSearchForm getFieldsFirst ={getFieldsFirst} getFields = {getFields}  handlsearch={handlsearch}/>
 				</div>
 				<div className= {styles.addAccount}>
 					<Button type="primary" size='large' onClick = {addUser} >添加账号</Button><Button type="primary" size='large' className={styles.post} onClick = {manage}>管理岗位</Button>
@@ -463,6 +548,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 				<AddPostModal {...AddPostModalProps}/>
 				<RelationModal {...RelationModalProps}/>
 				<EditorPostModal {...EditorPostModalProps}/>
+				<GetRelUser {...GetRelUserProps}/>
 			</div>
 
 	);

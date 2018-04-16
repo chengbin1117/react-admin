@@ -193,3 +193,166 @@ export async function logOut(params) {
 	     }
 	);
 }
+
+//邀新奖励
+export async function getInviteBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/getInviteBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+//冻结、解冻用户接口
+export async function freezeUser(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/freezeUser?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+//邀新记录列表
+export async function getInviteUserList(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/getInviteUserList?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+//确认审查接口
+export async function checkUser(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/checkUser?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//查看师傅详情信息
+export async function getParentUserInfo(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/getParentUserInfo?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//查询徒弟记录列表
+export async function getSubUserList(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/getSubUserList?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//用户解绑接口
+export async function unBindUser(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/unBindUser?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//实名认证奖励列表
+export async function realnameBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/realnameBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//成为专栏作家奖励
+export async function userColumnBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/userColumnBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//发文奖励列表
+export async function publishArticleBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/bonus/publishArticleBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//解冻/冻结发文奖励
+export async function freezePublishBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/freezePublishBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//优质文章标记
+export async function markHighQualityArticles(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/markHighQualityArticles?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//额外奖励
+export async function addedBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/addedBonus?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//后台管理用户列表
+export async function getSysUsers(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/sysuser/getSysUsers?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+

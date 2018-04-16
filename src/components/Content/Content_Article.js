@@ -1,24 +1,22 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Pagination,Popconfirm,Select,Cascader } from 'antd';
-import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
+import { Form, Row, Col, Input, Button,Table,Tabs,Pagination,Popconfirm,Select,Cascader,Divider } from 'antd';
+
 import style_pagination from '../pagination.css';
-import { routerRedux } from 'dva/router';
+import { routerRedux,Link} from 'dva/router';
+const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const Option = Select.Option;
 import {message,Badge} from 'antd';
-const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList}) => {
+const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList,sorterUserList}) => {
 	const options = ColumnList;
 	let userId =localStorage.getItem("userId");
 	//console.log("loading",loading)
-	function release() {
-		localStorage.removeItem("articleText");
-		dispatch(routerRedux.push('/content/release_article?userId='+userId))
-		
-	}
+	
 	const columns = [{
 	  title: 'ID',
 	  dataIndex: 'articleId',
 	  key: 'articleId',
+	  width:100
 	}, {
 	  title: '标题',
 	  dataIndex: 'articleTitle',
@@ -85,6 +83,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  title: '访问量',
 	  dataIndex: 'bowseNum',
 	  key: 'bowseNum',
+	  sorter: true,
 	},{
 	  title: '排序',
 	  dataIndex: 'displayOrder',
@@ -100,80 +99,25 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  key: 'addrss',
 	  render: (text, record) => (
 	    <span>
-	      <a onClick={()=>editorItem(record)} className = "action_font" >编辑</a>
-	      <a onClick={()=>article(record)} className = "action_font" style={{marginLeft:10}} disabled={record.publishStatus==2?false:true}>审核</a>
-	      <a onClick={()=>setShowModal(record)} style={{marginLeft:10}} className = "action_font" disabled={record.publishStatus==1?false:true}>显示设置</a>
-	      <a onClick={()=>delArticle(record,getBonusList)} style={{marginLeft:10}} className = "action_font">查看阅读奖励</a>
+	      <a onClick={()=>editorItem(record)} >编辑</a>
+	      <Divider type="vertical" />
+	      <a onClick={()=>setShowModal(record)} disabled={record.publishStatus==1?false:true}>显示设置</a>
+	      <Divider type="vertical" />
+	      <a onClick={()=>delArticle(record,getBonusList)}  >查看阅读奖励</a>
 	    </span>
 	  )
 	}];
 	const hasSelected = ArticleList.length > 0;
-	function getFields(getFieldDecorator,formItemLayout){
-			const children = [];
-	    	children.push(
-		    	<div key="0">
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='文章ID'>
-			            {getFieldDecorator('Id',{
-			            	rules:[
-			            	  {required:false,pattern:/^[0-9]*$/,message:"文章ID只能输入数字"}
-			            	]
-			            })(
-			              <Input placeholder="请输入" />
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='标题'>
-			            {getFieldDecorator('title')(
-			              <Input placeholder="请输入" />
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='标签'>
-			            {getFieldDecorator('tags')(
-			              <Input placeholder="请输入" />
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='所属栏目'>
-			            {getFieldDecorator('cloumn')(
-			              <Cascader options={options}  placeholder="请选择文章栏目" />
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='状态' >
-			            {getFieldDecorator('status')(
-			              <Select placeholder="请选择" allowClear={true}>
-			              	<Option value="0">草稿</Option>
-			              	<Option value="1">通过</Option>
-			              	<Option value="2">审核中</Option>
-			              	<Option value="3">不通过</Option>
-			              </Select>
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='显示状态' >
-			            {getFieldDecorator('displayStatus')(
-			              <Select placeholder="请选择" allowClear={true}>
-			              	<Option value="1">正常显示</Option>
-			              	<Option value="2">首页置顶</Option>
-			              	<Option value="3">首页推荐</Option>
-			              	<Option value="4">前台隐藏</Option>
-			              </Select>
-			            )}
-			          </FormItem>
-			        </Col>
-		        </div>
-	      	);
-	    return children;
-	}
-	function onChange (pageNumber){
-		console.log()
+	
+	function onChange (key){
+		
+		if(key=="1"){
+			console.log(key)
+			dispatch(routerRedux.push('/content/content_article?page=1'))
+		}else if(key == "2"){
+			console.log(key)
+			dispatch(routerRedux.push('/content/videoList?page=1'))
+		}
 	}
 	class App extends React.Component {
 		  state = {
@@ -195,6 +139,10 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	      onChange = (page)=>{
 	      	changepage(page)
 	      }
+	      handleTableChange= (pagination, filters, sorter)=>{
+			    	// /console.log(filters,sorter)
+			    	sorterUserList(sorter)
+			    }
 		  render() {
 		    const { selectedRowKeys,selectedRows } = this.state;
 		    const rowSelection = {
@@ -204,7 +152,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 		    const hasSelected = selectedRowKeys.length > 0;
 		    return (
 		    	<div>
-		             <Table bordered rowSelection={rowSelection} columns={columns} dataSource={ArticleList} pagination = {false}  rowKey={record => record.articleId} loading={loading} locale={{emptyText:"暂无数据"}}/>
+		             <Table rowSelection={rowSelection} columns={columns} dataSource={ArticleList} pagination = {false}  rowKey={record => record.articleId} loading={loading} onChange={this.handleTableChange}/>
                      <Button type="primary" onClick={()=>onShowMOdal(selectedRows)} disabled={!hasSelected} size = 'large' style={{marginTop:"20px"}}>批量设置显示状态</Button>
                      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 		        </div>
@@ -213,12 +161,16 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 		}
   return (
     <div>
-      <Button type="primary" size = 'large' onClick={release} style={{marginBottom:"20px"}}>发布文章</Button>
-      <WrappedAdvancedSearchForm getFields = {getFields} handlsearch={handlsearch}/>
+      
       <p>当前共有文章：{total}</p>
-      	<App />
-      	
-        
+       <Tabs defaultActiveKey="1" onChange={onChange}>
+	    <TabPane tab={<span>文章</span>} key="1">
+      	    <App />
+      	</TabPane>
+      	<TabPane tab={<span>视频</span>} key="2">
+				     
+	    </TabPane>
+	  </Tabs>
     </div>
   );
 };

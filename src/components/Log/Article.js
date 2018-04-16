@@ -9,7 +9,8 @@ import {
   Table,
   Icon,
   Switch,
-  Pagination
+  Pagination,
+  Divider
 } from 'antd';
 import style_pagination from '../pagination.css'
 /*import styles from './purchaseList.css'*/
@@ -58,8 +59,9 @@ function ArticleList({
     render: (text, record, i) => {
 			return (
 				<div>
-              <a data-key={i} onClick={() => onEditItem(record)} style = {{marginRight:10}}>审核</a>
-              <a data-key={i} onClick={() => onPreview(record)} style = {{marginRight:10}}>预览</a>
+              <a data-key={i} onClick={() => onEditItem(record)}>编辑</a>
+              <Divider type="vertical" />
+              <a data-key={i} onClick={() => onPreview(record)}>预览</a>
             </div>
 			)
 		}

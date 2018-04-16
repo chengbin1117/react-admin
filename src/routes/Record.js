@@ -13,14 +13,17 @@ import {
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
 import Transaction from '../components/Finance/Transaction';
+import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import {timeFormat,GetRequest} from '../services/common';
-
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message} from 'antd';
+import styles from './Record.css'
+import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,DatePicker,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const TabPane = Tabs.TabPane;
+const MonthPicker = DatePicker.MonthPicker;
+const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function Record({location,dispatch,finance,router,}) {
 	
@@ -29,7 +32,7 @@ function Record({location,dispatch,finance,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {AccountList,currentPage,totalNumber,loading,BusinessType} =finance;
+	const {AccountList,currentPage,totalNumber,loading,BusinessType,ActiveKey} =finance;
 	const TransactionProps = {
 			data:AccountList,
 			currentPage,
@@ -55,6 +58,14 @@ function Record({location,dispatch,finance,router,}) {
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>收入数额</td><td>{reacord.amount}</td></tr>
+					    			
+				    			</tbody>
+				    			}
+								{reacord.businessTypeId == 345 &&
+				    				<tbody>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>手机号</td><td>{reacord.mobile}</td></tr>
+					    			<tr><td>用户角色</td><td>{reacord.userRoleDisplay}</td><td>用户级别</td><td>{reacord.levelDisplay}</td></tr>
+					    			<tr><td>评论文章</td><td>{reacord.articleTitle!=null?reacord.articleTitle:"——"}</td><td>获取数额</td><td>{reacord.amount}</td></tr>
 					    			
 				    			</tbody>
 				    			}
@@ -91,8 +102,15 @@ function Record({location,dispatch,finance,router,}) {
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>充值地址</td><td>{reacord.address==null?"——":reacord.address}</td></tr>
-					    			<tr><td>充值数量</td><td>{reacord.bonusTotalPerson==null?"——":reacord.bonusTotalPerson}</td><td>到账时间</td><td>{reacord.flowDate}</td></tr>
+					    			<tr><td>充值数量</td><td>{reacord.amount==null?"——":reacord.amount}</td><td>到账时间</td><td>{reacord.flowDate}</td></tr>
 					    			<tr><td>当前状态</td><td>{reacord.status==null?"——":reacord.status}</td></tr>
+				    			</tbody>
+				    			}
+				    			{reacord.businessTypeId == 70 &&
+				    			<tbody>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>获取数额</td><td>{reacord.accountAmount}</td></tr>
 				    			</tbody>
 				    			}
 				    	      </table>
@@ -120,51 +138,143 @@ function Record({location,dispatch,finance,router,}) {
 			//router.push('/finance/record?page='+page+"&flowId="+search.flowId)
 		},
 		handlsearch(values){
-			console.log(values)
-			if(values.time ==undefined||values.time.length ==0){
-				dispatch(routerRedux.push(
-					'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
-					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
-					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
-					))
-				/*dispatch({
-					type:'finance/getAccount',
-					payload:{
-						flowId:values.flowId,
-						email:values.email,
-						mobile:values.mobile,
-						businessTypeId:parseInt(values.businessTypeId),
-						minAmount:parseFloat(values.minAmount),
-						maxAmount:parseFloat(values.maxAmount),
-						pageSize:25,
-					}
-				})*/
-			}else{
-				dispatch(routerRedux.push(
-					'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
-					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
-					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
-					+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
-					))
-				/*dispatch({
-					type:'finance/getAccount',
-					payload:{
-						flowId:values.flowId,
-						email:values.email,
-						mobile:values.mobile,
-						businessTypeId:parseInt(values.businessTypeId),
-						minAmount:parseFloat(values.minAmount),
-						maxAmount:parseFloat(values.maxAmount),
-						startDate:timeFormat(new Date(values.time[0])),
-						endDate:timeFormat(new Date(values.time[1])),
-					}
-				})*/
-			}
+			//console.log(values)
+			
 		}
 	}
 
+	function getFields(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='流水号'>
+		            {getFieldDecorator('flowId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入流水号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='类型'>
+		            {getFieldDecorator('businessTypeId')(
+		               <Select  placeholder="请选择">
+		               		{BusinessType!=undefined?BusinessType.map((item,index)=>
+		               			<Option  key={index} value={item.id+''}>{item.name}</Option>
+		               			)
+		               			
+		               			:null}
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+		         <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='交易时间'>
+		            {getFieldDecorator('time')(
+		              <RangePicker />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <Col span={12} style={{paddingLeft:68+"px"}}>
+		          	<FormItem {...formItemLayout} label='钛值'>
+		            {getFieldDecorator('minAmount')(
+		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
+		              	
+		            )}
+		          </FormItem>
+		          </Col>
+		          <Col span={2} style={{ textAlign: 'center',lineHeight:30+"px"}}>
+		          	<span >~</span>
+		          </Col>
+		          <Col span={10}>
+		          		<FormItem {...formItemLayout}>
+				            {getFieldDecorator('maxAmount')(
+				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
+				            )}
+				          </FormItem>
+		         </Col>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='手机号'>
+		            {getFieldDecorator('mobile',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="手机号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='邮箱'>
+		            {getFieldDecorator('email')(
+		              <Input type="email" placeholder="邮箱" />
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function getFieldsFirst(getFieldDecorator,formItemLayout){
+		const children = [];
+	    children.push(
+	    	<div key="0">
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='流水号'>
+		            {getFieldDecorator('flowId',{
+		            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"手机号只能输入数字"}
+			            	]
+		            })(
+		              <Input placeholder="请输入流水号" />
+		            )}
+		          </FormItem>
+		        </Col>
+		        <Col span={8} style = {{display:'block'}}>
+		          <FormItem {...formItemLayout} label='类型'>
+		            {getFieldDecorator('businessTypeId')(
+		               <Select  placeholder="请选择">
+		               		{BusinessType!=undefined?BusinessType.map((item,index)=>
+		               			<Option  key={index} value={item.id+''}>{item.name}</Option>
+		               			)
+		               			
+		               			:null}
+					    </Select>
+		            )}
+		          </FormItem>
+		        </Col>
+	        </div>
+	      );
+	    return children;
+	}
+	function handlsearch(values){
+		if(values.time ==undefined||values.time.length ==0){
+			dispatch(routerRedux.push(
+				'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
+				"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
+				"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
+				))
+		}else{
+			dispatch(routerRedux.push(
+				'/finance/record?page=1'+"&flowId="+values.flowId+"&email="+values.email+
+				"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
+				"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
+				+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
+				))
+		}
+	}
 	return (
 			<div>
+				<div className = {styles.changCoinType}>
+					<Link  className = {styles.activeColor} to = '/finance/record'>钛值</Link>
+					<Link   to = '/finance/recordTxb'>钛小白</Link>
+				</div>
+				<WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<Transaction {...TransactionProps}/>
 			</div>
 

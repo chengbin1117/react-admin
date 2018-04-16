@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router'
 import { Form, Row, Col, Input,message, Button,Table,Pagination,Popconfirm,DatePicker, TimePicker,Select} from 'antd';
-import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
+
 import style_pagination from '../pagination.css';
 import {options} from "../../services/common";
 
@@ -66,45 +66,7 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 	  },
 	};
 
-	function getFields(getFieldDecorator,formItemLayout){
-			const children = [];
-	    	children.push(
-		    	<div key= "0">
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='反馈内容'>
-			            {getFieldDecorator('content')(
-			              <Input placeholder="请输入反馈内容" />
-			            )}
-			          </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem
-				          {...formItemLayout}
-				          label="评论时间"
-				        >
-				          {getFieldDecorator('time')(
-				            <RangePicker locale={options}/>
-				          )}
-				        </FormItem>
-			        </Col>
-			        <Col span={8} style = {{display:'block'}}>
-			          <FormItem {...formItemLayout} label='阅读状态'>
-			            {getFieldDecorator('status')(
-			              <Select
-				              placeholder="请选择"
-				              onChange={this.handleSelectChange}
-				              allowClear={true}
-				            >
-				              <Option value="true">已读</Option>
-				              <Option value="false">未读</Option>
-				            </Select>
-			            )}
-			          </FormItem>
-			        </Col>
-		        </div>
-	      	);
-	    return children;
-	}
+	
 	function onChange(){
 
 	}
@@ -137,7 +99,6 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 			const hasSelected = selectedRowKeys.length > 0;
 			return (
 			    <div>
-			      <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} handlsearch={handlsearch}/>
 			      <div>
 			      	<p >当前共有反馈数：{total}</p>
 			      </div>

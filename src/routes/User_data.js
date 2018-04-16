@@ -12,8 +12,9 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
-import { Form, Row, Col, Input, Button, Icon,message,Radio} from 'antd';
-import {uploadUrl} from '../services/common'
+import { Form, Row, Col, Input, Button, Icon,message,Radio,Card} from 'antd';
+import {uploadUrl} from '../services/common';
+let Base64 = require('js-base64').Base64;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -36,7 +37,8 @@ function UserAdmin({location,dispatch,user,router,}) {
         sm: { span: 3 },
       },
     };
-    //console.log((userInfo.profile.otherPic).split(","))
+
+    
 	class DynamicRule extends React.Component {
 	  state = {
 	    checkNick: false,
@@ -118,10 +120,33 @@ function UserAdmin({location,dispatch,user,router,}) {
 	  }
 	}
 	const WrappedDynamicRule = Form.create()(DynamicRule);
-	
+	function reward(userInfo){
+
+		dispatch(routerRedux.push('/user/reward?page=1'+'&mobile='+userInfo.userMobile+"&userName="+Base64.encode(userInfo.userName)))
+	}
+	function invite(userInfo){
+		dispatch(routerRedux.push('/user/invite?page=1'+'&inviteUserId='+userInfo.userId))
+	}
+	function master(userInfo){
+		dispatch(routerRedux.push('/user/master?page=1'+'&inviteUserId='+userInfo.userId+"&name="+Base64.encode(userInfo.userName)))
+	}
 	return (
-			<div>
-				<h2 >基础信息</h2>
+			<Card>
+				<Card 
+				    title={<div>
+				    	<span style={{fontSize:24,fontWeight:'bold'}}>{userInfo&&userInfo.userName}的基础信息</span>
+				    	
+				    	<span>
+						<a className={stytes.btnn} style={{marginLeft:50}} onClick={()=>reward(userInfo)}>奖励明细</a>
+					
+						<a type="primary" size="large" className={stytes.btnn} onClick={()=>master(userInfo)}>师徒关系</a>
+					
+						<a type="primary" size="large" className={stytes.btnn} onClick={()=>invite(userInfo)}>邀新记录</a>
+					    </span>
+				    	</div>} 
+				    	bordered={false}
+				  
+				>
 					<table className={stytes.table}>
 						<tbody>
 						<tr>
@@ -130,7 +155,13 @@ function UserAdmin({location,dispatch,user,router,}) {
 						</tr>
 						<tr>
 						    <td>手机号</td><td>{userInfo.userMobile?userInfo.userMobile:"——"}</td>
-						    <td>用户角色</td><td>{userInfo.userRole?userInfo.userRoleDisplay:"——"}</td>
+						    <td>用户角色</td><td>
+						    	{(userInfo&&userInfo.applyRole==1)&&"普通用户"}
+						    	{(userInfo&&userInfo.applyRole==2)&&"个人"}
+						    	{(userInfo&&userInfo.applyRole==3)&&"媒体"}
+						    	{(userInfo&&userInfo.applyRole==4)&&"企业"}
+						    	{(userInfo&&userInfo.applyRole==5)&&"组织"}
+						     </td>
 						</tr>
 						<tr>
 						    <td>用户级别</td><td>{userInfo.userLevelDisplay?userInfo.userLevelDisplay:"——"}</td>
@@ -145,23 +176,28 @@ function UserAdmin({location,dispatch,user,router,}) {
 						    <td>审核时间</td><td>{userInfo.auditDate!=null?userInfo.auditDate:"——"}</td>
 						</tr>
 						<tr>
+						    <td>师傅</td><td>{userInfo.parentUser!=null?userInfo.parentUser:"——"}</td>
 						    <td>锁定状态</td><td>{userInfo.lockStatusDisplay!=null?userInfo.lockStatusDisplay:"——"}</td>
-						    <td></td><td>——</td>
 						</tr>
 						</tbody>
 					</table>
-				<h2 className={stytes.title}>活跃数据</h2>
+				</Card>
+				<Card title="活跃数据" bordered={false}>
 				    <table className={stytes.table}>
 				    <tbody>
 						<tr><td>评论数</td><td>{userInfo.commentNum!=null?userInfo.commentNum:"——"}</td>
 						<td>浏览数</td><td>{userInfo.bowseNum!=null?userInfo.bowseNum:"——"}</td></tr>
 						<tr><td>收藏数</td><td>{userInfo.collectNum!=null?userInfo.collectNum:"——"}</td>
 						<td>发文数</td><td>{userInfo.articleNum!=null?userInfo.articleNum:"——"}</td></tr>
-						<tr><td>分享数</td><td>{userInfo.shareNum!=null?userInfo.shareNum:"——"}</td>
+						<tr>
+							<td>分享数</td><td>{userInfo.shareNum!=null?userInfo.shareNum:"——"}
+							</td>
+							<td></td><td></td>
 						</tr>
 					</tbody>	
 					</table>
-				<h2 className={stytes.title}>其他信息</h2>
+				</Card>
+				<Card title="其他信息" bordered={false}>
 				<div>
 					<p className={stytes.dataBox}><span className={stytes.span1}>专栏名称</span>
 					    <span className={stytes.span2}>
@@ -267,7 +303,8 @@ function UserAdmin({location,dispatch,user,router,}) {
 					      }
 						{(userInfo.auditStatus == 0 && userInfo.applyRole!=1)?<WrappedDynamicRule />:null}
 					</div>
-			</div>
+					</Card>
+			</Card>
 
 	);
 }

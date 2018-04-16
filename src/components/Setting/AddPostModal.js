@@ -89,8 +89,8 @@ const FormItem = Form.Item;
 		width:'800px',
 		okText:"确定",
 		cancelText:"取消",
-		afterClose:afterClose
-
+		afterClose:afterClose,
+		destroyOnClose:true
 	};
 
 	 const formItemLayout = {

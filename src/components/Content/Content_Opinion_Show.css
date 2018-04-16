@@ -18,7 +18,10 @@
 	display: inline-block;
 	font-size:18px;
 	color:#000;
-	margin-left: 60px;
+	z-index: 15;
+	position:absolute;
+	top:50;
+	right:0;
 }
 .active{
 	border-bottom: 2px solid #108ee9;
@@ -97,7 +100,14 @@
   border: 0px;
  cursor: pointer;
 }
-
+.draft{
+  background: rgba(255, 153, 0, 1)!important;
+  border: 0;
+}
+.preview{
+  background: rgba(51, 204, 255, 1)!important;
+  border: 0;
+}
 .actieImg{
 	width:220px;
 	height:144px;
@@ -131,6 +141,23 @@
 	font-size:22px;
 	border: 1px dashed #e5e5e5;
 	text-align: center;
+	border-radius: 4px;
+}
+.Imgx{
+	display: inline-block;
+	width:220px;
+	height:144px;
+	line-height: 144px;
+	font-size:22px;
+	text-align: center;
+	border-radius: 4px;
+	margin-right: 10px;
+	margin-top:10px;
+	cursor: pointer;
+}
+.tagLabel {
+	display: inline-block;
+	line-height:32px!important;
 }
 .alltotal{
 	border-top:1px solid #000; 
@@ -144,6 +171,9 @@
 	margin-left: 10px;
 	font-size:14px!important;
 	font-family: '微软雅黑';
+}
+.bonsCneter{
+	text-align: center;
 }
 .bonsList{
 	/*text-align: center;*/
@@ -164,4 +194,20 @@
 }
 .pre{
 	color:rgba(0, 0, 0, 0.35);
+}
+.previewBtn{
+	border:0!important;
+}
+.marginL{
+	margin-left:60px;
+}
+@media only screen and (max-width:1600px){
+	.marginL{
+		margin-left:28px;
+	}
+}
+@media only screen and (max-width:1366px){
+	.marginL{
+		margin-left:18px;
+	}
 }
