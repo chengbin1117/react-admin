@@ -232,7 +232,8 @@
   border:0px;
 }
 .article img{
-  /* width:100%; */
+  max-width:100%;
+  height:auto;
   display: inline-block;
   margin: 10px 0;
   border-radius: 5px;

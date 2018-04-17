@@ -398,17 +398,42 @@ function RelesEditor({
 	function previewPage() {
 
 		const data = { ...getFieldsValue() };
-		console.log(data)
+		var tagsName = "";
+		if (data.tag1 == undefined) {
+			tagsName = "";
+		} else if (data.tag1 !== undefined && data.tag2 == undefined && data.tag3 == undefined) {
+			tagsName = data.tag1;
+		} else if (data.tag1 != undefined && data.tag2 != undefined && data.tag3 == undefined) {
+			tagsName = data.tag1 + ',' + data.tag2
+		}
+		else if (data.tag4 == undefined && data.tag5 == undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
+		} else if (data.tag4 != undefined && data.tag5 == undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4
+		} else if (data.tag4 != undefined && data.tag5 != undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
+		}
+
+		if(data.type=="2"){
+			localStorage.setItem("previewType", data.articleLink);
+			localStorage.setItem("previewLink", data.articleLink);
+			localStorage.setItem("previewSource", data.articleSource);
+		}
 		if (data.text == undefined) {
 			localStorage.setItem("previewTitle", data.articleTitle);
 			localStorage.setItem("previewText", "");
 			localStorage.setItem("previewartic", "");
 			localStorage.setItem("previewdec", "");
+			localStorage.setItem("previewdec", "");
+			localStorage.setItem("previewType", data.type);
+			localStorage.setItem("previewTag", tagsName);
 		} else {
 			localStorage.setItem("previewTitle", data.articleTitle);
 			localStorage.setItem("previewText", data.text.txt.html());
 			localStorage.setItem("previewartic", data.artic);
+			localStorage.setItem("previewType", data.type);
 			localStorage.setItem("previewdec", data.text.txt.text().substring(0, 30));
+			localStorage.setItem("previewTag", tagsName);
 		}
 
 
