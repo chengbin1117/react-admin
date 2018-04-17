@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC} =content;
+  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -47,6 +47,8 @@ function Release_article({location,dispatch,router,content,setting}) {
     saveId,
     location,
     artSorce,
+    SensitiveWords,
+    titleWords,
     handlsearch(values){
        
     },

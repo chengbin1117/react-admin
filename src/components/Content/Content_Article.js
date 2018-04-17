@@ -101,8 +101,6 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	    <span>
 	      <a onClick={()=>editorItem(record)} >编辑</a>
 	      <Divider type="vertical" />
-	      <a onClick={()=>article(record)}  disabled={record.publishStatus==2?false:true}>审核</a>
-	      <Divider type="vertical" />
 	      <a onClick={()=>setShowModal(record)} disabled={record.publishStatus==1?false:true}>显示设置</a>
 	      <Divider type="vertical" />
 	      <a onClick={()=>delArticle(record,getBonusList)}  >查看阅读奖励</a>

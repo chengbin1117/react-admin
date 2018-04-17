@@ -16,7 +16,7 @@ import ExamineModal from '../components/User/ExamineModal';
 import SetHotuser from '../components/User/SetHotuser';
 import LockModal from '../components/User/LockModal';
 import {timeFormat} from '../services/common';
-import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message,Alert} from 'antd';
+import { Form, Row, Col, Input, Button, Icon,Table,Pagination,Modal,Radio,Select,message,Alert,Tag} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -30,6 +30,17 @@ function ArticlePreview({location,dispatch,content,router,}) {
 	var previewText =localStorage.getItem("previewText");
 	var previewartic =localStorage.getItem("previewartic");
 	var previewdec =localStorage.getItem("previewdec");
+	var previewLink =localStorage.getItem("previewLink");
+	var previewSource =localStorage.getItem("previewSource");
+	var previewType =localStorage.getItem("previewType");
+	var previewTag =localStorage.getItem("previewTag");
+	if(previewTag!=""){
+		previewTag = previewTag.split(',');
+	}else{
+		previewTag=null
+	}
+	
+	console.log(previewTag)
 	//var H = document.body.clientHeight + 'px'
 	//console.log(previewTitle,previewartic)
 	return (
@@ -87,7 +98,15 @@ function ArticlePreview({location,dispatch,content,router,}) {
 	              	    {(previewartic=='undefined'||previewartic=="")?previewdec:previewartic}
 	              	</div>
 	                <div className={styles.article} dangerouslySetInnerHTML={{__html: previewText}}></div>
-	              <div className = {styles.line}></div>
+					{previewType=="2"?<div className={styles.articleSource}>
+					<span>本文来源：{previewSource}</span>
+					<a target = "_blank" href={previewLink} className={styles.articlwe}>阅读原文</a>
+					</div>:null}
+					{(previewTag!=null)?previewTag.map((t,index)=>{
+		            	return(
+		            		 <Tag color="blue" key={index}>{t}</Tag>
+		            		)
+		            }):null}
 	          </div>
               	</div>
               <div className={styles.footer}>
