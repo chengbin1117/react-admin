@@ -69,6 +69,7 @@ const UserAdmin = ({
 		title: '邮箱',
 		dataIndex: 'userEmail',
 		key: 'userEmail',
+		width: 80,
 	}, {
 		title: '手机号',
 		dataIndex: 'userMobile',
@@ -80,6 +81,12 @@ const UserAdmin = ({
 		key: 'createDate',
 		width: 100,
 	}, {
+		title: '注册来源',
+		dataIndex: 'registerOrigin',
+		key: 'registerOrigin',
+		width: 100,
+		render: val => <span>{val==1&&"IOS"}{val==2&&"Android"}{val==3&&"千氪财经"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
+	},{
 		title: "师傅",
 		dataIndex: 'parentUser',
 		width: 80,
@@ -89,7 +96,7 @@ const UserAdmin = ({
 	}, {
 		title: "邀新状态",
 		dataIndex: 'inviteStatus',
-		width: 60,
+		width: 70,
 		render: (text, record) => (
 			<span>
 				{text == 0 && "无需审查"}
@@ -174,7 +181,7 @@ const UserAdmin = ({
 	}, {
 		title: '操作',
 		key: 'action',
-		width: 160,
+		width: 140,
 		render: (text, record) => (
 			<span>
 				<a onClick={() => userData(record)}>查看</a>

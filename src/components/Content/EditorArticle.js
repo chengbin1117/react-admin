@@ -67,7 +67,7 @@ function ArticleEditor({
 	setting,
 	uploadImg,
 	getBonusList,
-	SensitiveWords,
+	status_Article,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -80,7 +80,7 @@ function ArticleEditor({
 	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
 
 	const options = ColumnList;
-
+	console.log(status_Article)
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
 
@@ -134,7 +134,7 @@ function ArticleEditor({
 				if (ArticleList.sysUser == null) {
 					if (data.publishStatus == "1") {
 						dispatch({
-							type: 'content/publishArticle',
+							type: 'content/publishHomeArticle',
 							payload: {
 								articleId: ArticleList.articleId,
 								articleTitle: data.articleTitle,
@@ -163,7 +163,7 @@ function ArticleEditor({
 						})
 					} else {
 						dispatch({
-							type: 'content/publishArticle',
+							type: 'content/publishHomeArticle',
 							payload: {
 								articleId: ArticleList.articleId,
 								articleTitle: data.articleTitle,
@@ -196,7 +196,7 @@ function ArticleEditor({
 				} else {
 					if (data.publishStatus == "1") {
 						dispatch({
-							type: 'content/publishArticle',
+							type: 'content/publishHomeArticle',
 							payload: {
 								articleId: ArticleList.articleId,
 								articleTitle: data.articleTitle,
@@ -227,7 +227,7 @@ function ArticleEditor({
 						})
 					} else {
 						dispatch({
-							type: 'content/publishArticle',
+							type: 'content/publishHomeArticle',
 							payload: {
 								articleId: ArticleList.articleId,
 								articleTitle: data.articleTitle,
@@ -306,7 +306,7 @@ function ArticleEditor({
 					editArticle = 0
 				}
 				dispatch({
-					type: 'content/publishArticle',
+					type: 'content/publishHomeArticle',
 					payload: {
 						articleId: ArticleList.articleId,
 						articleTitle: data.articleTitle,
@@ -390,8 +390,14 @@ function ArticleEditor({
 
 	function StatusonChange(e) {
 		//console.log(e.target.value)
-		value = e.target.value;
-
+		//value = e.target.value;
+		dispatch({
+			type:'content/statusChange',
+			payload:{
+				status_Article:parseInt(e.target.value)
+			}
+		})
+		
 	}
 	function showUser() {
 		dispatch({
@@ -639,7 +645,7 @@ function ArticleEditor({
 					],
 					trigger: 'edtiorContentText'
 				})(
-					<Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} checkout={checkout} SensitiveWords={SensitiveWords} />
+					<Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} checkout={checkout} />
 				)}
 
 			</FormItem>
@@ -1088,7 +1094,7 @@ function ArticleEditor({
 						required: false, message: '请输入!',
 					}],
 				})(
-					<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={value == 3 ? false : true
+					<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={status_Article == 3 ? false : true
 					} />
 				)}
 			</FormItem> : null}

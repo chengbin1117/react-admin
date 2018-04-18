@@ -52,16 +52,16 @@ const AdduserModal = ({
 			const data = {
 				...getFieldsValue(),
 			}
-
+			
 			onOk(data);
 		});
 	}
 
 	function Cancel() {
 		onCancel()
-
+		
 	}
-	function afterClose() {
+	function afterClose(){
 		resetFields()
 	}
 	const modalOpts = {
@@ -127,7 +127,7 @@ const AdduserModal = ({
 	}
 	return (
 		<Modal {...modalOpts}>
-			<Form>
+	        <Form>
 				<FormItem
 					label="版本号 "
 					{...formItemLayout}
@@ -135,11 +135,11 @@ const AdduserModal = ({
 					{getFieldDecorator('versionNum', {
 						initialValue: '',
 						rules: [
-							{ required: true, message: '请填写版本号' },
-							{ type: "string", max: 20, min: 1, message: '最多20个字符,仅数字、字母、标点' },
+							{required: true, message: '请填写版本号'},
+							{type: "string",max:20,min:1,message: '最多20个字符,仅数字、字母、标点'},
 						],
 					})(
-						<Input type="text" prefix={<span>v</span>} />
+						<Input type="text" prefix={<span>v</span> }/>
 					)}
 				</FormItem>
 				<FormItem
@@ -149,8 +149,8 @@ const AdduserModal = ({
 					{getFieldDecorator('prompt', {
 						initialValue: '',
 						rules: [
-							{ required: true, message: '请填写更新提示语' },
-							{ type: "string", max: 1000, min: 1, message: '1-1000个文字，格式不限' },
+							{required: true, message: '请填写更新提示语'},
+							{type: "string",max:1000,min:1,message: '1-1000个文字，格式不限'},
 						],
 					})(
 						<TextArea style={{minHeight:150}}/>
@@ -163,7 +163,7 @@ const AdduserModal = ({
 					{getFieldDecorator('forced', {
 						initialValue: '0',
 						rules: [
-							{ required: true, message: '请选择' }
+							{required: true, message: '请选择'}
 						],
 					})(
 						<RadioGroup>
@@ -175,12 +175,12 @@ const AdduserModal = ({
 				<FormItem
 					label="操作系统"
 					{...formItemLayout}
-
+					
 				>
 					{getFieldDecorator('systemType', {
 						initialValue: '1',
 						rules: [
-							{ required: true, message: '请选择' }
+							{required: true, message: '请选择'}
 						],
 					})(
 						<RadioGroup onChange={checkSysteme}>
@@ -202,12 +202,12 @@ const AdduserModal = ({
 						],
 					})(
 						<Upload {...props} listType="text" style={{ width: '50%' }}>
-							<Button type="primary" size="large" id="BTN">
-								<Icon type="upload" />上传
+						    <Button type="primary" size="large" id="BTN">
+							    <Icon type="upload" />上传
 							</Button>
 						</Upload>
 					)}
-				</FormItem> : <FormItem
+				</FormItem>:<FormItem
 					label="下载地址"
 					{...formItemLayout}
 					hasFeedback

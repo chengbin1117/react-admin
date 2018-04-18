@@ -131,7 +131,7 @@ const LockModal = ({
 		          value={state.number}
 		          onChange={this.handleNumberChange}
 							style={{ width: '100%'}}
-							addonAfter={selectAfter}
+							addonAfter="TV"
 							placeholder="奖励数量"
 		        />
 		        

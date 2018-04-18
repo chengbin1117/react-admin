@@ -183,7 +183,12 @@ class LayoutContainer extends React.Component {
           second= "文章管理";
           third= "编辑文章";
           four = "";
-      }else if(path =="/content/videoList"){
+      }else if(path =="/index/editor"){
+        first= "首页";
+        second= "编辑文章";
+        third= "";
+        four = "";
+    }else if(path =="/content/videoList"){
           first= "首页";
           second= "文章管理";
           third= "视频管理";

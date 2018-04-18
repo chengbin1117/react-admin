@@ -460,6 +460,11 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	}
 	//搜索
 	function handlsearch(values) {
+		if(values.time!=undefined){
+			if(values.time.length==0){
+				 values.time=undefined
+			}
+		}
 		if (values.time != undefined) {
 			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
 				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +

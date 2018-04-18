@@ -58,6 +58,7 @@ import Editor_Article from './routes/Editor_Article';
 import ArticlePreview from './routes/ArticlePreview';
 import Preview from './routes/Preview';
 import PreviewVideo from './routes/PreviewVideo';
+import home_article from './routes/Home_editor';
 
 //Seo
 import Seo from './routes/Seo';
@@ -121,6 +122,7 @@ function RouterConfig({ history }) {
       <Route path="/previewVideo" exact  component={PreviewVideo} />
       <LayoutContainer location={history.location}>
           <Route path="/index" exact component={IndexPage} onEnter={requireAuth}/>
+          <Route path="/index/editor" exact component={home_article} onEnter={requireAuth}/>
           <Route path="/user/user_admin" exact component={UserAdmin} onEnter={requireAuth}/>
           <Route path="/user/user_role" exact component={UserRole} />
           <Route path="/user/user_data" exact component={UserData}/>
