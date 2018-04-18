@@ -438,7 +438,7 @@ function ArticleEditor({
     }
   }
   function ImgHandle(src) {
-    //console.log("src",src)
+    
   }
   function handlevaild(rule, value, callback) {
     var dd = value.replace(/<\/?.+?>/g, "");

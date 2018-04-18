@@ -1,5 +1,5 @@
 import React, {
-	PropTypes
+    PropTypes
 } from 'react';
 import {
 	Form,
@@ -26,12 +26,12 @@ const Step = Steps.Step;
 let value = 0;
 
 const formItemLayout = {
-	labelCol: {
-		span: 5,
-	},
-	wrapperCol: {
-		span: 14,
-	},
+    labelCol: {
+        span: 5,
+    },
+    wrapperCol: {
+        span: 14,
+    },
 };
 
 const ArticleModal = ({
@@ -146,11 +146,11 @@ const ArticleModal = ({
 };
 
 ArticleModal.propTypes = {
-	visible: PropTypes.any,
-	form: PropTypes.object,
-	item: PropTypes.object,
-	onOk: PropTypes.func,
-	onCancel: PropTypes.func,
+    visible: PropTypes.any,
+    form: PropTypes.object,
+    item: PropTypes.object,
+    onOk: PropTypes.func,
+    onCancel: PropTypes.func,
 };
 
 export default Form.create()(ArticleModal);
