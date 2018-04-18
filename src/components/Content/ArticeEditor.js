@@ -835,7 +835,7 @@ function ArticleEditor({
 						{ type: 'array' }
 					],
 				})(
-					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: '20%' }} />
+					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: '20%' }} changeOnSelect/>
 				)}
 			</FormItem>
 			<FormItem

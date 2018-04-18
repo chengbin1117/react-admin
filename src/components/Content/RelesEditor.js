@@ -930,7 +930,7 @@ function RelesEditor({
 						{ required: true, message: '请选择文章栏目!' },
 					],
 				})(
-					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: "20%" }} />
+					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: "20%" }} changeOnSelect/>
 				)}
 
 

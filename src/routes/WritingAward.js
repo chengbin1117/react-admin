@@ -72,7 +72,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 				<Col span={8} style = {{display:'block'}}>
 			          <FormItem {...formItemLayout} label='所属栏目'>
 			            {getFieldDecorator('columnId')(
-			              <Cascader options={options}  placeholder="请选择文章栏目" />
+			              <Cascader options={options}  placeholder="请选择文章栏目" changeOnSelect/>
 			            )}
 			          </FormItem>
 			    </Col>
