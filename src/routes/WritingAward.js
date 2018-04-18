@@ -72,7 +72,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 				<Col span={8} style = {{display:'block'}}>
 			          <FormItem {...formItemLayout} label='所属栏目'>
 			            {getFieldDecorator('columnId')(
-			              <Cascader options={options}  placeholder="请选择文章栏目" />
+			              <Cascader options={options}  placeholder="请选择文章栏目" changeOnSelect/>
 			            )}
 			          </FormItem>
 			    </Col>
@@ -295,28 +295,29 @@ function UserAdmin({ location, dispatch, award, content, }) {
 		totalPrice:totalPrice,
 		handelchande(page){
 			const data = GetRequest(location.search);
+			console.log(data)
 			if(data.title=="undefined"||data.title==undefined){
 				if(data.publisher=="undefined"||data.publisher==undefined){
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
 					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
-					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+data.sortFiledName+'&sortRule='+data.sortRule
 					))
 			    }else{
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
 					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
-					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+data.sortFiledName+'&sortRule='+data.sortRule
 					))	
 				}
 		    }else{
 				if(data.publisher=="undefined"||data.publisher==undefined){
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&title='+data.title+'&adminId='+data.adminId+'&columnId='+data.columnId+
 					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
-					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+data.sortFiledName+'&sortRule='+data.sortRule
 					))
 				}else{
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&title='+data.title+'&adminId='+data.adminId+'&columnId='+data.columnId+
 					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
-					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+data.sortFiledName+'&sortRule='+data.sortRule
 					))
 				}
 			}
@@ -374,6 +375,47 @@ function UserAdmin({ location, dispatch, award, content, }) {
 					search:location.search
 				}
 			})
+		},
+		sorterUserList(sorter){
+			console.log(sorter)
+			let sortFiledName = "";
+			let sortRule = "";
+			if(sorter.field=="bowseNum"){
+				sortFiledName = "browseNum"
+			}else{
+				sortFiledName = sorter.field;
+			}
+			if(sorter.order=="descend"){
+				sortRule = 0
+			}else{
+				sortRule = 1
+			}
+			const data = GetRequest(location.search);
+			if(data.title=="undefined"||data.title==undefined){
+				if(data.publisher=="undefined"||data.publisher==undefined){
+					dispatch(routerRedux.push('/user/writingAward?page=1' + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+sortFiledName+'&sortRule='+sortRule
+					))
+			    }else{
+					dispatch(routerRedux.push('/user/writingAward?page=1' + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+sortFiledName+'&sortRule='+sortRule
+					))	
+				}
+		    }else{
+				if(data.publisher=="undefined"||data.publisher==undefined){
+					dispatch(routerRedux.push('/user/writingAward?page=1' + '&articleId='+data.articleId+'&title='+data.title+'&adminId='+data.adminId+'&columnId='+data.columnId+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+sortFiledName+'&sortRule='+sortRule
+					))
+				}else{
+					dispatch(routerRedux.push('/user/writingAward?page=1' + '&articleId='+data.articleId+'&title='+data.title+'&adminId='+data.adminId+'&columnId='+data.columnId+
+					'&publishStartDate='+data.publishStastDate+'&publishEndDate='+data.publishEndDate+'&auditStartDate='+data.auditStartDate+
+					'&auditEndDate='+data.auditEndDate+'&bonusStatus='+data.bonusStatus+'&publisher='+data.publisher+'&addBonusStatus='+data.addBonusStatus+'&articleMark='+data.articleMark+'&sortFiledName='+sortFiledName+'&sortRule='+sortRule
+					))
+				}
+			}
 		}
 	}
 	//冻结
@@ -463,7 +505,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 					<Link  to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
 					<Link  className = {styles.activeAward} to = '/user/writingAward?page=1'>发文奖励</Link>
 					{/* <Link  to = '/user/platformReward?page=1'>平台阅读奖励</Link> */}
-					<Link  to = '/user/shareReward?page=1'>分享奖励</Link>
+					{/* <Link  to = '/user/shareReward?page=1'>分享奖励</Link> */}
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
 			<WritingAwardTable {...InviteNewTableProps}/>

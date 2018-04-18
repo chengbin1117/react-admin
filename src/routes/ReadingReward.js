@@ -143,7 +143,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<Link  to = '/user/columnAward?page=1'>成为专栏作家奖励</Link>
 					<Link  className = {styles.activeColor} to = '/user/writingAward?page=1'>发文奖励</Link>
 					<Link  className = {styles.activeColor} to = '/user/platformReward?page=1'>平台阅读奖励</Link>
-					<Link  className = {styles.activeColor} to = '/user/shareReward?page=1'>分享奖励</Link>
+					{/* <Link  className = {styles.activeColor} to = '/user/shareReward?page=1'>分享奖励</Link> */}
 				</div>
 			<WrappedAdvancedSearchForm getFields={getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch} />
 			<RealnameAwardTable {...InviteNewTableProps}/>

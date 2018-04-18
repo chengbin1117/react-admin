@@ -254,76 +254,76 @@ function ContentArticle({ location, dispatch, router, content }) {
 	}
 
 	//搜索
-	function getFields(getFieldDecorator, formItemLayout) {
-		const children = [];
-		children.push(
-			<div key="0">
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='文章ID'>
-						{getFieldDecorator('Id', {
-							rules: [
-								{ required: false, pattern: /^[0-9]*$/, message: "文章ID只能输入数字" }
-							]
-						})(
-							<Input placeholder="请输入" />
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='标题'>
-						{getFieldDecorator('title')(
-							<Input placeholder="请输入" />
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='标签'>
-						{getFieldDecorator('tags')(
-							<Input placeholder="请输入" />
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='所属栏目'>
-						{getFieldDecorator('cloumn')(
-							<Cascader options={options} placeholder="请选择文章栏目" />
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='状态' >
-						{getFieldDecorator('status')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="0">草稿</Option>
-								<Option value="1">通过</Option>
-								<Option value="2">审核中</Option>
-								<Option value="3">不通过</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='显示状态' >
-						{getFieldDecorator('displayStatus')(
-							<Select placeholder="请选择" allowClear={true}>
-								<Option value="1">正常显示</Option>
-								<Option value="2">首页置顶</Option>
-								<Option value="3">首页推荐</Option>
-								<Option value="4">前台隐藏</Option>
-							</Select>
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='发布人' >
-						{getFieldDecorator('createUser')(
-							<Input placeholder="请输入发布人" />
-						)}
-					</FormItem>
-				</Col>
-			</div>
-		);
-		return children;
+	function getFields(getFieldDecorator,formItemLayout){
+			const children = [];
+	    	children.push(
+		    	<div key="0">
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='文章ID'>
+			            {getFieldDecorator('Id',{
+			            	rules:[
+			            	  {required:false,pattern:/^[0-9]*$/,message:"文章ID只能输入数字"}
+			            	]
+			            })(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='标题'>
+			            {getFieldDecorator('title')(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='标签'>
+			            {getFieldDecorator('tags')(
+			              <Input placeholder="请输入" />
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='所属栏目'>
+			            {getFieldDecorator('cloumn')(
+			              <Cascader options={options}  placeholder="请选择文章栏目"  changeOnSelect/>
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='状态' >
+			            {getFieldDecorator('status')(
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="0">草稿</Option>
+			              	<Option value="1">通过</Option>
+			              	<Option value="2">审核中</Option>
+			              	<Option value="3">不通过</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+			        <Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='显示状态' >
+			            {getFieldDecorator('displayStatus')(
+			              <Select placeholder="请选择" allowClear={true}>
+			              	<Option value="1">正常显示</Option>
+			              	<Option value="2">首页置顶</Option>
+			              	<Option value="3">首页推荐</Option>
+			              	<Option value="4">前台隐藏</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+							<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='发布人' >
+			            {getFieldDecorator('createUser')(
+										<Input placeholder="请输入发布人" />
+			            )}
+			          </FormItem>
+			        </Col>
+		        </div>
+	      	);
+	    return children;
 	}
 	function getFieldsFirst(getFieldDecorator, formItemLayout) {
 		const children = [];
