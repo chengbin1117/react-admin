@@ -1312,7 +1312,9 @@ export default {
 					imageAddress: imageAddress,
 				}
 			}
-
+			yield put({
+				type:'showSubmitLoading'
+			})
 			const { data } = yield call(addImage, params);
 
 			if (data && data.code == 10000) {
@@ -1321,6 +1323,9 @@ export default {
 				} else {
 					message.success('图片添加成功');
 				}
+				yield put({
+					type:'hideSubmitLoading'
+				})
 				const search = GetRequest(payload.search);
 				yield put({
 					type: 'siteimagelist',
@@ -1333,6 +1338,7 @@ export default {
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
 					}
 				});
+				
 				yield put({
 					type: 'hideAddImgModal',
 
@@ -1343,6 +1349,9 @@ export default {
 				});
 
 			} else {
+				yield put({
+					type:'hideSubmitLoading'
+				})
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
@@ -1419,7 +1428,7 @@ export default {
 					payload: {
 						FeedbackList: res,
 						totalNumber: data.responseBody.totalNumber,
-						currentPage: res.currentPage,
+						currentPage: data.responseBody.currentPage,
 						loading: false,
 
 					}

@@ -26,7 +26,7 @@ function ContentImage({dispatch,content,location}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {selectList,ImageList,ImgShowVisible,addImageVisible,loading,currentItem,type,currentPage,totalNumber,EditorImageVisible} = content;
+	const {selectList,ImageList,confirmLoading,ImgShowVisible,addImageVisible,loading,currentItem,type,currentPage,totalNumber,EditorImageVisible} = content;
 	
 	const content_imageProps ={
 		data:ImageList,
@@ -97,6 +97,7 @@ function ContentImage({dispatch,content,location}) {
 		visible:addImageVisible,
 		currentItem,
 		type:type,
+		confirmLoading:confirmLoading,
 		onCancel(){
 			dispatch({
 				type:'content/hideAddImgModal'
@@ -142,6 +143,7 @@ function ContentImage({dispatch,content,location}) {
 	const Content_ImageEditor_ModalProps ={
 		visible:EditorImageVisible,
 		item:currentItem,
+		confirmLoading:confirmLoading,
 		onCancel(){
 			dispatch({
 				type:'content/hideEditorImageModal'
