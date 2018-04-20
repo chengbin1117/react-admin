@@ -11,7 +11,8 @@ import {
 	Button,
 	Icon
 } from 'antd';
-import {apkUrl} from '../../services/common'
+import {apkUrl} from '../../services/common';
+import $ from 'jquery';
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const TextArea = Input.TextArea;
@@ -24,7 +25,7 @@ const formItemLayout = {
 		span: 14,
 	},
 };
-
+const confirm =Modal.confirm;
 const AdduserModal = ({
 	visible,
 	item = {},
@@ -77,11 +78,28 @@ const AdduserModal = ({
 		confirmLoading:loging
 
 	};
+	function onRemove(file){
+		var title = "确认删除" + file.name + "吗？"
+		const myConfirm = ({ title, content }) => new Promise((resolve, reject) =>
+		  confirm({
+			title: "确认删除" + file.name + "吗？",
+			onOk() {
+			var BTN = document.getElementById("BTN");
+			BTN.innerText = '上传';	
+			  resolve()
+			},
+			onCancel() {
+			  reject()
+			}
+		  }))
+		return myConfirm(title)
+	}
 	const props = {
 		action: apkUrl,
 		multiple: true,
 		name: "file",
 		accept: '.apk',
+		onRemove: onRemove
 	  };
 	// function checkSysteme(e){
 	// 	var value =e.target.value;
@@ -103,8 +121,8 @@ const AdduserModal = ({
 					// Component will show file.url as link
 					file.url = file.response.data[0].filePath
 				}
-				// var BTN = document.getElementById("BTN");
-				// BTN.innerText = '重新上传';
+				var BTN = document.getElementById("BTN");
+				BTN.innerText = '重新上传';
 				//icoType = "upload";
 				// dispatch({
 				// 	type: "content/falsedisabeld",
@@ -113,7 +131,8 @@ const AdduserModal = ({
 				});
 			}
 			} else if (info.file.status == undefined) {
-
+				var BTN = document.getElementById("BTN");
+				BTN.innerText = '上传';
 			// dispatch({
 			// 	type: "content/falsedisabeld",
 			// })
@@ -202,8 +221,8 @@ const AdduserModal = ({
 						],
 					})(
 						<Upload {...props} listType="text" style={{ width: '50%' }}>
-						    <Button type="primary" size="large" id="BTN">
-							    <Icon type="upload" />上传
+						    <Button type="primary" size="large"  icon="upload">
+							    <span id="BTN">上传</span>
 							</Button>
 						</Upload>
 					)}

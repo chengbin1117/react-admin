@@ -237,7 +237,7 @@ let videoUrl = "https://kgvideo.oss-cn-shenzhen.aliyuncs.com/"; //开发环境�
 //let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
 
 //apk上传
-let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发环境视频服务器地址
+let apkUrl = "http://172.16.0.56:8080/admin/appvm/uploadFile"; //开发环境视频服务器地址
 //let apkUrl = "https://www.kg.com/admin/appvm/uploadFile/"; //正式环境视频服务器地址
 
 //服务器
@@ -246,7 +246,6 @@ let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发�
 //let urlprefix = "http://172.16.0.243:8080/kgapi";  //王洋
 let urlprefix = "http://kg.btc123.com/kgapi";//开发
 //let urlprefix = "https://www.kg.com"; //生产&&测试
-
 
 
 
