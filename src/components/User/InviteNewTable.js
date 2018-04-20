@@ -10,7 +10,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 function StandardTable({ data, loading, pageSize, handelchande, getUserData, currentPage, total, InviteUserListData, confirm, showModal }) {
-
+  console.log(data)
   const columns = [
     {
       title: '用户ID',
@@ -62,6 +62,7 @@ function StandardTable({ data, loading, pageSize, handelchande, getUserData, cur
         <span>
           {text == 0 && <span style={{ color: "#f5222d" }}>冻结</span>}
           {text == 1 && <span style={{ color: "#52c41a" }}>可用</span>}
+          {text == 2 && <span style={{ color: "#ccc" }}>已退回</span>}
         </span>
       )
     },

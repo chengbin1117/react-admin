@@ -7,7 +7,7 @@ const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 const statusMap = ['default', 'processing', 'success', 'error'];
 import style_pagination from '../pagination.css';
-function StandardTable({ data, loading, total, lookOver, deleteItem, handelchande, onShowSizeChange, pageSize, pageNumber, fixSort }) {
+function StandardTable({ data, loading, total, lookOver, deleteItem, handelchande, onShowSizeChange, pageSize, pageNumber, fixSort,currentPage}) {
   const columns = [
     {
       title: '版本号',
@@ -19,7 +19,7 @@ function StandardTable({ data, loading, total, lookOver, deleteItem, handelchand
 	  dataIndex: 'prompt',
 	  width:300,
 	  render:(text,record)=>(
-		<p className={style_pagination.appText}>{text}</p>
+		<span className={style_pagination.appText}>{text}</span>
 		)
     },
     {
@@ -33,7 +33,7 @@ function StandardTable({ data, loading, total, lookOver, deleteItem, handelchand
 	  dataIndex: 'downloadUrl',
 	  width:300,
 	  render:(text,record)=>(
-		<p className={style_pagination.appText}>{text}</p>
+		<span className={style_pagination.appText}>{text}</span>
 		)
     },
     {
@@ -79,7 +79,7 @@ function StandardTable({ data, loading, total, lookOver, deleteItem, handelchand
     onChange: handelchande,
     onShowSizeChange: onShowSizeChange,
     pageSize: 25,
-    current: pageNumber
+    current: currentPage
   };
   return (
     <div>

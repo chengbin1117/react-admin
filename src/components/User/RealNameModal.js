@@ -76,7 +76,8 @@ const RealNameModal = ({
 		width:600,
 		afterClose:afterClose,
 		okText:"确定",
-		cancelText:"取消"
+		cancelText:"取消",
+		destroyOnClose:true,
 	};
 	
 	return (

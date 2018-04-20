@@ -169,7 +169,7 @@ function UserRealName({location,dispatch,user,router,}) {
 	    	})
 		},
 		onOk(values,selectList){
-			console.log(values,selectList)
+		//	console.log(values,selectList)
 
 			if(values.radio == '1'){
 				dispatch({

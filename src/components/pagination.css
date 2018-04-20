@@ -20,6 +20,7 @@
 　　text-overflow: ellipsis;
 }
 .appText{
+    display: inline-block;
     overflow : hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

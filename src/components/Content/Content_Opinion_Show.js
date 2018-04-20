@@ -17,7 +17,7 @@ const { TextArea } = Input;
 
 function Content_Opinion_Show({ dispatch, router, content, onFeek }) {
 	let data = JSON.parse(localStorage.getItem("kg_opinionEditor"));
-	// console.log(data)
+	console.log(data)
 	const { OpinionVisible } = content
 
 	const Content_Opinion_Show_ModalProps = {
@@ -93,8 +93,8 @@ function Content_Opinion_Show({ dispatch, router, content, onFeek }) {
 					<FormItem {...formItemLayout} label="提交时间" className="collection-create-form_last-form-item">
 						<span>{data.createDate}</span>
 					</FormItem>
-					<FormItem {...formItemLayout} label="来源页面地址" className="collection-create-form_last-form-item">
-						<span>{data.fromUrl == null ? "无" : data.fromUrl}</span>
+					<FormItem {...formItemLayout} label="来源" className="collection-create-form_last-form-item">
+						<span>{data.fromType == 1 && "WEB"}{data.fromType ==2&&"APP"}</span>
 					</FormItem>
 					<FormItem {...formItemLayout} label="处理记录" className="collection-create-form_last-form-item">
 						{getFieldDecorator("replayInfo", {
