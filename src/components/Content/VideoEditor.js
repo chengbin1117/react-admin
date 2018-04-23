@@ -149,7 +149,6 @@ function ArticleEditor({
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
                 articleLink: data.articleLink,
-                sysUser: merId,
                 publishStatus: parseInt(data.publishStatus),
                 browseNum: data.browseNum,
                 thumbupNum: data.thumbupNum,

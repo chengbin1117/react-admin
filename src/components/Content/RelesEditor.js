@@ -196,7 +196,6 @@ function RelesEditor({
 						articleLink: data.articleLink,
 						commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
 						publishSet: parseInt(data.radioG),
-						createUser: data.createUser,
 						sysUser: merId,
 						bonusStatus: parseInt(data.bonusStatus),
 						publishStatus: 0,
@@ -226,7 +225,6 @@ function RelesEditor({
 						articleLink: data.articleLink,
 						commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
 						publishSet: parseInt(data.radioG),
-						createUser: data.createUser,
 						sysUser: merId,
 						bonusStatus: parseInt(data.bonusStatus),
 						publishStatus: 0,
@@ -267,7 +265,6 @@ function RelesEditor({
 		secondCity = parseInt(value)
 	}
 	function showUser() {
-
 		const data = { ...getFieldsValue(['createUser']) };
 		console.log(data)
 		dispatch({
@@ -692,7 +689,6 @@ function RelesEditor({
 			articleLink: data.articleLink,
 			commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
 			publishSet: parseInt(data.radioG),
-			createUser: data.createUser,
 			sysUser: merId,
 			bonusStatus: parseInt(data.bonusStatus),
 			publishStatus: 0,

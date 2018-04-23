@@ -10,7 +10,7 @@ let Base64 = require('js-base64').Base64;
 export async function getAccountRecharge(params) {
     var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/account/getAccountRecharge?data='+data+"&sign="+sign;
+	let url = '/admin/account/getAccountRecharge?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -38,7 +38,7 @@ export async function auditAccountWithdraw(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/account/auditAccountWithdraw?data='+data+"&sign="+sign;
+	let url = '/admin/account/auditAccountWithdraw?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"

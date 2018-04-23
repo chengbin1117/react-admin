@@ -225,7 +225,7 @@ function ArticleEditor({
 								editArticle: editArticle,
 							}
 						})
-					} else {
+					} else if(data.publishStatus == "4") {
 						dispatch({
 							type: 'content/publishArticle',
 							payload: {
@@ -242,7 +242,6 @@ function ArticleEditor({
 								displayOrder: parseInt(data.sort),
 								commentSet: data.commentSet == "true" ? true : false,
 								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
 								sysUser: merId,
 								bonusStatus: parseInt(data.bonusStatus),
 								articleSource: data.articleSource,
@@ -257,7 +256,38 @@ function ArticleEditor({
 								editArticle: editArticle,
 							}
 						})
-					}
+					}else{
+						dispatch({
+							type: 'content/publishArticle',
+							payload: {
+								articleId: ArticleList.articleId,
+								articleTitle: data.articleTitle,
+								articleText: data.text,
+								tagnames: tagsName,
+								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+								image: imgUrl == '' ? data.image : imgUrl,
+								type: parseInt(data.type),
+								columnId: parseInt(data.column[0]),
+								secondColumn: parseInt(data.column[1]),
+								displayStatus: parseInt(data.radioT),
+								displayOrder: parseInt(data.sort),
+								commentSet: data.commentSet == "true" ? true : false,
+								publishSet: parseInt(data.radioG),
+								sysUser: merId,
+								bonusStatus: parseInt(data.bonusStatus),
+								articleSource: data.articleSource,
+								articleLink: data.articleLink,
+								publishStatus: parseInt(data.publishStatus),
+								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
+								refuseReason: data.refuseReason,
+								textnum: lg.length,
+								browseNum: data.browseNum,
+								thumbupNum: data.thumbupNum,
+								collectNum: data.collectNum,
+								editArticle: editArticle,
+							}
+						})
+					}	
 				}
 
 
