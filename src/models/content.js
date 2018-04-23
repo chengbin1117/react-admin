@@ -1022,7 +1022,6 @@ export default {
 
 					arr.push(params)
 				}
-				//console.log(firstCloumn,childColumn)
 				yield put({
 					type: 'getColumnListSuccess',
 					payload: {
@@ -1078,6 +1077,7 @@ export default {
 				articleId: payload.articleId
 			}
 			const { data } = yield call(getArticleById, params);
+			console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				var tags = "tags";
