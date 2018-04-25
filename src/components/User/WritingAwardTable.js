@@ -116,7 +116,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 					<a href={previewUrl+'?id='+Base64.encode(record.articleId)+'_'} target="view_window">查看文章详情</a>
 					
 					{record.isAddBonus ==0&&<span><Divider type="vertical" /><a onClick={() => getAdditionalModal(record)}>额外奖励</a></span>}
-					{record.publishBonusStatus == 1?<span><Divider type="vertical" />{record.isMarkArticle == 0 ?<Popconfirm
+					{record.publishBonusStatus != 0?<span><Divider type="vertical" />{record.isMarkArticle == 0 ?<Popconfirm
 					placement="topRight" 
 					title="确定标为优质原创文章吗?" 
 					onConfirm={() => MarkArticle(record)} 
