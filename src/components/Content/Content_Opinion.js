@@ -10,7 +10,6 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,onEditor,loading,changepage}) {
-
 	const columns = [{
 	  title: 'ID',
 	  dataIndex: 'id',
@@ -61,13 +60,13 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 
 	const rowSelection = {
 	  onChange: (selectedRowKeys, selectedRows) => {
-	    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+	   // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
 	  },
 	  onSelect: (record, selected, selectedRows) => {
-	    console.log(record, selected, selectedRows);
+	   // console.log(record, selected, selectedRows);
 	  },
 	  onSelectAll: (selected, selectedRows, changeRows) => {
-	    console.log(selected, selectedRows, changeRows);
+	   // console.log(selected, selectedRows, changeRows);
 	  },
 	};
 
@@ -89,11 +88,11 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 			    	 });
 	    }
 	    onChange =(page) => {
-	    	console.log("2",page)
+	    //	console.log("2",page)
 	    	changepage(page)
 	    }
 	    onShowSizeChange =(page) => {
-	    	console.log("1",page)
+	    //	console.log("1",page)
 	    }
 		render(){
 			const {  selectedRowKeys,selectedRows} = this.state;

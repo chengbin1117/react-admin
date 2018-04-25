@@ -68,6 +68,7 @@ function ArticleEditor({
 	uploadImg,
 	getBonusList,
 	SensitiveWords,
+	pubStatus,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -421,7 +422,12 @@ function ArticleEditor({
 	function StatusonChange(e) {
 		//console.log(e.target.value)
 		value = e.target.value;
-
+		dispatch({
+			type:"content/publishStatusChange",
+			payload:{
+				pubStatus : e.target.value
+			}
+		})
 	}
 	function showUser() {
 		dispatch({
@@ -861,7 +867,7 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: ArticleList.columnId != null ? [ArticleList.columnId, ArticleList.secondColumn] : [],
 					rules: [
-						{ required: true, message: '请选择文章栏目!' },
+						{ required:true, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(
@@ -1118,7 +1124,7 @@ function ArticleEditor({
 						required: false, message: '请输入!',
 					}],
 				})(
-					<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={value == 3 ? false : true
+					<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={pubStatus == 3 ? false : true
 					} />
 				)}
 			</FormItem> : null}
@@ -1130,8 +1136,6 @@ function ArticleEditor({
 				}
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
-
-
 		</Form>
 	)
 }

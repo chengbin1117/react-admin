@@ -80,7 +80,9 @@ function RelesEditor({
 	const options = ColumnList;
 	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
 	//console.log(UserById.kgUserName)
-	const { RelationVisible, getRelUserList } = setting
+	const { RelationVisible, getRelUserList } = setting;
+	console.log('saveId',saveId)
+	//发布
 	function handleSubmit(e) {
 		e.preventDefault();
 		validateFields((errors) => {
@@ -108,7 +110,7 @@ function RelesEditor({
 				lg = lg.replace(/\s+/g, "")
 				lg = lg.replace(/<\/?.+?>/g, "");
 				lg = lg.replace(/[\r\n]/g, "");
-				console.log("文章字数", lg.length)
+				//console.log("文章字数", lg.length)
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
 					return true
@@ -155,6 +157,7 @@ function RelesEditor({
 			}
 		})
 	}
+	//存草稿
 	function publishStatus() {
 		validateFields(['articleTitle'], (errors) => {
 			if (errors) {
@@ -255,7 +258,7 @@ function RelesEditor({
 		return editor
 	}
 	function handleChange(imgUrl) {
-		console.log(imgUrl)
+		//console.log(imgUrl)
 		return imgUrl
 	}
 
@@ -266,7 +269,7 @@ function RelesEditor({
 	}
 	function showUser() {
 		const data = { ...getFieldsValue(['createUser']) };
-		console.log(data)
+		//console.log(data)
 		dispatch({
 			type: "setting/showRelationModal"
 		})
@@ -368,16 +371,7 @@ function RelesEditor({
 			} else {
 				callback()
 			}
-			// if(lg.length==0){
-
-			// }else if (lg.length>5000){
-			//   callback('请输入1-5000个字符')
-			// }else{
-
-			// }
 		}
-
-
 	}
 
 
@@ -432,9 +426,6 @@ function RelesEditor({
 			localStorage.setItem("previewdec", data.text.txt.text().substring(0, 30));
 			localStorage.setItem("previewTag", tagsName);
 		}
-
-
-
 		window.open('/#/preview')
 	}
 	//console.log(secondC[sec])
@@ -593,7 +584,7 @@ function RelesEditor({
 
 
 	//验证标题
-	console.log("SensitiveWords", titleWords)
+	//console.log("SensitiveWords", titleWords)
 	
     function titleChage(rule, value, callback){
 		if (titleWords != null&&value!='') {
@@ -615,7 +606,7 @@ function RelesEditor({
 
 		const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
 		if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
-			console.log(value)
+			//console.log(value)
 			return
 		}
 	}
@@ -710,7 +701,7 @@ function RelesEditor({
 		// /console.log(titleValue)
 	}
 	return (
-		<Form onSubmit={handleSubmit}>
+		<Form>
 			<FormItem label="文章标题" {...formItemLayout}>
 				{getFieldDecorator('articleTitle', {
 					rules: [{

@@ -75,7 +75,7 @@ function Release_article({location,dispatch,router,content,setting}) {
                        res =res.data; 
                       
                         if (res.errorCode == 10000) {
-                            console.log(res) 
+                          
                            //imgUrl =res.data[0].filePath;
                             dispatch({
                               type:'content/hidefpModal',

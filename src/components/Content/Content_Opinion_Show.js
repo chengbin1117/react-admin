@@ -17,7 +17,6 @@ const { TextArea } = Input;
 
 function Content_Opinion_Show({ dispatch, router, content, onFeek }) {
 	let data = JSON.parse(localStorage.getItem("kg_opinionEditor"));
-	console.log(data)
 	const { OpinionVisible } = content
 
 	const Content_Opinion_Show_ModalProps = {
@@ -83,10 +82,19 @@ function Content_Opinion_Show({ dispatch, router, content, onFeek }) {
 					<FormItem {...formItemLayout} label="反馈内容" className="collection-create-form_last-form-item">
 						<span>{data.content}</span>
 					</FormItem>
-					<FormItem {...formItemLayout} label="反馈人邮箱" className="collection-create-form_last-form-item">
+					{data.fromType == 1&& <FormItem {...formItemLayout} label="反馈人邮箱" className="collection-create-form_last-form-item">
 						<span>{data.email}</span>
 						<a onClick={showModal} style={{ marginLeft: 10 }}>回邮件给此用户</a>
 					</FormItem>
+					}
+					{data.fromType == 2&& <FormItem {...formItemLayout} label="反馈类型" className="collection-create-form_last-form-item">
+						<span>
+							{data.feedbackType ==1&&"功能建议"}
+							{data.feedbackType ==2&&"内容建议"}
+							{data.feedbackType ==3&&"体验建议"}
+						</span>
+					</FormItem>
+					}
 					<FormItem {...formItemLayout} label="反馈人手机号" className="collection-create-form_last-form-item">
 						<span>{data.phone}</span>
 					</FormItem>

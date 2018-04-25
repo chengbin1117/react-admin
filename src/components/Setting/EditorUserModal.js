@@ -112,7 +112,6 @@ const EditoruserModal = ({
 				</Form.Item>
 				<Form.Item 
 					label="选择岗位 "
-					hasFeedback
 					{...formItemLayout}
 				>
 					{getFieldDecorator('postId', {

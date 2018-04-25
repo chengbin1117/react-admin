@@ -49,7 +49,8 @@ export default {
 		dis:false,
 		SensitiveWords:'',
 		titleWords:null, //标题中的敏感词
-		status_Article:1
+		status_Article:1,
+		pubStatus:1,   //审核状态
 	},
 
 	subscriptions: {
@@ -89,7 +90,7 @@ export default {
 				match = pathToRegexp('/content/videoList').exec(location.pathname);
 				if (match) {
 					const search = GetRequest(location.search);
-					console.log(search.articleTitle)
+					//console.log(search.articleTitle)
 					dispatch({
 						type: 'getArticleList',
 						payload: {
@@ -121,6 +122,12 @@ export default {
 					dispatch({
 						type: 'getColumnList',
 						payload: {
+
+						}
+					})
+					dispatch({
+						type:"saveIdSuccess",
+						payload:{
 
 						}
 					})
@@ -229,6 +236,12 @@ export default {
 							sysUserId: merId
 						}
 					})
+					dispatch({
+						type: "publishStatusChange",
+						payload: {
+							pubStatus: 1,
+						}
+					})
 					/*dispatch({
 					  type:'getSysUserById',
 					  payload:{
@@ -302,7 +315,7 @@ export default {
 				if (match) {
 
 					const search = GetRequest(location.search);
-					console.log(search.content)
+					//console.log(search.content)
 					dispatch({
 						type: 'getCommentList',
 						payload: {
@@ -399,7 +412,7 @@ export default {
 		},
 		*setDisplayOrder({ payload }, { call, put }) {
 			const { articleId, displayOrder } = payload;
-			console.log(payload.search)
+			//console.log(payload.search)
 			let prams = {
 				articleId: articleId,
 				displayOrder: displayOrder
@@ -542,7 +555,7 @@ export default {
 			//console.log("11",data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-				console.log(res)
+				//console.log(res)
 				yield put({
 					type: 'getArticleList',
 					payload: {
@@ -826,11 +839,11 @@ export default {
 					var str = data.message;
 					var arr = str.split(',')
 					$.each(arr, function (i, e) {
-						console.log(i,e)
+						//console.log(i,e)
 						if(articleText.indexOf(e) > 0){
 							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
 							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
-							console.log(articleText)
+							//console.log(articleText)
 							$('.w-e-text').html(articleText);
 							localStorage.setItem('articleText',articleText);
 						}
@@ -1086,7 +1099,7 @@ export default {
 				articleId: payload.articleId
 			}
 			const { data } = yield call(getArticleById, params);
-			console.log(data)
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				var tags = "tags";
@@ -1957,6 +1970,15 @@ export default {
 				}
 			})
 		},
+		*publishStatusChange({ payload }, { call, put }) {
+			console.log(payload.pubStatus)
+			yield put({
+				type: "publishStatusChangeSuccess",
+				payload: {
+					pubStatus: payload.pubStatus
+				}
+			})
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -2076,7 +2098,14 @@ export default {
 			return {
 				...state,
 				...action.payload,
-				saveId: 0
+				
+			};
+		},
+		publishStatusChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+				
 			};
 		},
 		saveSuccess(state, action) {
@@ -2300,6 +2329,13 @@ export default {
 			};
 		},
 		getArticleStatSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+				saveId: 0
+			};
+		},
+		saveIdSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,

@@ -126,7 +126,7 @@ function ContentOpinion({ dispatch, content, router, location }) {
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem
 						{...formItemLayout}
-						label="评论时间"
+						label="提交时间"
 					>
 						{getFieldDecorator('time')(
 							<RangePicker />

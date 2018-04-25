@@ -71,7 +71,7 @@ function StandardTable({ data, loading, pageSize, handelchande, getUserData, cur
       dataIndex: 'action',
       render: (text, record) => (
         <span>
-          {record.bonusStatus == 0 ? <Popconfirm placement="topRight" title="确定解冻吗？" onConfirm={() => confirm(record)} okText="确定" cancelText="取消">
+          {(record.bonusStatus == 0 ||record.bonusStatus==2)? <Popconfirm placement="topRight" title="确定解冻吗？" onConfirm={() => confirm(record)} okText="确定" cancelText="取消">
             <a>解冻</a>
           </Popconfirm> : <a onClick={() => showModal(record)}>冻结</a>}
           <Divider type="vertical" />
