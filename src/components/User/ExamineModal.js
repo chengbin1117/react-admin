@@ -31,6 +31,7 @@ const ExamineModal = ({
 	onCancel,
 	selectList,
 	fatherType,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -78,6 +79,8 @@ const ExamineModal = ({
 		okText:"确定",
 		cancelText:"取消",
 		afterClose:afterClose,
+		confirmLoading:confirmLoading,
+		destroyOnClose:true
 	};
 	
 	return (

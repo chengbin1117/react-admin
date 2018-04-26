@@ -356,12 +356,17 @@ export default {
         }
 
       }
-
+      yield put({
+        type:"showSubmitLoading",
+      })
       const { data } = yield call(auditUser, params);
       //console.log("11",data)
       if (data && data.code == 10000) {
         var res = data.responseBody;
         message.success('审核成功')
+        yield put({
+          type:"hideSubmitLoading",
+        })
         yield put({
           type: 'hideExmianModal',
           payload: {
@@ -400,6 +405,9 @@ export default {
         }
         
       } else {
+        yield put({
+          type:"hideSubmitLoading",
+        })
         if (data.code == 10004 || data.code == 10011) {
           message.error(data.message, 2);
           yield put(routerRedux.push('/'));

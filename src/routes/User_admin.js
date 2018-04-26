@@ -26,7 +26,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({ location, dispatch, user, router, }) {
-	const { ExmianVisible, userlist, userInfo, selectList, HotVisible, LockVisible, loading, totalNumber, currentPage } = user;
+	const { ExmianVisible, userlist, userInfo, selectList,confirmLoading, HotVisible, LockVisible, loading, totalNumber, currentPage } = user;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
@@ -222,6 +222,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	const ExamineModalProps = {
 		visible: ExmianVisible,
 		selectList: selectList,
+		confirmLoading:confirmLoading,
 		onCancel: function () {
 			dispatch({
 				type: 'user/hideExmianModal',
