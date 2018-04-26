@@ -189,7 +189,6 @@ export async function ImageSetStatus(params) {
 //意见反馈
 
 export async function getFeedbackList(params) {
-
 	var data = Base64Url(params)
     var sign = SignUrl(data)
 	let url = '/admin/feedback/getFeedbackList?data='+encodeURIComponent(data)+"&sign="+sign;

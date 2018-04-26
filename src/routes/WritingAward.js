@@ -295,7 +295,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 		totalPrice:totalPrice,
 		handelchande(page){
 			const data = GetRequest(location.search);
-			console.log(data)
+		
 			if(data.title=="undefined"||data.title==undefined){
 				if(data.publisher=="undefined"||data.publisher==undefined){
 					dispatch(routerRedux.push('/user/writingAward?page='+ page + '&articleId='+data.articleId+'&adminId='+data.adminId+'&columnId='+data.columnId+
@@ -377,7 +377,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			})
 		},
 		sorterUserList(sorter){
-			console.log(sorter)
+	
 			let sortFiledName = "";
 			let sortRule = "";
 			if(sorter.field=="bowseNum"){
@@ -432,7 +432,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			})
 		},
 		onOk(data){
-			console.log(data)
+			
 			dispatch({
 				type:"award/freezePublishBonus",
 				payload:{
@@ -459,7 +459,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			})
 		},
 		onOk(data){
-			console.log(data)
+
 			var num = data.values.tmie.number;
 			if(data.values.tmie.currency == 'TV'||data.values.tmie.currency == '0'){
 				if(num>5){
@@ -472,7 +472,6 @@ function UserAdmin({ location, dispatch, award, content, }) {
 							articleId:data.articleId,
 							bonusType:0,
 							bonus:num,
-							bonusReason:data.values.bonusReason,
 							search:location.search
 						}	
 					})

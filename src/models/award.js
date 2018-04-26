@@ -91,7 +91,7 @@ export default {
 				type: 'showLoading',
 			});
 			const { data } = yield call(publishArticleBonus, payload);
-			console.log(data)
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				var arr = res.data;
@@ -255,7 +255,6 @@ export default {
 				bonus:payload.bonus,
 				bonusType:payload.bonusType,
 				adminId:payload.adminId,
-				bonusReason:payload.bonusReason
 			};
 			yield put({
 				type:"showCofiomLoding"
@@ -309,7 +308,7 @@ export default {
 		},
 		*getSysUsers({ payload }, { call, put }) {
 			const { data } = yield call(getSysUsers, payload);
-			console.log(data)
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				yield put({
@@ -332,7 +331,7 @@ export default {
 				type: 'showLoading',
 			});
 			const { data } = yield call(shareArticleBonus, payload);
-			console.log(data)
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				

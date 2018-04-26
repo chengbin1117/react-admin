@@ -77,7 +77,6 @@ export default {
 
             if (match) {
               const search =GetRequest(location.search);
-              console.log(search)
                 dispatch({
                   type: 'getAccount',
                   payload: {
@@ -104,7 +103,7 @@ export default {
 
             if (match) {
               const search =GetRequest(location.search);
-              console.log(search)
+       
                 dispatch({
                   type: 'getAccount',
                   payload: {
@@ -120,7 +119,7 @@ export default {
 
             if (match) {
               const search =GetRequest(location.search);
-              console.log(search)
+    
                 dispatch({
                   type: 'getAccountTxb',
                   payload: {

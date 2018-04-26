@@ -58,7 +58,7 @@ export default {
 				type: 'showLoading',
 			});
 			const { data } = yield call(appvmList, payload);
-			console.log(data)
+	
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				yield put({
@@ -95,7 +95,7 @@ export default {
 				id:payload.id
 			}
 			const { data } = yield call(deleteAppvm, params);
-			console.log(data)
+
 			if (data && data.code == 10000) {
 				message.success('删除成功');
 				const search = GetRequest(payload.search);
@@ -119,7 +119,7 @@ export default {
 				type: 'showLoading',
 			});
 			const { data } = yield call(AppDetail, payload);
-			console.log(data)
+	
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				yield put({
@@ -146,7 +146,7 @@ export default {
 				type:"showCofiomLoding"
 			})
 			const { data } = yield call(createApp, payload);
-			console.log(data)
+	
 			if (data && data.code == 10000) {
 				message.success('新建成功');
 				

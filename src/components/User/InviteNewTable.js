@@ -10,7 +10,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 function StandardTable({ data, loading, pageSize, handelchande, getUserData, currentPage, total, InviteUserListData, confirm, showModal }) {
-  console.log(data)
+
   const columns = [
     {
       title: '用户ID',
