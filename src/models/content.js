@@ -291,7 +291,7 @@ export default {
 						type: 'getFeedbackList',
 						payload: {
 							currentPage: parseInt(search.page),
-							content: search.content != 'undefined' ? search.content : null,
+							content: (search.content == 'undefined' ||search.content==undefined)? null : Base64.decode(search.content),
 							status: (search.status != "undefined" && search.status != undefined) ? (search.status == "true" ? true : false) : null,
 							startDate: search.startDate != "undefined" ? search.startDate : null,
 							endDate: search.endDate != "undefined" ? search.endDate : null,
@@ -747,11 +747,11 @@ export default {
 					var str = data.message;
 					var arr = str.split(',')
 					$.each(arr, function (i, e) {
-						console.log(i,e)
+						//console.log(i,e)
 						if(articleText.indexOf(e) > 0){
 							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
 							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
-							console.log(articleText)
+							//console.log(articleText)
 							$('.w-e-text').html(articleText);
 							localStorage.setItem('articleText',articleText);
 						}
@@ -1456,7 +1456,7 @@ export default {
 			}
 		},
 		*deleteFeedback({ payload }, { call, put }) {
-			const { feedbackId, search } = payload;
+			const { feedbackId } = payload;
 			let params = {
 				feedbackId: feedbackId
 			}
@@ -1464,13 +1464,17 @@ export default {
 			const { data } = yield call(deleteFeedback, params);
 			//console.log("图片",data)
 			if (data && data.code == 10000) {
-				const sea = GetRequest(search)
+				const search = GetRequest(payload.search)
 				message.success('删除成功');
 				yield put({
 					type: 'getFeedbackList',
 					payload: {
-						currentPage: sea.page,
-						pageSize: 25
+						currentPage: parseInt(search.page),
+						content: (search.content == 'undefined' ||search.content==undefined)? null : Base64.decode(search.content),
+						status: (search.status != "undefined" && search.status != undefined) ? (search.status == "true" ? true : false) : null,
+						startDate: search.startDate != "undefined" ? search.startDate : null,
+						endDate: search.endDate != "undefined" ? search.endDate : null,
+						pageSize: 25,
 					}
 				});
 			} else {

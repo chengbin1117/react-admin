@@ -80,7 +80,7 @@ export default {
         type:payload.type,
       }
       const { data } = yield call(getDataStatChart, params);
-      console.log(data)
+      //console.log(data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
          //console.log(res)
@@ -110,7 +110,7 @@ export default {
       });
      
       const { data } = yield call(getColumnUserList, payload);
-      console.log("11",data)
+      //console.log("11",data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
          //console.log(res)

@@ -256,7 +256,7 @@ export default {
       const {
         data
       } = yield call(login, params);
-      console.log(data)
+
       if (data && data.code == 10000) {
         localStorage.setItem("nav", JSON.stringify(data.responseBody.menuList));
         localStorage.setItem("Kgtoken", data.responseBody.token.token);
@@ -598,9 +598,9 @@ export default {
       }
     },
     *loginSet({ payload }, { call, put }) {
-      console.log(payload)
+   
       const { data } = yield call(loginSet, payload);
-      console.log("11", data)
+   
       if (data && data.code == 10000) {
         message.success('设置成功')
         /*var res = data.responseBody;
@@ -711,7 +711,7 @@ export default {
         type: 'showLoading',
        });*/
        let params ={};
-       console.log(payload.status)
+    
        if(payload.status==1){
           params ={
             userIds:payload.userIds,
@@ -775,7 +775,7 @@ export default {
       });
 
       const { data } = yield call(getSiteInfo, payload);
-      console.log(data)
+ 
       if (data && data.code == 10000) {
         var res = data.responseBody;
         yield put({

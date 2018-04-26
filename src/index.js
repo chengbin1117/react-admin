@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import './index.css';
+import FastClick from 'fastclick';
 import dva from 'dva';
 import {
   message,notification
@@ -32,4 +33,5 @@ app.model(require('./models/app'));
 app.router(require('./router'));
 
 // 5. Start
+FastClick.attach(document.body);
 app.start('#root');
