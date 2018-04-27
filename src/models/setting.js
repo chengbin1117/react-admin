@@ -182,7 +182,7 @@ export default {
         *sysuserSetStatus({ payload }, {call , put}) {
          
           const { data } = yield call(sysuserSetStatus, payload);
-            console.log(data)
+
           if (data && data.code == 10000) {
              message.success('设置成功')
              yield put({
@@ -203,7 +203,7 @@ export default {
         *resetPassword({ payload }, {call , put}) {
           
           const { data } = yield call(resetPassword, payload);
-            console.log(data)
+   
           if (data && data.code == 10000) {
              message.success('重置成功')
           } else {
@@ -286,7 +286,7 @@ export default {
         *postSetStatus({ payload }, {call , put}) {
           
           const { data } = yield call(postSetStatus, payload);
-            console.log(data)
+      
           if (data && data.code == 10000) {
             message.success('设置成功')
               //var res = data.responseBody;
@@ -429,7 +429,7 @@ export default {
         
           
             const { data } = yield call(addPost, payload);
-            console.log(data)
+
           if (data && data.code == 10000) {
               if(payload.postId!=undefined){
                 message.success('编辑成功')

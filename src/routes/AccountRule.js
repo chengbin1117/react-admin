@@ -370,7 +370,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 		},
 		capage(page){
 			const search =GetRequest(location.search)
-			dispatch(routerRedux.push('/setting/account?page=1'+"&username="+search.username+"&mobile="+search.mobile+"&postId="+search.postId))
+			dispatch(routerRedux.push('/setting/account?page='+page+"&username="+search.username+"&mobile="+search.mobile+"&postId="+search.postId))
 		},
 		reseatPaw(record){
 			var paw = randomString(2)

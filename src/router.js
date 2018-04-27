@@ -32,6 +32,8 @@ import PlatformReward from './routes/PlatformReward'; //邀新奖励
 import RealNameAward from './routes/RealNameAward'; //实名认证奖励
 import ColumnAward from './routes/ColumnAward'; //成为专栏作家奖励
 import WritingAward from './routes/WritingAward'; //发文奖励
+import ReadingReward from './routes/ReadingReward'; //阅读奖励
+import ShareReward from './routes/ShareReward'; //分享奖励
 
 //日志
 import Log from './routes/Log';
@@ -87,6 +89,8 @@ import Bond from './routes/Bond';
 
 //APP版本管理
 import AppPage from './routes/AppPage';
+import AppDetail from './routes/AppDetail';
+
 
 function requireAuth(nextState, replace, callback) {
   let token = localStorage.getItem('Kgtoken');
@@ -129,6 +133,7 @@ function RouterConfig({ history }) {
           <Route path="/user/realnameAward" exact component={RealNameAward}/>
           <Route path="/user/columnAward" exact component={ColumnAward}/>
           <Route path="/user/writingAward" exact component={WritingAward}/>
+          <Route path="/user/shareReward" exact component={ShareReward}/>
           <Route path="/user/user_login" exact component={UserLogin} />
           <Route path="/user/user_info" exact component={UserInfo} />
           <Route path="/user/realName" exact component={realName} />
@@ -162,6 +167,7 @@ function RouterConfig({ history }) {
           <Route path="/finance/recordTxb" strict component={RecordTxb} />
           <Route path="/finance/bond" strict component={Bond} />
           <Route path="/app/editon" strict component={AppPage} />
+          <Route path="/app/detail" strict component={AppDetail} />
       </LayoutContainer>
       </Switch>
     </Router>

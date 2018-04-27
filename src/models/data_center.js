@@ -80,6 +80,7 @@ export default {
         type:payload.type,
       }
       const { data } = yield call(getDataStatChart, params);
+      //console.log(data)
       if (data && data.code == 10000) {
          var res = data.responseBody;
          //console.log(res)

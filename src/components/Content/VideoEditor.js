@@ -149,7 +149,6 @@ function ArticleEditor({
                 bonusStatus: parseInt(data.bonusStatus),
                 articleSource: data.articleSource,
                 articleLink: data.articleLink,
-                sysUser: merId,
                 publishStatus: parseInt(data.publishStatus),
                 browseNum: data.browseNum,
                 thumbupNum: data.thumbupNum,
@@ -846,7 +845,7 @@ function ArticleEditor({
             }]
           })(
             <Upload {...props} listType="text" style={{ width: '50%' }}>
-              <Button type="primary" size="large" id="BTN" disabled={dis}>
+              <Button type="primary" size="large" id="BTN" disabled={dis} >
                 <Icon type={icoType} />重新上传
                 </Button>
             </Upload>

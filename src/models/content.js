@@ -49,7 +49,9 @@ export default {
 		dis:false,
 		SensitiveWords:'',
 		titleWords:null, //标题中的敏感词
-		status_Article:1
+		status_Article:1,
+		pubStatus:1,   //审核状态
+		timeDis:0, //不开启定时发布
 	},
 
 	subscriptions: {
@@ -89,7 +91,7 @@ export default {
 				match = pathToRegexp('/content/videoList').exec(location.pathname);
 				if (match) {
 					const search = GetRequest(location.search);
-					console.log(search.articleTitle)
+					//console.log(search.articleTitle)
 					dispatch({
 						type: 'getArticleList',
 						payload: {
@@ -125,10 +127,23 @@ export default {
 						}
 					})
 					dispatch({
+						type:"saveIdSuccess",
+						payload:{
+
+						}
+					})
+					dispatch({
 						type: "typeChange",
 						payload: {
 							artSorce: 0,
-							titleWords:null
+							titleWords:null,
+							
+						}
+					})
+					dispatch({
+						type:'handleTimeChane',
+						payload:{
+							timeDis:0
 						}
 					})
 					dispatch({
@@ -229,6 +244,12 @@ export default {
 							sysUserId: merId
 						}
 					})
+					dispatch({
+						type: "publishStatusChange",
+						payload: {
+							pubStatus: 1,
+						}
+					})
 					/*dispatch({
 					  type:'getSysUserById',
 					  payload:{
@@ -278,7 +299,7 @@ export default {
 						type: 'getFeedbackList',
 						payload: {
 							currentPage: parseInt(search.page),
-							content: search.content != 'undefined' ? search.content : null,
+							content: (search.content == 'undefined' ||search.content==undefined)? null : Base64.decode(search.content),
 							status: (search.status != "undefined" && search.status != undefined) ? (search.status == "true" ? true : false) : null,
 							startDate: search.startDate != "undefined" ? search.startDate : null,
 							endDate: search.endDate != "undefined" ? search.endDate : null,
@@ -302,7 +323,7 @@ export default {
 				if (match) {
 
 					const search = GetRequest(location.search);
-					console.log(search.content)
+					//console.log(search.content)
 					dispatch({
 						type: 'getCommentList',
 						payload: {
@@ -399,7 +420,7 @@ export default {
 		},
 		*setDisplayOrder({ payload }, { call, put }) {
 			const { articleId, displayOrder } = payload;
-			console.log(payload.search)
+			//console.log(payload.search)
 			let prams = {
 				articleId: articleId,
 				displayOrder: displayOrder
@@ -462,12 +483,18 @@ export default {
 				displayStatus: displayStatus,
 				updateUser: updateUser
 			}
+			yield put({
+				type:"showSubmitLoading"
+			})
 			const { data } = yield call(setDisplayStatus, params);
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				const sea = GetRequest(search)
 				message.success('设置成功')
-				console.log(payload.publishKind)
+				yield put({
+					type:"hideSubmitLoading"
+				})
+				//console.log(payload.publishKind)
 				if (payload.publishKind == 2) {
 					yield put({
 						type: 'getArticleList',
@@ -513,6 +540,9 @@ export default {
 					}
 				});
 			} else {
+				yield put({
+					type:"hideSubmitLoading"
+				})
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));
@@ -533,7 +563,7 @@ export default {
 			//console.log("11",data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-				console.log(res)
+				//console.log(res)
 				yield put({
 					type: 'getArticleList',
 					payload: {
@@ -680,7 +710,6 @@ export default {
 			}
 		},
 		*publishArticle({ payload }, { call, put }) {
-
 			const { data } = yield call(publishArticle, payload);
 			//console.log("11",data)
 
@@ -725,11 +754,11 @@ export default {
 					var str = data.message;
 					var arr = str.split(',')
 					$.each(arr, function (i, e) {
-						console.log(i,e)
+						//console.log(i,e)
 						if(articleText.indexOf(e) > 0){
 							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
 							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
-							console.log(articleText)
+							//console.log(articleText)
 							$('.w-e-text').html(articleText);
 							localStorage.setItem('articleText',articleText);
 						}
@@ -817,11 +846,11 @@ export default {
 					var str = data.message;
 					var arr = str.split(',')
 					$.each(arr, function (i, e) {
-						console.log(i,e)
+						//console.log(i,e)
 						if(articleText.indexOf(e) > 0){
 							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
 							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
-							console.log(articleText)
+							//console.log(articleText)
 							$('.w-e-text').html(articleText);
 							localStorage.setItem('articleText',articleText);
 						}
@@ -1022,7 +1051,6 @@ export default {
 
 					arr.push(params)
 				}
-				//console.log(firstCloumn,childColumn)
 				yield put({
 					type: 'getColumnListSuccess',
 					payload: {
@@ -1078,6 +1106,7 @@ export default {
 				articleId: payload.articleId
 			}
 			const { data } = yield call(getArticleById, params);
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				var tags = "tags";
@@ -1303,7 +1332,9 @@ export default {
 					imageAddress: imageAddress,
 				}
 			}
-
+			yield put({
+				type:'showSubmitLoading'
+			})
 			const { data } = yield call(addImage, params);
 
 			if (data && data.code == 10000) {
@@ -1312,6 +1343,9 @@ export default {
 				} else {
 					message.success('图片添加成功');
 				}
+				yield put({
+					type:'hideSubmitLoading'
+				})
 				const search = GetRequest(payload.search);
 				yield put({
 					type: 'siteimagelist',
@@ -1324,6 +1358,7 @@ export default {
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
 					}
 				});
+				
 				yield put({
 					type: 'hideAddImgModal',
 
@@ -1334,6 +1369,9 @@ export default {
 				});
 
 			} else {
+				yield put({
+					type:'hideSubmitLoading'
+				})
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
@@ -1410,7 +1448,7 @@ export default {
 					payload: {
 						FeedbackList: res,
 						totalNumber: data.responseBody.totalNumber,
-						currentPage: res.currentPage,
+						currentPage: data.responseBody.currentPage,
 						loading: false,
 
 					}
@@ -1425,7 +1463,7 @@ export default {
 			}
 		},
 		*deleteFeedback({ payload }, { call, put }) {
-			const { feedbackId, search } = payload;
+			const { feedbackId } = payload;
 			let params = {
 				feedbackId: feedbackId
 			}
@@ -1433,13 +1471,17 @@ export default {
 			const { data } = yield call(deleteFeedback, params);
 			//console.log("图片",data)
 			if (data && data.code == 10000) {
-				const sea = GetRequest(search)
+				const search = GetRequest(payload.search)
 				message.success('删除成功');
 				yield put({
 					type: 'getFeedbackList',
 					payload: {
-						currentPage: sea.page,
-						pageSize: 25
+						currentPage: parseInt(search.page),
+						content: (search.content == 'undefined' ||search.content==undefined)? null : Base64.decode(search.content),
+						status: (search.status != "undefined" && search.status != undefined) ? (search.status == "true" ? true : false) : null,
+						startDate: search.startDate != "undefined" ? search.startDate : null,
+						endDate: search.endDate != "undefined" ? search.endDate : null,
+						pageSize: 25,
 					}
 				});
 			} else {
@@ -1939,6 +1981,22 @@ export default {
 				}
 			})
 		},
+		*publishStatusChange({ payload }, { call, put }) {
+			yield put({
+				type: "publishStatusChangeSuccess",
+				payload: {
+					pubStatus: payload.pubStatus
+				}
+			})
+		},
+		*handleTimeChane({ payload }, { call, put }) {
+			yield put({
+				type: "handleTimeChaneSuccess",
+				payload: {
+					timeDis: payload.timeDis
+				}
+			})
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -2054,11 +2112,24 @@ export default {
 				saveId: 0
 			};
 		},
+		handleTimeChaneSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
 		getColumnListSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,
-				saveId: 0
+				
+			};
+		},
+		publishStatusChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+				
 			};
 		},
 		saveSuccess(state, action) {
@@ -2282,6 +2353,13 @@ export default {
 			};
 		},
 		getArticleStatSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+				saveId: 0
+			};
+		},
+		saveIdSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,

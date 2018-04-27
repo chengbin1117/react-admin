@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal, Form, Input, Radio,Select,Row,Col,Cascader} from 'antd';
 import Upload_Image from '../Upload_Image';
+import {residences} from '../../services/common';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -19,7 +20,7 @@ const Content_ImageEditor_Modal = ({
    item= {},
   onCheckOk,
   onCancel,
-  showfpModal,
+  confirmLoading,
   form: {
     getFieldDecorator,
     validateFields,
@@ -51,75 +52,13 @@ const Content_ImageEditor_Modal = ({
     onCancel: Cancel,
     maskClosable: false,
     footer:null,
-    afterClose:afterClose
+    afterClose:afterClose,
+    destroyOnClose:true,
   };
   function onChange(value) {
   console.log(value);
 }
- const residences = [{
-      value: '1',
-      label: '首页',
-      children: [{
-            "value":'11',
-            "label":"首页banner"
-         },{
-            "value":'12',
-            "label":"首页banner下方小幅图片"
-         },{
-            "value":'13',
-            "label":"首页资讯列表横幅"
-         },{
-            "value":'14',
-            "label":"首页右侧top排行上方宽幅图片"
-         },{
-            "value":'15',
-            "label":"首页右侧热门作者下方小横幅"
-         }
-        ],
-    }, {
-      value: '2',
-      label: '栏目列表',
-      children: [{
-          "value":'21',
-          "label":"栏目页右侧top排行上方宽幅图片"
-        },{
 
-          "value":"22",
-          "label":"tag列表右侧top排行上方宽幅图片"
-        }]
-    },{
-      value: '4',
-      label: '资讯详情',
-      children: [{
-          "value":'41',
-          "label":"资讯详情页顶部通栏",
-         },
-         {
-          "value":'42',
-          "label":"资讯详情页正文声明下方横幅",
-         },
-         {
-          "value":'43',
-          "label":"资讯详情页右侧top排行上方宽幅图片",
-         },]
-    }];
-   /*{
-      value: '3',
-      label: '频道页',
-      children: [{
-            "value":'31',
-            "label":"频道页banner",
-           },{
-            "value":'32',
-            "label":"频道页banner下方小幅图片",
-           },{"value":'33',
-            "label":"频道页资讯列表横幅",
-           },{"value":'34',
-            "label":"频道页右侧热门资讯上方宽幅图片",
-           },{"value":'35',
-            "label":"频道页右侧热门作者上方小横幅",
-      }],
-    },*/
   class DynamicRule extends React.Component {
     state = {
       checkNick: false,
@@ -250,7 +189,7 @@ const Content_ImageEditor_Modal = ({
           </FormItem>
           <FormItem  style={{marginLeft:120+'px'}} className="collection-create-form_last-form-item">
               <Button  type="default" size="large" onClick={()=>Cancel()} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}> 取消</Button>
-              <Button type="primary" size="large" onClick={()=>this.check(this.state.Imgvalue)} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}}> 保存</Button>
+              <Button type="primary" size="large" onClick={()=>this.check(this.state.Imgvalue)} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}} loading={confirmLoading}> 保存</Button>
           </FormItem>
         </Form>
       );

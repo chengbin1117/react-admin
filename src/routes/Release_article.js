@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords} =content;
+  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -49,6 +49,7 @@ function Release_article({location,dispatch,router,content,setting}) {
     artSorce,
     SensitiveWords,
     titleWords,
+    timeDis,
     handlsearch(values){
        
     },
@@ -75,7 +76,7 @@ function Release_article({location,dispatch,router,content,setting}) {
                        res =res.data; 
                       
                         if (res.errorCode == 10000) {
-                            console.log(res) 
+                          
                            //imgUrl =res.data[0].filePath;
                             dispatch({
                               type:'content/hidefpModal',

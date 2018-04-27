@@ -87,7 +87,7 @@ function ContentOpinion({ dispatch, content, router, location }) {
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem
 						{...formItemLayout}
-						label="评论时间"
+						label="提交时间"
 					>
 						{getFieldDecorator('time')(
 							<RangePicker />
@@ -126,7 +126,7 @@ function ContentOpinion({ dispatch, content, router, location }) {
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem
 						{...formItemLayout}
-						label="评论时间"
+						label="提交时间"
 					>
 						{getFieldDecorator('time')(
 							<RangePicker />
@@ -139,6 +139,11 @@ function ContentOpinion({ dispatch, content, router, location }) {
 	}
 	function handlsearch(values) {
 		//console.log(values)
+		if (values.content == "" || values.content == undefined) {
+			values.content = undefined;
+		} else {
+			values.content = Base64.encode(values.content)
+		}
 		if (values.time != undefined) {
 			if (values.status == undefined) {
 				dispatch(routerRedux.push('/content/content_opinion?page=1' +

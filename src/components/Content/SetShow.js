@@ -37,13 +37,13 @@ const SetModal = ({
 	onOk,
 	onCancel,
 	selectList,
-	fatherType,
-	showfpModal,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
 		getFieldsValue,
 		setFieldsValue,
+		resetFields
 	},
 }) => {
 
@@ -65,6 +65,9 @@ const SetModal = ({
 	function Cancel() {
 		onCancel()
 	}
+	function afterClose() {
+		resetFields()
+	}
 	const modalOpts = {
 		title: "显示设置",
 		visible,
@@ -72,7 +75,10 @@ const SetModal = ({
 		onCancel: Cancel,
 		maskClosable: false,
 		okText:'确定',
-		cancelText:"取消"
+		cancelText:"取消",
+		afterClose: afterClose,
+		destroyOnClose:true,
+		confirmLoading:confirmLoading
 	};
 
 	return (

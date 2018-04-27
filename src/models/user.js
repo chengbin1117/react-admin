@@ -160,7 +160,7 @@ export default {
               pageSize:25,
               inviteUserId: search.inviteUserId != "undefined" ? search.inviteUserId : null,
               userId:search.userId != "undefined" ? search.userId : null,
-              userName:search.userName != "undefined" ? search.userName : null,
+              userName:(search.userName == "undefined" || search.userName == undefined)? null:  Base64.decode(search.userName),
               userMobile:search.userMobile != "undefined" ? search.userMobile : null,
               userRole:search.userRole != "undefined" ? search.userRole : null,
               createDateStart:search.createDateStart != "undefined" ? search.createDateStart : null,
@@ -256,7 +256,7 @@ export default {
       const {
         data
       } = yield call(login, params);
-      console.log(data)
+
       if (data && data.code == 10000) {
         localStorage.setItem("nav", JSON.stringify(data.responseBody.menuList));
         localStorage.setItem("Kgtoken", data.responseBody.token.token);
@@ -356,12 +356,17 @@ export default {
         }
 
       }
-
+      yield put({
+        type:"showSubmitLoading",
+      })
       const { data } = yield call(auditUser, params);
       //console.log("11",data)
       if (data && data.code == 10000) {
         var res = data.responseBody;
         message.success('审核成功')
+        yield put({
+          type:"hideSubmitLoading",
+        })
         yield put({
           type: 'hideExmianModal',
           payload: {
@@ -400,6 +405,9 @@ export default {
         }
         
       } else {
+        yield put({
+          type:"hideSubmitLoading",
+        })
         if (data.code == 10004 || data.code == 10011) {
           message.error(data.message, 2);
           yield put(routerRedux.push('/'));
@@ -598,9 +606,9 @@ export default {
       }
     },
     *loginSet({ payload }, { call, put }) {
-      console.log(payload)
+   
       const { data } = yield call(loginSet, payload);
-      console.log("11", data)
+   
       if (data && data.code == 10000) {
         message.success('设置成功')
         /*var res = data.responseBody;
@@ -711,7 +719,7 @@ export default {
         type: 'showLoading',
        });*/
        let params ={};
-       console.log(payload.status)
+    
        if(payload.status==1){
           params ={
             userIds:payload.userIds,
@@ -775,7 +783,7 @@ export default {
       });
 
       const { data } = yield call(getSiteInfo, payload);
-      console.log(data)
+ 
       if (data && data.code == 10000) {
         var res = data.responseBody;
         yield put({

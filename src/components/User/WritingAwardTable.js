@@ -10,7 +10,10 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 import {previewUrl} from '../../services/common';
-function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,handelchande,Thaw,getFrozenData,canelMarkArticle, currentPage, total, MarkArticle, getDeitlData, showModal }) {
+import style_pagination from '../pagination.css';
+import style_search from '../search.css';
+import style_common from '../common.css';
+function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,handelchande,Thaw,getFrozenData,canelMarkArticle, currentPage, total, MarkArticle, getDeitlData, showModal,sorterUserList }) {
 
 	const columns = [
 		{
@@ -52,15 +55,19 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 			title: '访问量',
 			dataIndex: 'bowseNum',
 			align: 'left',
+			sorter:true,
 			width:80,
 		}, {
 			title: '分享量',
 			dataIndex: 'shareNum',
 			align: 'left',
+			sorter:true,
+			width:80,
 		}, {
 			title: '发文奖励',
 			dataIndex: 'amount',
 			align: 'left',
+			width:80,
 			render: val => <span>{val == null ? "——" : val + 'TV'}</span>,
 		}, {
 			title: '进贡师傅',
@@ -109,7 +116,7 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 					<a href={previewUrl+'?id='+Base64.encode(record.articleId)+'_'} target="view_window">查看文章详情</a>
 					
 					{record.isAddBonus ==0&&<span><Divider type="vertical" /><a onClick={() => getAdditionalModal(record)}>额外奖励</a></span>}
-					{record.publishBonusStatus == 1?<span><Divider type="vertical" />{record.isMarkArticle == 0 ?<Popconfirm
+					{record.publishBonusStatus != 0?<span><Divider type="vertical" />{record.isMarkArticle == 0 ?<Popconfirm
 					placement="topRight" 
 					title="确定标为优质原创文章吗?" 
 					onConfirm={() => MarkArticle(record)} 
@@ -160,10 +167,14 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 		}
 		onShowSizeChange = (page, pageSize) => {
 			//console.log(page)
-			changepage(page, pageSize)
+			handelchande(page, pageSize)
 		}
 		onChange = (page, pageSize) => {
-			changepage(page, pageSize)
+			handelchande(page, pageSize)
+		}
+		handleTableChange= (pagination, filters, sorter)=>{
+			// /console.log(filters,sorter)
+			sorterUserList(sorter)
 		}
 		render() {
 			const { selectedRowKeys, selectedRows } = this.state;
@@ -175,14 +186,19 @@ function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,
 			return (
 				<div>
 					<div>当前发出奖励：{totalPrice&&totalPrice}</div>
-					<Table columns={columns} dataSource={data} rowKey={record => record.articleId} loading={loading} pagination={paginationProps} />
+					<Table columns={columns} dataSource={data} rowKey={record => record.articleId} loading={loading} pagination={false} onChange={this.handleTableChange}/>
+					<Pagination className={style_pagination.pagination} showQuickJumper current={currentPage} onShowSizeChange={this.onShowSizeChange} total={total} onChange={this.onChange} pageSize={25} />
 				</div>
 			);
 		}
 	}
 	return (
-		<div>
-			<App />
+		<div className={style_common.contentDiv}>
+
+			<div className={style_search.search_result}>
+			
+				<App />
+			</div>
 		</div>
 	);
 };

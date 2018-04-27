@@ -29,10 +29,9 @@ function Editor_article({ dispatch, router, content, setting }) {
     var html = '';
     let src = "";
 
-    const { ArticleList, BgVisible, UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords} = content;
+    const { ArticleList, BgVisible, UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords,pubStatus} = content;
 
     const options = ColumnList;
-    console.log("imgUrl", SensitiveWords)
     const ArticleEditorProps = {
         ColumnList,
         dispatch,
@@ -44,6 +43,7 @@ function Editor_article({ dispatch, router, content, setting }) {
         imgUrl,
         UserById,
         SensitiveWords,
+        pubStatus,
         handlsearch(values) {
 
 

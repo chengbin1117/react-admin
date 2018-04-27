@@ -57,6 +57,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  		{record.imagePos == 13 && "首页资讯列表横幅"}
 	  		{record.imagePos == 14 && "首页右侧top排行上方宽幅图片"}
 	  		{record.imagePos == 15 && "首页右侧热门作者下方小横幅"}
+				{record.imagePos == 16 && "首页行情条下方横幅图片"}
 	  		{record.imagePos == 21 && "栏目页右侧top排行上方宽幅图片"}
 	  		{record.imagePos == 22 && "tag列表右侧top排行上方宽幅图片"}
 	  		{record.imagePos == 31 && "频道页banner"}

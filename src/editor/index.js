@@ -31,6 +31,11 @@ class Editor extends Component {
 			// info 是需要提示的内容
 			message.error(info)
 		}
+		editor.customConfig.pasteTextHandle = function (content) {
+			// content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
+	
+			return content
+		}
 		editor.customConfig.uploadImgHooks = {
 			before: function (xhr, editor, files) {
 				if (files[0].type == "image/gif") {

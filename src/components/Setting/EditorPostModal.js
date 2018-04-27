@@ -130,31 +130,26 @@ const FormItem = Form.Item;
         }  
         return arr
 	}
-	class TreeAccountList extends React.Component {
 
-		render(){
-			return(
-				<Form>
-					<FormItem label="岗位名称" {...formItemLayout}>
-						{getFieldDecorator('name', {
-							initialValue:item.name,
-							rules: [{ required: true, message: '请填写岗位名称!' }],
-						})(<Input />)}
-					</FormItem>
-					<FormItem>
-					<div id="checkList">{TreeList&&TreeItem(TreeList).map((t,index)=>
-							<RuleList key={index} item = {t} defValue ={item.authIds} child={t.children} value={t.value}/>
-							)}
-					</div>
-					</FormItem>	
-				</Form>
-			)
-		}
-	}
 	return (
 
 		<Modal {...modalOpts}>
-			<TreeAccountList />
+			<Form>
+				<FormItem label="岗位名称" {...formItemLayout}>
+				{getFieldDecorator('name', {
+					initialValue:item.name,
+					rules: [{ required: true, message: '请填写岗位名称!' }],
+				})
+				(<Input className="name"/>
+				)}
+				</FormItem>
+				<FormItem>
+				<div id="checkList">{TreeList&&TreeItem(TreeList).map((t,index)=>
+						<RuleList key={index} item = {t} defValue ={item.authIds} child={t.children} value={t.value}/>
+						)}
+				</div>
+				</FormItem>	
+		    </Form>
 		</Modal>
 	);
 };
