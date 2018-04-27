@@ -235,7 +235,7 @@ let videoUrl = "https://kgvideo.oss-cn-shenzhen.aliyuncs.com/"; //开发环境�
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 //let urlprefix = "http://172.16.1.97:8080/kgapi";  //文全
-//let urlprefix = "http://kg.btc123.com/kgapi";//开发
+// let urlprefix = "http://kg.btc123.com/kgapi";//开发
 let urlprefix = "https://www.kg.com"; //生产&&测试
 
 
