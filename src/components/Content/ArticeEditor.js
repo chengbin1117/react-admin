@@ -79,7 +79,6 @@ function ArticleEditor({
 	let merId = localStorage.getItem("userId");
 	let articleList = JSON.parse(localStorage.getItem("articleList"));
 	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
-
 	const options = ColumnList;
 
 	const { RelationVisible, getRelUserList } = setting;
@@ -92,6 +91,10 @@ function ArticleEditor({
 			} else {
 				const data = { ...getFieldsValue() };
 				//console.log(data.text);
+				if(data.time!=undefined){
+					data.time =data.time.format('YYYY-MM-DD hh:mm')
+				}
+				console.log(data);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
 				let CX = dds.split('&nbsp;');
@@ -104,7 +107,6 @@ function ArticleEditor({
 				lg = lg.replace(/<\/?.+?>/g, "");
 				lg = lg.replace(/[\r\n]/g, "");
 				//console.log(lg)
-				console.log("文章字数", lg.length)
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
 					return true
@@ -227,6 +229,7 @@ function ArticleEditor({
 							}
 						})
 					} else if(data.publishStatus == "4") {
+					
 						dispatch({
 							type: 'content/publishArticle',
 							payload: {
@@ -248,7 +251,7 @@ function ArticleEditor({
 								articleSource: data.articleSource,
 								articleLink: data.articleLink,
 								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
+								publishTime: data.time != undefined ? data.time: null,
 								refuseReason: data.refuseReason,
 								textnum: lg.length,
 								browseNum: data.browseNum,
@@ -258,36 +261,70 @@ function ArticleEditor({
 							}
 						})
 					}else{
-						dispatch({
-							type: 'content/publishArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								sysUser: merId,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
+						if(data.radioG =='1'){
+							dispatch({
+								type: 'content/publishArticle',
+								payload: {
+									articleId: ArticleList.articleId,
+									articleTitle: data.articleTitle,
+									articleText: data.text,
+									tagnames: tagsName,
+									description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+									image: imgUrl == '' ? data.image : imgUrl,
+									type: parseInt(data.type),
+									columnId: parseInt(data.column[0]),
+									secondColumn: parseInt(data.column[1]),
+									displayStatus: parseInt(data.radioT),
+									displayOrder: parseInt(data.sort),
+									commentSet: data.commentSet == "true" ? true : false,
+									publishSet: parseInt(data.radioG),
+									createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+									sysUser: merId,
+									bonusStatus: parseInt(data.bonusStatus),
+									articleSource: data.articleSource,
+									articleLink: data.articleLink,
+									publishStatus: parseInt(data.publishStatus),
+									publishTime: data.time != undefined ? data.time: null,
+									refuseReason: data.refuseReason,
+									textnum: lg.length,
+									browseNum: data.browseNum,
+									thumbupNum: data.thumbupNum,
+									collectNum: data.collectNum,
+									editArticle: editArticle,
+								}
+							})
+						}else{
+							dispatch({
+								type: 'content/publishArticle',
+								payload: {
+									articleId: ArticleList.articleId,
+									articleTitle: data.articleTitle,
+									articleText: data.text,
+									tagnames: tagsName,
+									description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+									image: imgUrl == '' ? data.image : imgUrl,
+									type: parseInt(data.type),
+									columnId: parseInt(data.column[0]),
+									secondColumn: parseInt(data.column[1]),
+									displayStatus: parseInt(data.radioT),
+									displayOrder: parseInt(data.sort),
+									commentSet: data.commentSet == "true" ? true : false,
+									publishSet: parseInt(data.radioG),
+									sysUser: merId,
+									bonusStatus: parseInt(data.bonusStatus),
+									articleSource: data.articleSource,
+									articleLink: data.articleLink,
+									publishStatus: parseInt(data.publishStatus),
+									refuseReason: data.refuseReason,
+									textnum: lg.length,
+									browseNum: data.browseNum,
+									thumbupNum: data.thumbupNum,
+									collectNum: data.collectNum,
+									editArticle: editArticle,
+								}
+							})
+						}
+						
 					}	
 				}
 
@@ -305,6 +342,9 @@ function ArticleEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
+				if(data.time!=undefined){
+					data.time =data.time.format('YYYY-MM-DD hh:mm')
+				}
 				//console.log(data.text);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
@@ -321,7 +361,6 @@ function ArticleEditor({
 				} else if (data.tag4 != undefined && data.tag5 != undefined) {
 					tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 				}
-				console.log(imgUrl, data.image)
 				if (imgUrl == "" && data.image == "") {
 					message.error('请上传封面图')
 					return
@@ -358,6 +397,7 @@ function ArticleEditor({
 						articleSource: data.articleSource,
 						articleLink: data.articleLink,
 						publishStatus: 1,
+						publishTime: data.time != undefined ? data.time: null,
 						textnum: lg.length,
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
@@ -381,7 +421,12 @@ function ArticleEditor({
 	}
 	function disabledDate(current) {
 		// Can not select days before today and today
-		return current && current <= moment()
+		var date = Date.parse(new Date())
+		//console.log(date)
+		var time = date - (24 * 60 * 60 * 1000);
+		var severTime = date + (7 * 24 * 60 * 60 * 1000);
+		//console.log("2",cx)
+		return  severTime < current && current > time
 	}
 	function disabledDateTime() {
 		return {
@@ -985,7 +1030,7 @@ function ArticleEditor({
 				extra="定时范围：从当前时间点开始至未来7天内，按自然日计算"
 			>
 				{getFieldDecorator('time', {
-					initialValue: ArticleList.publishTime == null ? "" : moment(formatDate(ArticleList.publishTime), "YYYY-MM-DD HH:mm:ss"),
+					initialValue: ArticleList.publishTime == null ? "" :  moment(formatDate(ArticleList.publishTime), "YYYY-MM-DD HH:mm"),
 					rules: [
 						{ required: true, message: "请选择时间", },
 					],
