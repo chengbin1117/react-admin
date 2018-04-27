@@ -92,7 +92,7 @@ function ArticleEditor({
 				const data = { ...getFieldsValue() };
 				//console.log(data.text);
 				if(data.time!=undefined){
-					data.time =data.time.format('YYYY-MM-DD hh:mm')
+					data.time =data.time.format('YYYY-MM-DD HH:MM')
 				}
 				console.log(data);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
@@ -343,7 +343,7 @@ function ArticleEditor({
 			} else {
 				const data = { ...getFieldsValue() };
 				if(data.time!=undefined){
-					data.time =data.time.format('YYYY-MM-DD hh:mm')
+					data.time =data.time.format('YYYY-MM-DD HH:MM')
 				}
 				//console.log(data.text);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");

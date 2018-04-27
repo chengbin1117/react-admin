@@ -90,7 +90,7 @@ function RelesEditor({
 			} else {
 				const data = { ...getFieldsValue() };
 				if(data.time!=undefined){
-					data.time =data.time.format('YYYY-MM-DD hh:mm')
+					data.time =data.time.format('YYYY-MM-DD HH:MM')
 				}
 				if (imgUrl == "") {
 					message.error('请上传封面图')
@@ -175,7 +175,7 @@ function RelesEditor({
 				textnum = data.text.txt.text().split('&nbsp;').join('').length
 			}
 			if(data.time!=undefined){
-				data.time =data.time.format('YYYY-MM-DD hh:mm');
+				data.time =data.time.format('YYYY-MM-DD HH:MM')
 				
 			}
 			var tagsName = "";
