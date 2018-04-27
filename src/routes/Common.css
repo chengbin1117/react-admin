@@ -496,6 +496,11 @@
   display: inline-block;
   margin-left: 30px;
 }
+.appDetail label,span{
+  font-size:14px!important;
+  
+}
+
 @media only screen and (max-width:1800px){
   .login_register_modal .el-dialog{
       width:16%!important;

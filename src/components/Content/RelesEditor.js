@@ -44,8 +44,6 @@ const tailFormItemLayout = {
 		},
 	},
 };
-
-let timeDis = 0;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
@@ -67,6 +65,7 @@ function RelesEditor({
 	artSorce,
 	SensitiveWords,
 	titleWords,
+	timeDis,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -76,19 +75,23 @@ function RelesEditor({
 	},
 }) {
 	let merId = localStorage.getItem("userId");
-	//console.log(artSorce)
+	console.log(saveId)
 	const options = ColumnList;
 	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
 	//console.log(UserById.kgUserName)
-	const { RelationVisible, getRelUserList } = setting
+	const { RelationVisible, getRelUserList } = setting;
+	
+	//发布
 	function handleSubmit(e) {
 		e.preventDefault();
-		validateFields((errors) => {
+		validateFields((errors,) => {
 			if (errors) {
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				// console.log(formatDate(new Date(data.time)))
+				if(data.time!=undefined){
+					data.time =data.time.format('YYYY-MM-DD HH:mm')
+				}
 				if (imgUrl == "") {
 					message.error('请上传封面图')
 					return true
@@ -108,7 +111,7 @@ function RelesEditor({
 				lg = lg.replace(/\s+/g, "")
 				lg = lg.replace(/<\/?.+?>/g, "");
 				lg = lg.replace(/[\r\n]/g, "");
-				console.log("文章字数", lg.length)
+				//console.log("文章字数", lg.length)
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
 					return true
@@ -145,7 +148,7 @@ function RelesEditor({
 						sysUser: merId,
 						bonusStatus: parseInt(data.bonusStatus),
 						textnum: data.text.txt.text().split('&nbsp;').join('').length,
-						publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
+						publishTime: data.time != undefined ? data.time: null,
 						publishStatus: 1,
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
@@ -155,12 +158,26 @@ function RelesEditor({
 			}
 		})
 	}
+	//存草稿
 	function publishStatus() {
 		validateFields(['articleTitle'], (errors) => {
 			if (errors) {
 				return
 			}
 			const data = { ...getFieldsValue() };
+			var textnum = 0;
+			var text = ""
+			if(data.text ==undefined){
+				text = ""
+				textnum =0;
+			}else{
+				text =  data.text.txt.html();
+				textnum = data.text.txt.text().split('&nbsp;').join('').length
+			}
+			if(data.time!=undefined){
+				data.time =data.time.format('YYYY-MM-DD HH:mm')
+				
+			}
 			var tagsName = "";
 			if (data.tag1 == undefined) {
 				tagsName = "";
@@ -177,66 +194,36 @@ function RelesEditor({
 				tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 			}
 			//console.log(data)
-			if (data.text != undefined) {
-				dispatch({
-					type: 'content/publishArticle',
-					payload: {
-						articleId: saveId,
-						articleTitle: data.articleTitle,
-						articleText: data.text.txt.html(),
-						tagnames: tagsName,
-						description: (data.artic == undefined || data.artic == "") ? data.text.txt.text().substring(0, 100) : data.artic,
-						image: imgUrl,
-						type: parseInt(data.type),
-						columnId: data.column != undefined ? parseInt(data.column[0]) : null,
-						secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
-						displayStatus: parseInt(data.radioT),
-						displayOrder: parseInt(data.sort),
-						articleSource: data.articleSource,
-						articleLink: data.articleLink,
-						commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-						publishSet: parseInt(data.radioG),
-						createUser: data.createUser,
-						sysUser: merId,
-						bonusStatus: parseInt(data.bonusStatus),
-						publishStatus: 0,
-						textnum: data.text.txt.text().split('&nbsp;').join('').length,
-						browseNum: data.browseNum,
-						thumbupNum: data.thumbupNum,
-						collectNum: data.collectNum,
+			dispatch({
+				type: 'content/publishArticle',
+				payload: {
+					articleId: saveId,
+					articleTitle: data.articleTitle,
+					articleText: text,
+					tagnames: tagsName,
+					description: (data.artic == undefined || data.artic == "") ? data.text.txt.text().substring(0, 100) : data.artic,
+					image: imgUrl,
+					type: parseInt(data.type),
+					columnId: data.column != undefined ? parseInt(data.column[0]) : null,
+					secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
+					displayStatus: parseInt(data.radioT),
+					displayOrder: parseInt(data.sort),
+					articleSource: data.articleSource,
+					articleLink: data.articleLink,
+					commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
+					publishSet: parseInt(data.radioG),
+					createUser: data.createUser,
+					publishTime: data.time != undefined ? data.time: null,
+					sysUser: merId,
+					bonusStatus: parseInt(data.bonusStatus),
+					publishStatus: 0,
+					textnum: textnum,
+					browseNum: data.browseNum,
+					thumbupNum: data.thumbupNum,
+					collectNum: data.collectNum,
 
-					}
-				})
-			} else {
-				dispatch({
-					type: 'content/publishArticle',
-					payload: {
-						articleId: saveId,
-						articleTitle: data.articleTitle,
-						articleText: "",
-						tagnames: tagsName,
-						description: data.artic,
-						image: imgUrl,
-						type: parseInt(data.type),
-						columnId: data.column != undefined ? parseInt(data.column[0]) : null,
-						secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
-						displayStatus: parseInt(data.radioT),
-						displayOrder: parseInt(data.sort),
-						articleSource: data.articleSource,
-						articleLink: data.articleLink,
-						commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-						publishSet: parseInt(data.radioG),
-						createUser: data.createUser,
-						sysUser: merId,
-						bonusStatus: parseInt(data.bonusStatus),
-						publishStatus: 0,
-						textnum: 0,
-						browseNum: data.browseNum,
-						thumbupNum: data.thumbupNum,
-						collectNum: data.collectNum,
-					}
-				})
-			}
+				}
+			})
 
 		})
 
@@ -257,7 +244,7 @@ function RelesEditor({
 		return editor
 	}
 	function handleChange(imgUrl) {
-		console.log(imgUrl)
+		//console.log(imgUrl)
 		return imgUrl
 	}
 
@@ -267,9 +254,8 @@ function RelesEditor({
 		secondCity = parseInt(value)
 	}
 	function showUser() {
-
 		const data = { ...getFieldsValue(['createUser']) };
-		console.log(data)
+		//console.log(data)
 		dispatch({
 			type: "setting/showRelationModal"
 		})
@@ -339,7 +325,7 @@ function RelesEditor({
 		var time = date - (24 * 60 * 60 * 1000);
 		var severTime = date + (7 * 24 * 60 * 60 * 1000);
 		//console.log("2",cx)
-		return current && severTime < current && current > time
+		return  severTime < current && current > time
 	}
 
 	function disabledDateTime() {
@@ -371,26 +357,18 @@ function RelesEditor({
 			} else {
 				callback()
 			}
-			// if(lg.length==0){
-
-			// }else if (lg.length>5000){
-			//   callback('请输入1-5000个字符')
-			// }else{
-
-			// }
 		}
-
-
 	}
 
 
 	function handleTime(e) {
-		console.log("e", e.target.value)
-		if (e.target.value == "0") {
-			timeDis = 0
-		} else {
-			timeDis = 1
-		}
+		
+		dispatch({
+			type:"content/handleTimeChane",
+			payload:{
+				timeDis:parseInt(e.target.value)
+			}
+		})
 	}
 	function edtiorContentText(t) {
 
@@ -435,9 +413,6 @@ function RelesEditor({
 			localStorage.setItem("previewdec", data.text.txt.text().substring(0, 30));
 			localStorage.setItem("previewTag", tagsName);
 		}
-
-
-
 		window.open('/#/preview')
 	}
 	//console.log(secondC[sec])
@@ -596,7 +571,7 @@ function RelesEditor({
 
 
 	//验证标题
-	console.log("SensitiveWords", titleWords)
+	//console.log("SensitiveWords", titleWords)
 	
     function titleChage(rule, value, callback){
 		if (titleWords != null&&value!='') {
@@ -618,7 +593,7 @@ function RelesEditor({
 
 		const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
 		if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
-			console.log(value)
+			//console.log(value)
 			return
 		}
 	}
@@ -691,8 +666,7 @@ function RelesEditor({
 			articleSource: data.articleSource,
 			articleLink: data.articleLink,
 			commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-			publishSet: parseInt(data.radioG),
-			createUser: data.createUser,
+			publishSet:2,
 			sysUser: merId,
 			bonusStatus: parseInt(data.bonusStatus),
 			publishStatus: 0,
@@ -714,7 +688,7 @@ function RelesEditor({
 		// /console.log(titleValue)
 	}
 	return (
-		<Form onSubmit={handleSubmit}>
+		<Form>
 			<FormItem label="文章标题" {...formItemLayout}>
 				{getFieldDecorator('articleTitle', {
 					rules: [{
@@ -1100,7 +1074,7 @@ function RelesEditor({
 			</FormItem>
 			<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
 				<Button type="primary" onClick={handleSubmit}>发布</Button>
-				<Button type="primary" style={{ marginLeft: 30 }} onClick={publishStatus} className={styles.draft}>存草稿</Button>
+				<Button type="primary" style={{ marginLeft: 30 }} onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={timeDis==1?true:false}>存草稿</Button>
 				<Button type="primary" style={{ marginLeft: 30 }} onClick={() => previewPage()} className={styles.preview}>预览</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>

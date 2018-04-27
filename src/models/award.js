@@ -1,5 +1,5 @@
 import pathToRegexp from 'path-to-regexp';
-import { publishArticleBonus,markHighQualityArticles,freezePublishBonus,addedBonus,getSysUsers } from '../services/user';
+import { publishArticleBonus,markHighQualityArticles,freezePublishBonus,addedBonus,getSysUsers,shareArticleBonus } from '../services/user';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
 import {
 	message
@@ -12,13 +12,14 @@ export default {
 	state: {
 		loading: false,
 		deskUserId: '',
-		currentPage: 0,
+		currentPage: 1,
 		totalNumber: 0,
 		ArticleBonusList: [],//发文奖励列表
 		currentItem:{},
 		totalPrice:0,   //发出总奖励
 		loging:false,
 		SysUsersList:[], //后台用户列表
+		ShareBonusList:[], //分享奖励列表
 	},
 
 	subscriptions: {
@@ -29,7 +30,7 @@ export default {
 			history.listen(location => {
 				let match = pathToRegexp('/user/writingAward').exec(location.pathname);
 				const search = GetRequest(location.search);
-				console.log(search.publisher)
+				//console.log(search.publisher)
 				if (match) {
 					dispatch({
 						type: 'publishArticleBonus',
@@ -37,6 +38,8 @@ export default {
 							currentPage: search.page,
 							pageSize:25,
 							articleId: search.articleId != 'undefined' ? search.articleId : null,
+							sortRule: search.sortRule != 'undefined' ? search.sortRule : null,
+							sortFiledName: search.sortFiledName != 'undefined' ? search.sortFiledName : null,
 							adminId: search.adminId != "undefined" ? search.adminId : null,
 							articleTitle: (search.title == undefined||search.title=="undefined") ? null : Base64.decode(search.title),
 							publisher: (search.publisher == 'undefined'|| search.publisher == undefined)?null : Base64.decode(search.publisher),
@@ -63,6 +66,21 @@ export default {
 						}
 					})
 				}
+				match = pathToRegexp('/user/shareReward').exec(location.pathname);
+				if (match) {
+					dispatch({
+						type: 'shareArticleBonus',
+						payload: {
+							currentPage: search.page,
+							pageSize:25,
+							userId: search.userId != 'undefined' ? search.userId : null,
+							nickName: (search.nickName == undefined||search.nickName=="undefined") ? null : Base64.decode(search.nickName),
+							userPhone: search.userPhone != 'undefined' ? search.userPhone : null,
+							userRoleId: search.userRoleId != 'undefined' ? search.userRoleId : null,
+							userLevel: search.userLevel != 'undefined' ? search.userLevel : null,
+						}
+					});
+				}
 			})
 		},
 	},
@@ -73,7 +91,7 @@ export default {
 				type: 'showLoading',
 			});
 			const { data } = yield call(publishArticleBonus, payload);
-			console.log(data)
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				var arr = res.data;
@@ -128,6 +146,8 @@ export default {
 						pageSize:25,
 						articleId: search.articleId != 'undefined' ? search.articleId : null,
 						adminId: search.adminId != "undefined" ? search.adminId : null,
+						sortRule: search.sortRule != 'undefined' ? search.sortRule : null,
+						sortFiledName: search.sortFiledName != 'undefined' ? search.sortFiledName : null,
 						articleTitle: (search.title == undefined||search.title=="undefined") ? null : Base64.decode(search.title),
 						publisher: (search.publisher == 'undefined'|| search.publisher == undefined)?null : Base64.decode(search.publisher),
 						publishStartDate: search.publishStastDate != 'undefined' ? search.publishStastDate : null,
@@ -203,6 +223,8 @@ export default {
 						pageSize:25,
 						articleId: search.articleId != 'undefined' ? search.articleId : null,
 						adminId: search.adminId != "undefined" ? search.adminId : null,
+						sortRule: search.sortRule != 'undefined' ? search.sortRule : null,
+						sortFiledName: search.sortFiledName != 'undefined' ? search.sortFiledName : null,
 						articleTitle: (search.title == undefined||search.title=="undefined") ? null : Base64.decode(search.title),
 						publisher: (search.publisher == 'undefined'|| search.publisher == undefined)?null : Base64.decode(search.publisher),
 						publishStartDate: search.publishStartDate != 'undefined' ? search.publishStartDate : null,
@@ -233,7 +255,6 @@ export default {
 				bonus:payload.bonus,
 				bonusType:payload.bonusType,
 				adminId:payload.adminId,
-				bonusReason:payload.bonusReason
 			};
 			yield put({
 				type:"showCofiomLoding"
@@ -259,6 +280,8 @@ export default {
 						pageSize:25,
 						articleId: search.articleId != 'undefined' ? search.articleId : null,
 						adminId: search.adminId != "undefined" ? search.adminId : null,
+						sortRule: search.sortRule != 'undefined' ? search.sortRule : null,
+						sortFiledName: search.sortFiledName != 'undefined' ? search.sortFiledName : null,
 						articleTitle: (search.title == undefined||search.title=="undefined") ? null : Base64.decode(search.title),
 						publisher: (search.publisher == 'undefined'|| search.publisher == undefined)?null : Base64.decode(search.publisher),
 						publishStartDate: search.publishStartDate != 'undefined' ? search.publishStartDate : null,
@@ -285,7 +308,7 @@ export default {
 		},
 		*getSysUsers({ payload }, { call, put }) {
 			const { data } = yield call(getSysUsers, payload);
-			console.log(data)
+			//console.log(data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
 				yield put({
@@ -302,7 +325,38 @@ export default {
 					message.error(data.message, 2);
 				}
 			}
-		}
+		},
+		*shareArticleBonus({ payload }, { call, put }) {
+			yield put({
+				type: 'showLoading',
+			});
+			const { data } = yield call(shareArticleBonus, payload);
+			//console.log(data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				
+				yield put({
+					type: 'shareArticleBonusSuccess',
+					payload: {
+						ShareBonusList: res.data,
+						loading: false,
+						totalNumber: res.totalNumber,
+						currentPage: res.currentPage,
+						totalPrice:res.totalPrice,
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+				yield put({
+					type: 'hideLoading',
+				});
+			}
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -333,6 +387,9 @@ export default {
 			return {...state,...action.payload,AdditionalVisible:false};
 		},
 		getSysUsersSuccess(state, action) {
+			return {...state,...action.payload};
+		},
+		shareArticleBonusSuccess(state, action) {
 			return {...state,...action.payload};
 		},
 	},

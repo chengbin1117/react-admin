@@ -131,7 +131,7 @@ const LockModal = ({
 		          value={state.number}
 		          onChange={this.handleNumberChange}
 							style={{ width: '100%'}}
-							addonAfter={selectAfter}
+							addonAfter="TV"
 							placeholder="奖励数量"
 		        />
 		        
@@ -188,11 +188,11 @@ const LockModal = ({
 			            rules: [{ validator: this.checkPrice }],
 			          })(<PriceInput />)}
 			        </FormItem>
-							<FormItem>
+							{/* <FormItem>
 			          {getFieldDecorator('bonusReason', {
 									rules: [{ min:1,max:200,message:'最多200个字符' }],
 			          })(<TextArea rows={4}  placeholder="奖励原因(选填)"/>)}
-			        </FormItem>
+			        </FormItem> */}
 			        <FormItem style={{marginLeft:0+'px',textAlign:"right"}} >
 			          <Button onClick={onCancel}  style={{marginLeft:10}} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}>取消</Button>
 								<Button type="primary" htmlType="submit" style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}} loading={loging}>确定发放</Button>
