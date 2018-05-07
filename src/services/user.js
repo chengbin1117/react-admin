@@ -369,3 +369,37 @@ export async function shareArticleBonus(params) {
 	);
 }
 
+//获取专栏身份
+export async function getColumnIdentity(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/getColumnIdentity?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//认证专栏
+export async function certificationColumn(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/certificationColumn?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+//取消专栏认证
+export async function cancelCertification(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/user/cancelCertification?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	     }
+	);
+}
+
+

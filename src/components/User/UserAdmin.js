@@ -39,6 +39,8 @@ const UserAdmin = ({
 	currentPage,
 	userData,
 	sorterUserList,
+	columnAuthen,
+	canelColumn,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -85,7 +87,7 @@ const UserAdmin = ({
 		dataIndex: 'registerOrigin',
 		key: 'registerOrigin',
 		width: 100,
-		render: val => <span>{val==1&&"IOS"}{val==2&&"Android"}{val==3&&"千氪财经"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
+		render: val => <span>{val==1&&"IOS"}{val==2&&"Android"}{val==3&&"千氪财经(WEB)"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
 	},{
 		title: "师傅",
 		dataIndex: 'parentUser',
@@ -108,7 +110,17 @@ const UserAdmin = ({
 		dataIndex: 'userRoleDisplay',
 		key: 'userRoleDisplay',
 		width: 100,
-	}, {
+	},{
+		title:'专栏认证',
+		dataIndex: 'columnAuthed',
+		width: 100,
+		render:(text,record)=>(
+			<span>
+				{text == 0&&"未认证"}
+				{text == 1&&"已认证"}
+			</span>
+		)
+	},{
 		title: '级别',
 		dataIndex: 'userLevelDisplay',
 		key: 'userLevelDisplay',
@@ -176,12 +188,12 @@ const UserAdmin = ({
 		title: '是否推荐',
 		dataIndex: 'hotUser',
 		key: 'hotUser',
-		width: 100,
+		width: 70,
 		render: text => <span>{text == true ? "是" : '否'}</span>,
 	}, {
 		title: '操作',
 		key: 'action',
-		widfth: 100,
+		widfth: 130,
 		fixed: 'right',
 		render: (text, record) => (
 			<span>
@@ -196,6 +208,11 @@ const UserAdmin = ({
 					<a onClick={() => LockModal(record)}>锁定</a>}
 				<Divider type="vertical" />
 				{record.userRole == 1 ? <a className={styles.audit}>推荐设置</a> : <a onClick={() => openModal(record)}>推荐设置</a>}
+				<Divider type="vertical" />
+				{record.columnAuthed ==0?<a disabled ={(record.userRole!=1&&record.auditStatus==1)?false:true} onClick={()=>columnAuthen(record)}>专栏认证</a> :
+				<a disabled ={(record.userRole!=1&&record.auditStatus==1)?false:true} onClick={()=>canelColumn(record)}>取消专栏认证</a> 
+				}
+				
 			</span>
 		),
 	}];
@@ -242,7 +259,7 @@ const UserAdmin = ({
 				<div>
 					<Table columns={columns} dataSource={userlist} pagination={false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId}
 						onChange={this.handleTableChange}
-						scroll={{ x: 2300 }}
+						scroll={{ x: 2430 }}
 					/>
 					<div className="table-operations" >
 						<Button type="primary" size='large' disabled={!hasSelected} onClick={() => ExamineModal(selectedRows)}>批量审核</Button>

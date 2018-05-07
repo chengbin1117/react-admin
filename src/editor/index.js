@@ -26,7 +26,7 @@ class Editor extends Component {
 		editor.customConfig.uploadImgServer = ImgUrl;//配置服务器上传地址
 		editor.customConfig.uploadFileName = 'file';
 		editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024;
-		editor.customConfig.pasteFilterStyle = false; //手动关闭掉粘贴样式的过滤
+		//editor.customConfig.pasteFilterStyle = true; //手动关闭掉粘贴样式的过滤
 		editor.customConfig.customAlert = function (info) {
 			// info 是需要提示的内容
 			message.error(info)
@@ -74,8 +74,17 @@ class Editor extends Component {
 			'#f9963b',
 			'#ffffff'
 		]
+		editor.customConfig.fontsizes ={
+			1:'12px',
+			2:'14px',
+			3:'16px',
+			4:'18px',
+			5:'20px',
+			6:'24px',
+			7:'28px',
+		}
 		editor.customConfig.menus = [
-			'head',
+			'head',//标题
 			'bold',
 			'fontName',  // 字体
 			'italic',

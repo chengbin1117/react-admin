@@ -33,7 +33,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {WIthdrawList,currentPage,totalNumber,loading,ExamineVisible,selectList,ActiveKey} =finance;
+	const {WIthdrawList,currentPage,totalNumber,loading,ExamineVisible,selectList,ActiveKey,confirmLoading} =finance;
 
 
 	const ManageProps ={
@@ -42,7 +42,6 @@ function Withdrawals({location,dispatch,finance,router,}) {
 		total:totalNumber,
 		loading,
 		Examine(reacord){
-			console.log(reacord)
 			Modal.info({
 			    title: (<div>流水号：{reacord.flowId}<span style={{paddingLeft:80+"px"}}>提币时间：{reacord.withdrawTime}</span></div>),
 			    content: (<table className={stytes.table}>
@@ -169,6 +168,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 	}
 	const  ExamineModalProps ={
 		visible:ExamineVisible,
+		confirmLoading:confirmLoading,
 		selectList,
 		onCancel(){
 			dispatch({
@@ -177,7 +177,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 			})
 		},
 		onOk(values,selectList){
-			console.log(values)
+
 			if(values.radio=='2'){
 				dispatch({
 					type:'finance/auditAccountWithdraw',
@@ -185,6 +185,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 						flowId:selectList.flowId,
 						status:parseInt(values.radio),
 						refuseReason:values.text,
+						search:location.search
 					}
 			    })
 			}else{
@@ -193,6 +194,7 @@ function Withdrawals({location,dispatch,finance,router,}) {
 					payload:{
 						flowId:selectList.flowId,
 						status:parseInt(values.radio),
+						search:location.search
 					}
 				})
 			}

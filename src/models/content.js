@@ -750,7 +750,7 @@ export default {
 						//console.log(i,e)
 						if(articleText.indexOf(e) > 0){
 							//若匹配到了铭感词使用高亮显示,这里使用的是红色显示
-							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;">'+e+'</span>');
+							articleText = articleText.replace(new RegExp(e,"gm"), '<span style="color:red;"  contenteditable="false">'+e+'</span>');
 							//console.log(articleText)
 							$('.w-e-text').html(articleText);
 							localStorage.setItem('articleText',articleText);
