@@ -13,6 +13,7 @@ import {
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import LayoutContainer from '../components/Layout';
 import Useradmin from '../components/User/UserAdmin';
+import ColumnModal from '../components/User/ColumnModal';
 import ExamineModal from '../components/User/ExamineModal';
 import SetHotuser from '../components/User/SetHotuser';
 import LockModal from '../components/User/LockModal';
@@ -26,7 +27,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserAdmin({ location, dispatch, user, router, }) {
-	const { ExmianVisible, userlist, userInfo, selectList,confirmLoading, HotVisible, LockVisible, loading, totalNumber, currentPage } = user;
+	const { ColumnIdentity,currentItem,ExmianVisible,columnVisible,userlist, userInfo, selectList,confirmLoading, HotVisible, LockVisible, loading, totalNumber, currentPage } = user;
 	//console.log(loading)
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
@@ -46,6 +47,36 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				}
 
 			})
+		},
+		columnAuthen(record){
+		
+			dispatch({
+				type:"user/showColumnModal",
+				payload:{
+					currentItem:record
+				}
+			})
+		},
+		canelColumn(record){
+			confirm({
+				title: "取消专栏认证",
+				content: (
+					<div>确认取消<span style={{ color: '#f0f' }}>{record.userName}</span>的专栏认证吗？</div>
+				),
+				onOk() {
+					console.log('OK');
+					dispatch({
+						type: "user/cancelCertification",
+						payload: {
+							userId: record.userId,
+							search:location.search
+						}
+					})
+				},
+				onCancel() {
+					console.log('Cancel');
+				},
+			});
 		},
 		ExamineModal: function (selectList) {
 			//console.log(selectList)
@@ -78,7 +109,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			});
 		},
 		LocksModal(selectList) {
-			console.log(selectList)
+			//console.log(selectList)
 			var Ids = ""
 			for (var i in selectList) {
 				if (selectList[i].lockStatus == 1) {
@@ -157,7 +188,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		changepage(page) {
 			const search = GetRequest(location.search);
 			dispatch(routerRedux.push('/user/user_admin?page=' + page +
-				"&userId=" + search.userId + "&userEmail=" + search.userEmail + "&userMobile=" + search.userMobile +
+				"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 				"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
 				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd
 			))
@@ -201,7 +232,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			}
 
 			dispatch(routerRedux.push('/user/user_admin?page=1' +
-						"&userId=" + search.userId + "&userEmail=" + search.userEmail + "&userMobile=" + search.userMobile +
+						"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 						"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
 						"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&orderByClause='+orderByClause
 			))	
@@ -352,6 +383,40 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		}
 	}
 
+
+	//专栏认证
+	const ColumnModalProps = {
+		visible:columnVisible,
+		ColumnIdentity:ColumnIdentity,
+		confirmLoading:confirmLoading,
+		Item:currentItem,
+		onOk(data){
+			let list = "";
+			//console.log(data)
+			if(data.name ==undefined){
+				list = data.select
+			}else{
+				list = data.name+data.select
+			}
+			console.log(list)
+			dispatch({
+				type:'user/certificationColumn',
+				payload:{
+					userId:data.userId,
+					columnIdentity:list,
+					search:location.search
+			}
+			})
+		},
+		onCancel(){
+			dispatch({
+				type:"user/hideColumnModal",
+				payload:{
+					
+				}
+			})
+		}
+	}
 	function getFields(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
@@ -369,9 +434,9 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='邮箱'>
-						{getFieldDecorator('email')(
-							<Input type="email" placeholder="请输入邮箱" />
+					<FormItem {...formItemLayout} label='昵称'>
+						{getFieldDecorator('userName')(
+							<Input type="text" placeholder="请输入昵称" />
 						)}
 					</FormItem>
 				</Col>
@@ -449,9 +514,9 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='邮箱'>
-						{getFieldDecorator('email')(
-							<Input type="email" placeholder="请输入邮箱" />
+					<FormItem {...formItemLayout} label='昵称'>
+						{getFieldDecorator('userName')(
+							<Input type="text" placeholder="请输入昵称" />
 						)}
 					</FormItem>
 				</Col>
@@ -466,16 +531,22 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				 values.time=undefined
 			}
 		}
+	
+		if (values.userName == "" || values.userName == undefined) {
+			values.userName = undefined;
+		} else {
+			values.userName = Base64.encode(values.userName)
+		}
 		if (values.time != undefined) {
 			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
+				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
 				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
 				"&createDateStart=" + timeFormat(new Date(values.time[0])) +
 				"&createDateEnd=" + timeFormat(new Date(values.time[1]))
 			))
 		} else {
 			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
-				"&userEmail=" + values.email + "&userMobile=" + values.phone + "&userRole=" + values.role +
+				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
 				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
 			))
 		}
@@ -487,6 +558,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			<ExamineModal {...ExamineModalProps} />
 			<SetHotuser {...SetHotuserModalProps} />
 			<LockModal {...LockModalProps} />
+			<ColumnModal {...ColumnModalProps}/>
 		</div>
 
 	);

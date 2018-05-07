@@ -80,7 +80,7 @@ function RelesEditor({
 	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
 	//console.log(UserById.kgUserName)
 	const { RelationVisible, getRelUserList } = setting;
-	
+	//console.log('saveId',saveId)
 	//发布
 	function handleSubmit(e) {
 		e.preventDefault();

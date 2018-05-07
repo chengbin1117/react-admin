@@ -30,7 +30,7 @@ const ExamineModal = ({
 	onOk,
 	onCancel,
 	selectList,
-	fatherType,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -72,7 +72,9 @@ const ExamineModal = ({
 		maskClosable: false,
 		okText:"确定",
 		cancelText:"取消",
-		afterClose:afterClose
+		afterClose:afterClose,
+		confirmLoading:confirmLoading,
+		destroyOnClose:true
 	};
 	
 	function onChange(e) {

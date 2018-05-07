@@ -26,7 +26,8 @@ export default {
     selectList:{},
     BusinessType:[],
     ActiveKey:'1',
-    total:0
+    total:0,
+    confirmLoading:false, //提交
   },
 
   subscriptions: {
@@ -342,21 +343,44 @@ export default {
       }
     },
     *auditAccountWithdraw({ payload }, {call , put}) {
-     
-      const { data } = yield call(auditAccountWithdraw, payload);
+      yield put({
+        type:'showSubmitLoading'
+      })
+      let params ={
+            flowId:payload.flowId,
+						status:payload.status,
+						refuseReason:payload.refuseReason,
+      };
+      
+      const { data } = yield call(auditAccountWithdraw, params);
     
       if (data && data.code == 10000) {
         message.success('审核成功')
+        yield put({
+          type:'hideSubmitLoading'
+        })
+        yield put({
+          type: 'hideModal',
+        });
+        const search =GetRequest(payload.search)
           yield put({
             type: 'getAccountWIthdraw',
             payload:{
-
+                    currentPage:search.page,
+                    email:search.email!="undefined"?search.email:null,
+                    mobile:search.mobile!="undefined"?search.mobile:null,
+                    status:search.status!="undefined"?parseInt(search.status):null,
+                    startDate:search.startDate!="undefined"?search.startDate:null,
+                    endDate:search.endDate!="undefined"?search.endDate:null,
+                    pageSize:25,
             }
           });
-          yield put({
-            type: 'hideModal',
-          });
+         
+          //history.back()
       } else {
+        yield put({
+          type:'hideSubmitLoading'
+        })
         if(data.code ==10004||data.code ==10011){
              message.error(data.message,2);
               yield put(routerRedux.push('/'));
@@ -423,6 +447,14 @@ export default {
     },
     selectActiveKey(state, action) {
       return {...state,...action.payload};
+    },
+    showSubmitLoading(state, action) {
+      return {...state,...action.payload, confirmLoading: true
+      };
+    },
+    hideSubmitLoading(state, action) {
+      return {...state, ...action.payload,confirmLoading: false
+      };
     },
   },
 

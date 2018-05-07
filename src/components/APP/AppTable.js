@@ -51,20 +51,21 @@ function StandardTable({ data, loading, total, lookOver, deleteItem, handelchand
       render: (text, record) => (
         <span>
           <a onClick={() => lookOver(record)}>查看</a>
-          <Divider type="vertical" />
-          <Popconfirm
+          {/* <Divider type="vertical" /> */}
+          {/* <Popconfirm
             placement="topRight"
             title="是否删除？"
             onConfirm={() => deleteItem(record)}
             okText="确定"
             cancelText="取消">
             <a>删除</a>
-          </Popconfirm>
+          </Popconfirm> */}
 
         </span>
       ),
     },
   ];
+
   const list = [
     {
       sortOrder: 'v0.1.0',
