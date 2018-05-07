@@ -20,6 +20,10 @@ import imgx from '../../assets/images/article1.jpg';
 import imgy from '../../assets/images/article2.jpg';
 import imgz from '../../assets/images/article3.jpg';
 import imgw from '../../assets/images/article4.jpg';
+import imga from '../../assets/images/article5.png';
+import imgb from '../../assets/images/article6.png';
+import imgc from '../../assets/images/article7.png';
+import imgd from '../../assets/images/article8.png';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -36,6 +40,10 @@ var x = 5000;
 const formItemLayout = {
 	labelCol: { span: 2 },
 	wrapperCol: { span: 18 },
+};
+const formLayout = {
+	labelCol: { span: 2 },
+	wrapperCol: { span: 15 },
 };
 const submitFormLayout = {
 	wrapperCol: {
@@ -78,7 +86,7 @@ function ArticleEditor({
 }) {
 	let merId = localStorage.getItem("userId");
 	let articleList = JSON.parse(localStorage.getItem("articleList"));
-	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
+	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
 	const options = ColumnList;
 
 	const { RelationVisible, getRelUserList } = setting;
@@ -836,7 +844,7 @@ function ArticleEditor({
 				)}
 			</FormItem>
 			<FormItem
-				{...formItemLayout}
+				{...formLayout}
 				label="&emsp;"
 				colon={false}
 			>
