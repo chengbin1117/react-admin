@@ -51,6 +51,7 @@ export default {
 		titleWords:null, //标题中的敏感词
 		status_Article:1,
 		pubStatus:1,   //审核状态
+		timeDis:0, //不开启定时发布
 	},
 
 	subscriptions: {
@@ -135,7 +136,14 @@ export default {
 						type: "typeChange",
 						payload: {
 							artSorce: 0,
-							titleWords:null
+							titleWords:null,
+							
+						}
+					})
+					dispatch({
+						type:'handleTimeChane',
+						payload:{
+							timeDis:0
 						}
 					})
 					dispatch({
@@ -702,7 +710,6 @@ export default {
 			}
 		},
 		*publishArticle({ payload }, { call, put }) {
-
 			const { data } = yield call(publishArticle, payload);
 			//console.log("11",data)
 
@@ -1975,11 +1982,18 @@ export default {
 			})
 		},
 		*publishStatusChange({ payload }, { call, put }) {
-			console.log(payload.pubStatus)
 			yield put({
 				type: "publishStatusChangeSuccess",
 				payload: {
 					pubStatus: payload.pubStatus
+				}
+			})
+		},
+		*handleTimeChane({ payload }, { call, put }) {
+			yield put({
+				type: "handleTimeChaneSuccess",
+				payload: {
+					timeDis: payload.timeDis
 				}
 			})
 		},
@@ -2096,6 +2110,12 @@ export default {
 				...state,
 				...action.payload,
 				saveId: 0
+			};
+		},
+		handleTimeChaneSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
 			};
 		},
 		getColumnListSuccess(state, action) {

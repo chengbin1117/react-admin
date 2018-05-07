@@ -15,6 +15,10 @@ import imgx from '../../assets/images/article1.jpg';
 import imgy from '../../assets/images/article2.jpg';
 import imgz from '../../assets/images/article3.jpg';
 import imgw from '../../assets/images/article4.jpg';
+import imga from '../../assets/images/article5.png';
+import imgb from '../../assets/images/article6.png';
+import imgc from '../../assets/images/article7.png';
+import imgd from '../../assets/images/article8.png';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -25,6 +29,10 @@ const Option = Select.Option;
 const formItemLayout = {
 	labelCol: { span: 2 },
 	wrapperCol: { span: 18 },
+};
+const formLayout = {
+	labelCol: { span: 2 },
+	wrapperCol: { span: 15 },
 };
 const submitFormLayout = {
 	wrapperCol: {
@@ -44,8 +52,6 @@ const tailFormItemLayout = {
 		},
 	},
 };
-
-let timeDis = 0;
 let sec = 0;
 let titleNum = 0;
 var n = 5000;
@@ -67,6 +73,7 @@ function RelesEditor({
 	artSorce,
 	SensitiveWords,
 	titleWords,
+	timeDis,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -76,21 +83,23 @@ function RelesEditor({
 	},
 }) {
 	let merId = localStorage.getItem("userId");
-	//console.log(artSorce)
+	console.log(saveId)
 	const options = ColumnList;
-	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
+	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
 	//console.log(UserById.kgUserName)
 	const { RelationVisible, getRelUserList } = setting;
-	//console.log('saveId',saveId)
+	
 	//发布
 	function handleSubmit(e) {
 		e.preventDefault();
-		validateFields((errors) => {
+		validateFields((errors,) => {
 			if (errors) {
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				// console.log(formatDate(new Date(data.time)))
+				if(data.time!=undefined){
+					data.time =data.time.format('YYYY-MM-DD HH:mm')
+				}
 				if (imgUrl == "") {
 					message.error('请上传封面图')
 					return true
@@ -147,7 +156,7 @@ function RelesEditor({
 						sysUser: merId,
 						bonusStatus: parseInt(data.bonusStatus),
 						textnum: data.text.txt.text().split('&nbsp;').join('').length,
-						publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
+						publishTime: data.time != undefined ? data.time: null,
 						publishStatus: 1,
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
@@ -164,6 +173,19 @@ function RelesEditor({
 				return
 			}
 			const data = { ...getFieldsValue() };
+			var textnum = 0;
+			var text = ""
+			if(data.text ==undefined){
+				text = ""
+				textnum =0;
+			}else{
+				text =  data.text.txt.html();
+				textnum = data.text.txt.text().split('&nbsp;').join('').length
+			}
+			if(data.time!=undefined){
+				data.time =data.time.format('YYYY-MM-DD HH:mm')
+				
+			}
 			var tagsName = "";
 			if (data.tag1 == undefined) {
 				tagsName = "";
@@ -180,64 +202,36 @@ function RelesEditor({
 				tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 			}
 			//console.log(data)
-			if (data.text != undefined) {
-				dispatch({
-					type: 'content/publishArticle',
-					payload: {
-						articleId: saveId,
-						articleTitle: data.articleTitle,
-						articleText: data.text.txt.html(),
-						tagnames: tagsName,
-						description: (data.artic == undefined || data.artic == "") ? data.text.txt.text().substring(0, 100) : data.artic,
-						image: imgUrl,
-						type: parseInt(data.type),
-						columnId: data.column != undefined ? parseInt(data.column[0]) : null,
-						secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
-						displayStatus: parseInt(data.radioT),
-						displayOrder: parseInt(data.sort),
-						articleSource: data.articleSource,
-						articleLink: data.articleLink,
-						commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-						publishSet: parseInt(data.radioG),
-						sysUser: merId,
-						bonusStatus: parseInt(data.bonusStatus),
-						publishStatus: 0,
-						textnum: data.text.txt.text().split('&nbsp;').join('').length,
-						browseNum: data.browseNum,
-						thumbupNum: data.thumbupNum,
-						collectNum: data.collectNum,
+			dispatch({
+				type: 'content/publishArticle',
+				payload: {
+					articleId: saveId,
+					articleTitle: data.articleTitle,
+					articleText: text,
+					tagnames: tagsName,
+					description: (data.artic == undefined || data.artic == "") ? data.text.txt.text().substring(0, 100) : data.artic,
+					image: imgUrl,
+					type: parseInt(data.type),
+					columnId: data.column != undefined ? parseInt(data.column[0]) : null,
+					secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
+					displayStatus: parseInt(data.radioT),
+					displayOrder: parseInt(data.sort),
+					articleSource: data.articleSource,
+					articleLink: data.articleLink,
+					commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
+					publishSet: parseInt(data.radioG),
+					createUser: data.createUser,
+					publishTime: data.time != undefined ? data.time: null,
+					sysUser: merId,
+					bonusStatus: parseInt(data.bonusStatus),
+					publishStatus: 0,
+					textnum: textnum,
+					browseNum: data.browseNum,
+					thumbupNum: data.thumbupNum,
+					collectNum: data.collectNum,
 
-					}
-				})
-			} else {
-				dispatch({
-					type: 'content/publishArticle',
-					payload: {
-						articleId: saveId,
-						articleTitle: data.articleTitle,
-						articleText: "",
-						tagnames: tagsName,
-						description: data.artic,
-						image: imgUrl,
-						type: parseInt(data.type),
-						columnId: data.column != undefined ? parseInt(data.column[0]) : null,
-						secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
-						displayStatus: parseInt(data.radioT),
-						displayOrder: parseInt(data.sort),
-						articleSource: data.articleSource,
-						articleLink: data.articleLink,
-						commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-						publishSet: parseInt(data.radioG),
-						sysUser: merId,
-						bonusStatus: parseInt(data.bonusStatus),
-						publishStatus: 0,
-						textnum: 0,
-						browseNum: data.browseNum,
-						thumbupNum: data.thumbupNum,
-						collectNum: data.collectNum,
-					}
-				})
-			}
+				}
+			})
 
 		})
 
@@ -339,7 +333,7 @@ function RelesEditor({
 		var time = date - (24 * 60 * 60 * 1000);
 		var severTime = date + (7 * 24 * 60 * 60 * 1000);
 		//console.log("2",cx)
-		return current && severTime < current && current > time
+		return  severTime < current && current > time
 	}
 
 	function disabledDateTime() {
@@ -376,12 +370,13 @@ function RelesEditor({
 
 
 	function handleTime(e) {
-		console.log("e", e.target.value)
-		if (e.target.value == "0") {
-			timeDis = 0
-		} else {
-			timeDis = 1
-		}
+		
+		dispatch({
+			type:"content/handleTimeChane",
+			payload:{
+				timeDis:parseInt(e.target.value)
+			}
+		})
 	}
 	function edtiorContentText(t) {
 
@@ -679,7 +674,7 @@ function RelesEditor({
 			articleSource: data.articleSource,
 			articleLink: data.articleLink,
 			commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-			publishSet: parseInt(data.radioG),
+			publishSet:2,
 			sysUser: merId,
 			bonusStatus: parseInt(data.bonusStatus),
 			publishStatus: 0,
@@ -855,11 +850,11 @@ function RelesEditor({
 				)}
 			</FormItem>
 			<FormItem
-				{...formItemLayout}
+				{...formLayout}
 				label="&emsp;"
 				colon={false}
 			>
-				<div>
+				<div >
 					{imgArr.map((item, index) =>
 						<img key={index} onClick={() => uploadImg(item)} src={item} className={styles.Imgx} />
 					)}
@@ -1087,7 +1082,7 @@ function RelesEditor({
 			</FormItem>
 			<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
 				<Button type="primary" onClick={handleSubmit}>发布</Button>
-				<Button type="primary" style={{ marginLeft: 30 }} onClick={publishStatus} className={styles.draft}>存草稿</Button>
+				<Button type="primary" style={{ marginLeft: 30 }} onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={timeDis==1?true:false}>存草稿</Button>
 				<Button type="primary" style={{ marginLeft: 30 }} onClick={() => previewPage()} className={styles.preview}>预览</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
