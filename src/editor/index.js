@@ -82,6 +82,7 @@ class Editor extends Component {
 			'strikeThrough',
 			'underline',
 			'justify',
+			'quote',  // 引用
 			'foreColor',
 			'backColor',
 			'emoticon',  // 表情
