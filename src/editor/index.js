@@ -26,7 +26,7 @@ class Editor extends Component {
 		editor.customConfig.uploadImgServer = ImgUrl;//配置服务器上传地址
 		editor.customConfig.uploadFileName = 'file';
 		editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024;
-		//editor.customConfig.pasteFilterStyle = true; //手动关闭掉粘贴样式的过滤
+		editor.customConfig.pasteFilterStyle = true; //手动关闭掉粘贴样式的过滤
 		editor.customConfig.customAlert = function (info) {
 			// info 是需要提示的内容
 			message.error(info)
