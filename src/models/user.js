@@ -692,7 +692,11 @@ export default {
 				var IdCard = "IdCard";
 				for (var i in res.data) {
 					res.data[i].createDate = formatDate(res.data[i].createDate)
-					res.data[i].auditDate = formatDate(res.data[i].auditDate)
+					if(res.data[i].auditDate!=null){
+						res.data[i].auditDate = formatDate(res.data[i].auditDate)
+					}else{
+						res.data[i].auditDate = "——"
+					}
 					res.data[i][address] = res.data[i].province == null ? "——" : res.data[i].province + (res.data[i].city = null ? "" : ('-' + res.data[i].city))
 					res.data[i][info] = {
 						'realname': res.data[i].realname,
