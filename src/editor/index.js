@@ -64,15 +64,7 @@ class Editor extends Component {
 		editor.customConfig.colors = [
 			'#000000',
 			'#f00',
-			'#eeece0',
-			'#1c487f',
-			'#4d80bf',
-			'#c24f4a',
-			'#8baa4a',
-			'#7b5ba1',
-			'#46acc8',
-			'#f9963b',
-			'#ffffff'
+			
 		]
 		editor.customConfig.fontsizes ={
 			1:'12px',
@@ -86,20 +78,15 @@ class Editor extends Component {
 		editor.customConfig.menus = [
 			'head',//标题
 			'bold',
-			'fontName',  // 字体
+			'fontSize',  // 字号
 			'italic',
 			'strikeThrough',
 			'underline',
 			'justify',
 			'quote',  // 引用
 			'foreColor',
-			'backColor',
-			'emoticon',  // 表情
 			'link',  // 插入链接
 			'image',
-			'video',  // 插入视频
-			'undo',
-			'redo',
 		];
 
 		// 使用 onchange 函数监听内容的变化，并实时更新到 state 中
