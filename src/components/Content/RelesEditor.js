@@ -97,9 +97,11 @@ function RelesEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
+				
 				if(data.time!=undefined){
 					data.time =data.time.format('YYYY-MM-DD HH:mm')
 				}
+				console.log(data)
 				if (imgUrl == "") {
 					message.error('请上传封面图')
 					return true
