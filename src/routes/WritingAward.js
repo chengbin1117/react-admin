@@ -95,7 +95,7 @@ function UserAdmin({ location, dispatch, award, content, }) {
 			            {getFieldDecorator('bonusStatus')(
 							<Select placeholder="请选择" allowClear={true}>
 								<Option value="0">冻结</Option>
-								<Option value="1">已发放</Option>
+								<Option value="1">正常发放</Option>
 			                </Select>
 			            )}
 			          </FormItem>
