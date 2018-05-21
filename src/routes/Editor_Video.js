@@ -29,7 +29,7 @@ function Editor_article({dispatch,router,content,setting}) {
   var html = '';
   let src = "";
   
-  const {ArticleList,dis,BgVisible,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
+  const {ArticleList,dis,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
 
   const options = ColumnList;
   //console.log("imgUrl",getVideoList)
@@ -44,11 +44,8 @@ function Editor_article({dispatch,router,content,setting}) {
     imgUrl,
     dis,
     UserById,
-    handlsearch(values){
-       
-    
-      
-    },
+    PushAticleInfo,
+    ifPushValue,
     editorText(h,t){
         text  = t;
         html  = h;
@@ -56,6 +53,7 @@ function Editor_article({dispatch,router,content,setting}) {
     uploadImg(img){
       //console.log(e.target.src)
       //var img = e.target.src;
+      const hide = message.loading('加载中..', 0);
       getBase64(img)
             .then(function(base64){
               //console.log(base64);//处理成功打印在控制台
@@ -70,7 +68,7 @@ function Editor_article({dispatch,router,content,setting}) {
                     }
               axios.post(ImgUrl, formData, config).then(res=>{
                        res =res.data; 
-                      
+                       hide();
                         if (res.errorCode == 10000) {
                             console.log(res) 
                            //imgUrl =res.data[0].filePath;

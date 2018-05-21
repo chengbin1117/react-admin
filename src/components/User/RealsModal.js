@@ -30,6 +30,7 @@ const RealsModal = ({
 	onOk,
 	onCancel,
 	selectList,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -75,6 +76,7 @@ const RealsModal = ({
 		maskClosable: false,
 		width:600,
 		afterClose:afterClose,
+		confirmLoading:confirmLoading,
 	};
 	
 	return (

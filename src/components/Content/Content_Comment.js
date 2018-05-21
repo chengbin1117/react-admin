@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Card, Col, Input, Button, Table, Pagination, Popconfirm, Badge, Select, DatePicker } from 'antd';
+import { Form, Row, Card, Col, Input, Button, Table, Pagination, Popconfirm, Badge, Select, DatePicker,Divider } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import { options } from "../../services/common";
@@ -56,10 +56,11 @@ function Content_Comment({ data, opinionSetModal, changepage, showSet, confirm, 
 				{record.status == 1 ? <span className="action_font" style={{ color: '#e5e5e5' }}>审核</span> :
 					<a className="action_font" onClick={() => audit(record)} >审核</a>
 				}
-
-				<a className="action_font" onClick={() => showSet(record)} style={{ marginLeft: 10 }}>显示设置</a>
-				<Popconfirm title="确定删除吗？" onConfirm={() => confirm(record)} okText="是" cancelText="否">
-					<a href="#" className="action_font" style={{ marginLeft: 10 }}>删除</a>
+				<Divider type="vertical" />
+				<a className="action_font" onClick={() => showSet(record)}>显示设置</a>
+				<Divider type="vertical" />
+				<Popconfirm title="确定删除吗？" placement="topRight" onConfirm={() => confirm(record)} okText="是" cancelText="否">
+					<a href="#" className="action_font">删除</a>
 				</Popconfirm>
 			</span>
 		)

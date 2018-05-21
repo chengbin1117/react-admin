@@ -68,11 +68,6 @@ const UserAdmin = ({
 		width: 100,
 		render: text => <span>{text}</span>,
 	}, {
-		title: '邮箱',
-		dataIndex: 'userEmail',
-		key: 'userEmail',
-		width: 100,
-	}, {
 		title: '手机号',
 		dataIndex: 'userMobile',
 		key: 'userMobile',
@@ -259,7 +254,7 @@ const UserAdmin = ({
 				<div>
 					<Table columns={columns} dataSource={userlist} pagination={false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId}
 						onChange={this.handleTableChange}
-						scroll={{ x: 2430 }}
+						scroll={{ x: 2330 }}
 					/>
 					<div className="table-operations" >
 						<Button type="primary" size='large' disabled={!hasSelected} onClick={() => ExamineModal(selectedRows)}>批量审核</Button>

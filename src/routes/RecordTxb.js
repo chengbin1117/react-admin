@@ -62,8 +62,8 @@ function Record({location,dispatch,finance,router,}) {
 					    			
 				    			</tbody>
 				    			}
-				    			{(reacord.businessTypeId == 310 ||reacord.businessTypeId == 340 ||
-				    		      reacord.businessTypeId == 320 ||reacord.businessTypeId == 330
+				    			{(reacord.businessTypeId == 1000 ||reacord.businessTypeId == 1510 ||
+				    		      reacord.businessTypeId == 1520 ||reacord.businessTypeId == 1560
 				    				)&&
 				    				<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
@@ -81,29 +81,27 @@ function Record({location,dispatch,finance,router,}) {
 					    			<tr><td>到账时间</td><td>{reacord.flowDate}</td><td>当前状态</td><td>{reacord.status==null?"——":reacord.status}</td></tr>
 				    			</tbody>
 				    			}
-				    			{reacord.businessTypeId == 350 &&
-				    			<tbody>
+				    			{reacord.businessTypeId == 1570 &&
+									<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
-					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>发放总钛值</td><td>{reacord.amount}</td></tr>
-					    			<tr><td>奖励总人数</td><td>{reacord.bonusTotalPerson==null?"——":reacord.bonusTotalPerson}</td><td>当前状态</td><td>{reacord.status}</td></tr>
-					    			
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>收入数额</td><td>{reacord.amount}</td></tr>
+										<tr><td>奖励原因</td><td>{reacord.flowDetail}</td><td></td><td></td></tr>
 				    			</tbody>
 				    			}
-				    			{reacord.businessTypeId == 10 &&
-				    			<tbody>
+				    			{reacord.businessTypeId == 1660 &&
+				    				<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
-					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>充值地址</td><td>{reacord.address==null?"——":reacord.address}</td></tr>
-					    			<tr><td>充值数量</td><td>{reacord.bonusTotalPerson==null?"——":reacord.bonusTotalPerson}</td><td>到账时间</td><td>{reacord.flowDate}</td></tr>
-					    			<tr><td>当前状态</td><td>{reacord.status==null?"——":reacord.status}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>消耗数额</td><td>{reacord.amount}</td></tr>
+										<tr><td>事由</td><td>{reacord.flowDetail}</td><td></td><td></td></tr>
 				    			</tbody>
 				    			}
-				    			{reacord.businessTypeId == 1000 &&
+				    			{reacord.businessTypeId == 1530 &&
 				    			<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
-					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>获取数额</td><td>{reacord.accountAmount}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>进贡数额</td><td>{reacord.accountAmount}</td></tr>
 				    			</tbody>
 				    			}
 				    	      </table>

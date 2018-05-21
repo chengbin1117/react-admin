@@ -26,12 +26,13 @@ const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
+const confirm =Modal.confirm;
 const formItemLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 18 },
 };
 const formLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 15 },
 };
 const submitFormLayout = {
@@ -63,6 +64,7 @@ function RelesEditor({
 	dispatch,
 	location,
 	imgUrl,
+	loading,
 	ColumnList,
 	UserById,
 	uploadImg,
@@ -74,6 +76,8 @@ function RelesEditor({
 	SensitiveWords,
 	titleWords,
 	timeDis,
+	PushAticleInfo,
+	ifPushValue,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -83,10 +87,10 @@ function RelesEditor({
 	},
 }) {
 	let merId = localStorage.getItem("userId");
-	console.log(saveId)
+
 	const options = ColumnList;
 	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
-	//console.log(UserById.kgUserName)
+	console.log(ifPushValue)
 	const { RelationVisible, getRelUserList } = setting;
 	
 	//发布
@@ -161,6 +165,9 @@ function RelesEditor({
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
 						collectNum: data.collectNum,
+						ifPlatformPublishAward:data.ifPlatformPublishAward,
+						ifPush:ifPushValue,
+						auditUser:merId,
 					}
 				})
 			}
@@ -229,7 +236,9 @@ function RelesEditor({
 					browseNum: data.browseNum,
 					thumbupNum: data.thumbupNum,
 					collectNum: data.collectNum,
-
+					ifPlatformPublishAward:data.ifPlatformPublishAward,
+					ifPush:ifPushValue
+					
 				}
 			})
 
@@ -346,6 +355,8 @@ function RelesEditor({
 
 		};
 	}
+
+	//文章内容校验
 	function onChange(rule, value, callback) {
 		//console.log(value)
 
@@ -368,7 +379,7 @@ function RelesEditor({
 		}
 	}
 
-
+	//定时发布
 	function handleTime(e) {
 		
 		dispatch({
@@ -381,6 +392,7 @@ function RelesEditor({
 	function edtiorContentText(t) {
 
 	}
+	//预览
 	function previewPage() {
 
 		const data = { ...getFieldsValue() };
@@ -425,6 +437,7 @@ function RelesEditor({
 	}
 	//console.log(secondC[sec])
 	var Item = ['1', '2', '3', '4', '5']
+	//标签校验
 	function tagValue1(rule, value, callback) {
 		var arr = [];
 		var len = 0;
@@ -617,6 +630,8 @@ function RelesEditor({
 
 		// time1()
 	}
+
+	//存草稿
 	function publish(list) {
 
 		dispatch({
@@ -638,12 +653,13 @@ function RelesEditor({
 		}, 10000);
 	}
 	function aoSave(id) {
-		//console.log("123", UserById.kgUserId)
+	
 		window.clearInterval(autoSaveInterval);
 		const data = { ...getFieldsValue() };
 		if (data.articleTitle == "" || data.articleTitle == undefined) {
 			return
 		}
+		console.log("123", data)
 		var tagsName = "";
 		if (data.tag1 == undefined) {
 			tagsName = "";
@@ -674,7 +690,7 @@ function RelesEditor({
 			articleSource: data.articleSource,
 			articleLink: data.articleLink,
 			commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-			publishSet:2,
+			publishSet:'2',
 			sysUser: merId,
 			bonusStatus: parseInt(data.bonusStatus),
 			publishStatus: 0,
@@ -682,9 +698,11 @@ function RelesEditor({
 			browseNum: data.browseNum,
 			thumbupNum: data.thumbupNum,
 			collectNum: data.collectNum,
+			ifPlatformPublishAward:data.ifPlatformPublishAward,
+			ifPush:ifPushValue
 
 		}
-		publish(list, autoSaveInterval)
+		 publish(list, autoSaveInterval)
 	}
 	function checkout() {
 
@@ -694,6 +712,63 @@ function RelesEditor({
 
 		titleNum = (e.target.value).length
 		// /console.log(titleValue)
+	}
+
+	//是否推送
+	const ifPushChange = (e) => {
+		//console.log(e.target.value)
+
+		//获取今日推送的条数
+		dispatch({
+			type:"content/getPushAticleInfo"
+		})
+		let val = e.target.value;
+		//比较今天推送的条数和限制的条数
+		if(PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit){
+			if(val == 1){
+				confirm({
+					title:'确定推送吗?',
+					content:(<div>
+						今日已推送<span style={{color:'#f00'}}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
+					</div>),
+					okText: '是',
+					cancelText:'否',
+					onOk() {
+						//console.log(values,record)
+						dispatch({
+							type:'content/ifPushValue',
+							payload:{
+								ifPushValue:'1'
+							}
+						})
+					},
+					onCancel() {
+						// ifPushValue = "0"
+						dispatch({
+							type:'content/ifPushValue',
+							payload:{
+								ifPushValue:'0'
+							}
+						})
+					},
+				})
+			}else{
+				dispatch({
+					type:'content/ifPushValue',
+					payload:{
+						ifPushValue:'0'
+					}
+				})
+			}
+		}else{
+			dispatch({
+				type:'content/ifPushValue',
+				payload:{
+					ifPushValue:val
+				}
+			})
+		}	
+		
 	}
 	return (
 		<Form>
@@ -719,7 +794,8 @@ function RelesEditor({
 			</FormItem>
 			{(saveId != undefined && saveId != 0) ? <span className={styles.zidong}>自动保存中<Icon type="clock-circle-o" /></span> : null
 			}
-			<FormItem >
+			<FormItem 
+			>
 				{getFieldDecorator('text', {
 					rules: [
 						{ required: true, message: '请输入正文!' },
@@ -732,7 +808,7 @@ function RelesEditor({
 
 			</FormItem>
 			<Row key='2' type="flex" justify="start"  >
-				<Col style={{ marginLeft: '26px' }} >
+				<Col style={{ marginLeft: '130px' }} >
 					<span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
 				</Col>
 				<Col style={{ marginRight: '15px' }}>
@@ -1048,7 +1124,7 @@ function RelesEditor({
 			<FormItem
 				{...formItemLayout}
 				label="发布人"
-				extra='注：若该文章为用户发布，则此处不可更改'
+				extra='注：若该文章为用户发布，则此处不可更改;若无关联前台发布人，请前往系统账户管理设置中关联。'
 			>
 				{getFieldDecorator('createUser', {
 					rules: [
@@ -1075,15 +1151,48 @@ function RelesEditor({
 				})(
 					<RadioGroup>
 						<Radio value='1'>开启</Radio>
-						<br />
 						<Radio value='0'>不开启</Radio>
 					</RadioGroup>
 				)}
 			</FormItem>
-			<FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-				<Button type="primary" onClick={handleSubmit}>发布</Button>
-				<Button type="primary" style={{ marginLeft: 30 }} onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={timeDis==1?true:false}>存草稿</Button>
-				<Button type="primary" style={{ marginLeft: 30 }} onClick={() => previewPage()} className={styles.preview}>预览</Button>
+			<FormItem
+				{...formItemLayout}
+				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+			>
+				{/* {getFieldDecorator('ifPush', {
+					initialValue: ifPushValue&&ifPushValue,
+					rules: [
+						{ required: true, message: '请选择' },
+					],
+				})( */}
+					<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
+						<Radio value='0'>暂时不推送</Radio>
+						<Radio value='1'>需要推送</Radio>
+					</RadioGroup>
+				{/* )} */}
+			</FormItem>
+			<FormItem
+				{...formItemLayout}
+				label="是否发送基础发文奖励"
+			>
+				{getFieldDecorator('ifPlatformPublishAward', {
+					initialValue: '1',
+					rules: [
+						{ required: true, message: '请选择' },
+					],
+				})(
+					<RadioGroup>
+						<Radio value='1'>发送</Radio>
+						<Radio value='0'>不发送</Radio>
+					</RadioGroup>
+				)}
+			</FormItem>
+			<FormItem  {...formItemLayout} label="&nbsp;" colon={false}>
+				<Button type="primary" onClick={handleSubmit}  size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>发布</Button>
+				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={timeDis==1?true:false}>存草稿</Button>
+				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={() => previewPage()} className={styles.preview}>预览</Button>
+				<Button  style={{ marginLeft: 30 }} size="large" onClick={() => history.back()} >返回</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
 		</Form>

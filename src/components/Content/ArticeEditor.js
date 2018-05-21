@@ -1,3 +1,10 @@
+/*
+ * @Author: 郭康 
+ * @Date: 2018-05-21 16:52:11 
+ * @Last Modified by:   郭康 
+ * @Last Modified time: 2018-05-21 16:52:11 
+ */
+
 import React, {
 	Component,
 	PropTypes
@@ -31,6 +38,7 @@ const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
+const confirm =Modal.confirm;
 let artSorce = 0;
 let timeDis = true;
 let sec = 0;
@@ -38,11 +46,11 @@ let titleNum = 0;
 var n = 5000;
 var x = 5000;
 const formItemLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 18 },
 };
 const formLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 15 },
 };
 const submitFormLayout = {
@@ -77,6 +85,9 @@ function ArticleEditor({
 	getBonusList,
 	SensitiveWords,
 	pubStatus,
+	PushAticleInfo,
+	ifPushValue,
+	loading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -102,7 +113,7 @@ function ArticleEditor({
 				if(data.time!=undefined){
 					data.time =data.time.format('YYYY-MM-DD HH:mm')
 				}
-				console.log(data);
+				//console.log(data);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
 				let CX = dds.split('&nbsp;');
@@ -143,7 +154,7 @@ function ArticleEditor({
 				}
 
 				if (ArticleList.sysUser == null) {
-					if (data.publishStatus == "1") {
+					if(ArticleList.publishStatus == '2'){
 						dispatch({
 							type: 'content/publishArticle',
 							payload: {
@@ -159,7 +170,7 @@ function ArticleEditor({
 								displayStatus: parseInt(data.radioT),
 								displayOrder: parseInt(data.sort),
 								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
+								publishSet:0,
 								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
 								bonusStatus: parseInt(data.bonusStatus),
 								articleSource: data.articleSource,
@@ -170,105 +181,172 @@ function ArticleEditor({
 								thumbupNum: data.thumbupNum,
 								collectNum: data.collectNum,
 								editArticle: editArticle,
-							}
-						})
-					} else {
-						dispatch({
-							type: 'content/publishArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					}
-
-				} else {
-					if (data.publishStatus == "1") {
-						dispatch({
-							type: 'content/publishArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								sysUser: merId,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					} else if(data.publishStatus == "4") {
-					
-						dispatch({
-							type: 'content/publishArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								sysUser: merId,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? data.time: null,
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
+								auditUser:merId,
+								ifPush:ifPushValue,
+								ifPlatformPublishAward:data.ifPlatformPublishAward
 							}
 						})
 					}else{
+						
+						if (data.publishStatus == "1") {
+							if(ArticleList.ifPush == '1'){
+								dispatch({
+									type: 'content/publishArticle',
+									payload: {
+										articleId: ArticleList.articleId,
+										articleTitle: data.articleTitle,
+										articleText: data.text,
+										tagnames: tagsName,
+										description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+										image: imgUrl == '' ? data.image : imgUrl,
+										type: parseInt(data.type),
+										columnId: parseInt(data.column[0]),
+										secondColumn: parseInt(data.column[1]),
+										displayStatus: parseInt(data.radioT),
+										displayOrder: parseInt(data.sort),
+										commentSet: data.commentSet == "true" ? true : false,
+										publishSet: 0,
+										createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+										bonusStatus: parseInt(data.bonusStatus),
+										articleSource: data.articleSource,
+										articleLink: data.articleLink,
+										publishStatus: parseInt(data.publishStatus),
+										textnum: lg.length,
+										browseNum: data.browseNum,
+										thumbupNum: data.thumbupNum,
+										collectNum: data.collectNum,
+										editArticle: editArticle,
+									}
+								})
+							}else{
+								dispatch({
+									type: 'content/publishArticle',
+									payload: {
+										articleId: ArticleList.articleId,
+										articleTitle: data.articleTitle,
+										articleText: data.text,
+										tagnames: tagsName,
+										description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+										image: imgUrl == '' ? data.image : imgUrl,
+										type: parseInt(data.type),
+										columnId: parseInt(data.column[0]),
+										secondColumn: parseInt(data.column[1]),
+										displayStatus: parseInt(data.radioT),
+										displayOrder: parseInt(data.sort),
+										commentSet: data.commentSet == "true" ? true : false,
+										publishSet:0,
+										createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+										bonusStatus: parseInt(data.bonusStatus),
+										articleSource: data.articleSource,
+										articleLink: data.articleLink,
+										publishStatus: parseInt(data.publishStatus),
+										textnum: lg.length,
+										browseNum: data.browseNum,
+										thumbupNum: data.thumbupNum,
+										collectNum: data.collectNum,
+										editArticle: editArticle,
+										ifPush:ifPushValue,
+									}
+								})
+							}
+							
+						} else {
+							dispatch({
+								type: 'content/publishArticle',
+								payload: {
+									articleId: ArticleList.articleId,
+									articleTitle: data.articleTitle,
+									articleText: data.text,
+									tagnames: tagsName,
+									description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+									image: imgUrl == '' ? data.image : imgUrl,
+									type: parseInt(data.type),
+									columnId: parseInt(data.column[0]),
+									secondColumn: parseInt(data.column[1]),
+									displayStatus: parseInt(data.radioT),
+									displayOrder: parseInt(data.sort),
+									commentSet: data.commentSet == "true" ? true : false,
+									publishSet: 0,
+									createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+									bonusStatus: parseInt(data.bonusStatus),
+									articleSource: data.articleSource,
+									articleLink: data.articleLink,
+									publishStatus: parseInt(data.publishStatus),
+									refuseReason: data.refuseReason,
+									textnum: lg.length,
+									browseNum: data.browseNum,
+									thumbupNum: data.thumbupNum,
+									collectNum: data.collectNum,
+									editArticle: editArticle,
+								}
+							})
+						}
+					}
+		    } else {
+					if (data.publishStatus == "1") {
+						if(ArticleList.ifPush == '1'){
+							dispatch({
+								type: 'content/publishArticle',
+								payload: {
+									articleId: ArticleList.articleId,
+									articleTitle: data.articleTitle,
+									articleText: data.text,
+									tagnames: tagsName,
+									description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+									image: imgUrl == '' ? data.image : imgUrl,
+									type: parseInt(data.type),
+									columnId: parseInt(data.column[0]),
+									secondColumn: parseInt(data.column[1]),
+									displayStatus: parseInt(data.radioT),
+									displayOrder: parseInt(data.sort),
+									commentSet: data.commentSet == "true" ? true : false,
+									createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+									bonusStatus: parseInt(data.bonusStatus),
+									articleSource: data.articleSource,
+									articleLink: data.articleLink,
+									sysUser: merId,
+									publishStatus: parseInt(data.publishStatus),
+									textnum: lg.length,
+									browseNum: data.browseNum,
+									thumbupNum: data.thumbupNum,
+									collectNum: data.collectNum,
+									editArticle: editArticle,
+								}
+							})
+						}else{
+							dispatch({
+								type: 'content/publishArticle',
+								payload: {
+									articleId: ArticleList.articleId,
+									articleTitle: data.articleTitle,
+									articleText: data.text,
+									tagnames: tagsName,
+									description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+									image: imgUrl == '' ? data.image : imgUrl,
+									type: parseInt(data.type),
+									columnId: parseInt(data.column[0]),
+									secondColumn: parseInt(data.column[1]),
+									displayStatus: parseInt(data.radioT),
+									displayOrder: parseInt(data.sort),
+									commentSet: data.commentSet == "true" ? true : false,
+									createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+									bonusStatus: parseInt(data.bonusStatus),
+									articleSource: data.articleSource,
+									articleLink: data.articleLink,
+									sysUser: merId,
+									publishStatus: parseInt(data.publishStatus),
+									textnum: lg.length,
+									browseNum: data.browseNum,
+									thumbupNum: data.thumbupNum,
+									collectNum: data.collectNum,
+									editArticle: editArticle,
+									ifPush:ifPushValue
+								}
+							})
+						}
+						
+					} else if(data.publishStatus == "0") {
+						//编辑的时候保存草稿的状态
 						if(data.radioG =='1'){
 							dispatch({
 								type: 'content/publishArticle',
@@ -299,6 +377,8 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
+									ifPush:ifPushValue,
+									ifPlatformPublishAward:data.ifPlatformPublishAward
 								}
 							})
 						}else{
@@ -329,14 +409,13 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
+									ifPush:ifPushValue,
+									ifPlatformPublishAward:data.ifPlatformPublishAward
 								}
 							})
 						}
-						
-					}	
+					}
 				}
-
-
 			}
 		})
 	}
@@ -344,6 +423,8 @@ function ArticleEditor({
 		articleList.articleImage = imgUrl
 	}
 
+
+	//发布
 	function pubsubmit() {
 		validateFields((errors) => {
 			if (errors) {
@@ -410,7 +491,10 @@ function ArticleEditor({
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
 						collectNum: data.collectNum,
-						editArticle: editArticle
+						editArticle: editArticle,
+						auditUser:merId,
+						ifPush:ifPushValue,
+						ifPlatformPublishAward:data.ifPlatformPublishAward
 					}
 				})
 			}
@@ -420,6 +504,62 @@ function ArticleEditor({
 		//console.log(e.target.value)
 		ArticleList.articleType = parseInt(e.target.value)
 	}
+	
+
+	//是否推送
+	const ifPushChange = (e) => {
+		//获取今日推送的条数
+		dispatch({
+			type:"content/getPushAticleInfo"
+		})
+		let val = e.target.value;
+		if(PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit){
+			if(val == 1){
+				confirm({
+					title:'确定推送吗?',
+					content:(<div>
+						今日已推送<span style={{color:'#f00'}}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
+					</div>),
+					okText: '是',
+					cancelText:'否',
+					onOk() {
+						//console.log(values,record)
+						dispatch({
+							type:'content/ifPushValue',
+							payload:{
+								ifPushValue:'1'
+							}
+						})
+					},
+					onCancel() {
+						// ifPushValue = "0"
+						dispatch({
+							type:'content/ifPushValue',
+							payload:{
+								ifPushValue:'0'
+							}
+						})
+					},
+				})
+			}else{
+				dispatch({
+					type:'content/ifPushValue',
+					payload:{
+						ifPushValue:'0'
+					}
+				})
+			}
+		}else{
+			dispatch({
+				type:'content/ifPushValue',
+				payload:{
+					ifPushValue:val
+				}
+			})
+		}	
+		
+	}	
+
 	function range(start, end) {
 		const result = [];
 		for (let i = start; i < end; i++) {
@@ -700,6 +840,41 @@ function ArticleEditor({
 			}
 			callback()
 		}
+	}
+
+	//预览文章
+	const previewPage =()=>{
+		const data = { ...getFieldsValue() };
+		// console.log(data)
+		var tagsName = "";
+		if (data.tag1 == undefined) {
+			tagsName = "";
+		} else if (data.tag1 !== undefined && data.tag2 == undefined && data.tag3 == undefined) {
+			tagsName = data.tag1;
+		} else if (data.tag1 != undefined && data.tag2 != undefined && data.tag3 == undefined) {
+			tagsName = data.tag1 + ',' + data.tag2
+		}
+		else if (data.tag4 == undefined && data.tag5 == undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
+		} else if (data.tag4 != undefined && data.tag5 == undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4
+		} else if (data.tag4 != undefined && data.tag5 != undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
+		}
+
+		if(data.type=="2"){
+			localStorage.setItem("previewType", data.articleLink);
+			localStorage.setItem("previewLink", data.articleLink);
+			localStorage.setItem("previewSource", data.articleSource);
+		}
+		    localStorage.setItem("previewTitle", data.articleTitle);
+			localStorage.setItem("previewText", data.text);
+			localStorage.setItem("previewartic", "");
+			localStorage.setItem("previewdec", data.artic);
+			localStorage.setItem("previewType", data.type);
+			localStorage.setItem("previewTag", tagsName);
+		
+		window.open('/#/preview')
 	}
 	return (
 		<Form onSubmit={handleSubmit}>
@@ -1018,7 +1193,7 @@ function ArticleEditor({
 					</RadioGroup>
 				)}
 			</FormItem>
-			<FormItem
+			{ArticleList.publishStatus=='0'?<FormItem
 				{...formItemLayout}
 				label="定时发布"
 			>
@@ -1031,8 +1206,9 @@ function ArticleEditor({
 						<Radio value="0">不开启</Radio>
 					</RadioGroup>
 				)}
-			</FormItem>
-			{(ArticleList && ArticleList.publishSet == 1) && <FormItem
+			</FormItem>:null}
+			
+			{(ArticleList && ArticleList.publishSet == 1&&ArticleList.publishStatus=='0') && <FormItem
 				{...formItemLayout}
 				label=" " colon={false}
 				extra="定时范围：从当前时间点开始至未来7天内，按自然日计算"
@@ -1153,6 +1329,81 @@ function ArticleEditor({
                       </Col>
 				</Row>
 			</FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem> : null}
+			{ (ArticleList&&(ArticleList.publishStatus == 0||ArticleList.publishStatus == 2))?
+				<FormItem
+				{...formItemLayout}
+				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+			    >
+					<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
+						<Radio value='0'>暂时不推送</Radio>
+						<Radio value='1'>需要推送</Radio>
+					</RadioGroup>
+		     	</FormItem>:null
+			}
+			{ (ArticleList&&ArticleList.publishStatus == 1)?
+				<FormItem
+				{...formItemLayout}
+				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+			    >
+					<RadioGroup disabled={(ArticleList.ifPush != undefined && ArticleList.ifPush == 0) ? false : true} onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
+						<Radio value='0'>暂时不推送</Radio>
+						<Radio value='1'>需要推送</Radio>
+					</RadioGroup>
+		     	</FormItem>:null
+			}
+			{ (ArticleList&&ArticleList.publishStatus == 3)?
+				<FormItem
+				{...formItemLayout}
+				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+			>
+				{getFieldDecorator('ifPush', {
+					initialValue:  ArticleList.ifPush+'',
+					rules: [{ required: true, }],
+				})(
+					<RadioGroup disabled>
+						<Radio value="0">暂时不推送</Radio>
+						<Radio value="1">需要推送</Radio>
+					</RadioGroup>
+				)}
+			</FormItem>:null
+			}
+			{(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
+				{...formItemLayout}
+				label="是否发送基础发文奖励"
+			>
+				{getFieldDecorator('ifPlatformPublishAward', {
+					initialValue:  ArticleList.ifPlatformPublishAward+'',
+					rules: [
+						{ required: true, message: '请选择' },
+					],
+				})(
+					<RadioGroup onChange={StatusonChange}>
+						<Radio value="1">发送</Radio>
+						<Radio value="0">不发送</Radio>
+
+					</RadioGroup>
+				)}
+			</FormItem> : null}
+			{(ArticleList.sysUser != null && ArticleList.publishStatus == 0) ? <FormItem
+				{...formItemLayout}
+				label="是否发送基础发文奖励"
+			>
+				{getFieldDecorator('ifPlatformPublishAward', {
+					initialValue: ArticleList.ifPlatformPublishAward+'',
+					rules: [
+						{ required: true, message: '请选择' },
+					],
+				})(
+					<RadioGroup onChange={StatusonChange}>
+						<Radio value="1">发送</Radio>
+						<Radio value="0">不发送</Radio>
+
+					</RadioGroup>
+				)}
+			</FormItem> : null}
 			{(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
 				{...formItemLayout}
 				label="审核处理"
@@ -1181,12 +1432,14 @@ function ArticleEditor({
 					} />
 				)}
 			</FormItem> : null}
-
+			
 			<FormItem {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>保存</Button>
+				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} >保存</Button>
 				{(ArticleList && ArticleList.publishStatus == 0) &&
 					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
 				}
+				<Button  type="primary"   onClick={()=>previewPage()}  size="large"  className={styles.preview} style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>预览</Button>
+				<Button  onClick={()=>history.back()} size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>返回</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
 		</Form>

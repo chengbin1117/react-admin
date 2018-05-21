@@ -30,6 +30,9 @@ const RealNameModal = ({
 	onOk,
 	onCancel,
 	selectList,
+	confirmLoading,
+	currentValue,
+	dispatch,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -39,7 +42,7 @@ const RealNameModal = ({
 	},
 }) => {
 
-	//console.log(selectList)
+//	console.log(selectList)
 	function handleOk(value,text) {
 		
 			validateFields((errors) => {
@@ -61,7 +64,12 @@ const RealNameModal = ({
 	}
 	function onChange(e) {
 		//console.log(e.target.value)
-		value =e.target.value;
+		dispatch({
+			type:'user/currentValeChange',
+			payload:{
+				currentValue:e.target.value,
+			}
+		})
 		
 	}
 	function afterClose(){
@@ -78,6 +86,7 @@ const RealNameModal = ({
 		okText:"确定",
 		cancelText:"取消",
 		destroyOnClose:true,
+		confirmLoading:confirmLoading
 	};
 	
 	return (
@@ -88,9 +97,9 @@ const RealNameModal = ({
 		   		<div>
 		   	    <FormItem label="审核处理">
 		          {getFieldDecorator('radio',{
-		          	initialValue:'0',
+		          
 		          	 rules: [{
-			              required: false, message: '请选择!',
+			              required: true, message: '请选择!',
 			            }], 
 		          })(
 		            <RadioGroup onChange={onChange} >
@@ -103,7 +112,7 @@ const RealNameModal = ({
 		            </RadioGroup>
 		          )}
 		        </FormItem>
-		        {value == "0"? <FormItem>
+		        {currentValue == "0"? <FormItem>
 		          {getFieldDecorator('text',{
 		          	 rules: [{
 			              required: false, message: '请输入!',
@@ -115,7 +124,6 @@ const RealNameModal = ({
 		        <div>
 		        <FormItem label="审核处理" style={{display:"none"}}>
 		          {getFieldDecorator('radio',{
-		          	initialValue:'0',
 		          	 rules: [{
 			              required: false, message: '请选择!',
 			            }], 

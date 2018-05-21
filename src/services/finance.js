@@ -70,6 +70,17 @@ export async function getAccountTxb(params) {
 		);
 }
 
+
+//统计钛值奖励，钛小白奖励
+export async function getSumBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/account/getSumBonus?data='+data+"&sign="+sign;
+	return request(url,{
+		method:"POST"
+	    }
+    );
+}
 //保证金记录表
 
 export async function getAccountDiposit(params) {

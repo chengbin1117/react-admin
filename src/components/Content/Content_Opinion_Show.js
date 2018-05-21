@@ -118,6 +118,7 @@ function Content_Opinion_Show({ dispatch, router, content, onFeek }) {
 					</FormItem>
 					<FormItem {...formItemLayout} label="&emsp;"colon={false}>
 						<Button type="primary" size='large' onClick={this.onFeekOk}>保存</Button>
+						<Button style={{marginLeft:'30px'}} size='large' onClick={()=>history.back()}>返回</Button>
 					</FormItem>
 				</Form>
 

@@ -126,6 +126,7 @@ const Content_ImageEditor_Modal = ({
                     <Option value="1">资讯</Option>
                     <Option value="2">广告</Option>
                     <Option value="3">其他</Option>
+                    <Option value="4">活动</Option>
               </Select>
             )}
           </FormItem>
