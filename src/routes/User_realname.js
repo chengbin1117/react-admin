@@ -25,10 +25,10 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 //console.log(merId)
 function UserRealName({location,dispatch,user,router,}) {
-	const {RealNameVisible,RealsVisible,UserCertList,loading,totalNumber,currentPage,selectList}=user;
+	const {RealNameVisible,RealsVisible,UserCertList,loading,totalNumber,currentPage,selectList,confirmLoading,currentValue}=user;
 	//console.log(loading)
 	let merId =localStorage.getItem("userId");
-	console.log(merId)
+	//console.log(merId)
 	/*if(merId == 'undefined'){
 		message.error('请重新登陆')
 		console.log(1111111111)
@@ -86,11 +86,11 @@ function UserRealName({location,dispatch,user,router,}) {
 	    	var Ids =""
 				for(var i in selectList){
 						if(selectList[i].status !=1){
-							console.log(selectList[i].userId)
+						//	console.log(selectList[i].userId)
 							Ids +=selectList[i].userId+","
 						}
 			    }
-			    console.log(Ids)
+			  //  console.log(Ids)
 			if(Ids == ""){
 				message.warn('无需审核的用户')
 
@@ -118,7 +118,10 @@ function UserRealName({location,dispatch,user,router,}) {
 
 	const RealNameModalProps ={
 		visible:RealNameVisible,
+		confirmLoading:confirmLoading,
+		currentValue:currentValue,
 		selectList,
+		dispatch,
 		onCancel(){
 			dispatch({
 	    		type:'user/hideRealNameModal',
@@ -133,9 +136,10 @@ function UserRealName({location,dispatch,user,router,}) {
 				dispatch({
 					type:"user/auditUserCert",
 					payload:{
-						userIds:selectList.userId,
-						status:parseInt(values.radio),
+						userId:selectList.userId,
+						status:1,
 						auditUser:merId,
+						idcardNo:selectList.idcardNo,
 						auditUserName:localStorage.getItem("realname"),
 						search:location.search
 					}
@@ -145,9 +149,10 @@ function UserRealName({location,dispatch,user,router,}) {
 				dispatch({
 					type:"user/auditUserCert",
 					payload:{
-						userIds:selectList.userId,
-						status:parseInt(values.radio),
+						userId:selectList.userId,
+						status:0,
 						auditUser:merId,
+						idcardNo:selectList.idcardNo,
 						refuseReason:values.text,
 						auditUserName:localStorage.getItem("realname"),
 						search:location.search
@@ -160,6 +165,7 @@ function UserRealName({location,dispatch,user,router,}) {
 	const RealsModalProps ={
 		visible:RealsVisible,
 		selectList,
+		confirmLoading:confirmLoading,
 		onCancel(){
 			dispatch({
 	    		type:'user/hideRealsModal',

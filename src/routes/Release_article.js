@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
+  const {artSorce,loading,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -50,6 +50,9 @@ function Release_article({location,dispatch,router,content,setting}) {
     SensitiveWords,
     titleWords,
     timeDis,
+    loading,
+    PushAticleInfo,
+    ifPushValue,
     handlsearch(values){
        
     },
@@ -60,6 +63,7 @@ function Release_article({location,dispatch,router,content,setting}) {
     uploadImg(img){
       //console.log(e.target.src)
       //var img = e.target.src;
+      const hide = message.loading('加载中..', 0);
       getBase64(img)
             .then(function(base64){
               //console.log(base64);//处理成功打印在控制台
@@ -72,9 +76,10 @@ function Release_article({location,dispatch,router,content,setting}) {
                           'Content-Type': 'multipart/form-data'
                         }
                     }
+
               axios.post(ImgUrl, formData, config).then(res=>{
                        res =res.data; 
-                      
+                       hide(); //关闭加载中
                         if (res.errorCode == 10000) {
                           
                            //imgUrl =res.data[0].filePath;

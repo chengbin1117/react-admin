@@ -404,3 +404,15 @@ export async function setDisplayOrder(params) {
 	}
 	);
 }
+
+//今日推送
+export async function getPushAticleInfo(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/getPushAticleInfo?data='+data+"&sign="+sign;
+
+	return request(url,{
+		method:"post"
+	}
+	);
+}

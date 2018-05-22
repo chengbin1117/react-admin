@@ -29,7 +29,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { ArticleStat, confirmLoading, artice, currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
+	const { ArticleStat, confirmLoading, PushAticleInfo,artice, currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
 	const options = ColumnList;
 	const Content_ArticleProps = {
 		dispatch,
@@ -39,6 +39,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 		getBonusList,
 		total: ArticleListNumber,
 		currentPage: currentPage,
+		PushAticleInfo:PushAticleInfo,
 		confirm(record) {
 			dispatch({
 				type: "content/deleteArticle",
@@ -98,14 +99,14 @@ function ContentArticle({ location, dispatch, router, content }) {
 				dispatch(routerRedux.push('/content/content_article?page=' + page +
 					"&articleId=" + search.articleId + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn
-					+ '&orderByClause=' + search.orderByClause + "&createUser=" + search.createUser
+					+ '&orderByClause=' + search.orderByClause + "&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			} else {
 				dispatch(routerRedux.push('/content/content_article?page=' + page +
 					"&articleId=" + search.articleId
 					+ "&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&secondColumn=" + search.secondColumn + '&orderByClause=' + search.orderByClause
-					+ "&createUser=" + search.createUser
+					+ "&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			}
 
@@ -160,12 +161,14 @@ function ContentArticle({ location, dispatch, router, content }) {
 				dispatch(routerRedux.push('/content/content_article?page=1' +
 					"&articleId=" + search.articleId + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + '&orderByClause=' + orderByClause
+					+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			} else {
 				dispatch(routerRedux.push('/content/content_article?page=1' +
 					"&articleId=" + search.articleId
 					+ "&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&secondColumn=" + search.secondColumn + '&orderByClause=' + orderByClause
+					+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			}
 		}
@@ -321,6 +324,27 @@ function ContentArticle({ location, dispatch, router, content }) {
 			            )}
 			          </FormItem>
 			        </Col>
+							<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='是否设有奖励' >
+			            {getFieldDecorator('ifPlatformPublishAward')(
+										<Select placeholder="请选择" allowClear={true}>
+			              	<Option value="1">是</Option>
+			              	<Option value="0">否</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+							<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='来源分类' >
+			            {getFieldDecorator('articleFrom')(
+										<Select placeholder="请选择" allowClear={true}>
+			              	<Option value="0">全部</Option>
+			              	<Option value="1">人工添加</Option>
+											<Option value="2">抓取</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
 		        </div>
 	      	);
 	    return children;
@@ -362,13 +386,13 @@ function ContentArticle({ location, dispatch, router, content }) {
 			dispatch(routerRedux.push('/content/content_article?page=1' + "&articleId=" + values.Id + "&articleTitle=" + title +
 				"&articleTag=" + values.tags + "&publishStatus=" + values.status + "&displayStatus=" + values.displayStatus +
 				"&columnId=" + (values.cloumn != undefined ? parseInt(values.cloumn[0]) : null) + "&secondColumn=" + (values.cloumn != undefined ? parseInt(values.cloumn[1]) : null) +
-				"&createUser=" + values.createUser
+				"&createUser=" + values.createUser+'&ifPlatformPublishAward='+values.ifPlatformPublishAward+'&articleFrom='+values.articleFrom
 			))
 		} else {
 			dispatch(routerRedux.push('/content/content_article?page=1' + "&articleId=" + values.Id +
 				"&articleTag=" + values.tags + "&publishStatus=" + values.status + "&displayStatus=" + values.displayStatus +
 				"&columnId=" + (values.cloumn != undefined ? parseInt(values.cloumn[0]) : null) + "&secondColumn=" + (values.cloumn != undefined ? parseInt(values.cloumn[1]) : null) +
-				"&createUser=" + values.createUser
+				"&createUser=" + values.createUser+'&ifPlatformPublishAward='+values.ifPlatformPublishAward+'&articleFrom='+values.articleFrom
 			))
 		}
 	}

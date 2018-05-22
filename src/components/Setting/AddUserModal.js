@@ -25,6 +25,7 @@ const AdduserModal = ({
 	PostList,
 	onOk,
 	onCancel,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -62,7 +63,8 @@ const AdduserModal = ({
 		maskClosable: false,
 		okText:"提交",
 		cancelText:"取消",
-		afterClose:afterClose
+		afterClose:afterClose,
+		confirmLoading:confirmLoading
 
 	};
 	return (

@@ -12,9 +12,10 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
-import { Form, Row, Col, Input, Button, Icon, message, Radio, Card, Modal } from 'antd';
+import { Form, Row, Col, Input, Button, Icon, message, Radio, Card, Modal,Spin } from 'antd';
 import { uploadUrl } from '../services/common';
 import ColumnModal from '../components/User/ColumnModal';
+import avatar from '../assets/images/avatar.jpg';
 let Base64 = require('js-base64').Base64;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -28,7 +29,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { userInfo, columnVisible, confirmLoading, ColumnIdentity, currentItem } = user;
+	const { userInfo, columnVisible, confirmLoading, ColumnIdentity, currentItem,loading} = user;
 	//console.log(userInfo)
 	const formItemLayout = {
 		labelCol: {
@@ -116,7 +117,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						)}
 					</FormItem>
 					<FormItem>
-						<Button type="primary" onClick={this.submit} size="large">保存</Button>
+						<Button type="primary" onClick={this.submit} size="large" loading={confirmLoading}>保存</Button>
 					</FormItem>
 				</Form>
 			);
@@ -194,6 +195,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 		}
 	}
 	return (
+		<Spin tip="Loading..." spinning={loading} size="large">
 		<Card>
 			<Card
 				title={<div>
@@ -210,11 +212,14 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				bordered={false}
 
 			>
+				<div className={stytes.avatar}>
+					{userInfo&&userInfo.avatar!=null?<img src={uploadUrl+userInfo.avatar}/>:<img src="https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/1805/photocopy23x.png"/>}
+				</div>
 				<table className={stytes.table}>
 					<tbody>
 						<tr>
 							<td>用户ID</td><td>{userInfo.userId != null ? userInfo.userId : "——"}</td>
-							<td>邮箱</td><td>{userInfo.profile && userInfo.profile.email != null ? userInfo.profile.email : "——"}</td>
+							<td>昵称</td><td>{userInfo && userInfo.userName != null ? userInfo.userName : "——"}</td>
 						</tr>
 						<tr>
 							<td>手机号</td><td>{userInfo.userMobile ? userInfo.userMobile : "——"}</td>
@@ -372,12 +377,12 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					{(userInfo.auditStatus == 1 && userInfo.userRole != 1) ? <p className={stytes.dataBox}><span className={stytes.span1}>专栏认证情况</span><span className={stytes.span2}>{(userInfo && userInfo.columnAuthed == 0) ? "未认证" : userInfo.columnIdentity} {(userInfo && userInfo.columnAuthed == 0) ? <Button type="primary" style={{ marginLeft: 30 }} onClick={columnAute}>去认证</Button> : <Button type="primary" style={{ marginLeft: 30 }} onClick={canelColumn}>取消认证</Button>}</span></p>
 						: null}
 
-					<p className={stytes.dataBox}><span className={stytes.span1}><Button type="primary" style={{ marginLeft: 100 }} onClick={()=>history.back()} size="large"> <Icon type="left" />返回上一级</Button></span></p>
+					<p className={stytes.dataBox}><span className={stytes.span1}><Button type="primary"  onClick={()=>history.back()} size="large">返回</Button></span></p>
 				</div>
 				<ColumnModal {...ColumnModalProps} />
 			</Card>
 		</Card>
-
+		</Spin>
 	);
 }
 

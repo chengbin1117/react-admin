@@ -38,6 +38,7 @@ export default {
 		confirmLoading: false,
 		ColumnIdentity: [], //专栏身份
 		currentItem:{},  //当前选中的
+		currentValue:'1',  
 	},
 	subscriptions: {
 		setup({
@@ -49,6 +50,8 @@ export default {
 				let userId = localStorage.getItem("userId");
 				if (match) {
 					const search = GetRequest(location.search);
+					console.log(search.platform)
+					console.log(search.lockStatus)
 					dispatch({
 						type: 'getUserList',
 						payload: {
@@ -62,6 +65,7 @@ export default {
 							lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 							createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 							createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+							platform: search.platform != "undefined" ? search.platform : null,
 							pageSize: 25,
 
 						}
@@ -320,14 +324,17 @@ export default {
 			}
 		},
 		*getUserInfo({ payload }, { call, put }) {
-			//yield put({
-			//   type: 'showLoading',
-			// });
+			yield put({
+			  type: 'showLoading',
+			});
 
 			const { data } = yield call(getUserInfo, payload);
 			//console.log("11",data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
+				yield put({
+					type:'hideLoading'
+				})
 				//console.log(res)
 				yield put({
 					type: 'getUserInfoSuccess',
@@ -337,6 +344,9 @@ export default {
 					}
 				});
 			} else {
+				yield put({
+					type:'hideLoading'
+				})
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
@@ -381,37 +391,31 @@ export default {
 
 					}
 				});
+				
 				if (user_data != undefined) {
-					yield put(routerRedux.push('/user/user_admin?page=1'));
+					setTimeout(()=>{
+						history.back(); //返回上一级
+					},100)
 				} else {
 					const search = GetRequest(payload.search);
-					if (payload.audit == 0) {
-						yield put({
-							type: 'getUserList',
-							payload: {
-								auditStatus: 0
-							}
-						});
-					} else {
-						yield put({
-							type: 'getUserList',
-							payload: {
-								currentPage: parseInt(search.page),
-								userId: search.userId != "undefined" ? search.userId : null,
-								orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
-								userName: (search.userName == 'undefined' ||search.userName==undefined)? null : Base64.decode(search.userName),
-								userMobile: search.userMobile != "undefined" ? search.userMobile : null,
-								userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
-								auditStatus: search.auditStatus != "undefined" ? parseInt(search.auditStatus) : null,
-								lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
-								createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
-								createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-								pageSize: 25,
-							}
-						});
-					}
+					yield put({
+						type: 'getUserList',
+						payload: {
+							currentPage: parseInt(search.page),
+							userId: search.userId != "undefined" ? search.userId : null,
+							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
+							userName: (search.userName == 'undefined' ||search.userName==undefined)? null : Base64.decode(search.userName),
+							userMobile: search.userMobile != "undefined" ? search.userMobile : null,
+							userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
+							auditStatus: search.auditStatus != "undefined" ? parseInt(search.auditStatus) : null,
+							lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
+							createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
+							createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+							platform: search.platfrom != "undefined" ? search.platform : null,
+							pageSize: 25,
+						}
+					});
 				}
-
 			} else {
 				yield put({
 					type: "hideSubmitLoading",
@@ -451,6 +455,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+						platform: search.platfrom != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});
@@ -502,6 +507,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+						platform: search.platfrom != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});
@@ -711,7 +717,8 @@ export default {
 						UserCertList: res.data,
 						loading: false,
 						totalNumber: res.totalNumber,
-						currentPage: res.currentPage
+						currentPage: res.currentPage,
+						currentValue:'1'
 					}
 				});
 			} else {
@@ -734,26 +741,34 @@ export default {
 
 			if (payload.status == 1) {
 				params = {
-					userIds: payload.userIds,
+					userId: payload.userId,
 					status: payload.status,
 					auditUser: payload.auditUser,
+					idcardNo:payload.idcardNo,
 					auditUserName: payload.auditUserName,
 
 				}
 			} else {
 				params = {
-					userIds: payload.userIds,
+					userId: payload.userId,
 					status: payload.status,
+					idcardNo:payload.idcardNo,
 					auditUser: payload.auditUser,
 					refuseReason: payload.refuseReason,
 					auditUserName: payload.auditUserName,
 				}
 			}
+			yield put({
+				type:"showSubmitLoading"
+			})
 			const { data } = yield call(auditUserCert, params);
 
 			if (data && data.code == 10000) {
 				//var res = data.responseBody;
 				message.success('设置成功');
+				yield put({
+					type:"hideSubmitLoading"
+				})
 				const search = GetRequest(payload.search)
 				yield put({
 					type: 'getUserCert',
@@ -781,11 +796,14 @@ export default {
 					}
 				});
 			} else {
+				yield put({
+					type:"hideSubmitLoading"
+				})
 				if (data.code == 10004 || data.code == 10011) {
-					message.error(data.message, 2);
+					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));
 				} else {
-					message.error(data.message, 2);
+					message.error(data.message, 3);
 				}
 			}
 		},
@@ -956,6 +974,12 @@ export default {
 				}
 				yield put({
 					type: "hideSubmitLoading",
+				})
+				yield put({
+					type: "hideFrozenModal",
+					payload:{
+						currentItem:{}
+					}
 				})
 				// const search =GetRequest(payload.search)
 				yield put({
@@ -1268,6 +1292,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+						platform: search.platfrom != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});
@@ -1321,6 +1346,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+						platfrom: search.platfrom != "undefined" ? search.platfrom : null,
 						pageSize: 25,
 					}
 				});
@@ -1373,6 +1399,15 @@ export default {
 					type: 'hideLoading',
 				});
 			}
+		},
+		*currentValeChange({ payload }, { call, put }) {
+			yield put({
+				type:"currentValeChangeSuccess",
+				payload:{
+					currentValue:payload.currentValue
+				}
+			})
+			
 		},
 	},
 	reducers: {
@@ -1619,6 +1654,12 @@ export default {
 			};
 		},
 		getColumnIdentitySuccess(state, action) {
+			return {
+				...state,
+				...action.payload
+			};
+		},
+		currentValeChangeSuccess(state, action) {
 			return {
 				...state,
 				...action.payload

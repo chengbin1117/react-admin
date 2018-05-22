@@ -61,6 +61,22 @@ function Record({location,dispatch,finance,router,}) {
 					    			
 				    			</tbody>
 				    			}
+									{reacord.businessTypeId == 640 &&
+				    				<tbody>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>收入数额</td><td>{reacord.amount}</td></tr>
+					    			
+				    			</tbody>
+				    			}
+									{reacord.businessTypeId == 650 &&
+				    				<tbody>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>支付数额</td><td>{reacord.amount}</td></tr>
+					    			
+				    			</tbody>
+				    			}
 								{reacord.businessTypeId == 345 &&
 				    				<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>手机号</td><td>{reacord.mobile}</td></tr>
@@ -70,7 +86,8 @@ function Record({location,dispatch,finance,router,}) {
 				    			</tbody>
 				    			}
 				    			{(reacord.businessTypeId == 310 ||reacord.businessTypeId == 340 ||
-				    		      reacord.businessTypeId == 320 ||reacord.businessTypeId == 330
+				    		      reacord.businessTypeId == 320 ||reacord.businessTypeId == 330||reacord.businessTypeId == 560||
+											reacord.businessTypeId == 90||reacord.businessTypeId == 350||reacord.businessTypeId == 540
 				    				)&&
 				    				<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
@@ -97,6 +114,15 @@ function Record({location,dispatch,finance,router,}) {
 					    			
 				    			</tbody>
 				    			}
+									{reacord.businessTypeId == 30 &&
+				    			<tbody>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>发放总钛值</td><td>{reacord.amount}</td></tr>
+					    			<tr><td>奖励总人数</td><td>{reacord.bonusTotalPerson==null?"——":reacord.bonusTotalPerson}</td><td>当前状态</td><td>{reacord.status}</td></tr>
+					    			
+				    			</tbody>
+				    			}
 				    			{reacord.businessTypeId == 10 &&
 				    			<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
@@ -111,6 +137,14 @@ function Record({location,dispatch,finance,router,}) {
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>获取数额</td><td>{reacord.accountAmount}</td></tr>
+				    			</tbody>
+				    			}
+									{reacord.businessTypeId == 570 &&
+				    			<tbody>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
+					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>收入数额</td><td>{reacord.accountAmount}</td></tr>
+										<tr><td>奖励原因</td><td>{reacord.flowDetail}</td><td></td><td></td></tr>
 				    			</tbody>
 				    			}
 				    	      </table>

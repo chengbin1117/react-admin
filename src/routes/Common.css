@@ -214,9 +214,9 @@
   line-height: 25px;
 }
 .article{
-  color:#7f8387;
+  /* color:#7f8387; */
   line-height: 25px;
-  font-size:16px;
+  /* font-size:16px; */
   font-family: "微软雅黑";
 }
 .article p{
@@ -449,9 +449,7 @@
 }
 .article{
   margin-top: 10px;
-  color:#7f8387;
   line-height: 25px;
-  font-size:18px;
 }
 .article img{
   /* width:100%; */
@@ -500,7 +498,15 @@
   font-size:14px!important;
   
 } */
-
+.tags{
+  padding: 0px 20px 0px 20px!important;
+  line-height: 27px!important;
+  height: 30px!important;
+  border-radius: 30px!important;
+  color: #000!important;
+  background: #fafafa!important;
+  border-color: #d9d9d9!important;
+}
 @media only screen and (max-width:1800px){
   .login_register_modal .el-dialog{
       width:16%!important;

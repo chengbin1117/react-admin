@@ -37,7 +37,7 @@ const RealName = ({
 	currentPage,
 	
 }) => {
-	console.log('loading',loading)
+//	console.log('loading',loading)
 
 	const columns = [{
 		  title: '用户ID',
@@ -154,7 +154,7 @@ const RealName = ({
 			      <div>
 			        <Table bordered columns={columns} dataSource={data} pagination = {false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId} locale={{emptyText:"暂无数据"}}/>
 	      	        <div className="table-operations" >
-		            <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)} style={{marginTop:20}}>批量审核</Button>
+		            {/* <Button type="primary" size='large' disabled={!hasSelected} onClick={()=>ExamineModal(selectedRows)} style={{marginTop:20}}>批量审核</Button> */}
 				    <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage} onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>
 		           </div>
 	      	

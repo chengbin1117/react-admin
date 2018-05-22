@@ -51,3 +51,9 @@
 	background:rgb(0,154,210);
 	border-color:rgb(0,154,210);
 }
+.activeBtn:hover{
+    color:#fff;
+	background:rgb(0,154,210);
+	border-color:rgb(0,154,210);
+}
+

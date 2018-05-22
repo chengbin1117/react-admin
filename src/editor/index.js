@@ -64,7 +64,11 @@ class Editor extends Component {
 		editor.customConfig.colors = [
 			'#000000',
 			'#f00',
-			
+			'#eeece0',
+			'#1c487f',
+			'#4d80bf',
+			'#46acc8',
+			'#f9963b',
 		]
 		editor.customConfig.fontsizes ={
 			1:'12px',
@@ -87,6 +91,7 @@ class Editor extends Component {
 			'foreColor',
 			'link',  // 插入链接
 			'image',
+			'video'
 		];
 
 		// 使用 onchange 函数监听内容的变化，并实时更新到 state 中

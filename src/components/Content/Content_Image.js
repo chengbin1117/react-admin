@@ -18,6 +18,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  	        {record.imageType === 1 && '资讯'}
 	  	        {record.imageType === 2 && '广告'}
 	  	        {record.imageType === 3 && '其他'}
+							{record.imageType === 4 && '活动'}
 	  	    </span>
 	  	)
 	}, {
@@ -29,7 +30,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  dataIndex: 'imageAddress',
 	  key: 'imageAddress',
 	  render:(text,record)=> (
-	  	    <span><img src ={record.imageAddress!=""?uploadUrl+record.imageAddress:''}  style={{width:'50px',height:"50px"}}/></span>
+	  	    <span ><img src ={record.imageAddress!=""?uploadUrl+record.imageAddress:''}  style={{width:'50px',height:"50px",display:'inlineBlock'}}/></span>
 	  	)
 	},{
 	  title: '发布人',

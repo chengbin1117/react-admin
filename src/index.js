@@ -29,6 +29,7 @@ app.model(require('./models/data_center'));
 app.model(require('./models/finance'));
 app.model(require('./models/award'));
 app.model(require('./models/app'));
+app.model(require('./models/userReward'));
 // 4. Router
 app.router(require('./router'));
 

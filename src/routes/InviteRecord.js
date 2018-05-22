@@ -62,6 +62,22 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			})
 		}
 	}
+	const frozenModal = (data) => {
+		Modal.confirm({
+			title:"确认解冻吗?",
+			onOk(){
+				dispatch({
+					type:"user/freezeUserData",
+					payload:{
+						auditUserId:merId,
+						userId:data.userId,
+						bonusStatus:1,
+						search:location.search
+					}	
+				})
+			}
+		})
+	}
 	function getFields(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
@@ -239,7 +255,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			    
 			    &emsp;
 			    {userInfo&&(userInfo.bonusStatus==1)&&<Button type="primary" onClick={()=>frozen(userInfo)}>冻结</Button>}
-			    
+			    {userInfo&&(userInfo.bonusStatus==0)&&<Button type="primary" onClick={()=>frozenModal(userInfo)}>解冻</Button>}
 			</div>} 
 			bordered={false}
 		>

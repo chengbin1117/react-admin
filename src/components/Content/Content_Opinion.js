@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router'
-import { Form, Row, Col, Input,message, Button,Table,Pagination,Popconfirm,DatePicker, TimePicker,Select} from 'antd';
+import { Form, Row, Col, Input,message, Button,Table,Pagination,Popconfirm,DatePicker, TimePicker,Select,Divider} from 'antd';
 
 import style_pagination from '../pagination.css';
 import {options} from "../../services/common";
@@ -50,9 +50,10 @@ function Content_Opinion({data,total,confirm,handlsearch,currentPage,delFeeks,on
 	  key: '3address',
 	  render: (text, record) => (
 	    <span>
-	    <a onClick={()=>onEditor(record)} className = "action_font">查看</a>
-	      <Popconfirm title="确定删除吗？" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
-		    <a className = "action_font" style={{marginLeft:10}}>删除</a>
+	      <a onClick={()=>onEditor(record)} className = "action_font">查看</a>
+				<Divider type="vertical" />
+	      <Popconfirm title="确定删除吗？" placement="topRight" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
+		    <a className = "action_font" >删除</a>
 		  </Popconfirm>
 	    </span>
 	  )
