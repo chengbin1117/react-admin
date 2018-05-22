@@ -795,6 +795,7 @@ function RelesEditor({
 			{(saveId != undefined && saveId != 0) ? <span className={styles.zidong}>自动保存中<Icon type="clock-circle-o" /></span> : null
 			}
 			<FormItem 
+			{...formItemLayout} label="正文"
 			>
 				{getFieldDecorator('text', {
 					rules: [
@@ -1189,8 +1190,8 @@ function RelesEditor({
 				)}
 			</FormItem>
 			<FormItem  {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit}  size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>发布</Button>
-				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={timeDis==1?true:false}>存草稿</Button>
+				<Button type="primary" onClick={handleSubmit}  size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={loading}>发布</Button>
+				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={(timeDis==1?true:false)||loading}>存草稿</Button>
 				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={() => previewPage()} className={styles.preview}>预览</Button>
 				<Button  style={{ marginLeft: 30 }} size="large" onClick={() => history.back()} >返回</Button>
 				<RelationModal {...RelationModalProps} />

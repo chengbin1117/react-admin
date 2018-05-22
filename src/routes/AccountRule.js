@@ -32,7 +32,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 	if(!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { getRelUserList,GetRelUserViible,deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
+	const { confirmLoading,getRelUserList,GetRelUserViible,deskUserId,EditorPostVisible,loading,editorUserVisible,listVisible,ManageVisible,PostVisible,SysUserList,PostList,getPost,TreeList,type,currentItem,RelationVisible,item,selectList,totalNumber,currentPage}=setting;
 	//console.log('getAuthTree',getAuthTree)
 	//生成随机密码
 	function upsetArr(arr){
@@ -170,6 +170,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 	
 	const AdduserModalProps = {
 		visible: listVisible,
+		confirmLoading:confirmLoading,
 		PostList,
 		onOk:function(vaules){
 				dispatch({
@@ -180,6 +181,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 						realname:vaules.realname,
 						password:vaules.password,
 						postId:parseInt(vaules.postId),
+						search:location.search
 					}
 				})
 				
@@ -197,6 +199,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 	//编辑账号
 	const EditoruserModalProps ={
 		visible: editorUserVisible,
+		confirmLoading:confirmLoading,
 		PostList,
 		type:type,
 		item:currentItem,
@@ -207,7 +210,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 			});
 		},
 		onOk:function(id,vaules){
-				console.log(id,vaules)
+				// console.log(id,vaules)
 				dispatch({
 					type:'setting/addSysUser',
 					payload:{
@@ -217,6 +220,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 						realname:vaules.realname,
 						password:vaules.password,
 						postId:parseInt(vaules.postId),
+						search:location.search
 					}
 				})
 				
@@ -357,7 +361,8 @@ function AccountRule({location,dispatch,setting,router,}) {
 				    	type:"setting/sysuserSetStatus",
 				    	payload:{
 				    		userId:record.id,
-				    		status:record.status ==0?true:false
+							status:record.status ==0?true:false,
+							search:location.search
 				    	}
 				    })
 
@@ -374,7 +379,6 @@ function AccountRule({location,dispatch,setting,router,}) {
 		},
 		reseatPaw(record){
 			var paw = randomString(2)
-			console.log(paw)
 			Modal.confirm({
 				title: "确认重置密码吗？",
 				okText:"确定",
@@ -389,7 +393,8 @@ function AccountRule({location,dispatch,setting,router,}) {
 				    	type:"setting/resetPassword",
 				    	payload:{
 				    		userId:record.id,
-				    		password:paw,
+							password:paw,
+							search:location.search
 				    	}
 				    })
 				},
@@ -461,7 +466,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 			})
 		},
 		handleBlur(e){
-			console.log(e.target.value.length)
+			// console.log(e.target.value.length)
 			if(e.target.value.length == 11){
 				dispatch({
 					type:"setting/getUserId",
@@ -482,7 +487,8 @@ function AccountRule({location,dispatch,setting,router,}) {
 					    type:"setting/setKgUser",
 					    	payload:{
 					    		userId:record.id,
-					    		kgUserId:deskUserId
+								kgUserId:deskUserId,
+								search:location.search
 					    	}
 			            })
 					},
@@ -514,6 +520,7 @@ function AccountRule({location,dispatch,setting,router,}) {
 				payload:{
 					relId:record.relId,
 					sysUserId:item.id,
+					search:location.search
 				}
 			})
 		},

@@ -205,13 +205,12 @@ export default {
 							sysUserId: merId
 						}
 					})
-					
-					/* dispatch({
-					   type:'getSysUserById',
-					   payload:{
-						 userId:merId
-					   }
-					 })*/
+					dispatch({
+						type: "publishStatusChange",
+						payload: {
+							pubStatus: 1,
+						}
+					})
 					dispatch({
 						type: 'getColumnList',
 						payload: {
@@ -1002,15 +1001,19 @@ export default {
 			})
 		},
 		*publishVideo({ payload }, { call, put }) {
-
+			yield put({
+				type:'showLoading'
+			})
 			const { data } = yield call(publishArticle, payload);
 			//console.log("11",data)
 
 			const search = GetRequest(window.location.href)
-
+			
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-
+				yield put({
+					type:'hideLoading'
+				})
 				message.success('成功');
 				setTimeout(()=>{
 					history.back();
@@ -1605,7 +1608,10 @@ export default {
 			//console.log("图片",data)
 			if (data && data.code == 10000) {
 				message.success('保存成功');
-				yield put(routerRedux.push('/content/content_opinion?page=1'))
+				setTimeout(()=>{
+					history.back();
+				},50)
+				//yield put(routerRedux.push('/content/content_opinion?page=1'))
 			} else {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);

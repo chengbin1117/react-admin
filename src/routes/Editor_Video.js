@@ -29,7 +29,7 @@ function Editor_article({dispatch,router,content,setting}) {
   var html = '';
   let src = "";
   
-  const {ArticleList,dis,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
+  const {ArticleList,dis,pubStatus,loading,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
 
   const options = ColumnList;
   //console.log("imgUrl",getVideoList)
@@ -44,7 +44,9 @@ function Editor_article({dispatch,router,content,setting}) {
     imgUrl,
     dis,
     UserById,
+    pubStatus,
     PushAticleInfo,
+    loading,
     ifPushValue,
     editorText(h,t){
         text  = t;

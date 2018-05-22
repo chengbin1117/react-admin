@@ -24,7 +24,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,PushAticleInfo,delArticle
 	  title: '标题',
 	  dataIndex: 'articleTitle',
 	  key: 'articleTitle',
-		width:200,
+		width:180,
 		render:(text,record)=>{
 			return(
 				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>

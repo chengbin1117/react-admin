@@ -1,9 +1,10 @@
 /*
- * @Author: 郭康 
- * @Date: 2018-05-21 16:52:11 
- * @Last Modified by:   郭康 
- * @Last Modified time: 2018-05-21 16:52:11 
+ * @Author: guokang 
+ * @Date: 2018-05-21 16:53:49 
+ * @Last Modified by: guokang
+ * @Last Modified time: 2018-05-22 16:23:08
  */
+
 
 import React, {
 	Component,
@@ -895,7 +896,7 @@ function ArticleEditor({
 				)}
 				<span style={{ color: "#aaa", marginLeft: 20 }}>1-64个字符</span>
 			</FormItem>
-			<FormItem >
+			<FormItem {...formItemLayout} label="正文">
 				{getFieldDecorator('text', {
 					initialValue: ArticleList.articleText,
 					rules: [
@@ -908,7 +909,7 @@ function ArticleEditor({
 
 			</FormItem>
 			<Row key='2' type="flex" justify="start" >
-				<Col style={{ marginLeft: '26px' }} >
+				<Col style={{ marginLeft: '130px' }} >
 					<span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
 				</Col>
 				<Col style={{ marginRight: '15px' }}>
@@ -1434,9 +1435,9 @@ function ArticleEditor({
 			</FormItem> : null}
 			
 			<FormItem {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} >保存</Button>
+				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={loading}>保存</Button>
 				{(ArticleList && ArticleList.publishStatus == 0) &&
-					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
+					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }} disabled={loading}>发布</Button>
 				}
 				<Button  type="primary"   onClick={()=>previewPage()}  size="large"  className={styles.preview} style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>预览</Button>
 				<Button  onClick={()=>history.back()} size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>返回</Button>

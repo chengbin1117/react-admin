@@ -391,41 +391,31 @@ export default {
 
 					}
 				});
-				setTimeout(()=>{
-					history.back(); //返回上一级
-				},100)
-				// if (user_data != undefined) {
-				// 	yield put(routerRedux.push('/user/user_admin?page=1'));
-				// } else {
-				// 	const search = GetRequest(payload.search);
-				// 	if (payload.audit == 0) {
-				// 		yield put({
-				// 			type: 'getUserList',
-				// 			payload: {
-				// 				auditStatus: 0
-				// 			}
-				// 		});
-				// 	} else {
-				// 		yield put({
-				// 			type: 'getUserList',
-				// 			payload: {
-				// 				currentPage: parseInt(search.page),
-				// 				userId: search.userId != "undefined" ? search.userId : null,
-				// 				orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
-				// 				userName: (search.userName == 'undefined' ||search.userName==undefined)? null : Base64.decode(search.userName),
-				// 				userMobile: search.userMobile != "undefined" ? search.userMobile : null,
-				// 				userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
-				// 				auditStatus: search.auditStatus != "undefined" ? parseInt(search.auditStatus) : null,
-				// 				lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
-				// 				createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
-				// 				createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-				// 				platform: search.platfrom != "undefined" ? search.platform : null,
-				// 				pageSize: 25,
-				// 			}
-				// 		});
-				// 	}
-				//}
-
+				
+				if (user_data != undefined) {
+					setTimeout(()=>{
+						history.back(); //返回上一级
+					},100)
+				} else {
+					const search = GetRequest(payload.search);
+					yield put({
+						type: 'getUserList',
+						payload: {
+							currentPage: parseInt(search.page),
+							userId: search.userId != "undefined" ? search.userId : null,
+							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
+							userName: (search.userName == 'undefined' ||search.userName==undefined)? null : Base64.decode(search.userName),
+							userMobile: search.userMobile != "undefined" ? search.userMobile : null,
+							userRole: search.userRole != "undefined" ? parseInt(search.userRole) : null,
+							auditStatus: search.auditStatus != "undefined" ? parseInt(search.auditStatus) : null,
+							lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
+							createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
+							createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
+							platform: search.platfrom != "undefined" ? search.platform : null,
+							pageSize: 25,
+						}
+					});
+				}
 			} else {
 				yield put({
 					type: "hideSubmitLoading",

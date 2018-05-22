@@ -41,11 +41,11 @@ let isVideo = 0;
 let icoType = "upload";
 const confirm = Modal.confirm;
 const formItemLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 18 },
 };
 const formLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 15 },
 };
 const submitFormLayout = {
@@ -81,6 +81,8 @@ function ArticleEditor({
 	getBonusList,
 	PushAticleInfo,
 	ifPushValue,
+	pubStatus,
+	loading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -411,7 +413,12 @@ function ArticleEditor({
 	function StatusonChange(e) {
 		//console.log(e.target.value)
 		value = e.target.value;
-
+		dispatch({
+			type:"content/publishStatusChange",
+			payload:{
+				pubStatus : e.target.value
+			}
+		})
 	}
 	function showUser() {
 		dispatch({
@@ -921,7 +928,7 @@ function ArticleEditor({
 				</FormItem> : null}
 
 			<Row key='2' type="flex" justify="start" >
-				<Col className={styles.marginL}>
+				<Col  style={{ marginLeft: '130px' }}>
 					<span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
 				</Col>
 				<Col style={{ marginRight: '15px' }}>
@@ -1385,15 +1392,15 @@ function ArticleEditor({
 						required: false, message: '请输入!',
 					}],
 				})(
-					<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={value == 3 ? false : true
+					<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={pubStatus == 3 ? false : true
 					} />
 				)}
 			</FormItem> : null}
 
 			<FormItem {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={dis}>保存</Button>
+				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={dis} disabled={loading}>保存</Button>
 				{(ArticleList && ArticleList.publishStatus == 0) &&
-					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
+					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }} disabled={loading}>发布</Button>
 				}
 				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30, backgroundColor: 'orange' }} className={styles.preview} disabled={dis} onClick={previewPage}>预览视频</Button>
 				<Button style={{ marginLeft: 30 }} size="large" onClick={() => history.back()} >返回</Button>

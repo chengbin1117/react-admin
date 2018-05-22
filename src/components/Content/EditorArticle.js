@@ -42,6 +42,10 @@ const formItemLayout = {
 	labelCol: { span: 3 },
 	wrapperCol: { span: 18 },
 };
+const formLayout = {
+	labelCol: { span: 3 },
+	wrapperCol: { span: 15 },
+};
 const submitFormLayout = {
 	wrapperCol: {
 		xs: { span: 24, offset: 0 },
@@ -734,7 +738,7 @@ function ArticleEditor({
 				)}
 				<span style={{ color: "#aaa", marginLeft: 20 }}>1-64个字符</span>
 			</FormItem>
-			<FormItem >
+			<FormItem {...formItemLayout} label="正文">
 				{getFieldDecorator('text', {
 					initialValue: ArticleList.articleText,
 					rules: [
@@ -747,7 +751,7 @@ function ArticleEditor({
 
 			</FormItem>
 			<Row key='2' type="flex" justify="start" >
-				<Col style={{ marginLeft: '26px' }} >
+				<Col  style={{ marginLeft: '130px' }} >
 					<span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
 				</Col>
 				<Col style={{ marginRight: '15px' }}>
@@ -858,7 +862,7 @@ function ArticleEditor({
 				)}
 			</FormItem>
 			<FormItem
-				{...formItemLayout}
+				{...formLayout}
 				label="&emsp;"
 				colon={false}
 			>
