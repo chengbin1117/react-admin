@@ -411,7 +411,7 @@ export default {
 							lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 							createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 							createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-							platform: search.platfrom != "undefined" ? search.platform : null,
+							platform: search.platform != "undefined" ? search.platform : null,
 							pageSize: 25,
 						}
 					});
@@ -455,7 +455,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-						platform: search.platfrom != "undefined" ? search.platform : null,
+						platform: search.platform != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});
@@ -507,7 +507,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-						platform: search.platfrom != "undefined" ? search.platform : null,
+						platform: search.platform != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});
@@ -1292,7 +1292,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-						platform: search.platfrom != "undefined" ? search.platform : null,
+						platform: search.platform != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});
@@ -1346,7 +1346,7 @@ export default {
 						lockStatus: search.lockStatus != "undefined" ? parseInt(search.lockStatus) : null,
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
-						platfrom: search.platfrom != "undefined" ? search.platfrom : null,
+						platform: search.platform != "undefined" ? search.platform : null,
 						pageSize: 25,
 					}
 				});

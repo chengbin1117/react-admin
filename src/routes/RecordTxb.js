@@ -274,8 +274,8 @@ function Record({location,dispatch,finance,router,}) {
 	return (
 			<div>
 				<div  className = {styles.changCoinType}>
-					<Link  to = '/finance/record'>钛值</Link>
-					<Link className = {styles.activeColor} to = '/finance/recordTxb'>氪金</Link>
+					<Link  to = '/finance/record?page=1'>钛值</Link>
+					<Link className = {styles.activeColor} to = '/finance/recordTxb?page=1'>氪金</Link>
 				</div>
 				<WrappedAdvancedSearchForm getFields = {getFields} getFieldsFirst={getFieldsFirst} handlsearch={handlsearch}/>
 				<TransactionTi {...TransactionProps}/>

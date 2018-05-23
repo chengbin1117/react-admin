@@ -190,8 +190,19 @@ function AddAward({ dispatch, loaction,reward,form:{
 				}
 			})
 		}
+	
+
 		validateFieldsAndScroll((err, data) => {
 		if (!err) {
+			console.log(data)
+			if(data.tvBonus ==undefined&&data.kgBonus==undefined){
+				message.error('钛值奖励和氪金奖励不能同时为空')
+				return 
+			}
+			if(data.tvBonus ==""&&data.kgBonus==""){
+				message.error('钛值奖励和氪金奖励不能同时为空')
+				return 
+			}
 			if(data.tvBonus ==0&&data.kgBonus==0){
 				message.error('钛值奖励和氪金奖励不能同时为0')
 				return 
@@ -204,8 +215,8 @@ function AddAward({ dispatch, loaction,reward,form:{
 					dispatch({
 						type:'reward/confirmBonus',
 						payload:{
-						tvBonus:data.tvBonus,
-						kgBonus:data.kgBonus,
+						tvBonus:data.tvBonus==undefined?0:data.tvBonus,
+						kgBonus:data.kgBonus==undefined?0:data.kgBonus,
 						bonusReason:data.bonusReason,
 						userMobiles:awardpeople,
 						adminId:merId
@@ -240,7 +251,7 @@ function AddAward({ dispatch, loaction,reward,form:{
 						type:'reward/changeValidateStatus',
 						payload:{
 							validateStatus:'error',
-							helpMessage:'只能输入数字和逗号'
+							helpMessage:'只能输入数字'
 						}
 					})
 					return
@@ -284,6 +295,8 @@ function AddAward({ dispatch, loaction,reward,form:{
 				}
 			})
 	}
+
+	//校验奖励原因输入30个汉字；
 	const validator =(rules,value,callback)=>{
 	
 		var len = 0;
@@ -315,7 +328,7 @@ function AddAward({ dispatch, loaction,reward,form:{
 				>
 					{getFieldDecorator('tvBonus', {
 						initialValue:0,
-						rules: [{ required: true, message: '请输入TV数量!' }],
+						rules: [{ required: false, message: '请输入TV数量!' }],
 					})(
 						<InputNumber placeholder="请输入" style={{ width: '50%' }} min={0}/>
 					)}
@@ -327,7 +340,7 @@ function AddAward({ dispatch, loaction,reward,form:{
 				>
 					{getFieldDecorator('kgBonus', {
 						initialValue:0,
-						rules: [{ required: true, message: '请输入KG数量!' }],
+						rules: [{ required: false, message: '请输入KG数量!' }],
 					})(
 						<InputNumber placeholder="请输入" style={{ width: '50%' }} min={0} />
 					)}
