@@ -177,6 +177,9 @@ export default {
 						history.back();
 					},100)
 			} else {
+				yield put({
+					type: 'hideLoading',
+				});
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 3);
 					yield put(routerRedux.push('/'));

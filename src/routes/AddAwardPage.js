@@ -319,6 +319,42 @@ function AddAward({ dispatch, loaction,reward,form:{
 		callback()
 		}
 	}
+
+	//TV数量限制3位小数；
+	const tvBonusChange = (rules,value,callback) => {
+		if(value==undefined||value==""){
+			callback();
+		}
+		var re = /^\d+(?=\.{0,1}\d+$|$)/;
+		if(!re.test(value)){
+			callback('请正确输入数量')
+		}
+
+		var reg = /^\d+(?:\.\d{3})?$/
+		console.log(reg.test(value))
+		if(!reg.test(value)){
+			callback('最多输入3位小数')
+		}else{
+			callback();
+		}
+	}
+	const kgBonusChange = (rules,value,callback) => {
+		if(value==undefined||value==""){
+			callback();
+		}
+		var re = /^\d+(?=\.{0,1}\d+$|$)/;
+		if(!re.test(value)){
+			callback('请正确输入数量')
+		}
+
+		var reg = /^\d+(?:\.\d{3})?$/
+		console.log(reg.test(value))
+		if(!reg.test(value)){
+			callback('最多输入3位小数')
+		}else{
+			callback();
+		}
+	}
 	return (
 		<div>
 			<Form>
@@ -328,9 +364,17 @@ function AddAward({ dispatch, loaction,reward,form:{
 				>
 					{getFieldDecorator('tvBonus', {
 						initialValue:0,
-						rules: [{ required: false, message: '请输入TV数量!' }],
+						rules: [
+							{ required: false, message: '请输入TV数量!' },
+					       	{validator:tvBonusChange}
+						],
 					})(
-						<InputNumber placeholder="请输入" style={{ width: '50%' }} min={0}/>
+						<InputNumber 
+						    placeholder="请输入" 
+						    style={{ width: '50%' }} 
+							min={0}  
+							step={0.111}
+							/>
 					)}
 					<span style={{ marginLeft: '20px' }} >TV</span>
 				</FormItem>
@@ -340,9 +384,9 @@ function AddAward({ dispatch, loaction,reward,form:{
 				>
 					{getFieldDecorator('kgBonus', {
 						initialValue:0,
-						rules: [{ required: false, message: '请输入KG数量!' }],
+						rules: [{ required: false, message: '请输入KG数量!' },{validator:tvBonusChange}],
 					})(
-						<InputNumber placeholder="请输入" style={{ width: '50%' }} min={0} />
+						<InputNumber placeholder="请输入" style={{ width: '50%' }} min={0} step={0.111}/>
 					)}
 					<span style={{ marginLeft: '20px' }}>KG</span>
 				</FormItem>
