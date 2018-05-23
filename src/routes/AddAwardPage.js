@@ -330,7 +330,7 @@ function AddAward({ dispatch, loaction,reward,form:{
 			callback('请正确输入数量')
 		}
 
-		var reg = /^\d+(?:\.\d{3})?$/
+		var reg = /^\d+(\.\d{1,3})?$/;
 		console.log(reg.test(value))
 		if(!reg.test(value)){
 			callback('最多输入3位小数')
@@ -347,7 +347,7 @@ function AddAward({ dispatch, loaction,reward,form:{
 			callback('请正确输入数量')
 		}
 
-		var reg = /^\d+(?:\.\d{3})?$/
+		var reg = /^\d+(\.\d{1,3})?$/;
 		console.log(reg.test(value))
 		if(!reg.test(value)){
 			callback('最多输入3位小数')
