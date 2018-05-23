@@ -336,11 +336,13 @@ function ContentArticle({ location, dispatch, router, content }) {
 			        </Col>
 							<Col span={8} style = {{display:'block'}}>
 			          <FormItem {...formItemLayout} label='来源分类' >
-			            {getFieldDecorator('articleFrom')(
+			            {getFieldDecorator('articleFrom',{
+										initialValue:'1',
+									})(
 										<Select placeholder="请选择" allowClear={true}>
 			              	<Option value="0">全部</Option>
 			              	<Option value="1">人工添加</Option>
-											<Option value="2">抓取</Option>
+											<Option value="2">系统抓取</Option>
 			              </Select>
 			            )}
 			          </FormItem>
