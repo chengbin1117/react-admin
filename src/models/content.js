@@ -56,6 +56,9 @@ export default {
 		VideoListNumber:0, //待审核视频数量
 		PushAticleInfo:{},
 		ifPushValue:'0',//暂时不推送
+		validateStatus:'success',
+		helpMessage:'',
+		editorContent:'',//编辑器内容
 	},
 
 	subscriptions: {
@@ -222,10 +225,12 @@ export default {
 				if (match) {
 					const search = GetRequest(location.search);
 					let merId = localStorage.getItem("userId");
-					// console.log("search",search.articleId)
-					// dispatch({
-					// 	type:"getPushAticleInfo"
-					// })
+					dispatch({
+						type:'getById',
+						payload:{
+							articleId: search.articleId
+						}
+					})
 					dispatch({
 						type: 'getBonus',
 						payload: {
@@ -256,7 +261,12 @@ export default {
 				if (match) {
 					const search = GetRequest(location.search);
 					let merId = localStorage.getItem("userId");
-					
+					dispatch({
+						type:'getArticleById',
+						payload:{
+							articleId: search.articleId
+						}
+					})
 					// dispatch({
 					// 	type:"getPushAticleInfo"
 					// })
@@ -901,12 +911,17 @@ export default {
 			}
 		},
 		*publishHomeArticle({ payload }, { call, put }) {
+			yield put({
+				type: 'showLoading',
+			});
 			const { data } = yield call(publishArticle, payload);
 			//console.log("11",data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-
-				message.success('成功');
+				yield put({
+					type: 'hideLoading',
+				});
+				message.success('编辑成功');
 				var userId =localStorage.getItem('userId');
 				yield put(routerRedux.push('/index?userId='+userId))
 			} else {
@@ -1223,6 +1238,7 @@ export default {
 						getVideoList: res,
 						ifPushValue:res.ifPush+"",
 						loading: false,
+						pubStatus:res.publishStatus
 					}
 				});
 
@@ -1252,6 +1268,7 @@ export default {
 						editorList: res,
 						loading: false,
 						ifPushValue:res.ifPush+'',
+						pubStatus:res.publishStatus,
 					}
 				});
 				if (res.createUser == null) {
@@ -1273,12 +1290,56 @@ export default {
 				/*window.location.reload()*/
 				localStorage.setItem("articleList", JSON.stringify(res));
 				localStorage.setItem("articleText", res.articleText);
-				const search = GetRequest(payload.search)
-				yield put(routerRedux.push('/content/editor_article?articleId=' + payload.articleId + "&page=" + search.page
-					+ "&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
-					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + "&pageSize=25" + '&orderByClause=' + search.orderByClause
+				// const search = GetRequest(payload.search)
+				// yield put(routerRedux.push('/content/editor_article?articleId=' + payload.articleId + "&page=" + search.page
+				// 	+ "&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+				// 	"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + "&pageSize=25" + '&orderByClause=' + search.orderByClause
 
-				))
+				// ))
+
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 3);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 3);
+				}
+			}
+		},
+		*getArticleDetile({ payload }, { call, put }) {
+		
+			let params = {
+				articleId: payload.articleId
+			}
+			const { data } = yield call(getArticleById, params);
+			//console.log("栏目",data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				localStorage.setItem("articleText", res.articleText);
+				yield put(routerRedux.push('/content/editor_article?articleId='+payload.articleId))
+
+
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 3);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 3);
+				}
+			}
+		},
+		*getIndexById({ payload }, { call, put }) {
+		
+			let params = {
+				articleId: payload.articleId
+			}
+			const { data } = yield call(getArticleById, params);
+			//console.log("栏目",data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				localStorage.setItem("articleText", res.articleText);
+				yield put(routerRedux.push('/index/editor?articleId='+payload.articleId))
+
 
 			} else {
 				if (data.code == 10004 || data.code == 10011) {
@@ -1328,7 +1389,7 @@ export default {
 				localStorage.setItem("articleList", JSON.stringify(res));
 				localStorage.setItem("articleText", res.articleText);
 			
-				yield put(routerRedux.push('/index/editor?articleId=' + payload.articleId ))
+				//yield put(routerRedux.push('/index/editor?articleId=' + payload.articleId ))
 
 			} else {
 				if (data.code == 10004 || data.code == 10011) {
@@ -2127,6 +2188,25 @@ export default {
 				}
 			})
 		},
+		*textChange({ payload }, { call, put }) {
+		
+			yield put({
+				type: "textChangeSuccess",
+				payload: {
+					validateStatus:payload.validateStatus,
+					helpMessage:payload.helpMessage
+				}
+			})
+		},
+		*editorText({ payload }, { call, put }) {
+		
+			yield put({
+				type: "editorTextSuccess",
+				payload: {
+					editorContent:payload.editorContent,
+				}
+			})
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -2243,6 +2323,12 @@ export default {
 			};
 		},
 		handleTimeChaneSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		textChangeSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,
@@ -2549,6 +2635,12 @@ export default {
 			};
 		},
 		PushAticleInfoChange(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		editorTextSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,

@@ -79,6 +79,7 @@ function ArticleEditor({
 	status_Article,
 	ifPushValue,
 	PushAticleInfo,
+	loading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -99,6 +100,7 @@ function ArticleEditor({
 			if (errors) {
 				return;
 			} else {
+			
 				const data = { ...getFieldsValue() };
 				//console.log(data.text);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
@@ -150,8 +152,8 @@ function ArticleEditor({
 						description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
 						image: imgUrl == '' ? data.image : imgUrl,
 						type: parseInt(data.type),
-						columnId: parseInt(data.column[0]),
-						secondColumn: parseInt(data.column[1]),
+						columnId: data.publishStatus == 1?parseInt(data.column[0]):null,
+						secondColumn: data.publishStatus == 1?parseInt(data.column[1]):null,
 						displayStatus: parseInt(data.radioT),
 						displayOrder: parseInt(data.sort),
 						commentSet: data.commentSet == "true" ? true : false,
@@ -169,110 +171,10 @@ function ArticleEditor({
 						ifPush:ifPushValue,
 						ifPlatformPublishAward:data.ifPlatformPublishAward,
 						auditUser:merId,
+						refuseReason:data.publishStatus == 1?null:data.refuseReason
 					}
 				})
-				if (ArticleList.sysUser == null) {
-					if (data.publishStatus == "1") {
-						
-					} else {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					}
-
-				} else {
-					if (data.publishStatus == "1") {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								sysUser: merId,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					} else {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								sysUser: merId,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					}
-				}
-
+				
 
 			}
 		})
@@ -720,7 +622,7 @@ function ArticleEditor({
 		window.open('/#/preview')
 	}
 	return (
-		<Form onSubmit={handleSubmit}>
+		<Form >
 			<FormItem label="文章标题" {...formItemLayout}>
 				{getFieldDecorator('articleTitle', {
 					initialValue: ArticleList.articleTitle,
@@ -938,7 +840,7 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: ArticleList.columnId != null ? [ArticleList.columnId, ArticleList.secondColumn] : [],
 					rules: [
-						{ required: true, message: '请选择文章栏目!' },
+						{ required: status_Article==1?true:false, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(
@@ -1229,7 +1131,7 @@ function ArticleEditor({
 			</FormItem> : null}
 
 			<FormItem {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>保存</Button>
+				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} loading={loading}>保存</Button>
 				{(ArticleList && ArticleList.publishStatus == 0) &&
 					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
 				}

@@ -101,22 +101,24 @@ class Editor extends Component {
 		 }*/
 		editor.customConfig.onchange = html => {
 			html = html.replace(/<style(([\s\S])*?)<\/style>/g, '')
-			localStorage.setItem("articleText", html);
+			localStorage.setItem("articleTextPreview", html);
 			this.setState({
 				editorContent: html
 			})
 			//console.log("编辑器内容",html)
 			//console.log("编辑器文本",text)
 			this.props.edtiorContent(editor)
-			this.props.checkout(editor)
 			this.props.edtiorContentText(html)
 		}
-		let articleText = localStorage.getItem("articleText");
+		
 		editor.create();
+		let articleText = localStorage.getItem("articleText");
+		console.log(articleText)
 		editor.txt.html(articleText);
 	}
 
 	render() {
+	
 		return (
 
 			<div ref="editorElem" style={{ display: "block", width: "100%", }} className={styles.editorBox}>

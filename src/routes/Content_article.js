@@ -85,12 +85,13 @@ function ContentArticle({ location, dispatch, router, content }) {
 
 		editorItem(record) {
 			dispatch({
-				type: "content/getArticleById",
+				type: "content/getArticleDetile",
 				payload: {
 					articleId: record.articleId,
-					search: location.search
 				}
 			})
+			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
+			
 		},
 		changepage(page) {
 			const search = GetRequest(location.search);
