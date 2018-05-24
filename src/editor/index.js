@@ -113,7 +113,7 @@ class Editor extends Component {
 		
 		editor.create();
 		let articleText = localStorage.getItem("articleText");
-		console.log(articleText)
+	
 		editor.txt.html(articleText);
 	}
 

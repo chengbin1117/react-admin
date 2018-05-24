@@ -90,7 +90,6 @@ function RelesEditor({
 
 	const options = ColumnList;
 	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
-	console.log(ifPushValue)
 	const { RelationVisible, getRelUserList } = setting;
 	
 	//发布
@@ -101,6 +100,7 @@ function RelesEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
+				console.log(data)
 				if(data.time!=undefined){
 					data.time =data.time.format('YYYY-MM-DD HH:mm')
 				}
@@ -126,7 +126,7 @@ function RelesEditor({
 				//console.log("文章字数", lg.length)
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
-					return true
+					return 
 				}
 				// console.log(lg.length)
 				// console.log("234",UserById.kgUserId)
@@ -138,6 +138,7 @@ function RelesEditor({
 				} else if (data.tag4 != undefined && data.tag5 != undefined) {
 					tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 				}
+				
 				dispatch({
 					type: 'content/publishArticle',
 					payload: {
@@ -180,6 +181,7 @@ function RelesEditor({
 				return
 			}
 			const data = { ...getFieldsValue() };
+			
 			var textnum = 0;
 			var text = ""
 			if(data.text ==undefined){
@@ -192,6 +194,11 @@ function RelesEditor({
 			if(data.time!=undefined){
 				data.time =data.time.format('YYYY-MM-DD HH:mm')
 				
+			}
+			if(data.column !=undefined){
+				if(data.column.length == 0){
+					data.column ==undefined
+				}
 			}
 			var tagsName = "";
 			if (data.tag1 == undefined) {
@@ -247,7 +254,7 @@ function RelesEditor({
 
 	}
 
-
+	//显示裁剪框
 	function showModal() {
 		dispatch({
 			type: 'content/showBgModal'
@@ -659,7 +666,7 @@ function RelesEditor({
 		if (data.articleTitle == "" || data.articleTitle == undefined) {
 			return
 		}
-		console.log("123", data)
+		
 		var tagsName = "";
 		if (data.tag1 == undefined) {
 			tagsName = "";

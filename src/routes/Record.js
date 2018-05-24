@@ -132,7 +132,7 @@ function Record({location,dispatch,finance,router,}) {
 					    			<tr><td>当前状态</td><td>{reacord.status==null?"——":reacord.status}</td></tr>
 				    			</tbody>
 				    			}
-				    			{reacord.businessTypeId == 70 &&
+				    			{(reacord.businessTypeId == 70||reacord.businessTypeId == 80) &&
 				    			<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>

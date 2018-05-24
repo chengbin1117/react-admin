@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-05-24 13:40:00
+ * @Last Modified time: 2018-05-24 16:43:43
  */
 
 
@@ -100,7 +100,7 @@ function ArticleEditor({
 	let articleList = JSON.parse(localStorage.getItem("articleList"));
 	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
 	const options = ColumnList;
-
+	console.log(ArticleList)
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
 
@@ -1236,28 +1236,28 @@ function ArticleEditor({
 				label="发布人"
 				extra='注：若该文章为用户发布，则此处不可更改'
 			>
-				{getFieldDecorator('createUser', {
+				{/* {getFieldDecorator('createUser', {
 					initialValue: ArticleList.username,
 					rules: [
 						{ required: true, message: "请选择关联账户", },
 					],
-				})(
-					<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} />
-				)}
+				})( */}
+					<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} value={ ArticleList.username}/>
+				{/* //)} */}
 			</FormItem>}
 			{(ArticleList.sysUser == null && ArticleList.createUser != null) && <FormItem
 				{...formItemLayout}
 				label="发布人"
 				extra='注：若该文章为用户发布，则此处不可更改,如没有关联的账户,请进入系统账号管理关联'
 			>
-				{getFieldDecorator('createUser', {
+				{/* {getFieldDecorator('createUser', {
 					initialValue: ArticleList.username,
 					rules: [
 						{ required: true, message: "请选择关联账户", },
 					],
-				})(
-					<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} />
-				)}
+				})( */}
+					<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} value={ArticleList.username}/>
+				{/* )} */}
 			</FormItem>}
 			{(ArticleList.sysUser != null && ArticleList.createUser == null) && <FormItem
 				{...formItemLayout}
@@ -1265,6 +1265,7 @@ function ArticleEditor({
 				extra='注：若该文章为用户发布，则此处不可更改,如没有关联的账户,请进入系统账号管理关联'
 			>
 				{getFieldDecorator('createUser', {
+					
 					rules: [
 						{ required: true, message: "请选择关联账户", },
 					],
@@ -1377,7 +1378,7 @@ function ArticleEditor({
 				label="是否发送基础发文奖励"
 			>
 				{getFieldDecorator('ifPlatformPublishAward', {
-					initialValue:  ArticleList.ifPlatformPublishAward+'',
+					initialValue:  '1',
 					rules: [
 						{ required: true, message: '请选择' },
 					],
