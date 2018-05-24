@@ -29,7 +29,7 @@ function Editor_article({ dispatch, router, content, setting }) {
     var html = '';
     let src = "";
 
-    const { ArticleList, BgVisible,ifPushValue, PushAticleInfo,UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,status_Article} = content;
+    const { ArticleList, loading,BgVisible,ifPushValue, PushAticleInfo,UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,status_Article} = content;
 
     const options = ColumnList;
     const ArticleEditorProps = {
@@ -44,6 +44,7 @@ function Editor_article({ dispatch, router, content, setting }) {
         UserById,
         status_Article,
         ifPushValue,
+        loading,
 	    PushAticleInfo,   
         editorText(h, t) {
             text = t;

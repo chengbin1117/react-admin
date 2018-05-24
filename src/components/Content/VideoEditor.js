@@ -103,8 +103,6 @@ function ArticleEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				console.log(data);
-
 				var tagsName = "";
 				if (data.tag4 == undefined && data.tag5 == undefined) {
 					tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
@@ -173,6 +171,7 @@ function ArticleEditor({
 								ifPush:ifPushValue,
 								ifPlatformPublishAward:data.ifPlatformPublishAward,
 								auditUser:merId,
+								refuseReason:data.publishStatus == 1?null:data.refuseReason
 							}
 						})
 						
@@ -1115,7 +1114,7 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: [360],
 					rules: [
-						{ required: true, message: '请选择文章栏目!' },
+						{ required: pubStatus == 1?true:false, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(

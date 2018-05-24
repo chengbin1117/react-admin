@@ -194,11 +194,12 @@ function IndexPage({ location, dispatch, user, router, content }) {
 		total: content.ArticleListNumber,
 		onEditItem: function (record) {
 			dispatch({
-				type:"content/getById",
+				type:"content/getIndexById",
 				payload:{
 					articleId:record.articleId,
 				}
 			})
+			//dispatch(routerRedux.push('/index/editor?articleId='+record.articleId))
 			// dispatch({
 			// 	type: 'content/showModal',
 			// 	payload: {

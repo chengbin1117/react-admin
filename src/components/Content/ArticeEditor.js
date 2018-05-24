@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-05-22 16:23:08
+ * @Last Modified time: 2018-05-24 13:40:00
  */
 
 
@@ -166,8 +166,8 @@ function ArticleEditor({
 								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
 								image: imgUrl == '' ? data.image : imgUrl,
 								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
+								columnId: data.publishStatus == 1?parseInt(data.column[0]):null,
+								secondColumn: data.publishStatus == 1?parseInt(data.column[1]):null,
 								displayStatus: parseInt(data.radioT),
 								displayOrder: parseInt(data.sort),
 								commentSet: data.commentSet == "true" ? true : false,
@@ -184,7 +184,8 @@ function ArticleEditor({
 								editArticle: editArticle,
 								auditUser:merId,
 								ifPush:ifPushValue,
-								ifPlatformPublishAward:data.ifPlatformPublishAward
+								ifPlatformPublishAward:data.ifPlatformPublishAward,
+								refuseReason:data.publishStatus == 1?null:data.refuseReason
 							}
 						})
 					}else{
@@ -904,7 +905,7 @@ function ArticleEditor({
 					],
 					trigger: 'edtiorContentText'
 				})(
-					<Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} checkout={checkout} SensitiveWords={SensitiveWords} />
+					<Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText}  articleText={ArticleList.articleText}/>
 				)}
 
 			</FormItem>
@@ -1096,11 +1097,11 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: ArticleList.columnId != null ? [ArticleList.columnId, ArticleList.secondColumn] : [],
 					rules: [
-						{ required:true, message: '请选择文章栏目!' },
+						{ required:(pubStatus==1||pubStatus==0||pubStatus==2)?true:false, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(
-					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: '20%' }} changeOnSelect/>
+					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: '20%' }} changeOnSelect allowClear/>
 				)}
 			</FormItem>
 			<FormItem
@@ -1357,7 +1358,7 @@ function ArticleEditor({
 			{ (ArticleList&&ArticleList.publishStatus == 3)?
 				<FormItem
 				{...formItemLayout}
-				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				label={<span>是否推送</span>}
 				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
 			>
 				{getFieldDecorator('ifPush', {

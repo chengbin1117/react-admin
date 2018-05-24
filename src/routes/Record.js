@@ -87,7 +87,7 @@ function Record({location,dispatch,finance,router,}) {
 				    			}
 				    			{(reacord.businessTypeId == 310 ||reacord.businessTypeId == 340 ||
 				    		      reacord.businessTypeId == 320 ||reacord.businessTypeId == 330||reacord.businessTypeId == 560||
-											reacord.businessTypeId == 90||reacord.businessTypeId == 350||reacord.businessTypeId == 540
+											reacord.businessTypeId == 90||reacord.businessTypeId == 540
 				    				)&&
 				    				<tbody>
 					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
