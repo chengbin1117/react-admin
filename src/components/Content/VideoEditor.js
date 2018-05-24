@@ -102,6 +102,7 @@ function ArticleEditor({
 			if (errors) {
 				return;
 			} else {
+				
 				const data = { ...getFieldsValue() };
 				var tagsName = "";
 				if (data.tag4 == undefined && data.tag5 == undefined) {
@@ -149,8 +150,8 @@ function ArticleEditor({
 								description: data.artic,
 								image: imgUrl == '' ? data.image : imgUrl,
 								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
+								columnId: data.publishStatus==1?parseInt(data.column[0]):null,
+								secondColumn: data.publishStatus==1?parseInt(data.column[1]):null,
 								displayStatus: parseInt(data.radioT),
 								displayOrder: parseInt(data.sort),
 								commentSet: data.commentSet == "true" ? true : false,
@@ -1114,7 +1115,7 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: [360],
 					rules: [
-						{ required: pubStatus == 1?true:false, message: '请选择文章栏目!' },
+						{ required: (pubStatus == 1||pubStatus==2)?true:false, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(
@@ -1355,7 +1356,7 @@ function ArticleEditor({
 				label="是否发送基础发文奖励"
 			>
 				{getFieldDecorator('ifPlatformPublishAward', {
-					initialValue: ArticleList.ifPlatformPublishAward + '',
+					initialValue: '1',
 					rules: [
 						{ required: true, message: '请选择' },
 					],

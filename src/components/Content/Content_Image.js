@@ -92,13 +92,13 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	
 	const rowSelection = {
 	  onChange: (selectedRowKeys, selectedRows) => {
-	    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+	    //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
 	  },
 	  onSelect: (record, selected, selectedRows) => {
-	    console.log(record, selected, selectedRows);
+	   // console.log(record, selected, selectedRows);
 	  },
 	  onSelectAll: (selected, selectedRows, changeRows) => {
-	    console.log(selected, selectedRows, changeRows);
+	   // console.log(selected, selectedRows, changeRows);
 	  },
 	};
 	//const hasSelected = data.length > 0
@@ -108,14 +108,14 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 			    selectedRowKeys:[],
 			  };
 			  onSelectChange = (selectedRowKeys,selectedRows) => {
-			    console.log('selectedRowKeys changed: ', selectedRowKeys,selectedRows);
+			   // console.log('selectedRowKeys changed: ', selectedRowKeys,selectedRows);
 			    this.setState({ 
 			    	selectedRowKeys:selectedRowKeys,
 			    	selectedRows:selectedRows
 			    	 });
 			  }
 			  onShowSizeChange =(page) =>{
-			      	console.log(page)
+			      //	console.log(page)
 			      	changepage(page)
 			      }
 			      onChange = (page)=>{

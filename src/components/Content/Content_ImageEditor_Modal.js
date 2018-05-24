@@ -167,7 +167,7 @@ const Content_ImageEditor_Modal = ({
                   </FormItem>
           <FormItem {...formItemLayout_radio} label="显示状态" className="collection-create-form_last-form-item">
             {getFieldDecorator('showStatus', {
-              initialValue: item.imageStatus==true?"1":"0",
+              initialValue: item&&item.imageStatus==true?"1":"0",
                rules: [
               { required: true, message: '请选择显示状态' },
               ],
@@ -178,7 +178,7 @@ const Content_ImageEditor_Modal = ({
               </Radio.Group>
             )}
           </FormItem>
-          <FormItem {...formItemLayout_radio} label="排序" className="collection-create-form_last-form-item">
+          <FormItem {...formItemLayout_radio} label="排序" >
             {getFieldDecorator('sort', {
               initialValue: item.imageOrder,
               rules:[{
