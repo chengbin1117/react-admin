@@ -180,7 +180,7 @@ function ArticleEditor({
 		})
 	}
 	if (imgUrl != "") {
-		articleList.articleImage = imgUrl
+		ArticleList.articleImage = imgUrl
 	}
 
 	function pubsubmit() {
@@ -757,7 +757,7 @@ function ArticleEditor({
 
 				})(
 					<div>
-						{articleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
+						{ArticleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
 							<img onClick={showModal} src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
 						}
 					</div>

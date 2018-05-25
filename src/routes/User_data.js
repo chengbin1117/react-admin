@@ -46,13 +46,14 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	class DynamicRule extends React.Component {
 		state = {
 			checkNick: false,
-			text: ''
+			text: '',
+			value:1
 		};
 		submit = (e) => {
 			this.props.form.validateFields(
 				(err, values) => {
 					if (!err) {
-						//console.info(values);
+						console.info(values);
 						if (values.radio == '1') {
 							dispatch({
 								type: 'user/auditUser',
@@ -97,7 +98,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				<Form>
 					<FormItem label="审核处理" >
 						{getFieldDecorator('radio', {
-
+							initialValue: 1,
 						})(
 							<RadioGroup onChange={this.onChange} value={this.state.value}>
 								<Radio value={1}>通过</Radio>
@@ -193,6 +194,16 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				}
 			})
 		}
+	}
+
+	function showImage(url){
+		Modal.info({
+			content:(
+				<div>
+					<img src={uploadUrl + url}/>
+				</div>
+			)
+		})
 	}
 	return (
 		<Spin tip="Loading..." spinning={loading} size="large">
@@ -345,7 +356,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>企业机构代码证/营业执照</span><span className={stytes.span2}>
 							{(userInfo.profile && userInfo.profile.licensePic != null) ?
-								<img src={uploadUrl + userInfo.profile.licensePic} />
+								<img src={uploadUrl + userInfo.profile.licensePic} style={{width:700}} />
 								: "——"}
 						</span>
 						</p>
