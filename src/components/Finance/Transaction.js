@@ -66,11 +66,11 @@ const Transaction = ({
 		  dataIndex: 'mobile',
 		  key: 'mobile',
 		}, {
-		  title: '交易人邮箱',
-		  dataIndex: 'email',
-		  key: 'email',
+		  title: '昵称',
+		  dataIndex: 'userName',
+		  key: 'userName',
 		  render:(text,record)=> (
-		  	<span>{record.email==null?"——":record.email}</span>
+		  	<span>{record.userName==null?"——":record.userName}</span>
 		  	)
 		}, {
 		  title: '状态',
