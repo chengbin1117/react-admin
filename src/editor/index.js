@@ -62,7 +62,7 @@ class Editor extends Component {
 		editor.customConfig.zIndex = 10;
 		//editor.customConfig.height = 1000
 		editor.customConfig.colors = [
-			'#595959',
+			'#4d4d4d',
 			'#f00',
 			'#1c487f',
 			'#4d80bf',
