@@ -148,7 +148,7 @@ function AddAward({ dispatch, location,reward }) {
 		Examine(record){
 			dispatch(routerRedux.push('/user/user_data?userId='+record.userId))
 		},
-		changePage(page){
+		changepage(page){
 			const search = GetRequest(location.search);
 			dispatch(routerRedux.push('/finance/awardDetails?page='+ page + "&id="+search.id+"&userId=" + search.userId +
 				"&nickName=" + search.nickName + "&userMobile=" + search.userMobile + "&startTvBonus=" + search.startTvBonus +

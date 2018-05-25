@@ -1989,6 +1989,7 @@ export default {
 		*publishSave({ payload }, { call, put }) {
 			const { list, aoSave, autoSaveInterval } = payload;
 			window.clearInterval(autoSaveInterval);
+			console.log(list)
 			let params = {};
 			if (list.articleId == "") {
 				params = {
@@ -2000,7 +2001,7 @@ export default {
 					image: list.image,
 					type: list.type,
 					columnId: list.columnId,
-					secondColumn: list.columnId,
+					secondColumn: list.secondColumn,
 					displayStatus: list.displayStatus,
 					displayOrder: list.displayOrder,
 					articleSource: list.articleSource,
@@ -2029,7 +2030,7 @@ export default {
 					image: list.image,
 					type: list.type,
 					columnId: list.columnId,
-					secondColumn: list.columnId,
+					secondColumn: list.secondColumn,
 					displayStatus: list.displayStatus,
 					displayOrder: list.displayOrder,
 					articleSource: list.articleSource,

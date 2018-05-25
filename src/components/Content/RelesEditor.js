@@ -100,7 +100,7 @@ function RelesEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				console.log(data)
+				
 				if(data.time!=undefined){
 					data.time =data.time.format('YYYY-MM-DD HH:mm')
 				}
@@ -150,7 +150,7 @@ function RelesEditor({
 						image: imgUrl,
 						type: parseInt(data.type),
 						columnId: parseInt(data.column[0]),
-						secondColumn: parseInt(data.column[1]),
+						secondColumn:data.column[1]==undefined?null:parseInt(data.column[1]),
 						displayStatus: parseInt(data.radioT),
 						displayOrder: parseInt(data.sort),
 						articleSource: data.articleSource,
@@ -195,9 +195,18 @@ function RelesEditor({
 				data.time =data.time.format('YYYY-MM-DD HH:mm')
 				
 			}
-			if(data.column !=undefined){
-				if(data.column.length == 0){
-					data.column ==undefined
+			let columnId =null;
+			let secondColumn =null;
+			if(data.column ==undefined){
+				columnId =null;
+				secondColumn =null;
+			}else{
+				if(data.column[1]==undefined){
+					secondColumn==null;
+					columnId =data.column[0]
+				}else{
+					columnId =data.column[0]
+					secondColumn=data.column[1]
 				}
 			}
 			var tagsName = "";
@@ -226,8 +235,8 @@ function RelesEditor({
 					description: (data.artic == undefined || data.artic == "") ? data.text.txt.text().substring(0, 100) : data.artic,
 					image: imgUrl,
 					type: parseInt(data.type),
-					columnId: data.column != undefined ? parseInt(data.column[0]) : null,
-					secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
+					columnId: columnId,
+					secondColumn:secondColumn,
 					displayStatus: parseInt(data.radioT),
 					displayOrder: parseInt(data.sort),
 					articleSource: data.articleSource,
@@ -666,7 +675,20 @@ function RelesEditor({
 		if (data.articleTitle == "" || data.articleTitle == undefined) {
 			return
 		}
-		
+		let columnId =null;
+		let secondColumn =null;
+		if(data.column ==undefined){
+			columnId =null;
+			secondColumn =null;
+		}else{
+			if(data.column[1]==undefined){
+				secondColumn==null;
+				columnId =data.column[0]
+			}else{
+				columnId =data.column[0]
+				secondColumn=data.column[1]
+			}
+		}
 		var tagsName = "";
 		if (data.tag1 == undefined) {
 			tagsName = "";
@@ -690,8 +712,8 @@ function RelesEditor({
 			description: data.artic,
 			image: imgUrl,
 			type: parseInt(data.type),
-			columnId: data.column != undefined ? parseInt(data.column[0]) : null,
-			secondColumn: data.column != undefined ? parseInt(data.column[1]) : null,
+			columnId:columnId,
+			secondColumn: secondColumn,
 			displayStatus: parseInt(data.radioT),
 			displayOrder: parseInt(data.sort),
 			articleSource: data.articleSource,

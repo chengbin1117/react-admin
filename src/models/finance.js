@@ -79,13 +79,14 @@ export default {
 
 				if (match) {
 					const search = GetRequest(location.search);
+					//console.log(Base64.decode(search.nickName))
 					dispatch({
 						type: 'getAccount',
 						payload: {
 							currentPage: search.page,
 							flowId: search.flowId != "undefined" ? search.flowId : null,
 							businessTypeId: search.businessTypeId != "undefined" ? parseInt(search.businessTypeId) : null,
-							email: search.email != "undefined" ? search.email : null,
+							nickName: (search.nickName == 'undefined' ||search.nickName==undefined)? null : Base64.decode(search.nickName),
 							mobile: search.mobile != "undefined" ? search.mobile : null,
 							startDate: search.startDate != "undefined" ? search.startDate : null,
 							endDate: search.endDate != "undefined" ? search.endDate : null,
@@ -149,14 +150,14 @@ export default {
 
 				if (match) {
 					const search = GetRequest(location.search);
-
+					console.log(Base64.decode(search.nickName))
 					dispatch({
 						type: 'getAccountTxb',
 						payload: {
 							currentPage: search.page,
 							flowId: search.flowId != "undefined" ? search.flowId : null,
 							businessTypeId: search.businessTypeId != "undefined" ? parseInt(search.businessTypeId) : null,
-							email: search.email != "undefined" ? search.email : null,
+							nickName: (search.nickName == 'undefined' ||search.nickName==undefined)? null : Base64.decode(search.nickName),
 							mobile: search.mobile != "undefined" ? search.mobile : null,
 							startDate: search.startDate != "undefined" ? search.startDate : null,
 							endDate: search.endDate != "undefined" ? search.endDate : null,

@@ -48,7 +48,7 @@ function Record({location,dispatch,finance,router,}) {
 				    content: (<table className={stytes.table}>
 				    			{reacord.businessTypeId == 50 &&
 				    				<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>支付数额</td><td>{reacord.amount}</td></tr>
 					    			
@@ -56,7 +56,7 @@ function Record({location,dispatch,finance,router,}) {
 				    			}
 				    	        {reacord.businessTypeId == 40 &&
 				    				<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>收入数额</td><td>{reacord.amount}</td></tr>
 					    			
@@ -66,7 +66,7 @@ function Record({location,dispatch,finance,router,}) {
 				    		      reacord.businessTypeId == 1520 ||reacord.businessTypeId == 1560
 				    				)&&
 				    				<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>获取数额</td><td>{reacord.amount}</td></tr>
 					    			
@@ -74,7 +74,7 @@ function Record({location,dispatch,finance,router,}) {
 				    			}
 				    			{reacord.businessTypeId == 20 &&
 				    				<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>提币地址</td><td>{reacord.address}</td></tr>
 					    			<tr><td>实际到账数量</td><td>{reacord.accountAmount}</td><td>手续费</td><td>{reacord.poundageAmount}</td></tr>
@@ -83,7 +83,7 @@ function Record({location,dispatch,finance,router,}) {
 				    			}
 				    			{reacord.businessTypeId == 1570 &&
 									<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>收入数额</td><td>{reacord.amount}</td></tr>
 										<tr><td>奖励原因</td><td>{reacord.flowDetail}</td><td></td><td></td></tr>
@@ -91,7 +91,7 @@ function Record({location,dispatch,finance,router,}) {
 				    			}
 				    			{reacord.businessTypeId == 1660 &&
 				    				<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>消耗数额</td><td>{reacord.amount}</td></tr>
 										<tr><td>事由</td><td>{reacord.flowDetail}</td><td></td><td></td></tr>
@@ -99,7 +99,7 @@ function Record({location,dispatch,finance,router,}) {
 				    			}
 				    			{reacord.businessTypeId == 1530 &&
 				    			<tbody>
-					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>邮箱</td><td>{reacord.email==null?"——":reacord.email}</td></tr>
+					    			<tr><td>用户ID</td><td>{reacord.userId}</td><td>昵称</td><td>{reacord.userName==null?"——":reacord.userName}</td></tr>
 					    			<tr><td>手机号</td><td>{reacord.mobile}</td><td>用户角色</td><td>{reacord.userRoleDisplay}</td></tr>
 					    			<tr><td>用户级别</td><td>{reacord.levelDisplay}</td><td>进贡数额</td><td>{reacord.accountAmount}</td></tr>
 				    			</tbody>
@@ -119,7 +119,7 @@ function Record({location,dispatch,finance,router,}) {
 		},
 		changepage(page){
 			const search =GetRequest(location.search);
-			dispatch(routerRedux.push('/finance/recordTxb?page='+page+"&flowId="+search.flowId+"&email="+search.email
+			dispatch(routerRedux.push('/finance/recordTxb?page='+page+"&flowId="+search.flowId+"&nickName="+search.nickName
 				+"&mobile="+search.mobile+"&businessTypeId="+search.businessTypeId+"&minAmount="+search.minAmount+"&maxAmount="+search.maxAmount
 				+"&startDate="+search.startDate+"&endDate="+search.endDate
 				))
@@ -192,9 +192,9 @@ function Record({location,dispatch,finance,router,}) {
 		          </FormItem>
 		        </Col>
 		        <Col span={8} style = {{display:'block'}}>
-		          <FormItem {...formItemLayout} label='邮箱'>
-		            {getFieldDecorator('email')(
-		              <Input type="email" placeholder="邮箱" />
+		          <FormItem {...formItemLayout} label='昵称'>
+		            {getFieldDecorator('nickName')(
+		              <Input type="text" placeholder="请输入昵称" />
 		            )}
 		          </FormItem>
 		        </Col>
@@ -236,16 +236,20 @@ function Record({location,dispatch,finance,router,}) {
 	}
 
 	function handlsearch(values){
-			console.log(values)
+			if (values.nickName == "" || values.nickName == undefined) {
+				values.nickName = undefined;
+			} else {
+				values.nickName = Base64.encode(values.nickName)
+			}
 			if(values.time ==undefined||values.time.length ==0){
 				dispatch(routerRedux.push(
-					'/finance/recordTxb?page=1'+"&flowId="+values.flowId+"&email="+values.email+
+					'/finance/recordTxb?page=1'+"&flowId="+values.flowId+"&nickName="+values.nickName+
 					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
 					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
 					))
 			}else{
 				dispatch(routerRedux.push(
-					'/finance/recordTxb?page=1'+"&flowId="+values.flowId+"&email="+values.email+
+					'/finance/recordTxb?page=1'+"&flowId="+values.flowId+"&nickName="+values.nickName+
 					"&mobile="+values.mobile+"&businessTypeId="+values.businessTypeId+
 					"&minAmount="+values.minAmount+"&maxAmount="+values.maxAmount
 					+"&startDate="+timeFormat(new Date(values.time[0]))+"&endDate="+timeFormat(new Date(values.time[1]))
