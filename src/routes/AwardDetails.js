@@ -57,7 +57,7 @@ function AddAward({ dispatch, location,reward }) {
 					<Col span={10} style={{ paddingLeft: 0 + "px" }}>
 						<FormItem {...formLayout} label='奖励数量（TV）'>
 							{getFieldDecorator('startTvBonus')(
-								<Input style={{ textAlign: 'center' }} placeholder="最小值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" min={0}/>
 
 							)}
 						</FormItem>
@@ -68,7 +68,7 @@ function AddAward({ dispatch, location,reward }) {
 					<Col span={10}>
 						<FormItem {...formLayout}>
 							{getFieldDecorator('endTvBonus')(
-								<Input style={{ textAlign: 'center' }} placeholder="最大值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" min={0}/>
 							)}
 						</FormItem>
 					</Col>
@@ -77,7 +77,7 @@ function AddAward({ dispatch, location,reward }) {
 					<Col span={10} style={{ paddingLeft: 0 + "px" }}>
 						<FormItem {...formLayout} label='奖励数量（KG）'>
 							{getFieldDecorator('startKgBonus')(
-								<Input style={{ textAlign: 'center' }} placeholder="最小值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" min={0}/>
 
 							)}
 						</FormItem>
@@ -88,7 +88,7 @@ function AddAward({ dispatch, location,reward }) {
 					<Col span={10}>
 						<FormItem {...formLayout}>
 							{getFieldDecorator('endKgBonus')(
-								<Input style={{ textAlign: 'center' }} placeholder="最大值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" min={0}/>
 							)}
 						</FormItem>
 					</Col>

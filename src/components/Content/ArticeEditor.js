@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-05-24 16:43:43
+ * @Last Modified time: 2018-05-25 14:36:24
  */
 
 
@@ -100,7 +100,7 @@ function ArticleEditor({
 	let articleList = JSON.parse(localStorage.getItem("articleList"));
 	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
 	const options = ColumnList;
-	console.log(ArticleList)
+	
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
 
@@ -110,11 +110,11 @@ function ArticleEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				//console.log(data.text);
+			
 				if(data.time!=undefined){
 					data.time =data.time.format('YYYY-MM-DD HH:mm')
 				}
-				//console.log(data);
+				
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
 				let CX = dds.split('&nbsp;');
@@ -126,7 +126,7 @@ function ArticleEditor({
 				lg = lg.replace(/\s+/g, "")
 				lg = lg.replace(/<\/?.+?>/g, "");
 				lg = lg.replace(/[\r\n]/g, "");
-				//console.log(lg)
+				
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
 					return true
@@ -422,7 +422,7 @@ function ArticleEditor({
 		})
 	}
 	if (imgUrl != "") {
-		articleList.articleImage = imgUrl
+		ArticleList.articleImage = imgUrl
 	}
 
 
@@ -436,10 +436,10 @@ function ArticleEditor({
 				if(data.time!=undefined){
 					data.time =data.time.format('YYYY-MM-DD HH:mm')
 				}
-				//console.log(data.text);
+				
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
-				//console.log(dds.lengthgvfdg)
+			
 				let CX = dds.split('&nbsp;')
 
 				var lg = CX.join('');
@@ -503,7 +503,7 @@ function ArticleEditor({
 		})
 	}
 	function typeChange(e) {
-		//console.log(e.target.value)
+		
 		ArticleList.articleType = parseInt(e.target.value)
 	}
 	
@@ -525,7 +525,7 @@ function ArticleEditor({
 					okText: '是',
 					cancelText:'否',
 					onOk() {
-						//console.log(values,record)
+					
 						dispatch({
 							type:'content/ifPushValue',
 							payload:{
@@ -534,7 +534,7 @@ function ArticleEditor({
 						})
 					},
 					onCancel() {
-						// ifPushValue = "0"
+						
 						dispatch({
 							type:'content/ifPushValue',
 							payload:{
@@ -1014,7 +1014,7 @@ function ArticleEditor({
 
 				})(
 					<div>
-						{articleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
+						{ArticleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
 							<img onClick={showModal} src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
 						}
 					</div>

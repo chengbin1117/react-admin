@@ -77,7 +77,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10} style={{ paddingLeft: 0 + "px" }}>
 						<FormItem {...formLayout} label='奖励数量（TV）'>
 							{getFieldDecorator('startTvBonus')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" min={0}/>
 
 							)}
 						</FormItem>
@@ -88,7 +88,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10}>
 						<FormItem {...formLayout}>
 							{getFieldDecorator('endTvBonus')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" min={0}/>
 							)}
 						</FormItem>
 					</Col>
@@ -97,7 +97,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10} style={{ paddingLeft: 0 + "px" }}>
 						<FormItem {...formLayout} label='奖励数量（KG）'>
 							{getFieldDecorator('startKgBonus')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" min={0}/>
 
 							)}
 						</FormItem>
@@ -108,7 +108,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10}>
 						<FormItem {...formLayout}>
 							{getFieldDecorator('endKgBonus')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" min={0}/>
 							)}
 						</FormItem>
 					</Col>
@@ -124,7 +124,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10} style={{ paddingLeft: 0 + "px" }}>
 						<FormItem {...formLayout} label='奖励人数'>
 							{getFieldDecorator('numStart')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" min={0}/>
 
 							)}
 						</FormItem>
@@ -135,7 +135,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10}>
 						<FormItem {...formLayout}>
 							{getFieldDecorator('numEnd')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" min={0}/>
 							)}
 						</FormItem>
 					</Col>
@@ -170,7 +170,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10} style={{ paddingLeft: 10 + "px" }}>
 						<FormItem {...formLayout} label='奖励数量（TV）'>
 							{getFieldDecorator('startTvBonus')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" min={0} />
 
 							)}
 						</FormItem>
@@ -181,7 +181,7 @@ function ContentArticle({ location, dispatch, router, reward }) {
 					<Col span={10}>
 						<FormItem {...formLayout}>
 							{getFieldDecorator('endTvBonus')(
-								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值" />
+								<InputNumber style={{ textAlign: 'center' }} placeholder="最大值"  min={0}/>
 							)}
 						</FormItem>
 					</Col>

@@ -16,7 +16,7 @@ import Transaction from '../components/Finance/Transaction';
 import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import {timeFormat,GetRequest} from '../services/common';
 import styles from './Record.css'
-import { Form, Row, Col, Input,Tabs, Button, Icon,Table,Pagination,DatePicker,Modal,Radio,Select,message} from 'antd';
+import { Form, Row, Col, Input,InputNumber,Tabs, Button, Icon,Table,Pagination,DatePicker,Modal,Radio,Select,message} from 'antd';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -216,7 +216,7 @@ function Record({location,dispatch,finance,router,}) {
 		          <Col span={12} style={{paddingLeft:68+"px"}}>
 		          	<FormItem {...formItemLayout} label='钛值'>
 		            {getFieldDecorator('minAmount')(
-		              		<Input style={{ textAlign: 'center' }} placeholder="最小值" />
+		              		<InputNumber style={{ textAlign: 'center' }} placeholder="最小值" />
 		              	
 		            )}
 		          </FormItem>
@@ -227,7 +227,7 @@ function Record({location,dispatch,finance,router,}) {
 		          <Col span={10}>
 		          		<FormItem {...formItemLayout}>
 				            {getFieldDecorator('maxAmount')(
-				              	<Input style={{ textAlign: 'center'}} placeholder="最大值" />
+				              	<InputNumber style={{ textAlign: 'center'}} placeholder="最大值" />
 				            )}
 				          </FormItem>
 		         </Col>
