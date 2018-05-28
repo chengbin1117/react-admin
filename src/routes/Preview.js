@@ -90,6 +90,7 @@ function ArticlePreview({location,dispatch,content,router,}) {
 					<div className={styles.abstract}>
 	              	    {preList&&preList.articleDescription}
 	              	</div>
+					<div className={styles.parLine}></div>
 					{(preList&&preList.publishKind == 2)&&<div>
 						<div className={styles.videoMain}>
 	                	{(preList.videoFilename!='null'&&preList.videoFilename != '')?

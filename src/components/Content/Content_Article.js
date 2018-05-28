@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button, Table, Tabs, Pagination, Popconfirm, Select, Cascader, Divider } from 'antd';
+import { Form, Row, Col, Input, Button, Table, Tabs, Pagination, Popconfirm, Select, Cascader, Divider,InputNumber} from 'antd';
 
 import style_pagination from '../pagination.css';
 import { routerRedux, Link } from 'dva/router';
@@ -11,7 +11,15 @@ const Content_Article = ({ dispatch, currentPage, PushAticleInfo, fixSort, delAr
 	const options = ColumnList;
 	let userId = localStorage.getItem("userId");
 	//console.log("loading",ArticleList)
-
+	const displayOrderChange = (e) => {
+		
+		var reg = /^[0-9]\d*$/; //匹配0以上的正则表达式
+		var val = e.target.value;
+		if(!reg.test(val)){
+			message.error('请输入0以上的正整数')
+			return 
+		}
+	}
 	const columns = [{
 		title: 'ID',
 		dataIndex: 'articleId',
@@ -162,7 +170,7 @@ const Content_Article = ({ dispatch, currentPage, PushAticleInfo, fixSort, delAr
 		key: 'displayOrder',
 		render(text, record) {
 			return (
-				<Input defaultValue={text} onPressEnter={(text) => fixSort(record, text)} style={{ width: 50 }} onBlur={(text) => fixSort(record, text)} />
+				<InputNumber min={0} defaultValue={text} onPressEnter={(text) => fixSort(record, text)} style={{ width: 50 }} onBlur={(text) => fixSort(record, text)} />
 			)
 		}
 	}, {

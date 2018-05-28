@@ -872,7 +872,7 @@ function ArticleEditor({
 				{getFieldDecorator('sort', {
 					initialValue: ArticleList.displayOrder,
 					rules: [
-						{ required: false, },
+						{ required: false, message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
 					],
 				})(
 					<Input style={{ width: '10%' }} />

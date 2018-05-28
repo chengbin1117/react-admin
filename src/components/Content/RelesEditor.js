@@ -719,7 +719,7 @@ function RelesEditor({
 			articleSource: data.articleSource,
 			articleLink: data.articleLink,
 			commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-			publishSet:'2',
+			publishSet:'0',
 			sysUser: merId,
 			bonusStatus: parseInt(data.bonusStatus),
 			publishStatus: 0,
@@ -825,6 +825,7 @@ function RelesEditor({
 			}
 			<FormItem 
 			{...formItemLayout} label="正文"
+			className={styles.editorText}
 			>
 				{getFieldDecorator('text', {
 					rules: [

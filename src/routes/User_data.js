@@ -259,7 +259,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 							<td>锁定状态</td><td>{userInfo.lockStatusDisplay != null ? userInfo.lockStatusDisplay : "——"}</td>
 						</tr>
 						<tr>
-							<td>注册来源</td><td>{userInfo && userInfo.registerOrigin == 1 && 'Ios'}{userInfo && userInfo.registerOrigin == 2 && 'Android'}{userInfo && userInfo.registerOrigin == 3 && '千氪财经'}{userInfo && userInfo.registerOrigin == 32 && 'BTC123'}{userInfo && userInfo.registerOrigin == 33 && '钛值APP'}</td>
+							<td>注册来源</td><td>{userInfo && userInfo.registerOrigin == 1 && 'iOS'}{userInfo && userInfo.registerOrigin == 2 && 'Android'}{userInfo && userInfo.registerOrigin == 3 && '千氪财经'}{userInfo && userInfo.registerOrigin == 32 && 'BTC123'}{userInfo && userInfo.registerOrigin == 33 && '钛值APP'}</td>
 							<td>专栏认证</td><td>{userInfo && (userInfo.columnAuthed == 1 ? '已认证' : "未认证")}</td>
 						</tr>
 					</tbody>
@@ -290,7 +290,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<p className={stytes.dataBox}><span className={stytes.span1}>专栏介绍</span>
 						<span className={stytes.span2}>{(userInfo.profile && userInfo.profile.columnIntro != null) ? userInfo.profile.columnIntro : "——"}</span>
 					</p>
-					<p className={stytes.dataBox}><span className={stytes.span1}>所在地区</span><span className={stytes.span2}>{(userInfo.profile && userInfo.profile.columnProvince) != null ? userInfo.profile.columnProvince + userInfo.profile.columnCounty : "——"}</span></p>
+					<p className={stytes.dataBox}><span className={stytes.span1}>所在地区</span><span className={stytes.span2}>{(userInfo.profile && userInfo.profile.columnProvince) != null ? userInfo.profile.columnProvince + userInfo.profile.columnCity + userInfo.profile.columnCounty : "——"}</span></p>
 					{(userInfo.userRole == 1 && userInfo.applyRole == 1) && null}
 					{(userInfo.userRole == 2 || userInfo.applyRole == 2) && <div>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员真实姓名</span><span className={stytes.span2}>{(userInfo.profile && userInfo.profile.realName != null && userInfo.profile.realName != "") ? userInfo.profile.realName : "——"}</span></p>

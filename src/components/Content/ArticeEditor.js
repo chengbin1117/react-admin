@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-05-25 14:36:24
+ * @Last Modified time: 2018-05-28 17:10:03
  */
 
 
@@ -103,7 +103,7 @@ function ArticleEditor({
 	
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
-
+	
 	function handleSubmit() {
 		validateFields((errors, fieldsValue) => {
 			if (errors) {
@@ -1129,7 +1129,7 @@ function ArticleEditor({
 				{getFieldDecorator('sort', {
 					initialValue: ArticleList.displayOrder,
 					rules: [
-						{ required: false, },
+						{ required: false, message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
 					],
 				})(
 					<Input style={{ width: '10%' }} />
@@ -1187,7 +1187,7 @@ function ArticleEditor({
 				label="评论设置"
 			>
 				{getFieldDecorator('commentSet', {
-					initialValue: ArticleList.commentSet == true ? "true" : 'false',
+					initialValue: ArticleList&&(ArticleList.commentSet == true ? "true" : 'false'),
 				})(
 					<RadioGroup >
 						<Radio value="true">开启评论</Radio>
@@ -1200,7 +1200,7 @@ function ArticleEditor({
 				label="定时发布"
 			>
 				{getFieldDecorator('radioG', {
-					initialValue: ArticleList.publishSet + '',
+					initialValue:'0',
 					rules: [{ required: true, }],
 				})(
 					<RadioGroup onChange={handleTime} disabled={(ArticleList.publishStatus != undefined && ArticleList.publishStatus == 0) ? false : true}>

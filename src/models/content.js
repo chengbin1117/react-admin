@@ -1984,7 +1984,7 @@ export default {
 		*publishSave({ payload }, { call, put }) {
 			const { list, aoSave, autoSaveInterval } = payload;
 			window.clearInterval(autoSaveInterval);
-			console.log(list)
+			
 			let params = {};
 			if (list.articleId == "") {
 				params = {

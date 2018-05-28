@@ -498,12 +498,9 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<FormItem {...formItemLayout} label='来源'>
 						{getFieldDecorator('platform')(
 							<Select placeholder="请选择" allowClear={true}>
-								<Option value="1">IOS</Option>
+								<Option value="1">iOS</Option>
 								<Option value="2">Android</Option>
 								<Option value="3">WEB</Option>
-								<Option value="4">H5</Option>
-								<Option value="32">BTC123</Option>
-								<Option value="33">钛值APP</Option>
 							</Select>
 						)}
 					</FormItem>

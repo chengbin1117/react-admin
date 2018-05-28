@@ -82,7 +82,7 @@ const UserAdmin = ({
 		dataIndex: 'registerOrigin',
 		key: 'registerOrigin',
 		width: 100,
-		render: val => <span>{val==1&&"IOS"}{val==2&&"Android"}{val==3&&"千氪财经(WEB)"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
+		render: val => <span>{val==1&&"iOS"}{val==2&&"Android"}{val==3&&"千氪财经(WEB)"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
 	},{
 		title: "师傅",
 		dataIndex: 'parentUser',

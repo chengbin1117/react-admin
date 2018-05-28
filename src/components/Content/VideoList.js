@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Tabs,Pagination,Popconfirm,Select,Cascader,Divider } from 'antd';
+import { Form, Row, Col, Input, Button,Table,Tabs,Pagination,Popconfirm,Select,Cascader,Divider,InputNumber } from 'antd';
 
 import style_pagination from '../pagination.css';
 import { routerRedux,Link} from 'dva/router';
@@ -160,7 +160,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,PushAticleInfo,delArticle
 	  key: 'displayOrder',
 	  render(text,record){
 		  	return(
-		  		<Input defaultValue={text} onPressEnter={(text)=>fixSort(record,text)}style={{width:50}} onBlur={(text)=>fixSort(record,text)}/>
+		  		<InputNumber min={0} defaultValue={text} onPressEnter={(text)=>fixSort(record,text)}style={{width:50}} onBlur={(text)=>fixSort(record,text)}/>
 		  		)
 		  }
 	},{

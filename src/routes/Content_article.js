@@ -140,14 +140,24 @@ function ContentArticle({ location, dispatch, router, content }) {
 		},
 		fixSort(data, e) {
 			//console.log(location);
-			dispatch({
-				type: "content/setDisplayOrder",
-				payload: {
-					articleId: data.articleId,
-					displayOrder: parseInt(e.target.value),
-					search: location.search
-				}
-			})
+			var reg = /^[0-9]\d*$/; //匹配0以上的正则表达式
+			var val = e.target.value;
+		
+			if(val==""){
+
+			}else if(!reg.test(val)){
+			
+			}else{
+				dispatch({
+					type: "content/setDisplayOrder",
+					payload: {
+						articleId: data.articleId,
+						displayOrder: parseInt(e.target.value),
+						search: location.search
+					}
+				})
+			}
+			
 		},
 		sorterUserList(sorter){
 		
