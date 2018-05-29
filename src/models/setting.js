@@ -56,7 +56,7 @@ export default {
 						payload: {
 							currentPage: search.page,
 							pageSize: 25,
-							username: search.username != "undefined" ? search.username : null,
+							username: (search.username == 'undefined' ||search.username==undefined)? null : Base64.decode(search.username),
 							mobile: search.mobile != "undefined" ? search.mobile : null,
 							postId: search.postId != "undefined" ? search.postId : null,
 						}
@@ -196,7 +196,7 @@ export default {
 					payload: {
 						currentPage: search.page,
 						pageSize: 25,
-						username: search.username != "undefined" ? search.username : null,
+						username: (search.username == 'undefined' ||search.username==undefined)? null : Base64.decode(search.username),
 						mobile: search.mobile != "undefined" ? search.mobile : null,
 						postId: search.postId != "undefined" ? search.postId : null,
 					}
@@ -362,7 +362,7 @@ export default {
 					payload: {
 						currentPage: search.page,
 						pageSize: 25,
-						username: search.username != "undefined" ? search.username : null,
+						username: (search.username == 'undefined' ||search.username==undefined)? null : Base64.decode(search.username),
 						mobile: search.mobile != "undefined" ? search.mobile : null,
 						postId: search.postId != "undefined" ? search.postId : null,
 					}
@@ -421,7 +421,7 @@ export default {
 					payload: {
 						currentPage: search.page,
 						pageSize: 25,
-						username: search.username != "undefined" ? search.username : null,
+						username: (search.username == 'undefined' ||search.username==undefined)? null : Base64.decode(search.username),
 						mobile: search.mobile != "undefined" ? search.mobile : null,
 						postId: search.postId != "undefined" ? search.postId : null,
 					}
@@ -608,7 +608,7 @@ export default {
 					payload: {
 						currentPage: search.page,
 						pageSize: 25,
-						username: search.username != "undefined" ? search.username : null,
+						username: (search.username == 'undefined' ||search.username==undefined)? null : Base64.decode(search.username),
 						mobile: search.mobile != "undefined" ? search.mobile : null,
 						postId: search.postId != "undefined" ? search.postId : null,
 					}

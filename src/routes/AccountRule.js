@@ -63,15 +63,11 @@ function AccountRule({location,dispatch,setting,router,}) {
 
 	//搜索
 	function handlsearch(values) {
-			
-			/*dispatch({
-				type:'setting/getSysUserList',
-				payload:{
-					username:values.username,
-					mobile:values.mobile,
-					postId:parseInt(values.postId)
-				}
-			})*/
+		if (values.username == "" || values.username == undefined) {
+			values.username = undefined;
+		} else {
+			values.username = Base64.encode(values.username)
+		}
 			dispatch(routerRedux.push('/setting/account?page=1'+"&username="+values.username+"&mobile="+values.mobile+"&postId="+values.postId))
 	}
 	function getFields(getFieldDecorator,formItemLayout){
