@@ -317,7 +317,6 @@ export default {
 			}
 		},
 		*addSysUser({ payload }, { call, put }) {
-
 			//打开loading
 			yield put({
 				type: 'showConfirmLoading'
@@ -330,7 +329,7 @@ export default {
 					mobile:payload.mobile,
 					realname:payload.realname,
 					password:payload.password,
-					postId:parseInt.postId,
+					postId:payload.postId,
 				}
 			}else{
 				params ={
@@ -338,7 +337,7 @@ export default {
 					mobile:payload.mobile,
 					realname:payload.realname,
 					password:payload.password,
-					postId:parseInt.postId,
+					postId:payload.postId,
 				}
 			}
 			
