@@ -34,8 +34,6 @@ class Editor extends Component {
 		editor.customConfig.pasteTextHandle = function (content) {
 			// content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
 			var dd = content.replace(/<\/?span[^>]*>/ig,"");//清除span
-           
-			
 			return dd
 		}
 		editor.customConfig.uploadImgHooks = {
