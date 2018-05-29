@@ -243,7 +243,6 @@ function RelesEditor({
 					articleLink: data.articleLink,
 					commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
 					publishSet: parseInt(data.radioG),
-					createUser: data.createUser,
 					publishTime: data.time != undefined ? data.time: null,
 					sysUser: merId,
 					bonusStatus: parseInt(data.bonusStatus),

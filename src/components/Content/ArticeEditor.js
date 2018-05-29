@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-05-28 17:10:03
+ * @Last Modified time: 2018-05-29 17:34:34
  */
 
 
@@ -1200,7 +1200,7 @@ function ArticleEditor({
 				label="定时发布"
 			>
 				{getFieldDecorator('radioG', {
-					initialValue:'0',
+					initialValue:ArticleList.publishSet+'',
 					rules: [{ required: true, }],
 				})(
 					<RadioGroup onChange={handleTime} disabled={(ArticleList.publishStatus != undefined && ArticleList.publishStatus == 0) ? false : true}>
