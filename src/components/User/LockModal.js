@@ -114,8 +114,8 @@ const LockModal = ({
 			          
 			          onChange={this.handleCurrencyChange}
 			        >
-			          <Option value="1">小时</Option>
-			          <Option value="2">天</Option>
+			          <Option value="5">小时</Option>
+			          <Option value="4">天</Option>
 			          
 			        </Select>
 				); 
@@ -126,7 +126,7 @@ const LockModal = ({
 		          size={size}
 		          value={state.number}
 		          onChange={this.handleNumberChange}
-							style={{ width: '80%'}}
+						
 							addonAfter={selectAfter}
 		        />
 		        
@@ -140,7 +140,7 @@ const LockModal = ({
 			    e.preventDefault();
 			    this.props.form.validateFields((err, values) => {
 			      if (!err) {
-			        console.log('Received values of form: ', values);
+			        //console.log('Received values of form: ', values);
 			        handleOk(values,selectList)
 			      }
 			    });
@@ -162,9 +162,9 @@ const LockModal = ({
 			            rules: [{ validator: this.checkPrice }],
 			          })(<PriceInput />)}
 			        </FormItem>
-			        <FormItem style={{marginLeft:0+'px'}} >
-			          <Button type="primary" htmlType="submit" style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}}>确定</Button>
-			          <Button onClick={onCancel}  style={{marginLeft:10}} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}>取消</Button>
+							<FormItem style={{marginLeft:0+'px',textAlign:"right"}} >
+			          <Button onClick={onCancel}  style={{marginLeft:10}} style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:30}}>取消</Button>
+								<Button type="primary" htmlType="submit" style={{paddingLeft:20+"px",paddingRight:20+"px",marginLeft:10}}>确定</Button>
 			        </FormItem>
 			      </Form>
 			    );
@@ -174,7 +174,7 @@ const LockModal = ({
       const WrappedDemo = Form.create()(Demo);
 	return (
 			
-		<Modal {...modalOpts} width='300px'>
+		<Modal {...modalOpts} width='400px'>
 		<WrappedDemo />
 				
 		</Modal>

@@ -15,9 +15,11 @@ import { Stat } from 'g2';
 import Layout from '../components/Layout';
 import { Table, Pagination, Card } from 'antd';
 import ArticleList from '../components/Log/Article';
+import VideoTable from '../components/Index/VideoTable';
 import AuditingModal from '../components/Log/AuditingModal';
 import ExamineModal from '../components/User/ExamineModal';
 import styles from './IndexPage.css';
+import { timeFormat, GetRequest } from '../services/common';
 import style_pagination from '../components/pagination.css';
 function IndexPage({ location, dispatch, user, router, content }) {
 	const { AuditVisible, userlist, ExmianVisible, selectList, loading, totalNumber } = user;
@@ -192,17 +194,39 @@ function IndexPage({ location, dispatch, user, router, content }) {
 		total: content.ArticleListNumber,
 		onEditItem: function (record) {
 			dispatch({
-				type:"content/getById",
+				type:"content/getIndexById",
 				payload:{
 					articleId:record.articleId,
 				}
 			})
+			//dispatch(routerRedux.push('/index/editor?articleId='+record.articleId))
 			// dispatch({
 			// 	type: 'content/showModal',
 			// 	payload: {
 			// 		selectList: record
 			// 	}
 			// });
+		},
+		onPreview(record) {
+			console.log(record)
+			window.open('/#/articlePreview?articleId=' + record.articleId)
+			//dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
+		}
+	}
+
+	//待审核的视频
+	const VideoTableProps = {
+		data: content.VideoList,
+		loading: content.loading,
+		total: content.VideoListNumber,
+		onEditItem: function (record) {
+			const search = GetRequest(location.search);
+			dispatch(routerRedux.push('/content/EditorVideo?articleId=' + record.articleId + '&page=' + search.page +
+				"&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+				"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + "&pageSize=25" + '&orderByClause=' + search.orderByClause
+				+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
+			))
+		
 		},
 		onPreview(record) {
 			console.log(record)
@@ -226,7 +250,16 @@ function IndexPage({ location, dispatch, user, router, content }) {
 
 				<ExamineModal {...ExamineModalProps} />
 			</Card>
-			<Card title="待审核的专栏文章"
+			<Card title="待审核视频"
+				hoverable={true}
+				extra={<Link to={{
+					pathname: "/content/videoList",
+					query: { page: 1 }
+				}} className={styles.allUser}>查看全部视频</Link>} style={{ marginTop: "100px" }}>
+				<VideoTable {...VideoTableProps} />
+				<AuditingModal {...AuditingModalProps} />
+			</Card>
+			<Card title="待审核文章"
 				hoverable={true}
 				extra={<Link to={{
 					pathname: "/content/content_article",
@@ -235,6 +268,7 @@ function IndexPage({ location, dispatch, user, router, content }) {
 				<ArticleList {...ArticleListProps} />
 				<AuditingModal {...AuditingModalProps} />
 			</Card>
+		
 		</div>
 
 	);

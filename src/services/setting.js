@@ -53,7 +53,7 @@ export async function getSysUserList(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
    
-	let url = '/admin/sysuser/getSysUserList?data='+data+"&sign="+sign;
+	let url = '/admin/sysuser/getSysUserList?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"

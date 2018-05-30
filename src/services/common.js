@@ -21,12 +21,12 @@ function p(s) {
 
 export  function formatDate(now)   {
       var   now= new Date(now)
-      var   year=now.getFullYear(); 
-      var   month=now.getMonth()+1;     
-      var   date=now.getDate();     
-      var   hour=now.getHours();     
-      var   minute=now.getMinutes();     
-      var   second=now.getSeconds();     
+      var   year=now.getFullYear();
+      var   month=now.getMonth()+1;
+      var   date=now.getDate();
+      var   hour=now.getHours();
+      var   minute=now.getMinutes();
+      var   second=now.getSeconds();
       return   year+"-"+p(month)+"-"+p(date)+"   "+p(hour)+":"+p(minute)+":"+p(second);
 }
 
@@ -37,10 +37,10 @@ export function timeFormat(date) {
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
     year = d.getFullYear();
- 
+
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
- 
+
   return [year, month, day].join('-');
 }
 
@@ -51,7 +51,7 @@ export function tokenLogOut(data,dispatch) {
          message.error(data.message,5);
          dispatch(routerRedux.push("/#/user/user_admin"))
         //history.go('/#/')
-        
+
 
     }else{
       message.error(data.message);
@@ -59,17 +59,17 @@ export function tokenLogOut(data,dispatch) {
 
 }
 
-export function GetRequest(url) {   
-   // /var url = location.search; //获取url中"?"符后的字串   
-   var theRequest = new Object();   
-   if (url.indexOf("?") != -1) {   
-      var str = url.substr(1);   
-      var strs = str.split("&");   
-      for(var i = 0; i < strs.length; i ++) {   
-         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
-      }   
-   }   
-   return theRequest; 
+export function GetRequest(url) {
+   // /var url = location.search; //获取url中"?"符后的字串
+   var theRequest = new Object();
+   if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      var strs = str.split("&");
+      for(var i = 0; i < strs.length; i ++) {
+         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+      }
+   }
+   return theRequest;
 
 }
 
@@ -198,7 +198,7 @@ export function  getBase64(img){
           var canvas = document.createElement("canvas");
           canvas.width = width ? width : img.width;
           canvas.height = height ? height : img.height;
- 
+
           var ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           var dataURL = canvas.toDataURL();
@@ -225,7 +225,7 @@ let previewUrl = "https://kg.com/detail/list.html"; //测试
 
 //let ImgUrl = "http://kg.btc123.com/kgapi/image/upload"; //开发
 let ImgUrl = "https://www.kg.com/image/upload"; //生产&&测试
-
+//
 //下载图片
   // let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
 //let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试

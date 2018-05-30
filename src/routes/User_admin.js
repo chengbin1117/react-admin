@@ -190,7 +190,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			dispatch(routerRedux.push('/user/user_admin?page=' + page +
 				"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 				"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
-				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd
+				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&platfrom='+search.platfrom
 			))
 
 		},
@@ -235,6 +235,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 						"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
 						"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&orderByClause='+orderByClause
+						+'&platform='+search.platform
 			))	
 			
 
@@ -326,7 +327,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			if (valus.tmie.currency == "小时") {
 				Modal.confirm({
 					title: '是否锁定这些用户?',
-					content: "确定对这些用户锁定" + valus.tmie.number + "小时吗？",
+					content:(<div>确定对这些用户锁定<span style={{color:'#F00'}}>{valus.tmie.number}小时</span>吗？</div>),
 					okText: '确定',
 					onOk() {
 						dispatch({
@@ -358,7 +359,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 
 				Modal.confirm({
 					title: '是否锁定这些用户?',
-					content: "确定对这些用户锁定" + valus.tmie.number + time + "吗？",
+					content: (<div>确定对这些用户锁定<span style={{color:'#F00'}}>{valus.tmie.number + time}</span>吗？</div>),
 					okText: '确定',
 					onOk() {
 						dispatch({
@@ -493,6 +494,17 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						)}
 					</FormItem>
 				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='来源'>
+						{getFieldDecorator('platform')(
+							<Select placeholder="请选择" allowClear={true}>
+								<Option value="1">iOS</Option>
+								<Option value="2">Android</Option>
+								<Option value="3">WEB</Option>
+							</Select>
+						)}
+					</FormItem>
+				</Col>
 			</div>
 		);
 		return children;
@@ -542,12 +554,12 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
 				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
 				"&createDateStart=" + timeFormat(new Date(values.time[0])) +
-				"&createDateEnd=" + timeFormat(new Date(values.time[1]))
+				"&createDateEnd=" + timeFormat(new Date(values.time[1]))+'&platform='+values.platform
 			))
 		} else {
 			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
 				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus
+				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus+'&platform='+values.platform
 			))
 		}
 	}

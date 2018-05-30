@@ -47,10 +47,10 @@ export async function auditAccountWithdraw(params) {
 }
 //获得交易记录列表接口
 export async function getAccount(params) {
-
+	
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/account/getAccount?data='+data+"&sign="+sign;
+	let url = '/admin/account/getAccount?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -62,7 +62,7 @@ export async function getAccountTxb(params) {
 
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/account/getTxbAccount?data='+data+"&sign="+sign;
+	let url = '/admin/account/getTxbAccount?data='+encodeURIComponent(data)+"&sign="+sign;
 
 	return request(url,{
 		method:"post"
@@ -70,6 +70,17 @@ export async function getAccountTxb(params) {
 		);
 }
 
+
+//统计钛值奖励，钛小白奖励
+export async function getSumBonus(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/account/getSumBonus?data='+data+"&sign="+sign;
+	return request(url,{
+		method:"POST"
+	    }
+    );
+}
 //保证金记录表
 
 export async function getAccountDiposit(params) {

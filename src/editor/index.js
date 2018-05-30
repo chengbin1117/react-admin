@@ -33,8 +33,8 @@ class Editor extends Component {
 		}
 		editor.customConfig.pasteTextHandle = function (content) {
 			// content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
-	
-			return content
+			var dd = content.replace(/<\/?span[^>]*>/ig,"");//清除span
+			return dd
 		}
 		editor.customConfig.uploadImgHooks = {
 			before: function (xhr, editor, files) {
@@ -62,9 +62,13 @@ class Editor extends Component {
 		editor.customConfig.zIndex = 10;
 		//editor.customConfig.height = 1000
 		editor.customConfig.colors = [
-			'#000000',
+			'#4d4d4d',
 			'#f00',
-			
+			'#1c487f',
+			'#4d80bf',
+			'#46acc8',
+			'#f9963b',
+			'#000000',
 		]
 		editor.customConfig.fontsizes ={
 			1:'12px',
@@ -87,6 +91,7 @@ class Editor extends Component {
 			'foreColor',
 			'link',  // 插入链接
 			'image',
+			'video'
 		];
 
 		// 使用 onchange 函数监听内容的变化，并实时更新到 state 中
@@ -96,22 +101,24 @@ class Editor extends Component {
 		 }*/
 		editor.customConfig.onchange = html => {
 			html = html.replace(/<style(([\s\S])*?)<\/style>/g, '')
-			localStorage.setItem("articleText", html);
+			localStorage.setItem("articleTextPreview", html);
 			this.setState({
 				editorContent: html
 			})
 			//console.log("编辑器内容",html)
 			//console.log("编辑器文本",text)
 			this.props.edtiorContent(editor)
-			this.props.checkout(editor)
 			this.props.edtiorContentText(html)
 		}
-		let articleText = localStorage.getItem("articleText");
+		
 		editor.create();
+		let articleText = localStorage.getItem("articleText");
+	
 		editor.txt.html(articleText);
 	}
 
 	render() {
+	
 		return (
 
 			<div ref="editorElem" style={{ display: "block", width: "100%", }} className={styles.editorBox}>

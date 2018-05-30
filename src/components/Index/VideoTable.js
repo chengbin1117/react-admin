@@ -34,24 +34,30 @@ function ArticleList({
     title: '文章ID',
     dataIndex: 'articleId',
     key: 'articleId',
+  
   }, {
     title: '标题',
     dataIndex: 'articleTitle',
     key: 'articleTitle',
+  
   }, {
     title: '发布人',
     dataIndex: 'createUser',
     key: 'createUser',
+   
   }, {title: '发布时间',
     dataIndex: 'createDate',
     key: 'createDate',
+ 
   }, {title: '审核状态',
     dataIndex: 'publishStatusDisplay',
+    key: 'publishStatusDisplay',
     render:(text,record)=>{
       return(
         <span> <Badge status="processing" text="审核中" /></span>
       )
     },
+ 
   }, {title: '操作',
     dataIndex: 'action',
     key: 'action',

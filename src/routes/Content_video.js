@@ -28,7 +28,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { ArticleStat,dis,artice,confirmLoading,currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
+	const { ArticleStat,dis,artice,PushAticleInfo,confirmLoading,currentArtice, BonsVisible, ArticleList, getBonusList, setshow, articeVisible, selectList, ArticleListNumber, currentPage, ColumnList, loading } = content;
 	const options = ColumnList;
 	const Content_ArticleProps = {
 		dispatch,
@@ -36,6 +36,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 		ArticleList,
 		ColumnList,
 		getBonusList,
+		PushAticleInfo:PushAticleInfo,
 		total: ArticleListNumber,
 		currentPage: currentPage,
 		confirm(record) {
@@ -87,8 +88,9 @@ function ContentArticle({ location, dispatch, router, content }) {
 		editorItem(record) {
 			const search = GetRequest(location.search);
 			dispatch(routerRedux.push('/content/EditorVideo?articleId=' + record.articleId + '&page=' + search.page +
-				"&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+				"&articleTitle=" + search.articleTitle + "&publishStatus=" + search.publishStatus +
 				"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + "&pageSize=25" + '&orderByClause=' + search.orderByClause
+				+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 			))
 		},
 		changepage(page) {
@@ -96,15 +98,16 @@ function ContentArticle({ location, dispatch, router, content }) {
 			console.log(search)
 			if (search.articleTitle == "undefined" || search.articleTitle == undefined) {
 				dispatch(routerRedux.push('/content/videoList?page=' + page +
-					"&articleId=" + search.articleId + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+					"&articleId=" + search.articleId + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn
-					+ '&orderByClause=' + search.orderByClause
+					+ '&orderByClause=' + search.orderByClause+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			} else {
 				dispatch(routerRedux.push('/content/videoList?page=' + page +
 					"&articleId=" + search.articleId
-					+ "&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+					+ "&articleTitle=" + search.articleTitle +  "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&secondColumn=" + search.secondColumn + '&orderByClause=' + search.orderByClause
+					+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			}
 
@@ -158,14 +161,16 @@ function ContentArticle({ location, dispatch, router, content }) {
 			const search = GetRequest(location.search);
 			if (search.articleTitle == "undefined" || search.articleTitle == undefined) {
 				dispatch(routerRedux.push('/content/videoList?page=1' +
-					"&articleId=" + search.articleId + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+					"&articleId=" + search.articleId + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + '&orderByClause=' + orderByClause
+					+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			} else {
 				dispatch(routerRedux.push('/content/videoList?page=1' +
 					"&articleId=" + search.articleId
-					+ "&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
+					+ "&articleTitle=" + search.articleTitle + "&publishStatus=" + search.publishStatus +
 					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&secondColumn=" + search.secondColumn + '&orderByClause=' + orderByClause
+					+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
 				))
 			}
 		}
@@ -276,13 +281,6 @@ function ContentArticle({ location, dispatch, router, content }) {
 					</FormItem>
 				</Col>
 				<Col span={8} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='标签'>
-						{getFieldDecorator('tags')(
-							<Input placeholder="请输入" />
-						)}
-					</FormItem>
-				</Col>
-				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='所属栏目'>
 						{getFieldDecorator('cloumn')(
 							<Cascader options={options} placeholder="请选择文章栏目" changeOnSelect/>
@@ -313,6 +311,36 @@ function ContentArticle({ location, dispatch, router, content }) {
 						)}
 					</FormItem>
 				</Col>
+				<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='发布人' >
+			            {getFieldDecorator('createUser')(
+										<Input placeholder="请输入发布人" />
+			            )}
+			          </FormItem>
+			        </Col>
+							<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='是否设有奖励' >
+			            {getFieldDecorator('ifPlatformPublishAward')(
+										<Select placeholder="请选择" allowClear={true}>
+			              	<Option value="1">是</Option>
+			              	<Option value="0">否</Option>
+			              </Select>
+			            )}
+			          </FormItem>
+			        </Col>
+							<Col span={8} style = {{display:'block'}}>
+			          <FormItem {...formItemLayout} label='来源分类' >
+			            {getFieldDecorator('articleFrom',{
+							initialValue:'1',
+						})(
+							<Select placeholder="请选择" allowClear={true}>
+								<Option value="0">全部</Option>
+								<Option value="1">人工添加</Option>
+								<Option value="2">抓取</Option>
+			                </Select>
+			            )}
+			          </FormItem>
+			        </Col>
 			</div>
 		);
 		return children;
@@ -345,16 +373,23 @@ function ContentArticle({ location, dispatch, router, content }) {
 		return children;
 	}
 	function handlsearch(values) {
+		if (values.createUser == "" || values.createUser == undefined) {
+			values.createUser = undefined;
+		} else {
+			values.createUser = Base64.encode(values.createUser)
+		}
 		if (values.title != undefined) {
 			var title = Base64.encode(values.title)
 			dispatch(routerRedux.push('/content/videoList?page=1' + "&articleId=" + values.Id + "&articleTitle=" + title +
-				"&articleTag=" + values.tags + "&publishStatus=" + values.status + "&displayStatus=" + values.displayStatus +
+			    "&publishStatus=" + values.status + "&displayStatus=" + values.displayStatus +
 				"&columnId=" + (values.cloumn != undefined ? parseInt(values.cloumn[0]) : null) + "&secondColumn=" + (values.cloumn != undefined ? parseInt(values.cloumn[1]) : null)
+				+"&createUser=" + values.createUser+'&ifPlatformPublishAward='+values.ifPlatformPublishAward+'&articleFrom='+values.articleFrom
 			))
 		} else {
 			dispatch(routerRedux.push('/content/videoList?page=1' + "&articleId=" + values.Id +
-				"&articleTag=" + values.tags + "&publishStatus=" + values.status + "&displayStatus=" + values.displayStatus +
+			    "&publishStatus=" + values.status + "&displayStatus=" + values.displayStatus +
 				"&columnId=" + (values.cloumn != undefined ? parseInt(values.cloumn[0]) : null) + "&secondColumn=" + (values.cloumn != undefined ? parseInt(values.cloumn[1]) : null)
+				+"&createUser=" + values.createUser+'&ifPlatformPublishAward='+values.ifPlatformPublishAward+'&articleFrom='+values.articleFrom
 			))
 		}
 

@@ -20,12 +20,17 @@ import imgx from '../../assets/images/article1.jpg';
 import imgy from '../../assets/images/article2.jpg';
 import imgz from '../../assets/images/article3.jpg';
 import imgw from '../../assets/images/article4.jpg';
+import imga from '../../assets/images/article5.png';
+import imgb from '../../assets/images/article6.png';
+import imgc from '../../assets/images/article7.png';
+import imgd from '../../assets/images/article8.png';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
+const confirm = Modal.confirm;
 const Option = Select.Option;
 let artSorce = 0;
 let timeDis = true;
@@ -34,8 +39,12 @@ let titleNum = 0;
 var n = 5000;
 var x = 5000;
 const formItemLayout = {
-	labelCol: { span: 2 },
+	labelCol: { span: 3 },
 	wrapperCol: { span: 18 },
+};
+const formLayout = {
+	labelCol: { span: 3 },
+	wrapperCol: { span: 15 },
 };
 const submitFormLayout = {
 	wrapperCol: {
@@ -68,6 +77,9 @@ function ArticleEditor({
 	uploadImg,
 	getBonusList,
 	status_Article,
+	ifPushValue,
+	PushAticleInfo,
+	loading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -77,10 +89,9 @@ function ArticleEditor({
 }) {
 	let merId = localStorage.getItem("userId");
 	let articleList = JSON.parse(localStorage.getItem("articleList"));
-	const imgArr = [imgx, imgy, imgz, imgw];  //默认背景图；
-
+	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
 	const options = ColumnList;
-	console.log(status_Article)
+	//console.log(status_Article)
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
 
@@ -89,6 +100,7 @@ function ArticleEditor({
 			if (errors) {
 				return;
 			} else {
+			
 				const data = { ...getFieldsValue() };
 				//console.log(data.text);
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
@@ -103,7 +115,7 @@ function ArticleEditor({
 				lg = lg.replace(/<\/?.+?>/g, "");
 				lg = lg.replace(/[\r\n]/g, "");
 				//console.log(lg)
-				console.log("文章字数", lg.length)
+				//console.log("文章字数", lg.length)
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
 					return true
@@ -130,142 +142,45 @@ function ArticleEditor({
 				} else {
 					editArticle = 0
 				}
-
-				if (ArticleList.sysUser == null) {
-					if (data.publishStatus == "1") {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					} else {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
+				dispatch({
+					type: 'content/publishHomeArticle',
+					payload: {
+						articleId: ArticleList.articleId,
+						articleTitle: data.articleTitle,
+						articleText: data.text,
+						tagnames: tagsName,
+						description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
+						image: imgUrl == '' ? data.image : imgUrl,
+						type: parseInt(data.type),
+						columnId: data.publishStatus == 1?parseInt(data.column[0]):null,
+						secondColumn: data.publishStatus == 1?parseInt(data.column[1]):null,
+						displayStatus: parseInt(data.radioT),
+						displayOrder: parseInt(data.sort),
+						commentSet: data.commentSet == "true" ? true : false,
+						publishSet: parseInt(data.radioG),
+						createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
+						bonusStatus: parseInt(data.bonusStatus),
+						articleSource: data.articleSource,
+						articleLink: data.articleLink,
+						publishStatus: parseInt(data.publishStatus),
+						textnum: lg.length,
+						browseNum: data.browseNum,
+						thumbupNum: data.thumbupNum,
+						collectNum: data.collectNum,
+						editArticle: editArticle,
+						ifPush:ifPushValue,
+						ifPlatformPublishAward:data.ifPlatformPublishAward,
+						auditUser:merId,
+						refuseReason:data.publishStatus == 1?null:data.refuseReason
 					}
-
-				} else {
-					if (data.publishStatus == "1") {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								sysUser: merId,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					} else {
-						dispatch({
-							type: 'content/publishHomeArticle',
-							payload: {
-								articleId: ArticleList.articleId,
-								articleTitle: data.articleTitle,
-								articleText: data.text,
-								tagnames: tagsName,
-								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
-								image: imgUrl == '' ? data.image : imgUrl,
-								type: parseInt(data.type),
-								columnId: parseInt(data.column[0]),
-								secondColumn: parseInt(data.column[1]),
-								displayStatus: parseInt(data.radioT),
-								displayOrder: parseInt(data.sort),
-								commentSet: data.commentSet == "true" ? true : false,
-								publishSet: parseInt(data.radioG),
-								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
-								sysUser: merId,
-								bonusStatus: parseInt(data.bonusStatus),
-								articleSource: data.articleSource,
-								articleLink: data.articleLink,
-								publishStatus: parseInt(data.publishStatus),
-								publishTime: data.time != undefined ? formatDate(new Date(data.time)) : null,
-								refuseReason: data.refuseReason,
-								textnum: lg.length,
-								browseNum: data.browseNum,
-								thumbupNum: data.thumbupNum,
-								collectNum: data.collectNum,
-								editArticle: editArticle,
-							}
-						})
-					}
-				}
-
+				})
+				
 
 			}
 		})
 	}
 	if (imgUrl != "") {
-		articleList.articleImage = imgUrl
+		ArticleList.articleImage = imgUrl
 	}
 
 	function pubsubmit() {
@@ -618,8 +533,96 @@ function ArticleEditor({
 			callback()
 		}
 	}
+
+	//是否推送
+	const ifPushChange = (e) => {
+		//获取今日推送的条数
+		dispatch({
+			type:"content/getPushAticleInfo"
+		})
+		let val = e.target.value;
+		if(PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit){
+			if(val == 1){
+				confirm({
+					title:'确定推送吗?',
+					content:(<div>
+						今日已推送<span style={{color:'#f00'}}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
+					</div>),
+					okText: '是',
+					cancelText:'否',
+					onOk() {
+						//console.log(values,record)
+						dispatch({
+							type:'content/ifPushValue',
+							payload:{
+								ifPushValue:'1'
+							}
+						})
+					},
+					onCancel() {
+						// ifPushValue = "0"
+						dispatch({
+							type:'content/ifPushValue',
+							payload:{
+								ifPushValue:'0'
+							}
+						})
+					},
+				})
+			}else{
+				dispatch({
+					type:'content/ifPushValue',
+					payload:{
+						ifPushValue:'0'
+					}
+				})
+			}
+		}else{
+			dispatch({
+				type:'content/ifPushValue',
+				payload:{
+					ifPushValue:val
+				}
+			})
+		}	
+		
+	}
+	//预览文章
+	const previewPage =()=>{
+		const data = { ...getFieldsValue() };
+		// console.log(data)
+		var tagsName = "";
+		if (data.tag1 == undefined) {
+			tagsName = "";
+		} else if (data.tag1 !== undefined && data.tag2 == undefined && data.tag3 == undefined) {
+			tagsName = data.tag1;
+		} else if (data.tag1 != undefined && data.tag2 != undefined && data.tag3 == undefined) {
+			tagsName = data.tag1 + ',' + data.tag2
+		}
+		else if (data.tag4 == undefined && data.tag5 == undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3
+		} else if (data.tag4 != undefined && data.tag5 == undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4
+		} else if (data.tag4 != undefined && data.tag5 != undefined && data.tag1 != undefined && data.tag2 != undefined && data.tag3 != undefined) {
+			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
+		}
+
+		if(data.type=="2"){
+			localStorage.setItem("previewType", data.articleLink);
+			localStorage.setItem("previewLink", data.articleLink);
+			localStorage.setItem("previewSource", data.articleSource);
+		}
+		    localStorage.setItem("previewTitle", data.articleTitle);
+			localStorage.setItem("previewText", data.text);
+			localStorage.setItem("previewartic", "");
+			localStorage.setItem("previewdec", data.artic);
+			localStorage.setItem("previewType", data.type);
+			localStorage.setItem("previewTag", tagsName);
+		
+		window.open('/#/preview')
+	}
 	return (
-		<Form onSubmit={handleSubmit}>
+		<Form >
 			<FormItem label="文章标题" {...formItemLayout}>
 				{getFieldDecorator('articleTitle', {
 					initialValue: ArticleList.articleTitle,
@@ -637,7 +640,7 @@ function ArticleEditor({
 				)}
 				<span style={{ color: "#aaa", marginLeft: 20 }}>1-64个字符</span>
 			</FormItem>
-			<FormItem >
+			<FormItem {...formItemLayout} label="正文">
 				{getFieldDecorator('text', {
 					initialValue: ArticleList.articleText,
 					rules: [
@@ -650,7 +653,7 @@ function ArticleEditor({
 
 			</FormItem>
 			<Row key='2' type="flex" justify="start" >
-				<Col style={{ marginLeft: '26px' }} >
+				<Col  style={{ marginLeft: '130px' }} >
 					<span className={styles.tagLabel}><span style={{ color: '#f5222d' }}>*</span>TAG标签：</span>
 				</Col>
 				<Col style={{ marginRight: '15px' }}>
@@ -754,14 +757,14 @@ function ArticleEditor({
 
 				})(
 					<div>
-						{articleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
+						{ArticleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
 							<img onClick={showModal} src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
 						}
 					</div>
 				)}
 			</FormItem>
 			<FormItem
-				{...formItemLayout}
+				{...formLayout}
 				label="&emsp;"
 				colon={false}
 			>
@@ -837,7 +840,7 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: ArticleList.columnId != null ? [ArticleList.columnId, ArticleList.secondColumn] : [],
 					rules: [
-						{ required: true, message: '请选择文章栏目!' },
+						{ required: status_Article==1?true:false, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(
@@ -869,7 +872,7 @@ function ArticleEditor({
 				{getFieldDecorator('sort', {
 					initialValue: ArticleList.displayOrder,
 					rules: [
-						{ required: false, },
+						{ required: false, message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
 					],
 				})(
 					<Input style={{ width: '10%' }} />
@@ -1070,6 +1073,34 @@ function ArticleEditor({
                       </Col>
 				</Row>
 			</FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem> : null}
+			<FormItem
+				{...formItemLayout}
+				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+			    >
+					<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
+						<Radio value='0'>暂时不推送</Radio>
+						<Radio value='1'>需要推送</Radio>
+					</RadioGroup>
+		     	</FormItem>
+			<FormItem
+				{...formItemLayout}
+				label="是否发送基础发文奖励"
+			>
+				{getFieldDecorator('ifPlatformPublishAward', {
+					initialValue: '1',
+					rules: [
+						{ required: true, message: '请选择' },
+					],
+				})(
+					<RadioGroup >
+						<Radio value="1">发送</Radio>
+						<Radio value="0">不发送</Radio>
+
+					</RadioGroup>
+				)}
+			</FormItem>
+
 			{(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
 				{...formItemLayout}
 				label="审核处理"
@@ -1100,10 +1131,12 @@ function ArticleEditor({
 			</FormItem> : null}
 
 			<FormItem {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>保存</Button>
+				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} loading={loading}>保存</Button>
 				{(ArticleList && ArticleList.publishStatus == 0) &&
 					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>发布</Button>
 				}
+				<Button  type="primary"   onClick={()=>previewPage()}  size="large"  className={styles.preview} style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>预览</Button>
+				<Button  style={{ marginLeft: 30 }} size="large" onClick={() => history.back()} >返回</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
 

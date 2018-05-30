@@ -34,6 +34,7 @@ import ColumnAward from './routes/ColumnAward'; //成为专栏作家奖励
 import WritingAward from './routes/WritingAward'; //发文奖励
 import ReadingReward from './routes/ReadingReward'; //阅读奖励
 import ShareReward from './routes/ShareReward'; //分享奖励
+import KgAwardDetail from './routes/KgAwardDetail'; //分享奖励
 
 //日志
 import Log from './routes/Log';
@@ -86,7 +87,9 @@ import Withdrawals from './routes/Withdrawals.js';
 import Record from './routes/Record';
 import RecordTxb from './routes/RecordTxb';
 import Bond from './routes/Bond';
-
+import UserAward from './routes/UserAwardList';
+import AddAwardPage from './routes/AddAwardPage';
+import AwardDetails from './routes/AwardDetails';
 //APP版本管理
 import AppPage from './routes/AppPage';
 import AppDetail from './routes/AppDetail';
@@ -127,6 +130,8 @@ function RouterConfig({ history }) {
           <Route path="/user/user_role" exact component={UserRole} />
           <Route path="/user/user_data" exact component={UserData}/>
           <Route path="/user/reward" exact component={RewardDetails}/>
+          <Route path="/user/kgaward" exact component={KgAwardDetail}/>
+          
           <Route path="/user/invite" exact component={InviteRecord}/>
           <Route path="/user/master" exact component={Master}/>
           <Route path="/user/platformReward" exact component={PlatformReward}/>
@@ -166,8 +171,13 @@ function RouterConfig({ history }) {
           <Route path="/finance/record" strict component={Record} />
           <Route path="/finance/recordTxb" strict component={RecordTxb} />
           <Route path="/finance/bond" strict component={Bond} />
+          <Route path="/finance/addAward" strict component={AddAwardPage} />
+          <Route path="/finance/userAward" strict component={UserAward} />
+          <Route path="/finance/awardDetails" strict component={AwardDetails} />
+          
           <Route path="/app/editon" strict component={AppPage} />
           <Route path="/app/detail" strict component={AppDetail} />
+          
       </LayoutContainer>
       </Switch>
     </Router>

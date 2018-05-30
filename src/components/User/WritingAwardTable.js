@@ -14,7 +14,7 @@ import style_pagination from '../pagination.css';
 import style_search from '../search.css';
 import style_common from '../common.css';
 function StandardTable({ data, loading, pageSize, totalPrice,getAdditionalModal,handelchande,Thaw,getFrozenData,canelMarkArticle, currentPage, total, MarkArticle, getDeitlData, showModal,sorterUserList }) {
-
+	// console.log(data)
 	const columns = [
 		{
 			title: '文章ID',

@@ -12,9 +12,10 @@ import {
 } from 'dva/router';
 import LayoutContainer from '../components/Layout';
 import stytes from './UserLoginPage.css';
-import { Form, Row, Col, Input, Button, Icon, message, Radio, Card, Modal } from 'antd';
+import { Form, Row, Col, Input, Button, Icon, message, Radio, Card, Modal,Spin } from 'antd';
 import { uploadUrl } from '../services/common';
 import ColumnModal from '../components/User/ColumnModal';
+import avatar from '../assets/images/avatar.jpg';
 let Base64 = require('js-base64').Base64;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -28,7 +29,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const { userInfo, columnVisible, confirmLoading, ColumnIdentity, currentItem } = user;
+	const { userInfo, columnVisible, confirmLoading, ColumnIdentity, currentItem,loading} = user;
 	//console.log(userInfo)
 	const formItemLayout = {
 		labelCol: {
@@ -45,13 +46,14 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	class DynamicRule extends React.Component {
 		state = {
 			checkNick: false,
-			text: ''
+			text: '',
+			value:1
 		};
 		submit = (e) => {
 			this.props.form.validateFields(
 				(err, values) => {
 					if (!err) {
-						//console.info(values);
+						console.info(values);
 						if (values.radio == '1') {
 							dispatch({
 								type: 'user/auditUser',
@@ -96,7 +98,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				<Form>
 					<FormItem label="审核处理" >
 						{getFieldDecorator('radio', {
-
+							initialValue: 1,
 						})(
 							<RadioGroup onChange={this.onChange} value={this.state.value}>
 								<Radio value={1}>通过</Radio>
@@ -116,7 +118,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						)}
 					</FormItem>
 					<FormItem>
-						<Button type="primary" onClick={this.submit} size="large">保存</Button>
+						<Button type="primary" onClick={this.submit} size="large" loading={confirmLoading}>保存</Button>
 					</FormItem>
 				</Form>
 			);
@@ -193,7 +195,18 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			})
 		}
 	}
+
+	function showImage(url){
+		Modal.info({
+			content:(
+				<div>
+					<img src={uploadUrl + url}/>
+				</div>
+			)
+		})
+	}
 	return (
+		<Spin tip="Loading..." spinning={loading} size="large">
 		<Card>
 			<Card
 				title={<div>
@@ -210,11 +223,14 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				bordered={false}
 
 			>
+				<div className={stytes.avatar}>
+					{userInfo&&userInfo.avatar!=null?<img src={uploadUrl+userInfo.avatar}/>:<img src="https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/1805/photocopy23x.png"/>}
+				</div>
 				<table className={stytes.table}>
 					<tbody>
 						<tr>
 							<td>用户ID</td><td>{userInfo.userId != null ? userInfo.userId : "——"}</td>
-							<td>邮箱</td><td>{userInfo.profile && userInfo.profile.email != null ? userInfo.profile.email : "——"}</td>
+							<td>昵称</td><td>{userInfo && userInfo.userName != null ? userInfo.userName : "——"}</td>
 						</tr>
 						<tr>
 							<td>手机号</td><td>{userInfo.userMobile ? userInfo.userMobile : "——"}</td>
@@ -243,7 +259,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 							<td>锁定状态</td><td>{userInfo.lockStatusDisplay != null ? userInfo.lockStatusDisplay : "——"}</td>
 						</tr>
 						<tr>
-							<td>注册来源</td><td>{userInfo && userInfo.registerOrigin == 1 && 'Ios'}{userInfo && userInfo.registerOrigin == 2 && 'Android'}{userInfo && userInfo.registerOrigin == 3 && '千氪财经'}{userInfo && userInfo.registerOrigin == 32 && 'BTC123'}{userInfo && userInfo.registerOrigin == 33 && '钛值APP'}</td>
+							<td>注册来源</td><td>{userInfo && userInfo.registerOrigin == 1 && 'iOS'}{userInfo && userInfo.registerOrigin == 2 && 'Android'}{userInfo && userInfo.registerOrigin == 3 && '千氪财经'}{userInfo && userInfo.registerOrigin == 32 && 'BTC123'}{userInfo && userInfo.registerOrigin == 33 && '钛值APP'}</td>
 							<td>专栏认证</td><td>{userInfo && (userInfo.columnAuthed == 1 ? '已认证' : "未认证")}</td>
 						</tr>
 					</tbody>
@@ -274,7 +290,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					<p className={stytes.dataBox}><span className={stytes.span1}>专栏介绍</span>
 						<span className={stytes.span2}>{(userInfo.profile && userInfo.profile.columnIntro != null) ? userInfo.profile.columnIntro : "——"}</span>
 					</p>
-					<p className={stytes.dataBox}><span className={stytes.span1}>所在地区</span><span className={stytes.span2}>{(userInfo.profile && userInfo.profile.columnProvince) != null ? userInfo.profile.columnProvince + userInfo.profile.columnCounty : "——"}</span></p>
+					<p className={stytes.dataBox}><span className={stytes.span1}>所在地区</span><span className={stytes.span2}>{(userInfo.profile && userInfo.profile.columnProvince) != null ? userInfo.profile.columnProvince + userInfo.profile.columnCity + userInfo.profile.columnCounty : "——"}</span></p>
 					{(userInfo.userRole == 1 && userInfo.applyRole == 1) && null}
 					{(userInfo.userRole == 2 || userInfo.applyRole == 2) && <div>
 						<p className={stytes.dataBox}><span className={stytes.span1}>管理员真实姓名</span><span className={stytes.span2}>{(userInfo.profile && userInfo.profile.realName != null && userInfo.profile.realName != "") ? userInfo.profile.realName : "——"}</span></p>
@@ -340,7 +356,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>企业机构代码证/营业执照</span><span className={stytes.span2}>
 							{(userInfo.profile && userInfo.profile.licensePic != null) ?
-								<img src={uploadUrl + userInfo.profile.licensePic} />
+								<img src={uploadUrl + userInfo.profile.licensePic} style={{width:700}} />
 								: "——"}
 						</span>
 						</p>
@@ -372,12 +388,12 @@ function UserAdmin({ location, dispatch, user, router, }) {
 					{(userInfo.auditStatus == 1 && userInfo.userRole != 1) ? <p className={stytes.dataBox}><span className={stytes.span1}>专栏认证情况</span><span className={stytes.span2}>{(userInfo && userInfo.columnAuthed == 0) ? "未认证" : userInfo.columnIdentity} {(userInfo && userInfo.columnAuthed == 0) ? <Button type="primary" style={{ marginLeft: 30 }} onClick={columnAute}>去认证</Button> : <Button type="primary" style={{ marginLeft: 30 }} onClick={canelColumn}>取消认证</Button>}</span></p>
 						: null}
 
-					<p className={stytes.dataBox}><span className={stytes.span1}><Button type="primary" style={{ marginLeft: 100 }} onClick={()=>history.back()} size="large"> <Icon type="left" />返回上一级</Button></span></p>
+					<p className={stytes.dataBox}><span className={stytes.span1}><Button type="primary"  onClick={()=>history.back()} size="large">返回</Button></span></p>
 				</div>
 				<ColumnModal {...ColumnModalProps} />
 			</Card>
 		</Card>
-
+		</Spin>
 	);
 }
 

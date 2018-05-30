@@ -104,7 +104,7 @@ function ArticlePreview({location,dispatch,content,router,}) {
 					</div>:null}
 					{(previewTag!=null)?previewTag.map((t,index)=>{
 		            	return(
-		            		 <Tag color="blue" key={index}>{t}</Tag>
+		            		 <Tag color="blue" key={index} className={styles.tags}>{t}</Tag>
 		            		)
 		            }):null}
 	          </div>

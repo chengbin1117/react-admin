@@ -59,7 +59,7 @@ const UserAdmin = ({
 		title: '用户ID',
 		dataIndex: 'userId',
 		key: 'userId',
-		width: 100,
+		width: 95,
 		render: text => <span>{text}</span>,
 	}, {
 		title: '用户名',
@@ -68,15 +68,10 @@ const UserAdmin = ({
 		width: 100,
 		render: text => <span>{text}</span>,
 	}, {
-		title: '邮箱',
-		dataIndex: 'userEmail',
-		key: 'userEmail',
-		width: 100,
-	}, {
 		title: '手机号',
 		dataIndex: 'userMobile',
 		key: 'userMobile',
-		width: 100,
+		width: 108,
 	}, {
 		title: '注册时间',
 		dataIndex: 'createDate',
@@ -87,7 +82,7 @@ const UserAdmin = ({
 		dataIndex: 'registerOrigin',
 		key: 'registerOrigin',
 		width: 100,
-		render: val => <span>{val==1&&"IOS"}{val==2&&"Android"}{val==3&&"千氪财经(WEB)"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
+		render: val => <span>{val==1&&"iOS"}{val==2&&"Android"}{val==3&&"千氪财经(WEB)"}{val==32&&"BTC123"}{val==33&&"钛值APP"}</span>,
 	},{
 		title: "师傅",
 		dataIndex: 'parentUser',
@@ -183,12 +178,12 @@ const UserAdmin = ({
 		title: '锁定状态',
 		dataIndex: 'lockStatusDisplay',
 		key: 'lockStatusDisplay',
-		width: 100
+		width: 90
 	}, {
 		title: '是否推荐',
 		dataIndex: 'hotUser',
 		key: 'hotUser',
-		width: 70,
+		width: 60,
 		render: text => <span>{text == true ? "是" : '否'}</span>,
 	}, {
 		title: '操作',
@@ -259,7 +254,7 @@ const UserAdmin = ({
 				<div>
 					<Table columns={columns} dataSource={userlist} pagination={false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId}
 						onChange={this.handleTableChange}
-						scroll={{ x: 2430 }}
+						scroll={{ x: 2300 }}
 					/>
 					<div className="table-operations" >
 						<Button type="primary" size='large' disabled={!hasSelected} onClick={() => ExamineModal(selectedRows)}>批量审核</Button>

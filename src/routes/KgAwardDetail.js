@@ -40,15 +40,15 @@ function UserAdmin({ location, dispatch, user, router,finance }) {
 		loading:loading,
 		total:totalNumber,
 		currentPage:currentPage,
-		type:'TV',
+		type:'KG',
 		handelchande(page){
 			const search =GetRequest(location.search);
-			dispatch(routerRedux.push('/user/reward?page='+page+'&mobile='+search.mobile+"&userName="+search.userName))
+			dispatch(routerRedux.push('/user/kgaward?page='+page+'&mobile='+search.mobile+"&userName="+search.userName))
 		}
 	}
 	return (
 		<Card title={<div><h2><span style={{color:"#1DA57A"}}>{urlSelect&&Base64.decode(urlSelect.userName)}</span>的奖励明细&emsp;&emsp;&emsp;
-		<Link className={stytes.btnnn} to={'/user/reward?page=1'+'&mobile='+urlSelect.mobile+'&userName='+urlSelect.userName}>钛值奖励</Link><Link className={stytes.btnn2} to={'/user/kgaward?page=1'+'&mobile='+urlSelect.mobile+'&userName='+urlSelect.userName}>氪金奖励</Link>奖励总额：{getSumBonus&&getSumBonus}</h2></div>} 
+		<Link className={stytes.btnn2} to={'/user/reward?page=1'+'&mobile='+urlSelect.mobile+'&userName='+urlSelect.userName}>钛值奖励</Link><Link className={stytes.btnnn} to={'/user/kgaward?page=1'+'&mobile='+urlSelect.mobile+'&userName='+urlSelect.userName}>氪金奖励</Link>奖励总额：{getSumBonus&&getSumBonus}</h2></div>} 
 		bordered={false}>
 			<RewardTable {...RewardTableProps}/>
 		</Card>

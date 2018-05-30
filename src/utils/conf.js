@@ -1,4 +1,4 @@
-//预览前台地址
+//预览前台资讯详情页地址
 let previewUrl = "http://kg.btc123.com/dist/views/detail/list.html"; //开发
 //let previewUrl = "https://kg.com/detail/list.html"; //测试
 
@@ -21,6 +21,7 @@ let uploadVideoUrl = "http://kg.btc123.com/kgapi/image/uploadVideo"; //开发环
 //apk上传
 let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发环境视频服务器地址
 //let apkUrl = "https://www.kg.com/admin/appvm/uploadFile/"; //正式环境视频服务器地址
+
 
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠

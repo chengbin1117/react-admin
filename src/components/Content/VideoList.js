@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button,Table,Tabs,Pagination,Popconfirm,Select,Cascader,Divider } from 'antd';
+import { Form, Row, Col, Input, Button,Table,Tabs,Pagination,Popconfirm,Select,Cascader,Divider,InputNumber } from 'antd';
 
 import style_pagination from '../pagination.css';
 import { routerRedux,Link} from 'dva/router';
@@ -7,39 +7,88 @@ const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const Option = Select.Option;
 import {message,Badge} from 'antd';
-const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList,sorterUserList}) => {
+const Content_Article = ({dispatch,currentPage,fixSort,PushAticleInfo,delArticle,router,total,ArticleList,confirm,setShowModal,article,onShowMOdal,handlsearch,editorItem,changepage,loading,ColumnList,getBonusList,sorterUserList}) => {
 	let userId =localStorage.getItem("userId");
+
 	const columns = [{
 	  title: 'ID',
 	  dataIndex: 'articleId',
 	  key: 'articleId',
-	  width:100
+		width:95,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	}, {
 	  title: '标题',
 	  dataIndex: 'articleTitle',
 	  key: 'articleTitle',
-	  width:200
+		width:180,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	}, {
 	  title: '所属栏目',
 	  dataIndex: 'clounm',
-	  key: 'clounm',
+		key: 'clounm',
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '发布人',
 	  dataIndex: 'createUser',
-	  key: 'createUser',
+		key: 'createUser',
+		width:90,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '发布时间',
 	  dataIndex: 'createDate',
-	  key: 'createDate',
-	  width:100,
+		key: 'createDate',
+		width:100,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
+	},{
+	  title: '是否设有奖励',
+	  dataIndex: 'ifPlatformPublishAward',
+		key: 'ifPlatformPublishAward',
+		width:70,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text==1&&'是'}{text==0&&'否'}</span>:<span>{text==1&&'是'}{text==0&&'否'}</span>}</span>
+			)
+		}
 	},{
 	  title: '更新人',
 	  dataIndex: 'updateUser',
-	  key: 'updateUser',
+		key: 'updateUser',
+		width:90,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '更新时间',
 	  dataIndex: 'updateDate',
-	  key: 'updateDate',
+		key: 'updateDate',
+		width:100,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '状态',
 	  dataIndex: 'publishStatus',
@@ -48,22 +97,43 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  render(text,record){
 	  	return(
 	  		<span>
-	  		{text==0 && <Badge status="warning" text="草稿" />}
-		    {text==1 && <Badge status="success" text="通过" />}
-		    {text==2 && <Badge status="processing" text="审核中" />}
-		    {text==3 && <Badge status="error" text="未通过" />}
+				{record.ifPush==1?<span >
+						{text==0 && <Badge status="warning" text="草稿" style={{color:'#1890ff'}}/>}
+		        {text==1 && <Badge status="success" text="通过" style={{color:'#1890ff'}}/>}
+		        {text==2 && <Badge status="processing" text="审核中" style={{color:'#1890ff'}}/>}
+		        {text==3 && <Badge status="error" text="未通过" style={{color:'#1890ff'}}/>}
+						</span>
+				   :<span>
+						{text==0 && <Badge status="warning" text="草稿" />}
+						{text==1 && <Badge status="success" text="通过" />}
+						{text==2 && <Badge status="processing" text="审核中" />}
+						{text==3 && <Badge status="error" text="未通过" />}
+					 	</span>
+				}
+	  	
 	  		</span>
 	  		)
 	  }
 	},{
 	  title: '审核人',
 	  dataIndex: 'auditUser',
-	  key: 'auditUser',
+		key: 'auditUser',
+		width:70,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '审核时间',
 	  dataIndex: 'auditDate',
 	  key: 'auditDate',
-	  width:100,
+		width:100,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '显示状态',
 	  dataIndex: 'displayStatusDisplay',
@@ -71,23 +141,26 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	  width:60,
 	  render(text,record){
 	  	return(
-		  		<span>
-		  			{text}
-		  		</span>
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
 		  		)
 	  }
 	},{
 	  title: '访问量',
 	  dataIndex: 'bowseNum',
 	  key: 'bowseNum',
-	  sorter: true,
+		sorter: true,
+		render:(text,record)=>{
+			return(
+				<span>{record.ifPush==1?<span style={{color:'#1890ff'}}>{text}</span>:text}</span>
+			)
+		}
 	},{
 	  title: '排序',
 	  dataIndex: 'displayOrder',
 	  key: 'displayOrder',
 	  render(text,record){
 		  	return(
-		  		<Input defaultValue={text} onPressEnter={(text)=>fixSort(record,text)}style={{width:50}} onBlur={(text)=>fixSort(record,text)}/>
+		  		<InputNumber min={0} defaultValue={text} onPressEnter={(text)=>fixSort(record,text)}style={{width:50}} onBlur={(text)=>fixSort(record,text)}/>
 		  		)
 		  }
 	},{
@@ -104,6 +177,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
 	    </span>
 	  )
 	}];
+
 	const hasSelected = ArticleList.length > 0;
 	
 	function onChange (key){
@@ -159,7 +233,7 @@ const Content_Article = ({dispatch,currentPage,fixSort,delArticle,router,total,A
   return (
     <div>
       
-      <p>当前共有视频：{total}</p>
+      <p>当前共有视频：{total}<span style={{marginLeft:30}}>今日已推送文章和视频：{PushAticleInfo&&PushAticleInfo.pushArticleNumber}条</span></p>
       <Tabs defaultActiveKey="2" onChange={onChange}>
 	    <TabPane tab={<span>文章</span>} key="1">
       	    
