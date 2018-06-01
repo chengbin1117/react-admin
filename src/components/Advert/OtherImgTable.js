@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Badge,Input, Button,Table,Pagination,Popconfirm,Select,Cascader,Divider} from 'antd';
+import { Form, Row, Col, Badge,Input, Button,Table,Pagination,Popconfirm,Select,Cascader,Divider,	Modal} from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 
 import style_pagination from '../pagination.css';
@@ -7,7 +7,21 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 import {uploadUrl,residences} from "../../services/common"
 let X = 0; //出事选中父选择器的
-function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loading,editorItem,setStatus,changepage}) {
+function Content_Image({data,total,currentPage,showModal,deleteItem,handlsearch,loading,editorItem,setStatus,changepage}) {
+
+	//显示原图
+
+	function showImg(imageAddress){
+		Modal.info({
+			title:'查看原图',
+			width:'1500px',
+			content:(
+				<div style={{textAlign:'center'}}>
+					<img src={uploadUrl+imageAddress} />
+				</div>
+			)
+		})
+	}
 	//console.log('loading',loading)
 	const columns = [{
 	  title: '类型',
@@ -30,7 +44,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  dataIndex: 'imageAddress',
 	  key: 'imageAddress',
 	  render:(text,record)=> (
-	  	    <span ><img src ={record.imageAddress!=""?uploadUrl+record.imageAddress:''}  style={{width:'50px',height:"50px",display:'inlineBlock'}}/></span>
+	  	    <span ><img src ={record.imageAddress!=""?uploadUrl+record.imageAddress:''}  style={{width:'50px',height:"50px",display:'inlineBlock',cursor:'pointer'}} onClick={()=>showImg(text)}/></span>
 	  	)
 	},{
 	  title: '发布人',
@@ -51,26 +65,26 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  title: '显示位置',
 	  dataIndex: 'imagePos',
 	  key: 'imagePos',
-	  render:(text,record) => (
-	  	<span>
-	  		{record.imagePos == 11 && "首页banner"}
-	  		{record.imagePos == 12 && "首页banner下方小幅图片"}
-	  		{record.imagePos == 13 && "首页资讯列表横幅"}
-	  		{record.imagePos == 14 && "首页右侧top排行上方宽幅图片"}
-	  		{record.imagePos == 15 && "首页右侧热门作者下方小横幅"}
-				{record.imagePos == 16 && "首页行情条下方横幅图片"}
-	  		{record.imagePos == 21 && "栏目页右侧top排行上方宽幅图片"}
-	  		{record.imagePos == 22 && "tag列表右侧top排行上方宽幅图片"}
-	  		{record.imagePos == 31 && "频道页banner"}
-	  		{record.imagePos == 32 && "频道页banner下方小幅图片"}
-	  		{record.imagePos == 33 && "频道页资讯列表横幅"}
-	  		{record.imagePos == 34 && "频道页右侧热门资讯上方宽幅图片"}
-	  		{record.imagePos == 35 && "频道页右侧热门作者上方小横幅"}
-	  		{record.imagePos == 41 && "资讯详情页顶部通栏"}
-	  		{record.imagePos == 42 && "资讯详情页正文声明下方横幅"}
-	  		{record.imagePos == 43 && "资讯详情页右侧top排行上方宽幅图片"}
-	  	</span>
-	  )
+	  render:(text,record) => {
+			var cloumn  = "";
+			var subClounm = "";
+			for(var i in residences){
+				if(record.navigatorPos == residences[i].value){
+					cloumn = residences[i].label
+					for(var k in residences[i].children){
+						if( residences[i].children[k].value == record.imagePos){
+							subClounm = residences[i].children[k].label
+						}
+					}
+				}
+				
+			}
+			return(
+				<span>
+				   	{cloumn + '--'+subClounm}
+				</span>
+			)
+		}
 	},{
 	  title: '排序',
 	  dataIndex: 'imageOrder',
@@ -81,10 +95,10 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 	  key: '3address',
 	  render: (text, record) => (
 	    <span>
-	      <a className = "action_font" onClick={()=>editorItem(record)}>编辑</a>
+	      <a onClick={()=>editorItem(record)}>编辑</a>
 	      <Divider type="vertical" />
-	      <Popconfirm title="确定删除吗？" onConfirm={()=>confirm(record)}  okText="是" cancelText="否">
-		    <a href="#" className = "action_font">删除</a>
+	      <Popconfirm title="确定删除吗？"  placement="topRight"  onConfirm={()=>deleteItem(record)}  okText="确定" cancelText="取消">
+		    <a href="#">删除</a>
 		  </Popconfirm>
 	    </span>
 	  )
@@ -132,7 +146,7 @@ function Content_Image({data,total,currentPage,showModal,confirm,handlsearch,loa
 			      	<div style={{paddingBottom:50}}>
 					      
 					      <p >当前共有图片：{total}</p>
-					      <Table style ={{marginTop:20}} bordered columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} rowKey={record => record.imageId+''} loading={loading}/>
+					      <Table style ={{marginTop:20}} columns={columns} rowSelection={rowSelection} dataSource={data} pagination = {false} rowKey={record => record.imageId+''} loading={loading}/>
 					      <Pagination className = {style_pagination.pagination} showQuickJumper   current={currentPage}onShowSizeChange={this.onShowSizeChange}total={total} onChange={this.onChange} pageSize={25}/>    
 					    </div>
 			    );

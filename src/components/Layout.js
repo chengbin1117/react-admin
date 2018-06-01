@@ -282,6 +282,21 @@ class LayoutContainer extends React.Component {
 			second = "用户奖励";
 			third = "奖励详情";
 			four = "";
+		} else if (path == "/content/news_list") {
+			first = "首页";
+			second = "内容中心";
+			third = "快讯管理";
+			four = "";
+		} else if (path == "/content/news_publish") {
+			first = "首页";
+			second = "内容中心";
+			third = "快讯管理";
+			four = "添加快讯";
+		}else if (path == "/content/news_editor") {
+			first = "首页";
+			second = "内容中心";
+			third = "快讯管理";
+			four = "编辑快讯";
 		}
 
 		return (

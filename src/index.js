@@ -30,6 +30,9 @@ app.model(require('./models/finance'));
 app.model(require('./models/award'));
 app.model(require('./models/app'));
 app.model(require('./models/userReward'));
+app.model(require('./models/news'));
+app.model(require('./models/advert'));
+
 // 4. Router
 app.router(require('./router'));
 
