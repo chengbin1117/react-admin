@@ -85,6 +85,7 @@ import BaseInfo from './routes/BaseInfo';
 import AccountRule from './routes/AccountRule';
 import AddInfo from './routes/AddInfo';
 import EditorInfo from './routes/AddInfoEdior';
+
 //数据中心
 import Data from './routes/Data';
 import DataColumn from './routes/data_column';

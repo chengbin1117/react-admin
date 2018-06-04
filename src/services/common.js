@@ -181,16 +181,13 @@ let residences = [{
 }, {
   value: '5',
   label: '视频详情页',
-  children: [{
-    "value": '1',
-    "label": "顶部通栏横幅",
-  },
+  children: [
   {
-    "value": '2',
+    "value": '1',
     "label": "为你推荐上方横幅",
   },
   {
-    "value": '3',
+    "value": '2',
     "label": "热门视频上方横幅",
   },]
 }];
@@ -269,8 +266,9 @@ let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发�
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 //let urlprefix = "http://172.16.1.97:8080/kgapi";  //文全
 //let urlprefix = "http://172.16.0.243:8080/kgapi";  //王洋
-let urlprefix = "http://172.16.2.62:8083/";  //连鹏
-//let urlprefix = "http://kg.btc123.com/kgapi";//开发
+//let urlprefix = "http://172.16.2.62:8083/";  //连鹏
+//let urlprefix = "http://172.16.2.116:9080/";  //勇哥
+let urlprefix = "http://kg.btc123.com/kgapi";//开发
 //let urlprefix = "https://www.kg.com"; //生产&&测试
 
 

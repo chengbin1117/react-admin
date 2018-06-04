@@ -54,7 +54,32 @@ export async function ImageSetStatus(params) {
     var sign = SignUrl(data)
 	let url = '/admin/siteimage/setStatus?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
-		method:"post"
+		method:"POST"
 	}
 	);
 }
+
+
+//添加编辑广告
+export async function addAdvertise(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/siteimage/addAdvertise?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"POST"
+	}
+	);
+}
+
+//获取广告详情接口
+
+export async function getAdvertise(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/siteimage/getAdvertise?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"POST"
+	}
+	);
+}
+

@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
+  const {artSorce,imgSize,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -56,6 +56,7 @@ function Release_article({location,dispatch,router,content,setting}) {
     validateStatus,
     helpMessage,
     editorContent,
+    imgSize,
     handlsearch(values){
        
     },

@@ -26,7 +26,7 @@ const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-const confirm =Modal.confirm;
+const confirm = Modal.confirm;
 const formItemLayout = {
 	labelCol: { span: 3 },
 	wrapperCol: { span: 18 },
@@ -78,6 +78,7 @@ function RelesEditor({
 	timeDis,
 	PushAticleInfo,
 	ifPushValue,
+	imgSize,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -89,20 +90,19 @@ function RelesEditor({
 	let merId = localStorage.getItem("userId");
 
 	const options = ColumnList;
-	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
+	const imgArr = [imgx, imgy, imgz, imgw, imga, imgb, imgc, imgd];  //默认背景图；
 	const { RelationVisible, getRelUserList } = setting;
-	
 	//发布
 	function handleSubmit(e) {
 		e.preventDefault();
-		validateFields((errors,) => {
+		validateFields((errors, ) => {
 			if (errors) {
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				
-				if(data.time!=undefined){
-					data.time =data.time.format('YYYY-MM-DD HH:mm')
+
+				if (data.time != undefined) {
+					data.time = data.time.format('YYYY-MM-DD HH:mm')
 				}
 				if (imgUrl == "") {
 					message.error('请上传封面图')
@@ -126,7 +126,7 @@ function RelesEditor({
 				//console.log("文章字数", lg.length)
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
-					return 
+					return
 				}
 				// console.log(lg.length)
 				// console.log("234",UserById.kgUserId)
@@ -138,7 +138,7 @@ function RelesEditor({
 				} else if (data.tag4 != undefined && data.tag5 != undefined) {
 					tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 				}
-				
+
 				dispatch({
 					type: 'content/publishArticle',
 					payload: {
@@ -150,7 +150,7 @@ function RelesEditor({
 						image: imgUrl,
 						type: parseInt(data.type),
 						columnId: parseInt(data.column[0]),
-						secondColumn:data.column[1]==undefined?null:parseInt(data.column[1]),
+						secondColumn: data.column[1] == undefined ? null : parseInt(data.column[1]),
 						displayStatus: parseInt(data.radioT),
 						displayOrder: parseInt(data.sort),
 						articleSource: data.articleSource,
@@ -161,14 +161,15 @@ function RelesEditor({
 						sysUser: merId,
 						bonusStatus: parseInt(data.bonusStatus),
 						textnum: data.text.txt.text().split('&nbsp;').join('').length,
-						publishTime: data.time != undefined ? data.time: null,
+						publishTime: data.time != undefined ? data.time : null,
 						publishStatus: 1,
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
 						collectNum: data.collectNum,
-						ifPlatformPublishAward:data.ifPlatformPublishAward,
-						ifPush:ifPushValue,
-						auditUser:merId,
+						ifPlatformPublishAward: data.ifPlatformPublishAward,
+						ifPush: ifPushValue,
+						auditUser: merId,
+						articleImgSize: data.articleImgSize
 					}
 				})
 			}
@@ -181,32 +182,32 @@ function RelesEditor({
 				return
 			}
 			const data = { ...getFieldsValue() };
-			
+
 			var textnum = 0;
 			var text = ""
-			if(data.text ==undefined){
+			if (data.text == undefined) {
 				text = ""
-				textnum =0;
-			}else{
-				text =  data.text.txt.html();
+				textnum = 0;
+			} else {
+				text = data.text.txt.html();
 				textnum = data.text.txt.text().split('&nbsp;').join('').length
 			}
-			if(data.time!=undefined){
-				data.time =data.time.format('YYYY-MM-DD HH:mm')
-				
+			if (data.time != undefined) {
+				data.time = data.time.format('YYYY-MM-DD HH:mm')
+
 			}
-			let columnId =null;
-			let secondColumn =null;
-			if(data.column ==undefined){
-				columnId =null;
-				secondColumn =null;
-			}else{
-				if(data.column[1]==undefined){
-					secondColumn==null;
-					columnId =data.column[0]
-				}else{
-					columnId =data.column[0]
-					secondColumn=data.column[1]
+			let columnId = null;
+			let secondColumn = null;
+			if (data.column == undefined) {
+				columnId = null;
+				secondColumn = null;
+			} else {
+				if (data.column[1] == undefined) {
+					secondColumn == null;
+					columnId = data.column[0]
+				} else {
+					columnId = data.column[0]
+					secondColumn = data.column[1]
 				}
 			}
 			var tagsName = "";
@@ -236,14 +237,14 @@ function RelesEditor({
 					image: imgUrl,
 					type: parseInt(data.type),
 					columnId: columnId,
-					secondColumn:secondColumn,
+					secondColumn: secondColumn,
 					displayStatus: parseInt(data.radioT),
 					displayOrder: parseInt(data.sort),
 					articleSource: data.articleSource,
 					articleLink: data.articleLink,
 					commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
 					publishSet: parseInt(data.radioG),
-					publishTime: data.time != undefined ? data.time: null,
+					publishTime: data.time != undefined ? data.time : null,
 					sysUser: merId,
 					bonusStatus: parseInt(data.bonusStatus),
 					publishStatus: 0,
@@ -251,9 +252,10 @@ function RelesEditor({
 					browseNum: data.browseNum,
 					thumbupNum: data.thumbupNum,
 					collectNum: data.collectNum,
-					ifPlatformPublishAward:data.ifPlatformPublishAward,
-					ifPush:ifPushValue
-					
+					ifPlatformPublishAward: data.ifPlatformPublishAward,
+					ifPush: ifPushValue,
+					articleImgSize: data.articleImgSize
+
 				}
 			})
 
@@ -357,7 +359,7 @@ function RelesEditor({
 		var time = date - (24 * 60 * 60 * 1000);
 		var severTime = date + (7 * 24 * 60 * 60 * 1000);
 		//console.log("2",cx)
-		return  severTime < current && current > time
+		return severTime < current && current > time
 	}
 
 	function disabledDateTime() {
@@ -396,11 +398,11 @@ function RelesEditor({
 
 	//定时发布
 	function handleTime(e) {
-		
+
 		dispatch({
-			type:"content/handleTimeChane",
-			payload:{
-				timeDis:parseInt(e.target.value)
+			type: "content/handleTimeChane",
+			payload: {
+				timeDis: parseInt(e.target.value)
 			}
 		})
 	}
@@ -427,7 +429,7 @@ function RelesEditor({
 			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 		}
 
-		if(data.type=="2"){
+		if (data.type == "2") {
 			localStorage.setItem("previewType", data.articleLink);
 			localStorage.setItem("previewLink", data.articleLink);
 			localStorage.setItem("previewSource", data.articleSource);
@@ -608,17 +610,17 @@ function RelesEditor({
 
 	//验证标题
 	//console.log("SensitiveWords", titleWords)
-	
-    function titleChage(rule, value, callback){
-		if (titleWords != null&&value!='') {
-			var titleWords=titleWords.split(',')
-			for(var i in titleWords){
-				if(value.indexof(titleWords[i])!='-1'){
-					callback('检测到标题的敏感词：'+titleWords[i])
-				}else{
+
+	function titleChage(rule, value, callback) {
+		if (titleWords != null && value != '') {
+			var titleWords = titleWords.split(',')
+			for (var i in titleWords) {
+				if (value.indexof(titleWords[i]) != '-1') {
+					callback('检测到标题的敏感词：' + titleWords[i])
+				} else {
 					callback()
 				}
-			}		
+			}
 		} else {
 			callback();
 		}
@@ -668,24 +670,24 @@ function RelesEditor({
 		}, 10000);
 	}
 	function aoSave(id) {
-	
+
 		window.clearInterval(autoSaveInterval);
 		const data = { ...getFieldsValue() };
 		if (data.articleTitle == "" || data.articleTitle == undefined) {
 			return
 		}
-		let columnId =null;
-		let secondColumn =null;
-		if(data.column ==undefined){
-			columnId =null;
-			secondColumn =null;
-		}else{
-			if(data.column[1]==undefined){
-				secondColumn==null;
-				columnId =data.column[0]
-			}else{
-				columnId =data.column[0]
-				secondColumn=data.column[1]
+		let columnId = null;
+		let secondColumn = null;
+		if (data.column == undefined) {
+			columnId = null;
+			secondColumn = null;
+		} else {
+			if (data.column[1] == undefined) {
+				secondColumn == null;
+				columnId = data.column[0]
+			} else {
+				columnId = data.column[0]
+				secondColumn = data.column[1]
 			}
 		}
 		var tagsName = "";
@@ -711,14 +713,14 @@ function RelesEditor({
 			description: data.artic,
 			image: imgUrl,
 			type: parseInt(data.type),
-			columnId:columnId,
+			columnId: columnId,
 			secondColumn: secondColumn,
 			displayStatus: parseInt(data.radioT),
 			displayOrder: parseInt(data.sort),
 			articleSource: data.articleSource,
 			articleLink: data.articleLink,
 			commentSet: data.commentSet != undefined ? (data.commentSet == "true" ? true : false) : null,
-			publishSet:'0',
+			publishSet: '0',
 			sysUser: merId,
 			bonusStatus: parseInt(data.bonusStatus),
 			publishStatus: 0,
@@ -726,11 +728,12 @@ function RelesEditor({
 			browseNum: data.browseNum,
 			thumbupNum: data.thumbupNum,
 			collectNum: data.collectNum,
-			ifPlatformPublishAward:data.ifPlatformPublishAward,
-			ifPush:ifPushValue
+			ifPlatformPublishAward: data.ifPlatformPublishAward,
+			ifPush: ifPushValue,
+			articleImgSize: data.articleImgSize
 
 		}
-		 publish(list, autoSaveInterval)
+		publish(list, autoSaveInterval)
 	}
 	function checkout() {
 
@@ -748,55 +751,166 @@ function RelesEditor({
 
 		//获取今日推送的条数
 		dispatch({
-			type:"content/getPushAticleInfo"
+			type: "content/getPushAticleInfo"
 		})
 		let val = e.target.value;
 		//比较今天推送的条数和限制的条数
-		if(PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit){
-			if(val == 1){
+		if (PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit) {
+			if (val == 1) {
 				confirm({
-					title:'确定推送吗?',
-					content:(<div>
-						今日已推送<span style={{color:'#f00'}}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
+					title: '确定推送吗?',
+					content: (<div>
+						今日已推送<span style={{ color: '#f00' }}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
 					</div>),
 					okText: '是',
-					cancelText:'否',
+					cancelText: '否',
 					onOk() {
 						//console.log(values,record)
 						dispatch({
-							type:'content/ifPushValue',
-							payload:{
-								ifPushValue:'1'
+							type: 'content/ifPushValue',
+							payload: {
+								ifPushValue: '1'
 							}
 						})
 					},
 					onCancel() {
 						// ifPushValue = "0"
 						dispatch({
-							type:'content/ifPushValue',
-							payload:{
-								ifPushValue:'0'
+							type: 'content/ifPushValue',
+							payload: {
+								ifPushValue: '0'
 							}
 						})
 					},
 				})
-			}else{
+			} else {
 				dispatch({
-					type:'content/ifPushValue',
-					payload:{
-						ifPushValue:'0'
+					type: 'content/ifPushValue',
+					payload: {
+						ifPushValue: '0'
 					}
 				})
 			}
-		}else{
+		} else {
 			dispatch({
-				type:'content/ifPushValue',
-				payload:{
-					ifPushValue:val
+				type: 'content/ifPushValue',
+				payload: {
+					ifPushValue: val
 				}
 			})
-		}	
-		
+		}
+
+	}
+	//图片大小
+	function imgSizeChange(e) {
+		var val = e.target.value;  //1是小图；2是大图
+
+		dispatch({
+			type: 'content/imgSizeChange',
+			payload: {
+				imgSize: val
+			}
+		})
+	}
+
+	function imgupload(e) {
+		var docobj = document.getElementById("uploadInput1");
+		var fileList = docobj.files[0];
+		//现在图片文件大小
+		var imgSize = fileList.size;
+		console.log(fileList);
+		if (imgSize > 2 * 1024 * 1024) {
+			message.error('上传的图片的大于2M,请重新选择');
+			docobj.val('');
+			var domObj = docobj[0];
+			domObj.outerHTML = domObj.outerHTML;
+			var newJqObj = docobj.clone();
+			docobj.before(newJqObj);
+			docobj.remove();
+			docobj.unbind().change(function (e) {
+				console.log(e)
+			});
+			return;
+		}
+
+		//将图片文件转换为base64
+		var coverImg = "";
+		var reader = new FileReader();
+		var imgWidth = 0;
+		var imgHeight = 0;
+		reader.onload = function (e) {
+			//加载图片获取图片真实宽度和高度
+
+			coverImg = reader.result;
+			var img = new Image();
+			img.src = coverImg;
+			img.onload = function (argument) {
+				imgWidth = this.width;
+				imgHeight = this.height;
+				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
+				console.log(imgWidth)
+				if (imgWidth < 365 ) {
+					message.warning('上传图片最小尺寸为365*200px')
+				} else if(imgHeight < 200){
+					message.warning('上传图片最小尺寸为365*200px')
+				} else {
+					dispatch({
+						type: 'content/hideBgModal',
+						payload: {
+							activeImg: coverImg
+						}
+					})
+					dispatch({
+						type: 'content/showfpModal',
+						payload: {
+
+						}
+					})
+				}
+			}
+		}
+		reader.readAsDataURL(fileList)
+
+
+
+
+	}
+	function imgupload2(e) {
+		var docobj = document.getElementById("uploadInput2");
+		var fileList = docobj.files[0];
+		//现在图片文件大小
+		var imgSize = fileList.size;
+		console.log(imgSize);
+		if (imgSize > 2 * 1024 * 1024) {
+			message.error('上传的图片的大于2M,请重新选择');
+			docobj.val('')
+			return false;
+		}
+		//将图片文件转换为base64
+		var coverImg = "";
+		var reader = new FileReader();
+		reader.onload = function () {
+			coverImg = reader.result;
+			dispatch({
+				type: 'content/hideBgModal',
+				payload: {
+					activeImg: coverImg
+				}
+			})
+		}
+		reader.readAsDataURL(fileList)
+		dispatch({
+			type: 'content/hideBgModal',
+			payload: {
+				activeImg: coverImg
+			}
+		})
+		dispatch({
+			type: 'content/showfpModal',
+			payload: {
+
+			}
+		})
 	}
 	return (
 		<Form>
@@ -822,9 +936,9 @@ function RelesEditor({
 			</FormItem>
 			{(saveId != undefined && saveId != 0) ? <span className={styles.zidong}>自动保存中<Icon type="clock-circle-o" /></span> : null
 			}
-			<FormItem 
-			{...formItemLayout} label="正文"
-			className={styles.editorText}
+			<FormItem
+				{...formItemLayout} label="正文"
+				className={styles.editorText}
 			>
 				{getFieldDecorator('text', {
 					rules: [
@@ -940,22 +1054,44 @@ function RelesEditor({
 			</FormItem>
 			<FormItem
 				{...formItemLayout}
-				label={<span><span style={{ color: '#f5222d' }}>*</span>封面图</span>}
-				extra="找不到合适的图片？您可以用以下任一张图作为封面图"
-			>
-				{getFieldDecorator('image', {
-					rules: [{ required: false, message: '请选择图片!' },
-					{ type: "string", }
-					],
-					valuePropName: 'src',
-				})(
-					<div >
-						{imgUrl == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> : <img onClick={showModal} src={uploadUrl + imgUrl} className={styles.bgImg} />}
+				label={<span>封面图</span>}
 
-					</div>
+			>
+				{getFieldDecorator('articleImgSize', {
+					initialValue: '1',
+					rules: [{ required: true, message: '请选择封面图!' },
+					]
+				})(
+					<RadioGroup onChange={imgSizeChange}>
+						<Radio value="1">小图资讯</Radio>
+						<Radio value="2">大图资讯</Radio>
+					</RadioGroup>
 				)}
 			</FormItem>
-			<FormItem
+			{imgSize == "1" ? <FormItem
+				{...formItemLayout}
+				label="&emsp;"
+				colon={false}
+				extra="找不到合适的图片？您可以用以下任一张图作为封面图"
+			>
+				<div className={styles.smallBox}>
+					{imgUrl == "" ? <div><Icon type="plus" /></div> : <img src={uploadUrl + imgUrl} className={styles.smallImg} />
+					}
+					<input id='uploadInput1' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
+						onChange={imgupload} />
+				</div>
+			</FormItem> : <FormItem
+				{...formItemLayout}
+				label="&emsp;"
+				colon={false}
+			>
+					<div className={styles.bgImgBox}>
+						{imgUrl == "" ? <div className={styles.bgImg}> <Icon type="plus" /></div> : <img src={uploadUrl + imgUrl} className={styles.bgImg} />}
+						<input id='uploadInput2' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
+							onChange={imgupload2} />
+					</div>
+				</FormItem>}
+			{imgSize == "1" ? <FormItem
 				{...formLayout}
 				label="&emsp;"
 				colon={false}
@@ -966,7 +1102,7 @@ function RelesEditor({
 					)}
 
 				</div>
-			</FormItem>
+			</FormItem> : null}
 			<FormItem
 				{...formItemLayout}
 				label="类别"
@@ -1018,7 +1154,7 @@ function RelesEditor({
 						{ required: true, message: '请选择文章栏目!' },
 					],
 				})(
-					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: "20%" }} changeOnSelect/>
+					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: "20%" }} changeOnSelect />
 				)}
 
 
@@ -1187,7 +1323,7 @@ function RelesEditor({
 			</FormItem>
 			<FormItem
 				{...formItemLayout}
-				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
+				label={<span><span style={{ color: "#f00" }}>*</span>是否推送</span>}
 				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
 			>
 				{/* {getFieldDecorator('ifPush', {
@@ -1196,10 +1332,10 @@ function RelesEditor({
 						{ required: true, message: '请选择' },
 					],
 				})( */}
-					<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
-						<Radio value='0'>暂时不推送</Radio>
-						<Radio value='1'>需要推送</Radio>
-					</RadioGroup>
+				<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue && ifPushValue} value={ifPushValue && ifPushValue}>
+					<Radio value='0'>暂时不推送</Radio>
+					<Radio value='1'>需要推送</Radio>
+				</RadioGroup>
 				{/* )} */}
 			</FormItem>
 			<FormItem
@@ -1219,10 +1355,10 @@ function RelesEditor({
 				)}
 			</FormItem>
 			<FormItem  {...formItemLayout} label="&nbsp;" colon={false}>
-				<Button type="primary" onClick={handleSubmit}  size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={loading}>发布</Button>
-				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={publishStatus} className={timeDis==0?styles.draft:''} disabled={(timeDis==1?true:false)||loading}>存草稿</Button>
+				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={loading}>发布</Button>
+				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={publishStatus} className={timeDis == 0 ? styles.draft : ''} disabled={(timeDis == 1 ? true : false) || loading}>存草稿</Button>
 				<Button type="primary" style={{ marginLeft: 30 }} size="large" onClick={() => previewPage()} className={styles.preview}>预览</Button>
-				<Button  style={{ marginLeft: 30 }} size="large" onClick={() => history.back()} >返回</Button>
+				<Button style={{ marginLeft: 30 }} size="large" onClick={() => history.back()} >返回</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
 		</Form>

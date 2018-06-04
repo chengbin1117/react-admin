@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-01 11:26:25
+ * @Last Modified time: 2018-06-02 16:56:11
  */
 
 
@@ -100,12 +100,40 @@ function NewsAdd({
 
 	//点击添加图片
 	function onSubmit(){
-		
+		validateFields((err, fieldsValue) => {
+			if (!err) {
+				var str = ""
+				console.log(keWordArr)
+				if(keWordArr.length>0){
+					str = keWordArr.join(',')
+				}else{
+					str = null;
+				}
+				fieldsValue.adverTarget = str;   //定向设置
+				fieldsValue.navigatorPos =fieldsValue.position[0]; //一级位置
+				fieldsValue.imagePos =fieldsValue.position[1];  //二级位置
+				fieldsValue.imageAddress = imageUrl ==''?null:imageUrl;  //图片Url
+				fieldsValue.imageType = 2;  //图片类型
+				
+				const data = {
+					createUser: merId,
+					...fieldsValue
+				}
+				
+				console.log(data)
+				dispatch({
+					type:'advert/addAdvertise',
+					payload:{
+						...data
+					}
+				})
+			}
+		})
 	}
 	return (
 		<Form>
 			<FormItem label="显示端口" {...formItemLayout}>
-				{getFieldDecorator('port', {
+				{getFieldDecorator('displayPort', {
 					initialValue:'1',
 					rules: [{
 						required: true,
@@ -120,10 +148,10 @@ function NewsAdd({
 				)}
 			</FormItem>
 			<FormItem label="广告样式" {...formItemLayout} >
-				{getFieldDecorator('styles', {
+				{getFieldDecorator('adverStyle', {
 					initialValue:'2',
 					rules: [{
-						required: true, message: '请输入快讯内容!',
+						required: true, message: '请输入广告样式!',
 					}
 					],
 				})(
@@ -133,10 +161,10 @@ function NewsAdd({
 					</RadioGroup>
 				)}
 			</FormItem>
-			<FormItem label="&emsp;" colon={false} {...formItemLayout} >
-				{getFieldDecorator('upload', {
+			<FormItem label="图片" {...formItemLayout} >
+				{getFieldDecorator('imageAddress', {
 					rules: [{
-						required: false,
+						required: true,message:'请上传图片'
 					}
 					],
 				})(
@@ -153,9 +181,9 @@ function NewsAdd({
 				)}
 			</FormItem>
 			<FormItem label="广告标题" {...formItemLayout}>
-				{getFieldDecorator('title', {
+				{getFieldDecorator('adverTitle', {
 					rules: [{
-						required: true,
+						required: true,message:'请输入广告标题'
 					}
 					],
 				})(
@@ -163,9 +191,9 @@ function NewsAdd({
 				)}
 			</FormItem>
 			<FormItem label="广告链接" {...formItemLayout}>
-				{getFieldDecorator('link', {
+				{getFieldDecorator('adverLink', {
 					rules: [{
-						required: true,
+						required: true,message:'请输入广告链接'
 					}
 					],
 				})(
@@ -173,9 +201,9 @@ function NewsAdd({
 				)}
 			</FormItem>
 			<FormItem label="广告主名称" {...formItemLayout}>
-				{getFieldDecorator('primary', {
+				{getFieldDecorator('adverOwner', {
 					rules: [{
-						required: true,
+						required: true,message:'请输入广告标题'
 					}
 					],
 				})(
@@ -214,7 +242,7 @@ function NewsAdd({
 			
 			
 			<FormItem label="推广时段" {...formItemLayout}>
-				{getFieldDecorator('ip', {
+				{getFieldDecorator('spreadTime', {
 					initialValue:'1',
 					rules: [ {
 						required: true, message: '请选择!',
@@ -237,6 +265,30 @@ function NewsAdd({
 					<Cascader options={residences} placeholder="请选择显示位置"  style={{width:'350px'}}/>
 				)}
 			</FormItem>
+			<FormItem label="显示状态" {...formItemLayout} >
+				{getFieldDecorator('imageStatus', {
+					initialValue:'1',
+					rules: [{
+						required: true, message: '请选择显示状态!',
+					}
+					],
+				})(
+					<RadioGroup >
+						<Radio value="1" disabled>显示</Radio>
+						<Radio value="0" >隐藏</Radio>
+					</RadioGroup>
+				)}
+			</FormItem>
+			<FormItem {...formItemLayout} label="排序">
+					{getFieldDecorator('imageOrder', {
+						initialValue: '0',
+						rules: [{
+							required: false, message: '请输入0以上的正整数', pattern: /^[0-9]\d*$/
+						}]
+					})(
+						<Input style={{ width: '100px' }} />
+					)}
+				</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
 			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()}>保存</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>

@@ -9,7 +9,7 @@ import {
 	message,Modal
 } from 'antd';
 import { routerRedux } from 'dva/router';
-import { formatDate, tokenLogOut, GetRequest, videoUrl } from '../services/common'
+import { formatDate, tokenLogOut, GetRequest, videoUrl,uploadUrl } from '../services/common'
 export default {
 
 	namespace: 'content',
@@ -59,6 +59,7 @@ export default {
 		validateStatus:'success',
 		helpMessage:'',
 		editorContent:'',//编辑器内容
+		imgSize:'1',
 	},
 
 	subscriptions: {
@@ -178,6 +179,21 @@ export default {
 							sysUserId: search.userId
 						}
 					})
+					dispatch({
+						type: 'imgSizeChange',
+						payload: {
+							imgSize: '1',
+							
+						}
+					})
+					dispatch({
+						type: 'imgUrlChange',
+						payload: {
+							imgUrl: '',
+							
+						}
+					})
+
 				}
 				match = pathToRegexp('/content/EditorVideo').exec(location.pathname);
 				if (match) {
@@ -1242,6 +1258,18 @@ export default {
 				var res = data.responseBody;
 				var tags = "tags";
 				res[tags] = res.tagnames != null ? res.tagnames.split(",") : '';
+
+				var img_url = uploadUrl+res.articleImage;
+				console.log(img_url)
+			    // 创建对象
+				var img = new Image();
+				// 改变图片的src
+				img.src = img_url;
+				if(img.width>750&&img.height>395){
+
+				}
+				// 打印
+				
 				yield put({
 					type: 'getArticleListSuccess',
 					payload: {
@@ -1249,6 +1277,7 @@ export default {
 						loading: false,
 						ifPushValue:res.ifPush+'',
 						pubStatus:res.publishStatus,
+						imgSize:res.articleImgSize,
 					}
 				});
 				if (res.createUser == null) {
@@ -1978,6 +2007,22 @@ export default {
 				}
 			})
 		},
+		*imgSizeChange({ payload }, { call, put }) {
+			yield put({
+				type: "imgSizeChangeSuccess",
+				payload: {
+					imgSize: payload.imgSize
+				}
+			})
+		},
+		*imgUrlChange({ payload }, { call, put }) {
+			yield put({
+				type: "imgUrlChangeSuccess",
+				payload: {
+					imgUrl: payload.imgUrl
+				}
+			})
+		},
 		*getPushAticleInfo({ payload }, { call, put }) {
 			const { data } = yield call(getPushAticleInfo, payload);
 			//console.log(data)
@@ -2438,6 +2483,18 @@ export default {
 			};
 		},
 		editorTextSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		imgSizeChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		imgUrlChangeSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,

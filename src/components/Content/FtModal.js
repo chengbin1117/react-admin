@@ -72,9 +72,8 @@ const FtModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
-		width:1200,
+		width:1000,
 		footer:null,
-		zIndex:2000,
 	};
 	
 	//let logoimg = require("image!../../assets/images/lx4.png");
@@ -118,31 +117,50 @@ var ImgBox = React.createClass({
         return (
         	<div>
             <Row>
-            <Col span={14}>
-              <Cropper
-	              ref='cropper'
-	              src={activeImg}
-	              style={{height: 400, width: '100%'}}
-	              // Cropper.js options
-	              aspectRatio={16 / 9}
-	              guides={true}
-	              autoCrop={true}
-	              crop={this.crop}
-	              canMove ={false}
-	              info={true}
-	              
-	              />
-
-	        </Col>
+            <Col span={14} className={styles.cropprBox}>
+				<Cropper
+					ref='cropper'
+					src={activeImg}
+					  style={{height:'100%',width:'100%'}}
+					// Cropper.js options
+					aspectRatio={16 / 9}
+					initialAspectRatio= {16 / 9}
+					guides={true}
+					autoCrop={true}
+					crop={this.crop}
+					canMove ={false}
+					info={true}
+					viewMode={1}
+					zoomable={false}
+					minCropBoxWidth={365}
+					minCropBoxHeight = {205}
+					center={false}
+					autoCropWidth={365}
+					autoCropHeight={205}
+					autoCropArea={0.7}
+					/>
+				<Button type="primary" size="large" onClick={()=>oncroup(this.state.src)}>重新上传</Button>
+			</Col>
 	        <Col span={10}>
 	        	  <div className={styles.crpprtBox}>
 		              <div className={this.state.src!= "" ?styles.crpprt:''}>
 		              	<img src={this.state.src} className={styles.actieImg}/>
 		              </div>
 	              </div>
+				  <div className={styles.name}>大图封面：16:9</div>
+				  <div className={styles.crpprtBox2}>
+				     
+		              <div className={this.state.src!= "" ?styles.crpprt:''}>
+					  	<div className={styles.parentsBox}>
+					    <img  src={this.state.src}   alt="" className={styles.childBox} />
+						</div>
+		              </div>
+	              </div>
+				  <div className={styles.name}>小图封面：3:2</div>
 	        </Col>
 	              
             </Row>
+
             <div className={styles.upBtn}>
 					<Button size="large" onClick={onCancel}>取消</Button><Button type="primary" size="large" style={{marginLeft:20+'px'}}onClick={()=>oncroup(this.state.src)}>确定</Button>
 				  </div>

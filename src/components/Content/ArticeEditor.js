@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-05-29 17:34:34
+ * @Last Modified time: 2018-06-01 20:49:45
  */
 
 
@@ -89,6 +89,7 @@ function ArticleEditor({
 	PushAticleInfo,
 	ifPushValue,
 	loading,
+	imgSize,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -878,6 +879,18 @@ function ArticleEditor({
 		
 		window.open('/#/preview')
 	}
+
+	//图片大小
+	function imgSizeChange(e){
+		var val = e.target.value;  //1是小图；2是大图
+	
+		dispatch({
+			type:'content/imgSizeChange',
+			payload:{
+				imgSize:val
+			}
+		})
+	}
 	return (
 		<Form onSubmit={handleSubmit}>
 			<FormItem label="文章标题" {...formItemLayout}>
@@ -1002,6 +1015,22 @@ function ArticleEditor({
 			</FormItem>
 			<FormItem
 				{...formItemLayout}
+				label={<span>封面图</span>}
+				
+			>
+				{getFieldDecorator('articleImgSize', {
+					initialValue:ArticleList.articleImgSize+'',
+					rules: [{ required: true, message: '请选择封面图!' },
+					]
+				})(
+					<RadioGroup onChange={imgSizeChange}>
+						<Radio value="1">小图资讯</Radio>
+						<Radio value="2">大图资讯</Radio>
+					</RadioGroup>
+				)}
+			</FormItem>
+			<FormItem
+				{...formItemLayout}
 				label={<span><span style={{ color: '#f5222d' }}>*</span>封面图</span>}
 				extra="找不到合适的图片？您可以用以下任一张图作为封面图"
 			>
@@ -1020,7 +1049,7 @@ function ArticleEditor({
 					</div>
 				)}
 			</FormItem>
-			<FormItem
+			{imgSize==1?<FormItem
 				{...formLayout}
 				label="&emsp;"
 				colon={false}
@@ -1031,7 +1060,8 @@ function ArticleEditor({
 					)}
 
 				</div>
-			</FormItem>
+			</FormItem>:null}
+			
 			{ArticleList && ArticleList.articleType == null ? <FormItem
 				{...formItemLayout}
 				label="类别"

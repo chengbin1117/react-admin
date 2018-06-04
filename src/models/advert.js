@@ -1,5 +1,5 @@
 import pathToRegexp from 'path-to-regexp';
-import { siteimagelist, addImage, deleteImage,ImageSetStatus } from '../services/advert';
+import { siteimagelist, addImage, deleteImage,ImageSetStatus,addAdvertise,getAdvertise} from '../services/advert';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
 import {
 	message
@@ -30,26 +30,17 @@ export default {
 			history
 		}) {
 			history.listen(location => {
-				let match = pathToRegexp('/finance/userAward').exec(location.pathname);
+				let match = pathToRegexp('/advert/list').exec(location.pathname);
 				
 				
 				if (match) {
 					const search = GetRequest(location.search);
 					dispatch({
-						type: 'getUserBonusList',
+						type: 'siteimagelist',
 						payload: {
 							currentPage: search.page,
 							pageSize:25,
-							extraBonusId: search.extraBonusId != 'undefined' ? search.extraBonusId : null,
-							startTvBonus: search.startTvBonus != 'undefined' ? search.startTvBonus : null,
-							endTvBonus: search.endTvBonus != 'undefined' ? search.endTvBonus : null,
-							startKgBonus: search.startKgBonus != "undefined" ? search.startKgBonus : null,
-							endKgBonus: search.endKgBonus != 'undefined' ? search.endKgBonus : null,
-							adminName: (search.adminName == undefined||search.adminName=="undefined") ? null : Base64.decode(search.adminName),
-							startTime: search.startTime != 'undefined' ? search.startTime : null,
-							endTime: search.endTime != 'undefined' ? search.endTime : null,
-							numStart: search.numStart != 'undefined' ? search.numStart : null,
-							numEnd: search.numEnd != 'undefined' ? search.numEnd : null,
+							imageType:2,
 						}
 					});
 					
@@ -70,7 +61,7 @@ export default {
 						type: 'siteimagelist',
 						payload: {
 							currentPage: parseInt(search.page),
-							imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
+							imageType: search.imageType != "undefined" ? parseInt(search.imageType) : 0,
 							imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 							navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
 							imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
@@ -96,36 +87,6 @@ export default {
 	},
 
 	effects: {
-		*getUserBonusList({ payload }, { call, put }) {
-			yield put({
-				type: 'showLoading',
-			});
-			const { data } = yield call(getUserBonusList, payload);
-			// console.log(data)
-			if (data && data.code == 10000) {
-				var res = data.responseBody;
-				
-				yield put({
-					type: 'publishArticleBonusSuccess',
-					payload: {
-						UserBonusList: res.data,
-						loading: false,
-						totalNumber: res.totalNumber,
-						currentPage: res.currentPage,
-					}
-				})
-			} else {
-				if (data.code == 10004 || data.code == 10011) {
-					message.error(data.message, 2);
-					yield put(routerRedux.push('/'));
-				} else {
-					message.error(data.message, 2);
-				}
-				yield put({
-					type: 'hideLoading',
-				});
-			}
-		},
 		*selectWords({ payload }, { call, put }) {
 			yield put({
 				type: 'selectWordsSuccess',
@@ -246,7 +207,7 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
-						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
+						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : 0,
 						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
@@ -278,7 +239,7 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
-						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
+						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : 2,
 						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
@@ -316,7 +277,54 @@ export default {
 				}
 			}
 		},
-
+		*addAdvertise({ payload }, { call, put }) {
+			yield put({
+				type:'showLoading'
+			})
+			const { data } = yield call(addAdvertise, payload);
+			if (data && data.code == 10000) {
+				message.success('添加成功')
+				yield put({
+					type: "hideLoading"
+				})
+				setTimeout(()=>{
+					history.back();
+				},50)
+			} else {
+				yield put({
+					type: "hideLoading"
+				})
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+			}
+		},
+		*getAdvertise({ payload }, { call, put }) {
+			yield put({
+				type:'showLoading'
+			})
+			const { data } = yield call(getAdvertise, payload);
+			if (data && data.code == 10000) {
+				
+				yield put({
+					type: "hideLoading"
+				})
+			
+			} else {
+				yield put({
+					type: "hideLoading"
+				})
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+			}
+		},
 
 
 	},

@@ -17,13 +17,13 @@ import WrappedAdvancedSearchForm from '../components/AdvancedSearchForm.js';
 import styles from './Record.css'
 const FormItem = Form.Item;
 const Option = Select.Option;
-function ContentImage({ dispatch, content, location }) {
+function ContentImage({ dispatch, advert, location }) {
 	let userId = localStorage.getItem('userId');
 	let token = localStorage.getItem("Kgtoken");
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-
+	const {ImageList} =advert
 
 	function getFieldsFirst(getFieldDecorator, formItemLayout) {
 		const children = [];
@@ -132,8 +132,19 @@ function ContentImage({ dispatch, content, location }) {
 
 	//广告列表父子组件之间的传值
 	const AdvertTableProps = {
+		data:ImageList,
 		editorItem(record){
 			dispatch(routerRedux.push('/advert/advert_editor'))
+		},
+		deleteItem(record){
+			dispatch({
+				type:'advert/deleteImage',
+				payload:{
+					imageId:record.imageId,
+					search:location.search,
+					imageType:2
+				}
+			})
 		}
 	}
 	return (
@@ -156,10 +167,10 @@ ContentImage.propTypes = {
 };
 
 function mapStateToProps({
-	content
+	advert
 }) {
 	return {
-		content
+		advert
 	};
 }
 

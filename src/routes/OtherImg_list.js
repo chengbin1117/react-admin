@@ -201,13 +201,14 @@ function ContentImage({dispatch,advert,location}) {
 				type:'advert/deleteImage',
 				payload:{
 					imageId:record.imageId,
-					search:location.search
+					search:location.search,
+					imageType:2
 				}
 			})
 		},
 		changepage(page){
 			const values =GetRequest(location.search)
-			dispatch(routerRedux.push('/advert/other_imgs?page=1'+"&imageType="+values.type+
+			dispatch(routerRedux.push('/advert/other_imgs?page='+page+"&imageType="+values.type+
 			"&imageStatus="+values.showStatus+"&navigatorPos="+values.navigatorPos+"&imagePos="+values.imagePos
 			))
 		}
