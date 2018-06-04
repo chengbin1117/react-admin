@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-02 16:56:11
+ * @Last Modified time: 2018-06-04 16:08:37
  */
 
 
@@ -274,7 +274,7 @@ function NewsAdd({
 					],
 				})(
 					<RadioGroup >
-						<Radio value="1" disabled>显示</Radio>
+						<Radio value="1">显示</Radio>
 						<Radio value="0" >隐藏</Radio>
 					</RadioGroup>
 				)}
@@ -288,7 +288,7 @@ function NewsAdd({
 					})(
 						<Input style={{ width: '100px' }} />
 					)}
-				</FormItem>
+			</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
 			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()}>保存</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>

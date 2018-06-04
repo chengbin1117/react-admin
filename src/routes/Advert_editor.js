@@ -10,7 +10,7 @@ import {
 	routerRedux,
 	Link
 } from 'dva/router';
-import { message, Modal, Cascader, Form, Input, Select, Row, Col, Button } from 'antd';
+import { message, Modal, Cascader, Form, Input, Select, Row, Col, Button,Spin,Icon } from 'antd';
 import LayoutContainer from '../components/Layout';
 import AdvertEditor from '../components/Advert/AdvertEditor';
 import { GetRequest, residences } from '../services/common';
@@ -24,11 +24,14 @@ function ContentImage({ dispatch, advert, location }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {keWordArr} =advert;  //获取modal数据
+	const {keWordArr,loading,Advertise,imageUrl,confirmLoading} =advert;  //获取modal数据
 	//父子组件之间传递数据
 	const AdvertEditorProps = {
 		dispatch:dispatch,
 		keWordArr:keWordArr,
+		item:Advertise,
+		imageUrl:imageUrl,
+		confirmLoading:confirmLoading,
 		clickKeyWord(keyword){
 			console.log(keyword)
 			dispatch({
@@ -73,7 +76,16 @@ function ContentImage({ dispatch, advert, location }) {
 	
 	return (
 		<div>
-			<AdvertEditor {...AdvertEditorProps}/>
+			<Spin
+			delay={500}
+			spinning={loading}
+			size="large"
+			tip="加载中..."
+			//indicator={<Icon  type="sync" fontSize="28px"/>}
+			wrapperClassName={styles.spin}
+			>
+			    <AdvertEditor {...AdvertEditorProps}/>
+			</Spin>
 		</div>
 
 	);

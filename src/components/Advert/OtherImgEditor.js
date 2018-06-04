@@ -207,7 +207,7 @@ const Content_ImageAdd_Modal = ({
 				</FormItem>
 				<FormItem {...formItemLayout} label="显示状态" >
 					{getFieldDecorator('imageStatus', {
-						initialValue:  item&&item.imageStatus == true?'1':false,
+						initialValue:  item&&item.imageStatus+'',
 						rules: [
 							{ required: true, message: '请选择显示状态' },
 						],

@@ -23,8 +23,7 @@ function ContentImage({ dispatch, advert, location }) {
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-	const {ImageList} =advert
-
+	const {ImageList,loading,currentPage,totalNumber} = advert;
 	function getFieldsFirst(getFieldDecorator, formItemLayout) {
 		const children = [];
 		children.push(
@@ -43,15 +42,13 @@ function ContentImage({ dispatch, advert, location }) {
 					</FormItem>
 				</Col>
 				<Col md={8} sm={24} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='类型'>
-						{getFieldDecorator('type', {
+					<FormItem {...formItemLayout} label='显示状态'>
+						{getFieldDecorator('showStatus', {
 
 						})(
-							<Select placeholder="请选择">
-
-								<Option value="1">资讯</Option>
-								<Option value="2">广告</Option>
-								<Option value="3">其他</Option>
+							<Select placeholder="请选择" allowClear>
+								<Option value="1">显示</Option>
+								<Option value="0">隐藏</Option>
 							</Select>
 						)}
 					</FormItem>
@@ -79,29 +76,58 @@ function ContentImage({ dispatch, advert, location }) {
 					</FormItem>
 				</Col>
 				<Col md={8} sm={24} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='类型'>
-						{getFieldDecorator('type', {
+					<FormItem {...formItemLayout} label='显示状态'>
+						{getFieldDecorator('showStatus', {
 
 						})(
-							<Select placeholder="请选择">
+							<Select placeholder="请选择" allowClear>
 
-								<Option value="1">资讯</Option>
-								<Option value="2">广告</Option>
-								<Option value="3">其他</Option>
+								<Option value="1">显示</Option>
+								<Option value="0">隐藏</Option>
 							</Select>
 						)}
 					</FormItem>
 				</Col>
 				<Col md={8} sm={24} style={{ display: 'block' }}>
-					<FormItem {...formItemLayout} label='显示状态'>
-						{getFieldDecorator('showStatus', {
+					<FormItem {...formItemLayout} label='显示端口'>
+						{getFieldDecorator('displayPort', {
 
 						})(
-							<Select placeholder="请选择">
-
-								<Option value="1">显示</Option>
-								<Option value="0">隐藏</Option>
+							<Select placeholder="请选择" allowClear>
+								<Option value="1">千氪WEB</Option>
+								<Option value="2">千氪APP</Option>
+								<Option value="3">千氪WEB专栏</Option>
 							</Select>
+						)}
+					</FormItem>
+				</Col>
+				<Col md={8} sm={24} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='广告样式'>
+						{getFieldDecorator('adverStyle', {
+
+						})(
+							<Select placeholder="请选择" allowClear>
+								<Option value="1">信息流</Option>
+								<Option value="2">图片广告</Option>
+							</Select>
+						)}
+					</FormItem>
+				</Col>
+				<Col md={8} sm={24} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='广告标题'>
+						{getFieldDecorator('adverTitle', {
+
+						})(
+							<Input placeholder="请输入广告标题"/>
+						)}
+					</FormItem>
+				</Col>
+				<Col md={8} sm={24} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='广告主名称'>
+						{getFieldDecorator('adverOwner', {
+
+						})(
+							<Input placeholder="请输入广告主名称"/>
 						)}
 					</FormItem>
 				</Col>
@@ -111,17 +137,26 @@ function ContentImage({ dispatch, advert, location }) {
 	}
 
 	function handlsearch(values) {
+		if (values.adverTitle == "" || values.adverTitle == undefined) {
+			values.adverTitle = undefined;
+		} else {
+			values.adverTitle = Base64.encode(values.adverTitle)
+		}
+		if (values.adverOwner == "" || values.adverOwner == undefined) {
+			values.adverOwner = undefined;
+		} else {
+			values.adverOwner = Base64.encode(values.adverOwner)
+		}
 		if (values.residence != undefined) {
-
-			dispatch(routerRedux.push('/content/content_image?page=1' + "&imageType=" + values.type +
-				"&imageStatus=" + values.showStatus + "&navigatorPos=" + values.residence[0] + "&imagePos=" + values.residence[1]
-
+			dispatch(routerRedux.push('/advert/list?page=1' +"&imageStatus=" + values.showStatus + "&navigatorPos=" + values.residence[0] + "&imagePos=" + values.residence[1]+
+			"&adverTitle=" + values.adverTitle+"&adverOwner=" + values.adverOwner+"&adverStyle=" + values.adverStyle+
+			"&displayPort=" + values.displayPort
 			))
 
 		} else {
-			dispatch(routerRedux.push('/content/content_image?page=1' + "&imageType=" + values.type +
-				"&imageStatus=" + values.showStatus
-
+			dispatch(routerRedux.push('/advert/list?page=1' +
+				"&imageStatus=" + values.showStatus+"&adverTitle=" + values.adverTitle+"&adverOwner=" + values.adverOwner+"&adverStyle=" + values.adverStyle+
+				"&displayPort=" + values.displayPort
 			))
 		}
 	}
@@ -133,18 +168,27 @@ function ContentImage({ dispatch, advert, location }) {
 	//广告列表父子组件之间的传值
 	const AdvertTableProps = {
 		data:ImageList,
+		loading:loading,
+		total:totalNumber,
+		currentPage:currentPage,
 		editorItem(record){
-			dispatch(routerRedux.push('/advert/advert_editor'))
+			dispatch(routerRedux.push('/advert/advert_editor?imageId='+record.imageId))
 		},
 		deleteItem(record){
 			dispatch({
-				type:'advert/deleteImage',
+				type:'advert/deleteAdvertImage',
 				payload:{
 					imageId:record.imageId,
 					search:location.search,
-					imageType:2
 				}
 			})
+		},
+		handelchande(page){
+			const values =GetRequest(location.search)
+			dispatch(routerRedux.push('/advert/list?page='+page+"&imageStatus=" + values.showStatus + "&navigatorPos=" + values.navigatorPos+ "&imagePos=" +values.imagePos+
+			"&adverTitle=" + values.adverTitle+"&adverOwner=" + values.adverOwner+"&adverStyle=" + values.adverStyle+
+			"&displayPort=" + values.displayPort
+			))
 		}
 	}
 	return (

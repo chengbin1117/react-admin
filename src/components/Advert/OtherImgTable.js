@@ -59,7 +59,11 @@ function Content_Image({data,total,currentPage,showModal,deleteItem,handlsearch,
 	  dataIndex: 'imageStatus',
 	  key: 'imageStatus',
 	  render:(text,record)=> (
-	  	    <span>{record.imageStatus ==true?<Badge status="success" text="显示" />:<Badge status="default" text="隐藏" />}</span>
+	  	    <span>
+						{record.imageStatus ==1&&<Badge status="success" text="显示" />}
+						{record.imageStatus ==0&&<Badge status="default" text="隐藏" />
+				}
+					</span>
 	  	)
 	},{
 	  title: '显示位置',

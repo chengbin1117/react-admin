@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-01 10:31:24
+ * @Last Modified time: 2018-06-04 16:10:01
  */
 
 
@@ -25,6 +25,8 @@ function AdvertEditor({
 	handleChange,
 	clearAll,
 	afterClose,
+	item,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -32,7 +34,7 @@ function AdvertEditor({
 		setFieldsValue,
 	},
 }) {
-	console.log('keWordArr',keWordArr)
+
 	let merId = localStorage.getItem("userId");
 	//是否推送
 	const formItemLayout = {
@@ -81,7 +83,7 @@ function AdvertEditor({
 		if (info.file.status === 'done') {
 			//图片上传返回response
 			var img_url = info.file.response; 
-			if(img_url.errorCode === "10000"){
+			if(img_url.errorCode == "10000"){
 				//图片上传成功
 				dispatch({
 					type:'advert/imgurlChange',
@@ -96,11 +98,45 @@ function AdvertEditor({
 			}
 		}
 	}
+
+	//点击保存图片
+	function onSubmit(){
+		validateFields((err, fieldsValue) => {
+			if (!err) {
+				var str = ""
+				console.log(keWordArr)
+				if(keWordArr.length>0){
+					str = keWordArr.join(',')
+				}else{
+					str = null;
+				}
+				fieldsValue.adverTarget = str;   //定向设置
+				fieldsValue.navigatorPos =fieldsValue.position[0]; //一级位置
+				fieldsValue.imagePos =fieldsValue.position[1];  //二级位置
+				fieldsValue.imageAddress = imageUrl ==''?null:imageUrl;  //图片Url
+				fieldsValue.imageType = 2;  //图片类型
+				
+				const data = {
+					createUser: merId,
+					imageId:item.imageId,
+					...fieldsValue
+				}
+				
+				console.log(data)
+				dispatch({
+					type:'advert/addAdvertise',
+					payload:{
+						...data
+					}
+				})
+			}
+		})
+	}
 	return (
 		<Form>
 			<FormItem label="显示端口" {...formItemLayout}>
-				{getFieldDecorator('port', {
-					initialValue:'1',
+				{getFieldDecorator('displayPort', {
+					initialValue:item&&item.displayPort+'',
 					rules: [{
 						required: true, message: '请输入快讯标题!',
 					}
@@ -114,8 +150,8 @@ function AdvertEditor({
 				)}
 			</FormItem>
 			<FormItem label="广告样式" {...formItemLayout} extra="注：默认样式为信息流">
-				{getFieldDecorator('styles', {
-					initialValue:'2',
+				{getFieldDecorator('adverStyle', {
+					initialValue:item&&item.adverStyle+'',
 					rules: [{
 						required: true, message: '请输入快讯内容!',
 					}
@@ -128,7 +164,8 @@ function AdvertEditor({
 				)}
 			</FormItem>
 			<FormItem label="&emsp;" colon={false} {...formItemLayout} >
-				{getFieldDecorator('upload', {
+				{getFieldDecorator('imageAddress', {
+					initialValue:item&&item.imageAddress,
 					rules: [{
 						required: false,
 					}
@@ -147,7 +184,8 @@ function AdvertEditor({
 				)}
 			</FormItem>
 			<FormItem label="广告标题" {...formItemLayout}>
-				{getFieldDecorator('title', {
+				{getFieldDecorator('adverTitle', {
+					initialValue:item&&item.adverTitle,
 					rules: [{
 						required: true,
 					}
@@ -157,7 +195,8 @@ function AdvertEditor({
 				)}
 			</FormItem>
 			<FormItem label="广告链接" {...formItemLayout}>
-				{getFieldDecorator('link', {
+				{getFieldDecorator('adverLink', {
+					initialValue:item&&item.adverLink,
 					rules: [{
 						required: true,
 					}
@@ -167,7 +206,8 @@ function AdvertEditor({
 				)}
 			</FormItem>
 			<FormItem label="广告主名称" {...formItemLayout}>
-				{getFieldDecorator('primary', {
+				{getFieldDecorator('adverOwner', {
+					initialValue:item&&item.adverOwner,
 					rules: [{
 						required: true,
 					}
@@ -208,8 +248,8 @@ function AdvertEditor({
 			
 			
 			<FormItem label="推广时段" {...formItemLayout}>
-				{getFieldDecorator('ip', {
-					initialValue:'1',
+				{getFieldDecorator('spreadTime', {
+					initialValue:item&&item.spreadTime+'',
 					rules: [ {
 						required: true, message: '请选择!',
 					}
@@ -223,6 +263,7 @@ function AdvertEditor({
 			</FormItem>
 			<FormItem label="显示位置" {...formItemLayout}>
 				{getFieldDecorator('position', {
+					initialValue:item&&[item.navigatorPos+'',item.imagePos+""]||[],
 					rules: [ {
 						required: true, message: '请选择显示位置!',
 					}
@@ -231,8 +272,32 @@ function AdvertEditor({
 					<Cascader options={residences} placeholder="请选择显示位置"  style={{width:'350px'}}/>
 				)}
 			</FormItem>
+			<FormItem label="显示状态" {...formItemLayout} >
+				{getFieldDecorator('imageStatus', {
+					initialValue:item&&item.imageStatus+'',
+					rules: [{
+						required: true, message: '请选择显示状态!',
+					}
+					],
+				})(
+					<RadioGroup >
+						<Radio value="1">显示</Radio>
+						<Radio value="0" >隐藏</Radio>
+					</RadioGroup>
+				)}
+			</FormItem>
+			<FormItem {...formItemLayout} label="排序">
+					{getFieldDecorator('imageOrder', {
+						initialValue:item&&item.imageOrder,
+						rules: [{
+							required: false, message: '请输入0以上的正整数', pattern: /^[0-9]\d*$/
+						}]
+					})(
+						<Input style={{ width: '100px' }} />
+					)}
+			</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
-			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }}>保存</Button>
+			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }}  onClick={()=>onSubmit()} loading={confirmLoading}>保存</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>
 			</FormItem>
 		</Form>

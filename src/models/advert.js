@@ -21,7 +21,8 @@ export default {
 		selectValue:'1',//图片类型
 		ImageList:[],//图片列表
 		confirmLoading:false,
-		currentItem:{}
+		currentItem:{},
+		Advertise:{},  //广告详情
 	},
 
 	subscriptions: {
@@ -31,8 +32,6 @@ export default {
 		}) {
 			history.listen(location => {
 				let match = pathToRegexp('/advert/list').exec(location.pathname);
-				
-				
 				if (match) {
 					const search = GetRequest(location.search);
 					dispatch({
@@ -40,7 +39,14 @@ export default {
 						payload: {
 							currentPage: search.page,
 							pageSize:25,
-							imageType:2,
+							adverType:2,
+							imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
+							navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
+							imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
+							adverStyle: search.adverStyle != "undefined" ? parseInt(search.adverStyle) : null,
+							displayPort: search.displayPort != "undefined" ? parseInt(search.displayPort) : null,
+							adverTitle: (search.adverTitle == 'undefined' ||search.adverTitle==undefined)? null : Base64.decode(search.adverTitle),
+							adverOwner: (search.adverOwner == 'undefined' ||search.adverOwner==undefined)? null : Base64.decode(search.adverOwner),
 						}
 					});
 					
@@ -53,6 +59,36 @@ export default {
 							keWordArr:[],
 						}
 					})
+					dispatch({
+						type:'imgurlChange',
+						payload:{
+							imageUrl:'',
+							uploading:false,
+						}
+					})
+				}
+				match = pathToRegexp('/advert/advert_editor').exec(location.pathname);
+				if(match){
+					const search = GetRequest(location.search);
+					dispatch({
+						type:'selectWords',
+						payload:{
+							keWordArr:[],
+						}
+					})
+					dispatch({
+						type:'imgurlChange',
+						payload:{
+							imageUrl:'',
+							uploading:false,
+						}
+					})
+					dispatch({
+						type:'getAdvertise',
+						payload:{
+							imageId:parseInt(search.imageId)
+						}
+					})
 				}
 				match = pathToRegexp('/advert/other_imgs').exec(location.pathname);
 				if (match) {
@@ -61,7 +97,8 @@ export default {
 						type: 'siteimagelist',
 						payload: {
 							currentPage: parseInt(search.page),
-							imageType: search.imageType != "undefined" ? parseInt(search.imageType) : 0,
+							adverType:1,
+							imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
 							imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 							navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
 							imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
@@ -207,7 +244,8 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
-						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : 0,
+						adverType:1,
+						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
 						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
@@ -239,10 +277,44 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
-						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : 2,
+						adverType:1,
+						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
 						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
+					}
+				});
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+			}
+		},
+		*deleteAdvertImage({ payload }, { call, put }) {
+			let params = {
+				imageId:payload.imageId
+			}
+			const { data } = yield call(deleteImage, params);
+			//console.log("图片",data)
+			if (data && data.code == 10000) {
+				message.success('图片删除成功');
+				const search = GetRequest(payload.search);
+				yield put({
+					type: 'siteimagelist',
+					payload: {
+						currentPage: search.page,
+						pageSize:25,
+						adverType:2,
+						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
+						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
+						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
+						adverStyle: search.adverStyle != "undefined" ? parseInt(search.adverStyle) : null,
+						displayPort: search.displayPort != "undefined" ? parseInt(search.displayPort) : null,
+						adverTitle: (search.adverTitle == 'undefined' ||search.adverTitle==undefined)? null : Base64.decode(search.adverTitle),
+						adverOwner: (search.adverOwner == 'undefined' ||search.adverOwner==undefined)? null : Base64.decode(search.adverOwner),
 					}
 				});
 			} else {
@@ -279,20 +351,25 @@ export default {
 		},
 		*addAdvertise({ payload }, { call, put }) {
 			yield put({
-				type:'showLoading'
+				type:'showSubmitLoading'
 			})
 			const { data } = yield call(addAdvertise, payload);
 			if (data && data.code == 10000) {
-				message.success('添加成功')
+				if(payload.imageId ==undefined){
+					message.success('图片添加成功')
+				}else{
+					message.success('图片编辑成功')
+				}
+				
 				yield put({
-					type: "hideLoading"
+					type: "hideSubmitLoading"
 				})
 				setTimeout(()=>{
 					history.back();
 				},50)
 			} else {
 				yield put({
-					type: "hideLoading"
+					type: "showSubmitLoading"
 				})
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
@@ -307,12 +384,19 @@ export default {
 				type:'showLoading'
 			})
 			const { data } = yield call(getAdvertise, payload);
-			if (data && data.code == 10000) {
-				
-				yield put({
-					type: "hideLoading"
-				})
 			
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				console.log(res.imageAddress)
+				yield put({
+					type: "getAdvertiseSuccess",
+					payload:{
+						Advertise:res,
+						imageUrl:res.imageAddress,
+						keWordArr:res.adverTarget.split(','),
+						loading:false
+					}
+				})
 			} else {
 				yield put({
 					type: "hideLoading"
@@ -374,6 +458,9 @@ export default {
 			return {...state,...action.payload};
 		},
 		ImgtypeChangeSuccess(state, action) {
+			return {...state,...action.payload};
+		},
+		getAdvertiseSuccess(state, action) {
 			return {...state,...action.payload};
 		},
 	},
