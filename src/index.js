@@ -32,6 +32,7 @@ app.model(require('./models/app'));
 app.model(require('./models/userReward'));
 app.model(require('./models/news'));
 app.model(require('./models/advert'));
+app.model(require('./models/notice'));
 
 // 4. Router
 app.router(require('./router'));

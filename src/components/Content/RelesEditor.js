@@ -79,6 +79,7 @@ function RelesEditor({
 	PushAticleInfo,
 	ifPushValue,
 	imgSize,
+	flag,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -88,7 +89,7 @@ function RelesEditor({
 	},
 }) {
 	let merId = localStorage.getItem("userId");
-
+	console.log(flag)
 	const options = ColumnList;
 	const imgArr = [imgx, imgy, imgz, imgw, imga, imgb, imgc, imgd];  //默认背景图；
 	const { RelationVisible, getRelUserList } = setting;
@@ -844,6 +845,7 @@ function RelesEditor({
 			coverImg = reader.result;
 			var img = new Image();
 			img.src = coverImg;
+			
 			img.onload = function (argument) {
 				imgWidth = this.width;
 				imgHeight = this.height;
@@ -854,6 +856,7 @@ function RelesEditor({
 				} else if(imgHeight < 200){
 					message.warning('上传图片最小尺寸为365*200px')
 				} else {
+					docobj.setAttribute('type','text');
 					dispatch({
 						type: 'content/hideBgModal',
 						payload: {
@@ -1064,7 +1067,7 @@ function RelesEditor({
 				})(
 					<RadioGroup onChange={imgSizeChange}>
 						<Radio value="1">小图资讯</Radio>
-						<Radio value="2">大图资讯</Radio>
+						<Radio value="2" disabled={flag}>大图资讯</Radio>
 					</RadioGroup>
 				)}
 			</FormItem>

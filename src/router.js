@@ -62,6 +62,10 @@ import home_article from './routes/Home_editor';
 import News_flash from './routes/News_flash';  //快讯列表
 import News_publish from './routes/News_publish';  //快讯列表
 import News_editor from './routes/News_editor';  //快讯列表
+import Content_notice from './routes/Content_notice';  //公告列表
+import Content_notice_publish from './routes/Content_notice_publish';  //公告发布
+import Content_notice_editor from './routes/Content_notice_editor';  //公告编辑
+
 
 //广告中心
 import Advert_list from './routes/Advert_list';   //广告列表
@@ -85,6 +89,7 @@ import BaseInfo from './routes/BaseInfo';
 import AccountRule from './routes/AccountRule';
 import AddInfo from './routes/AddInfo';
 import EditorInfo from './routes/AddInfoEdior';
+import SysParams from './routes/SysParams';
 
 //数据中心
 import Data from './routes/Data';
@@ -157,6 +162,7 @@ function RouterConfig({ history }) {
           <Route path="/setting/account" strict component={AccountRule}/>
           <Route path="/setting/addinfo" strict component={AddInfo}/>
           <Route path="/setting/addinfoEditor" strict  component={EditorInfo}/>
+          <Route path="/setting/system" strict  component={SysParams}/>
           <Route path="/data/data_column" strict  component={DataColumn}/>
           <Route path="/data/data_user" strict  component={DataUser}/>
           <Route path="/log/log_admin" strict  component={LogAdmin}/>
@@ -179,6 +185,9 @@ function RouterConfig({ history }) {
           <Route path="/content/news_flash"  component={News_flash}/>
           <Route path="/content/news_publish"  component={News_publish}/>
           <Route path="/content/news_editor"  component={News_editor}/>
+          <Route path="/content/notice"  component={Content_notice}/>
+          <Route path="/content/notice_publish" strict component={Content_notice_publish} />
+          <Route path="/content/notice_editor" strict component={Content_notice_editor} />
           <Route path="/finance/recharge" strict component={FinanceRecharge}/>
           <Route path="/finance/withdrawals"   strict component={Withdrawals} />
           <Route path="/finance/record" strict component={Record} />

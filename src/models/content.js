@@ -60,6 +60,7 @@ export default {
 		helpMessage:'',
 		editorContent:'',//编辑器内容
 		imgSize:'1',
+		flag:false,  //大图是否可选
 	},
 
 	subscriptions: {
