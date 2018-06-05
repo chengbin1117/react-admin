@@ -43,6 +43,7 @@ const FtModal = ({
 	showfpModal,
 	oncroup,
 	activeImg,
+	imgtype,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -50,7 +51,7 @@ const FtModal = ({
 		setFieldsValue,
 	},
 }) => {
-
+	console.log(imgtype)
 
 	function handleOk(value,text) {
 			
@@ -97,7 +98,57 @@ var ImgBox = React.createClass({
         this.setState({ //this represents react component instance
             text: event.target.value
         });
-    },
+	},
+	imgupload(e) {
+		var docobj = document.getElementById("uploadInput1");
+		var fileList = docobj.files[0];
+		//现在图片文件大小
+		var imgSize = fileList.size;
+		console.log(fileList);
+		if (imgSize > 2 * 1024 * 1024) {
+			message.error('上传的图片的大于2M,请重新选择');
+			docobj.val('');
+			var domObj = docobj[0];
+			domObj.outerHTML = domObj.outerHTML;
+			var newJqObj = docobj.clone();
+			docobj.before(newJqObj);
+			docobj.remove();
+			docobj.unbind().change(function (e) {
+				console.log(e)
+			});
+			return;
+		}
+
+		//将图片文件转换为base64
+		var coverImg = "";
+		var reader = new FileReader();
+		var imgWidth = 0;
+		var imgHeight = 0;
+		reader.onload = function (e) {
+			//加载图片获取图片真实宽度和高度
+
+			coverImg = reader.result;
+			var img = new Image();
+			img.src = coverImg;
+			
+			img.onload = function (argument) {
+				imgWidth = this.width;
+				imgHeight = this.height;
+				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
+				console.log(imgWidth)
+				if (imgWidth < 356 ) {
+					message.warning('上传图片最小尺寸为356*200px')
+				} else if(imgHeight < 200){
+					message.warning('上传图片最小尺寸为356*200px')
+				} else {
+					docobj.setAttribute('type','text');
+					
+					activeImg = coverImg;
+				}
+			}
+		}
+		reader.readAsDataURL(fileList)
+	},
 	crop(){
 	    // image in dataUrl
 	   // console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
@@ -167,18 +218,19 @@ var ImgBox = React.createClass({
 					autoCropHeight={205}
 					autoCropArea={0.7}
 					/>
-				<Button type="primary" size="large" onClick={()=>oncroup(this.state.src)}>重新上传</Button>
+				
 			</Col>
 	        <Col span={10}>
-	        	  <div className={styles.crpprtBox}>
-				  	  {this.state.flag==false?<div className={this.state.src!= "" ?styles.crpprt:''}>
+			{this.state.flag==false?<div className={styles.crpprtBox}>
+				  	 <div className={this.state.src!= "" ?styles.crpprt:''}>
 		              	<img src={this.state.src} className={styles.actieImg}/>
-		              </div>:<div className={this.state.src!= "" ?styles.crpprt:''}>
+		              </div>
+	              </div>:<div className={styles.info}>
 					  当前尺寸过小，无法以大图样式展示(建议最小尺寸为750*395，优质文章将优先以大图形式在APP展示)
-		              </div>}
-		              
-	              </div>
+		              </div>
+		              }
 				  <div className={styles.name}>大图封面：16:9</div>
+				  {imgtype == 'video'?<div></div>:<div>
 				  <div className={styles.crpprtBox2}>
 				     
 		              <div className={this.state.src!= "" ?styles.crpprt:''}>
@@ -188,10 +240,12 @@ var ImgBox = React.createClass({
 		              </div>
 	              </div>
 				  <div className={styles.name}>小图封面：3:2</div>
+				  </div>}
+				  
 	        </Col>
 	              
             </Row>
-
+		
             <div className={styles.upBtn}>
 					<Button size="large" onClick={onCancel}>取消</Button><Button type="primary" size="large" style={{marginLeft:20+'px'}}onClick={()=>oncroup(this.state.src,this.state.flag)}>确定</Button>
 				  </div>

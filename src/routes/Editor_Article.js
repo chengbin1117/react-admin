@@ -29,7 +29,7 @@ function Editor_article({ dispatch, router, content, setting }) {
     var html = '';
     let src = "";
 
-    const { ArticleList,imgSize,loading,BgVisible,PushAticleInfo,ifPushValue,UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords,pubStatus} = content;
+    const { ArticleList,flag,imgtype,imgSize,loading,BgVisible,PushAticleInfo,ifPushValue,UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords,pubStatus} = content;
 
     const options = ColumnList;
     const ArticleEditorProps = {
@@ -46,6 +46,7 @@ function Editor_article({ dispatch, router, content, setting }) {
         pubStatus,
         PushAticleInfo,
         loading,
+        flag,
         ifPushValue,
         imgSize,
         editorText(h, t) {
@@ -118,7 +119,10 @@ function Editor_article({ dispatch, router, content, setting }) {
     const FtModalProps = {
         visible: FtVisible,
         activeImg: activeImg,
+        imgtype,
         onCancel() {
+            var docobj = document.getElementById("uploadInput1");
+            docobj.setAttribute('type','file');
             dispatch({
                 type: 'content/hidefpModal',
                 payload: {
@@ -127,9 +131,11 @@ function Editor_article({ dispatch, router, content, setting }) {
             })
 
         },
-        oncroup(src) {
+        oncroup(src,flag) {
             var s = dataURLtoBlob(src)
             //console.log(s)
+            var docobj = document.getElementById("uploadInput1");
+            docobj.setAttribute('type','file');
             let formData = new FormData();
             formData.append('name', 'file');
             formData.append('file', s);
@@ -147,7 +153,8 @@ function Editor_article({ dispatch, router, content, setting }) {
                     dispatch({
                         type: 'content/hidefpModal',
                         payload: {
-                            imgUrl: res.data[0].filePath
+                            imgUrl: res.data[0].filePath,
+                            flag:flag
                         }
                     })
                 }

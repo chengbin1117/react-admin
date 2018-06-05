@@ -61,6 +61,7 @@ export default {
 		editorContent:'',//编辑器内容
 		imgSize:'1',
 		flag:false,  //大图是否可选
+		imgtype:'',
 	},
 
 	subscriptions: {
@@ -197,7 +198,7 @@ export default {
 					dispatch({
 						type: 'flagChange',
 						payload: {
-							flag: false,
+							flag: true,
 							
 						}
 					})
@@ -1274,8 +1275,28 @@ export default {
 				var img = new Image();
 				// 改变图片的src
 				img.src = img_url;
-				if(img.width>750&&img.height>395){
-
+				console.log(img.width,img.height)
+				if(img.width<750){
+					yield put({
+						type: 'flagChange',
+						payload: {
+							flag:true
+						}
+					});
+				}else if(img.height<421){
+					yield put({
+						type: 'flagChange',
+						payload: {
+							flag:true
+						}
+					});
+				}else{
+					yield put({
+						type: 'flagChange',
+						payload: {
+							flag:false
+						}
+					});
 				}
 				// 打印
 				

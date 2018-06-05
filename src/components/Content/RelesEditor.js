@@ -860,7 +860,8 @@ function RelesEditor({
 					dispatch({
 						type: 'content/hideBgModal',
 						payload: {
-							activeImg: coverImg
+							activeImg: coverImg,
+							imgtype:'image'
 						}
 					})
 					dispatch({
@@ -873,10 +874,6 @@ function RelesEditor({
 			}
 		}
 		reader.readAsDataURL(fileList)
-
-
-
-
 	}
 	function imgupload2(e) {
 		var docobj = document.getElementById("uploadInput2");
@@ -1078,7 +1075,7 @@ function RelesEditor({
 				extra="找不到合适的图片？您可以用以下任一张图作为封面图"
 			>
 				<div className={styles.smallBox}>
-					{imgUrl == "" ? <div><Icon type="plus" /></div> : <img src={uploadUrl + imgUrl} className={styles.smallImg} />
+					{imgUrl == "" ? <div className={styles.ImgNoneBox}><Icon type="plus" /></div> : <img src={uploadUrl + imgUrl} className={styles.smallImg} />
 					}
 					<input id='uploadInput1' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
 						onChange={imgupload} />
@@ -1090,8 +1087,6 @@ function RelesEditor({
 			>
 					<div className={styles.bgImgBox}>
 						{imgUrl == "" ? <div className={styles.bgImg}> <Icon type="plus" /></div> : <img src={uploadUrl + imgUrl} className={styles.bgImg} />}
-						<input id='uploadInput2' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
-							onChange={imgupload2} />
 					</div>
 				</FormItem>}
 			{imgSize == "1" ? <FormItem

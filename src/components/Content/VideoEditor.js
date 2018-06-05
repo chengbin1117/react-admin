@@ -465,9 +465,8 @@ function ArticleEditor({
 			}
 		}
 	}
-	function ImgHandle(src) {
-		//console.log("src",src)
-	}
+
+	
 	function handlevaild(rule, value, callback) {
 		var dd = value.replace(/<\/?.+?>/g, "");
 		var dds = dd.replace(/ /g, "");//dds为得到后的内容
@@ -561,15 +560,16 @@ function ArticleEditor({
 				imgHeight = this.height;
 				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
 				console.log(imgWidth)
-				if (imgWidth < 365 ) {
-					message.warning('上传图片最小尺寸为365*200px')
-				} else if(imgHeight < 200){
-					message.warning('上传图片最小尺寸为365*200px')
+				if (imgWidth < 750 ) {
+					message.warning('上传图片最小尺寸为750*422px')
+				} else if(imgHeight < 421){
+					message.warning('上传图片最小尺寸为750*422px')
 				} else {
 					dispatch({
 						type: 'content/hideBgModal',
 						payload: {
-							activeImg: coverImg
+							activeImg: coverImg,
+							imgtype:'video'
 						}
 					})
 					dispatch({
@@ -582,10 +582,6 @@ function ArticleEditor({
 			}
 		}
 		reader.readAsDataURL(fileList)
-
-
-
-
 	}
 
 
@@ -1110,9 +1106,9 @@ function ArticleEditor({
 					],
 
 				})(
-					<div>
-						{ArticleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
-							<img  src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
+					<div className={styles.imgxbox}>
+						{ArticleList.articleImage == "" ? <div className={styles.bgImg}> <Icon type="plus" /></div> :
+							<img  src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} />
 						}
 						<input id='uploadInput1' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
 						onChange={imgupload} />

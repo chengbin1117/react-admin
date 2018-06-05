@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,flag,imgSize,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
+  const {artSorce,flag,imgtype,imgSize,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -136,12 +136,11 @@ function Release_article({location,dispatch,router,content,setting}) {
   }
   const FtModalProps ={
   	visible:FtVisible,
-  	activeImg:activeImg,
+    activeImg:activeImg,
+    imgtype,
   	onCancel(){
        var docobj = document.getElementById("uploadInput1");
-       var docobj2 = document.getElementById("uploadInput2");
        docobj.setAttribute('type','file');
-       docobj2.setAttribute('type','file');
   		 dispatch({
   		    type:'content/hidefpModal',
   		    payload:{

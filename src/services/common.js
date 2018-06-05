@@ -268,8 +268,8 @@ let apkUrl = "https://dev.kg.com/admin/appvm/uploadFile"; //开发环境视频�
 //let urlprefix = "http://172.16.2.78:8090";  //王洋
 //let urlprefix = "http://172.16.2.62:8083/";  //连鹏
 //let urlprefix = "http://172.16.1.156:9080/kgapi/";  //勇哥
-let urlprefix = "http://172.16.1.70:8083";  //香
-//let urlprefix = "https://dev.kg.com";//开发
+//let urlprefix = "http://172.16.1.70:8083";  //香
+let urlprefix = "https://dev.kg.com";//开发
 //let urlprefix = "https://www.kg.com"; //生产&&测试
 
 export {

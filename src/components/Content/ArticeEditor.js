@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-01 20:49:45
+ * @Last Modified time: 2018-06-05 17:42:48
  */
 
 
@@ -39,7 +39,7 @@ const RadioGroup = Radio.Group;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
-const confirm =Modal.confirm;
+const confirm = Modal.confirm;
 let artSorce = 0;
 let timeDis = true;
 let sec = 0;
@@ -90,6 +90,7 @@ function ArticleEditor({
 	ifPushValue,
 	loading,
 	imgSize,
+	flag,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -99,23 +100,23 @@ function ArticleEditor({
 }) {
 	let merId = localStorage.getItem("userId");
 	let articleList = JSON.parse(localStorage.getItem("articleList"));
-	const imgArr = [imgx, imgy, imgz, imgw,imga,imgb,imgc,imgd];  //默认背景图；
+	const imgArr = [imgx, imgy, imgz, imgw, imga, imgb, imgc, imgd];  //默认背景图；
 	const options = ColumnList;
-	
+
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
-	
+	console.log(flag)
 	function handleSubmit() {
 		validateFields((errors, fieldsValue) => {
 			if (errors) {
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-			
-				if(data.time!=undefined){
-					data.time =data.time.format('YYYY-MM-DD HH:mm')
+
+				if (data.time != undefined) {
+					data.time = data.time.format('YYYY-MM-DD HH:mm')
 				}
-				
+
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
 				let CX = dds.split('&nbsp;');
@@ -127,7 +128,7 @@ function ArticleEditor({
 				lg = lg.replace(/\s+/g, "")
 				lg = lg.replace(/<\/?.+?>/g, "");
 				lg = lg.replace(/[\r\n]/g, "");
-				
+
 				if (lg.length > 30000) {
 					message.error('文章内容不能超过30000字');
 					return true
@@ -156,7 +157,7 @@ function ArticleEditor({
 				}
 
 				if (ArticleList.sysUser == null) {
-					if(ArticleList.publishStatus == '2'){
+					if (ArticleList.publishStatus == '2') {
 						dispatch({
 							type: 'content/publishArticle',
 							payload: {
@@ -167,12 +168,12 @@ function ArticleEditor({
 								description: (data.artic == undefined || data.artic == "") ? lg.substring(0, 100) : data.artic,
 								image: imgUrl == '' ? data.image : imgUrl,
 								type: parseInt(data.type),
-								columnId: data.publishStatus == 1?parseInt(data.column[0]):null,
-								secondColumn: data.publishStatus == 1?parseInt(data.column[1]):null,
+								columnId: data.publishStatus == 1 ? parseInt(data.column[0]) : null,
+								secondColumn: data.publishStatus == 1 ? parseInt(data.column[1]) : null,
 								displayStatus: parseInt(data.radioT),
 								displayOrder: parseInt(data.sort),
 								commentSet: data.commentSet == "true" ? true : false,
-								publishSet:0,
+								publishSet: 0,
 								createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
 								bonusStatus: parseInt(data.bonusStatus),
 								articleSource: data.articleSource,
@@ -183,16 +184,16 @@ function ArticleEditor({
 								thumbupNum: data.thumbupNum,
 								collectNum: data.collectNum,
 								editArticle: editArticle,
-								auditUser:merId,
-								ifPush:ifPushValue,
-								ifPlatformPublishAward:data.ifPlatformPublishAward,
-								refuseReason:data.publishStatus == 1?null:data.refuseReason
+								auditUser: merId,
+								ifPush: ifPushValue,
+								ifPlatformPublishAward: data.ifPlatformPublishAward,
+								refuseReason: data.publishStatus == 1 ? null : data.refuseReason
 							}
 						})
-					}else{
-						
+					} else {
+
 						if (data.publishStatus == "1") {
-							if(ArticleList.ifPush == '1'){
+							if (ArticleList.ifPush == '1') {
 								dispatch({
 									type: 'content/publishArticle',
 									payload: {
@@ -221,7 +222,7 @@ function ArticleEditor({
 										editArticle: editArticle,
 									}
 								})
-							}else{
+							} else {
 								dispatch({
 									type: 'content/publishArticle',
 									payload: {
@@ -237,7 +238,7 @@ function ArticleEditor({
 										displayStatus: parseInt(data.radioT),
 										displayOrder: parseInt(data.sort),
 										commentSet: data.commentSet == "true" ? true : false,
-										publishSet:0,
+										publishSet: 0,
 										createUser: ArticleList.createUser == null ? data.createUser : ArticleList.createUser,
 										bonusStatus: parseInt(data.bonusStatus),
 										articleSource: data.articleSource,
@@ -248,11 +249,11 @@ function ArticleEditor({
 										thumbupNum: data.thumbupNum,
 										collectNum: data.collectNum,
 										editArticle: editArticle,
-										ifPush:ifPushValue,
+										ifPush: ifPushValue,
 									}
 								})
 							}
-							
+
 						} else {
 							dispatch({
 								type: 'content/publishArticle',
@@ -285,9 +286,9 @@ function ArticleEditor({
 							})
 						}
 					}
-		    } else {
+				} else {
 					if (data.publishStatus == "1") {
-						if(ArticleList.ifPush == '1'){
+						if (ArticleList.ifPush == '1') {
 							dispatch({
 								type: 'content/publishArticle',
 								payload: {
@@ -316,7 +317,7 @@ function ArticleEditor({
 									editArticle: editArticle,
 								}
 							})
-						}else{
+						} else {
 							dispatch({
 								type: 'content/publishArticle',
 								payload: {
@@ -343,14 +344,14 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
-									ifPush:ifPushValue
+									ifPush: ifPushValue
 								}
 							})
 						}
-						
-					} else if(data.publishStatus == "0") {
+
+					} else if (data.publishStatus == "0") {
 						//编辑的时候保存草稿的状态
-						if(data.radioG =='1'){
+						if (data.radioG == '1') {
 							dispatch({
 								type: 'content/publishArticle',
 								payload: {
@@ -373,18 +374,18 @@ function ArticleEditor({
 									articleSource: data.articleSource,
 									articleLink: data.articleLink,
 									publishStatus: parseInt(data.publishStatus),
-									publishTime: data.time != undefined ? data.time: null,
+									publishTime: data.time != undefined ? data.time : null,
 									refuseReason: data.refuseReason,
 									textnum: lg.length,
 									browseNum: data.browseNum,
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
-									ifPush:ifPushValue,
-									ifPlatformPublishAward:data.ifPlatformPublishAward
+									ifPush: ifPushValue,
+									ifPlatformPublishAward: data.ifPlatformPublishAward
 								}
 							})
-						}else{
+						} else {
 							dispatch({
 								type: 'content/publishArticle',
 								payload: {
@@ -412,8 +413,8 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
-									ifPush:ifPushValue,
-									ifPlatformPublishAward:data.ifPlatformPublishAward
+									ifPush: ifPushValue,
+									ifPlatformPublishAward: data.ifPlatformPublishAward
 								}
 							})
 						}
@@ -434,13 +435,13 @@ function ArticleEditor({
 				return;
 			} else {
 				const data = { ...getFieldsValue() };
-				if(data.time!=undefined){
-					data.time =data.time.format('YYYY-MM-DD HH:mm')
+				if (data.time != undefined) {
+					data.time = data.time.format('YYYY-MM-DD HH:mm')
 				}
-				
+
 				var dd = (data.text).replace(/<\/?.+?>/g, "");
 				var dds = dd.replace(/ /g, "");//dds为得到后的内容
-			
+
 				let CX = dds.split('&nbsp;')
 
 				var lg = CX.join('');
@@ -489,79 +490,79 @@ function ArticleEditor({
 						articleSource: data.articleSource,
 						articleLink: data.articleLink,
 						publishStatus: 1,
-						publishTime: data.time != undefined ? data.time: null,
+						publishTime: data.time != undefined ? data.time : null,
 						textnum: lg.length,
 						browseNum: data.browseNum,
 						thumbupNum: data.thumbupNum,
 						collectNum: data.collectNum,
 						editArticle: editArticle,
-						auditUser:merId,
-						ifPush:ifPushValue,
-						ifPlatformPublishAward:data.ifPlatformPublishAward
+						auditUser: merId,
+						ifPush: ifPushValue,
+						ifPlatformPublishAward: data.ifPlatformPublishAward
 					}
 				})
 			}
 		})
 	}
 	function typeChange(e) {
-		
+
 		ArticleList.articleType = parseInt(e.target.value)
 	}
-	
+
 
 	//是否推送
 	const ifPushChange = (e) => {
 		//获取今日推送的条数
 		dispatch({
-			type:"content/getPushAticleInfo"
+			type: "content/getPushAticleInfo"
 		})
 		let val = e.target.value;
-		if(PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit){
-			if(val == 1){
+		if (PushAticleInfo.pushArticleNumber >= PushAticleInfo.pushArticleLimit) {
+			if (val == 1) {
 				confirm({
-					title:'确定推送吗?',
-					content:(<div>
-						今日已推送<span style={{color:'#f00'}}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
+					title: '确定推送吗?',
+					content: (<div>
+						今日已推送<span style={{ color: '#f00' }}>{PushAticleInfo.pushArticleNumber}</span>篇文章给用户，再推送比较影响用户体验，是否继续推送?
 					</div>),
 					okText: '是',
-					cancelText:'否',
+					cancelText: '否',
 					onOk() {
-					
+
 						dispatch({
-							type:'content/ifPushValue',
-							payload:{
-								ifPushValue:'1'
+							type: 'content/ifPushValue',
+							payload: {
+								ifPushValue: '1'
 							}
 						})
 					},
 					onCancel() {
-						
+
 						dispatch({
-							type:'content/ifPushValue',
-							payload:{
-								ifPushValue:'0'
+							type: 'content/ifPushValue',
+							payload: {
+								ifPushValue: '0'
 							}
 						})
 					},
 				})
-			}else{
+			} else {
 				dispatch({
-					type:'content/ifPushValue',
-					payload:{
-						ifPushValue:'0'
+					type: 'content/ifPushValue',
+					payload: {
+						ifPushValue: '0'
 					}
 				})
 			}
-		}else{
+		} else {
 			dispatch({
-				type:'content/ifPushValue',
-				payload:{
-					ifPushValue:val
+				type: 'content/ifPushValue',
+				payload: {
+					ifPushValue: val
 				}
 			})
-		}	
-		
-	}	
+		}
+
+	}
 
 	function range(start, end) {
 		const result = [];
@@ -577,7 +578,7 @@ function ArticleEditor({
 		var time = date - (24 * 60 * 60 * 1000);
 		var severTime = date + (7 * 24 * 60 * 60 * 1000);
 		//console.log("2",cx)
-		return  severTime < current && current > time
+		return severTime < current && current > time
 	}
 	function disabledDateTime() {
 		return {
@@ -619,9 +620,9 @@ function ArticleEditor({
 		//console.log(e.target.value)
 		value = e.target.value;
 		dispatch({
-			type:"content/publishStatusChange",
-			payload:{
-				pubStatus : e.target.value
+			type: "content/publishStatusChange",
+			payload: {
+				pubStatus: e.target.value
 			}
 		})
 	}
@@ -846,7 +847,7 @@ function ArticleEditor({
 	}
 
 	//预览文章
-	const previewPage =()=>{
+	const previewPage = () => {
 		const data = { ...getFieldsValue() };
 		// console.log(data)
 		var tagsName = "";
@@ -865,31 +866,93 @@ function ArticleEditor({
 			tagsName = data.tag1 + ',' + data.tag2 + ',' + data.tag3 + ',' + data.tag4 + ',' + data.tag5
 		}
 
-		if(data.type=="2"){
+		if (data.type == "2") {
 			localStorage.setItem("previewType", data.articleLink);
 			localStorage.setItem("previewLink", data.articleLink);
 			localStorage.setItem("previewSource", data.articleSource);
 		}
-		    localStorage.setItem("previewTitle", data.articleTitle);
-			localStorage.setItem("previewText", data.text);
-			localStorage.setItem("previewartic", "");
-			localStorage.setItem("previewdec", data.artic);
-			localStorage.setItem("previewType", data.type);
-			localStorage.setItem("previewTag", tagsName);
-		
+		localStorage.setItem("previewTitle", data.articleTitle);
+		localStorage.setItem("previewText", data.text);
+		localStorage.setItem("previewartic", "");
+		localStorage.setItem("previewdec", data.artic);
+		localStorage.setItem("previewType", data.type);
+		localStorage.setItem("previewTag", tagsName);
+
 		window.open('/#/preview')
 	}
 
 	//图片大小
-	function imgSizeChange(e){
+	function imgSizeChange(e) {
 		var val = e.target.value;  //1是小图；2是大图
-	
+
 		dispatch({
-			type:'content/imgSizeChange',
-			payload:{
-				imgSize:val
+			type: 'content/imgSizeChange',
+			payload: {
+				imgSize: val
 			}
 		})
+	}
+
+	function imgupload(e) {
+		var docobj = document.getElementById("uploadInput1");
+		var fileList = docobj.files[0];
+		//现在图片文件大小
+		var imgSize = fileList.size;
+		console.log(fileList);
+		if (imgSize > 2 * 1024 * 1024) {
+			message.error('上传的图片的大于2M,请重新选择');
+			docobj.val('');
+			var domObj = docobj[0];
+			domObj.outerHTML = domObj.outerHTML;
+			var newJqObj = docobj.clone();
+			docobj.before(newJqObj);
+			docobj.remove();
+			docobj.unbind().change(function (e) {
+				console.log(e)
+			});
+			return;
+		}
+
+		//将图片文件转换为base64
+		var coverImg = "";
+		var reader = new FileReader();
+		var imgWidth = 0;
+		var imgHeight = 0;
+		reader.onload = function (e) {
+			//加载图片获取图片真实宽度和高度
+
+			coverImg = reader.result;
+			var img = new Image();
+			img.src = coverImg;
+
+			img.onload = function (argument) {
+				imgWidth = this.width;
+				imgHeight = this.height;
+				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
+				console.log(imgWidth)
+				if (imgWidth < 365) {
+					message.warning('上传图片最小尺寸为365*200px')
+				} else if (imgHeight < 200) {
+					message.warning('上传图片最小尺寸为365*200px')
+				} else {
+					docobj.setAttribute('type', 'text');
+					dispatch({
+						type: 'content/hideBgModal',
+						payload: {
+							activeImg: coverImg,
+							imgtype:'image'
+						}
+					})
+					dispatch({
+						type: 'content/showfpModal',
+						payload: {
+
+						}
+					})
+				}
+			}
+		}
+		reader.readAsDataURL(fileList)
 	}
 	return (
 		<Form onSubmit={handleSubmit}>
@@ -918,7 +981,7 @@ function ArticleEditor({
 					],
 					trigger: 'edtiorContentText'
 				})(
-					<Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText}  articleText={ArticleList.articleText}/>
+					<Editor edtiorContent={edtiorContent} edtiorContentText={edtiorContentText} articleText={ArticleList.articleText} />
 				)}
 
 			</FormItem>
@@ -1016,22 +1079,23 @@ function ArticleEditor({
 			<FormItem
 				{...formItemLayout}
 				label={<span>封面图</span>}
-				
+
 			>
 				{getFieldDecorator('articleImgSize', {
-					initialValue:ArticleList.articleImgSize+'',
+					initialValue: ArticleList.articleImgSize + '',
 					rules: [{ required: true, message: '请选择封面图!' },
 					]
 				})(
 					<RadioGroup onChange={imgSizeChange}>
 						<Radio value="1">小图资讯</Radio>
-						<Radio value="2">大图资讯</Radio>
+						<Radio value="2" disabled={flag}>大图资讯</Radio>
 					</RadioGroup>
 				)}
 			</FormItem>
-			<FormItem
+			{imgSize == 1 ?<FormItem
 				{...formItemLayout}
-				label={<span><span style={{ color: '#f5222d' }}>*</span>封面图</span>}
+				label="&emsp;"
+				colon={false}
 				extra="找不到合适的图片？您可以用以下任一张图作为封面图"
 			>
 				{getFieldDecorator('image', {
@@ -1042,14 +1106,38 @@ function ArticleEditor({
 					],
 
 				})(
-					<div>
-						{ArticleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
-							<img onClick={showModal} src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
+					<div className={styles.smallBox}>
+						{ArticleList.articleImage == "" ? <div className={styles.ImgNoneBox}> <Icon type="plus" /></div> :
+							<img  src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} onChange={ImgHandle} className={styles.smallImg}/>
 						}
+						<input id='uploadInput1' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
+							onChange={imgupload} />
 					</div>
 				)}
-			</FormItem>
-			{imgSize==1?<FormItem
+			</FormItem>:<FormItem
+				{...formItemLayout}
+				label="&emsp;"
+				colon={false}
+				extra="找不到合适的图片？您可以用以下任一张图作为封面图"
+			>
+				{getFieldDecorator('image', {
+					initialValue: ArticleList.articleImage,
+					rules: [{ required: false, message: '请选择图片!' },
+					{ type: "string", }
+
+					],
+
+				})(
+					<div >
+						{ArticleList.articleImage == "" ? <div className={styles.bgImg}> <Icon type="plus" /></div> :
+							<img  src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} onChange={ImgHandle} className={styles.bgImg}/>
+						}
+						
+					</div>
+				)}
+			</FormItem>}
+			
+			{imgSize == 1 ? <FormItem
 				{...formLayout}
 				label="&emsp;"
 				colon={false}
@@ -1060,8 +1148,8 @@ function ArticleEditor({
 					)}
 
 				</div>
-			</FormItem>:null}
-			
+			</FormItem> : null}
+
 			{ArticleList && ArticleList.articleType == null ? <FormItem
 				{...formItemLayout}
 				label="类别"
@@ -1127,11 +1215,11 @@ function ArticleEditor({
 				{getFieldDecorator('column', {
 					initialValue: ArticleList.columnId != null ? [ArticleList.columnId, ArticleList.secondColumn] : [],
 					rules: [
-						{ required:(pubStatus==1||pubStatus==0||pubStatus==2)?true:false, message: '请选择文章栏目!' },
+						{ required: (pubStatus == 1 || pubStatus == 0 || pubStatus == 2) ? true : false, message: '请选择文章栏目!' },
 						{ type: 'array' }
 					],
 				})(
-					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: '20%' }} changeOnSelect allowClear/>
+					<Cascader options={options} placeholder="请选择文章栏目" style={{ width: '20%' }} changeOnSelect allowClear />
 				)}
 			</FormItem>
 			<FormItem
@@ -1159,7 +1247,7 @@ function ArticleEditor({
 				{getFieldDecorator('sort', {
 					initialValue: ArticleList.displayOrder,
 					rules: [
-						{ required: false, message:'请输入0以上的正整数',pattern:/^[0-9]\d*$/},
+						{ required: false, message: '请输入0以上的正整数', pattern: /^[0-9]\d*$/ },
 					],
 				})(
 					<Input style={{ width: '10%' }} />
@@ -1217,7 +1305,7 @@ function ArticleEditor({
 				label="评论设置"
 			>
 				{getFieldDecorator('commentSet', {
-					initialValue: ArticleList&&(ArticleList.commentSet == true ? "true" : 'false'),
+					initialValue: ArticleList && (ArticleList.commentSet == true ? "true" : 'false'),
 				})(
 					<RadioGroup >
 						<Radio value="true">开启评论</Radio>
@@ -1225,12 +1313,12 @@ function ArticleEditor({
 					</RadioGroup>
 				)}
 			</FormItem>
-			{ArticleList.publishStatus=='0'?<FormItem
+			{ArticleList.publishStatus == '0' ? <FormItem
 				{...formItemLayout}
 				label="定时发布"
 			>
 				{getFieldDecorator('radioG', {
-					initialValue:ArticleList.publishSet+'',
+					initialValue: ArticleList.publishSet + '',
 					rules: [{ required: true, }],
 				})(
 					<RadioGroup onChange={handleTime} disabled={(ArticleList.publishStatus != undefined && ArticleList.publishStatus == 0) ? false : true}>
@@ -1238,15 +1326,15 @@ function ArticleEditor({
 						<Radio value="0">不开启</Radio>
 					</RadioGroup>
 				)}
-			</FormItem>:null}
-			
-			{(ArticleList && ArticleList.publishSet == 1&&ArticleList.publishStatus=='0') && <FormItem
+			</FormItem> : null}
+
+			{(ArticleList && ArticleList.publishSet == 1 && ArticleList.publishStatus == '0') && <FormItem
 				{...formItemLayout}
 				label=" " colon={false}
 				extra="定时范围：从当前时间点开始至未来7天内，按自然日计算"
 			>
 				{getFieldDecorator('time', {
-					initialValue: ArticleList.publishTime == null ? "" :  moment(formatDate(ArticleList.publishTime), "YYYY-MM-DD HH:mm"),
+					initialValue: ArticleList.publishTime == null ? "" : moment(formatDate(ArticleList.publishTime), "YYYY-MM-DD HH:mm"),
 					rules: [
 						{ required: true, message: "请选择时间", },
 					],
@@ -1272,7 +1360,7 @@ function ArticleEditor({
 						{ required: true, message: "请选择关联账户", },
 					],
 				})( */}
-					<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} value={ ArticleList.username}/>
+				<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} value={ArticleList.username} />
 				{/* //)} */}
 			</FormItem>}
 			{(ArticleList.sysUser == null && ArticleList.createUser != null) && <FormItem
@@ -1286,7 +1374,7 @@ function ArticleEditor({
 						{ required: true, message: "请选择关联账户", },
 					],
 				})( */}
-					<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} value={ArticleList.username}/>
+				<Input style={{ width: '20%', marginRight: 20 + 'px' }} disabled={true} value={ArticleList.username} />
 				{/* )} */}
 			</FormItem>}
 			{(ArticleList.sysUser != null && ArticleList.createUser == null) && <FormItem
@@ -1295,7 +1383,7 @@ function ArticleEditor({
 				extra='注：若该文章为用户发布，则此处不可更改,如没有关联的账户,请进入系统账号管理关联'
 			>
 				{getFieldDecorator('createUser', {
-					
+
 					rules: [
 						{ required: true, message: "请选择关联账户", },
 					],
@@ -1362,53 +1450,53 @@ function ArticleEditor({
                       </Col>
 				</Row>
 			</FormItem> : <FormItem {...formItemLayout} label="阅读奖励">该文章暂无设置阅读奖励</FormItem> : null}
-			{ (ArticleList&&(ArticleList.publishStatus == 0||ArticleList.publishStatus == 2))?
+			{(ArticleList && (ArticleList.publishStatus == 0 || ArticleList.publishStatus == 2)) ?
 				<FormItem
-				{...formItemLayout}
-				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
-				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
-			    >
-					<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
+					{...formItemLayout}
+					label={<span><span style={{ color: "#f00" }}>*</span>是否推送</span>}
+					extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+				>
+					<RadioGroup onChange={ifPushChange} defaultValue={ifPushValue && ifPushValue} value={ifPushValue && ifPushValue}>
 						<Radio value='0'>暂时不推送</Radio>
 						<Radio value='1'>需要推送</Radio>
 					</RadioGroup>
-		     	</FormItem>:null
+				</FormItem> : null
 			}
-			{ (ArticleList&&ArticleList.publishStatus == 1)?
+			{(ArticleList && ArticleList.publishStatus == 1) ?
 				<FormItem
-				{...formItemLayout}
-				label={<span><span style={{color:"#f00"}}>*</span>是否推送</span>}
-				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
-			    >
-					<RadioGroup disabled={(ArticleList.ifPush != undefined && ArticleList.ifPush == 0) ? false : true} onChange={ifPushChange} defaultValue={ifPushValue&&ifPushValue} value={ifPushValue&&ifPushValue}>
+					{...formItemLayout}
+					label={<span><span style={{ color: "#f00" }}>*</span>是否推送</span>}
+					extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+				>
+					<RadioGroup disabled={(ArticleList.ifPush != undefined && ArticleList.ifPush == 0) ? false : true} onChange={ifPushChange} defaultValue={ifPushValue && ifPushValue} value={ifPushValue && ifPushValue}>
 						<Radio value='0'>暂时不推送</Radio>
 						<Radio value='1'>需要推送</Radio>
 					</RadioGroup>
-		     	</FormItem>:null
+				</FormItem> : null
 			}
-			{ (ArticleList&&ArticleList.publishStatus == 3)?
+			{(ArticleList && ArticleList.publishStatus == 3) ?
 				<FormItem
-				{...formItemLayout}
-				label={<span>是否推送</span>}
-				extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
-			>
-				{getFieldDecorator('ifPush', {
-					initialValue:  ArticleList.ifPush+'',
-					rules: [{ required: true, }],
-				})(
-					<RadioGroup disabled>
-						<Radio value="0">暂时不推送</Radio>
-						<Radio value="1">需要推送</Radio>
-					</RadioGroup>
-				)}
-			</FormItem>:null
+					{...formItemLayout}
+					label={<span>是否推送</span>}
+					extra="提示：选择需要推送，此篇资讯将推送至用户APP通知栏，推送不可撤回，请注意控制每日推送数量。"
+				>
+					{getFieldDecorator('ifPush', {
+						initialValue: ArticleList.ifPush + '',
+						rules: [{ required: true, }],
+					})(
+						<RadioGroup disabled>
+							<Radio value="0">暂时不推送</Radio>
+							<Radio value="1">需要推送</Radio>
+						</RadioGroup>
+					)}
+				</FormItem> : null
 			}
 			{(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem
 				{...formItemLayout}
 				label="是否发送基础发文奖励"
 			>
 				{getFieldDecorator('ifPlatformPublishAward', {
-					initialValue:  '1',
+					initialValue: '1',
 					rules: [
 						{ required: true, message: '请选择' },
 					],
@@ -1425,7 +1513,7 @@ function ArticleEditor({
 				label="是否发送基础发文奖励"
 			>
 				{getFieldDecorator('ifPlatformPublishAward', {
-					initialValue: ArticleList.ifPlatformPublishAward+'',
+					initialValue: ArticleList.ifPlatformPublishAward + '',
 					rules: [
 						{ required: true, message: '请选择' },
 					],
@@ -1465,14 +1553,14 @@ function ArticleEditor({
 					} />
 				)}
 			</FormItem> : null}
-			
+
 			<FormItem {...formItemLayout} label="&nbsp;" colon={false}>
 				<Button type="primary" onClick={handleSubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20 }} disabled={loading}>保存</Button>
 				{(ArticleList && ArticleList.publishStatus == 0) &&
 					<Button type="primary" onClick={pubsubmit} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }} disabled={loading}>发布</Button>
 				}
-				<Button  type="primary"   onClick={()=>previewPage()}  size="large"  className={styles.preview} style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>预览</Button>
-				<Button  onClick={()=>history.back()} size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }}>返回</Button>
+				<Button type="primary" onClick={() => previewPage()} size="large" className={styles.preview} style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>预览</Button>
+				<Button onClick={() => history.back()} size="large" style={{ paddingLeft: 20, paddingRight: 20, marginLeft: 30 }}>返回</Button>
 				<RelationModal {...RelationModalProps} />
 			</FormItem>
 		</Form>

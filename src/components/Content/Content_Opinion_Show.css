@@ -93,6 +93,16 @@
   left:100px;
   border: 0px;
 }
+.info{
+	width:80%;
+	height:180px;
+	padding:0 10px;
+	padding-top:60px;
+	margin-left: 80px;
+	border:1px dashed #e5e5e5;
+	font-size:16px;
+	color:#000;
+}
 .upLoadBtn{
   position: absolute;
   top:0px;
@@ -169,6 +179,22 @@
 }
 .smallBox{
 	width:320px;
+	height:180px;
+	line-height: 180px;
+	text-align: center;
+	border-radius: 4px;
+	position: relative;
+}
+.imgxbox{
+	width:320px;
+	height:180px;
+	line-height: 180px;
+	text-align: center;
+	border-radius: 4px;
+	position: relative;
+}
+.ImgNoneBox{
+	width:270px;
 	height:180px;
 	line-height: 180px;
 	text-align: center;
