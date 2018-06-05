@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-04 20:55:03
+ * @Last Modified time: 2018-06-05 14:18:04
  */
 
 
@@ -19,6 +19,7 @@ const Option = Select.Option;
 function NewsAdd({
 	dispatch,
 	item,
+	confirmLoading:confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -46,7 +47,7 @@ function NewsAdd({
 	//编辑器内容验证
 
 	function onChange(rule, value, callback) {
-		console.log(value)
+
 		if (value == undefined) {
 			callback()
 		} else {
@@ -64,7 +65,8 @@ function NewsAdd({
 			lg = lg.replace(/<\/?.+?>/g, "");
 			lg = lg.replace(/[\r\n]/g, "");
 			//console.log(html)
-			
+
+			console.log(lg.length)
 			if (value == "") {
 				callback('请输入正文')
 			}else if(value == '<p><br></p>'){
@@ -76,20 +78,18 @@ function NewsAdd({
 			}
 		}
 	}
-	//点击添加公告
+	//点击编辑公告
 	function onSubmit(){
 		validateFields((err, fieldsValue) => {
 			if (!err) {
-				var str = ""
-				
 				const data = {
 					id:item.id,
+					userId:merId,
 					...fieldsValue
 				}
-				
 				console.log(data)
 				dispatch({
-					type:'notice/updateNoticeInfo',
+					type:'notice/updateNotice',
 					payload:{
 						...data
 					}
@@ -101,6 +101,7 @@ function NewsAdd({
 		<Form>
 			<FormItem label="公告标题" {...formItemLayout}>
 				{getFieldDecorator('title', {
+					initialValue:item&&item.title,
 					rules: [{
 						required: true,message:'请输入公告标题',
 					},{
@@ -117,6 +118,7 @@ function NewsAdd({
 			</FormItem>
 			<FormItem {...formItemLayout} label="公告正文">
 				{getFieldDecorator('info', {
+					initialValue:item&&item.info,
 					rules: [
 						{ required: true, message: '请输入公告正文!' },
 						{ type: "object", validator: onChange }
@@ -127,7 +129,7 @@ function NewsAdd({
 				)}
 			</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
-			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()}>发布</Button>
+			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()} loading={confirmLoading}>保存</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>
 			</FormItem>
 		</Form>

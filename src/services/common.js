@@ -265,10 +265,11 @@ let apkUrl = "https://dev.kg.com/admin/appvm/uploadFile"; //开发环境视频�
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 //let urlprefix = "http://172.16.1.97:8080/kgapi";  //文全
-//let urlprefix = "http://172.16.0.243:8080/kgapi";  //王洋
+//let urlprefix = "http://172.16.2.78:8090";  //王洋
 //let urlprefix = "http://172.16.2.62:8083/";  //连鹏
 //let urlprefix = "http://172.16.1.156:9080/kgapi/";  //勇哥
-let urlprefix = "https://dev.kg.com";//开发
+let urlprefix = "http://172.16.1.70:8083";  //香
+//let urlprefix = "https://dev.kg.com";//开发
 //let urlprefix = "https://www.kg.com"; //生产&&测试
 
 export {

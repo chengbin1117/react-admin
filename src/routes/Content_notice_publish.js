@@ -18,17 +18,18 @@ import styles from "./Common.css";
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const Option = Select.Option;
-function ContentArticle({ location, dispatch, router, content }) {
+function ContentArticle({ location, dispatch, router, notice }) {
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
 	//console.log("location",location)
 	if (!token) {
 		dispatch(routerRedux.push('/'))
 	}
-
+	const {confirmLoading} = notice;
 	//父子组件传值
 	const NoticeAddProps = {
-		dispatch:dispatch
+		dispatch:dispatch,
+		confirmLoading:confirmLoading,
 	}
 	return (
 		<div >
@@ -43,10 +44,10 @@ ContentArticle.propTypes = {
 };
 
 function mapStateToProps({
-	content
+	notice
 }) {
 	return {
-		content
+		notice
 	};
 }
 

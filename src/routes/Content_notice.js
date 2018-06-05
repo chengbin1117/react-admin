@@ -18,7 +18,7 @@ import styles from "./Common.css";
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const Option = Select.Option;
-function ContentArticle({ location, dispatch, router, content }) {
+function ContentArticle({ location, dispatch, router, notice }) {
 	let merId = localStorage.getItem("userId");
 	let token = localStorage.getItem("Kgtoken");
 	//console.log("location",location)
@@ -27,44 +27,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 	}
 
 	const options = [];
-	const { loading, ArticleList, ColumnList, ArticleListNumber, currentPage } = content
-	const Content_ArticleProps = {
-		dispatch,
-		loading,
-		ArticleList,
-		ColumnList,
-		total: ArticleListNumber,
-		currentPage: currentPage,
-		editorItem(record) {
-			dispatch({
-				type: "content/getArticleDetile",
-				payload: {
-					articleId: record.articleId,
-				}
-			})
-			//dispatch(routerRedux.push('/content/editor_article?articleId='+record.articleId))
-
-		},
-		changepage(page) {
-			const search = GetRequest(location.search);
-
-			if (search.articleTitle == "undefined" || search.articleTitle == undefined) {
-				dispatch(routerRedux.push('/content/content_article?page=' + page +
-					"&articleId=" + search.articleId + "&publishStatus=" + search.publishStatus +
-					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn
-					+ '&orderByClause=' + search.orderByClause + "&createUser=" + search.createUser + '&ifPlatformPublishAward=' + search.ifPlatformPublishAward + '&articleFrom=' + search.articleFrom
-				))
-			} else {
-				dispatch(routerRedux.push('/content/content_article?page=' + page +
-					"&articleId=" + search.articleId
-					+ "&articleTitle=" + search.articleTitle + "&publishStatus=" + search.publishStatus +
-					"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&secondColumn=" + search.secondColumn + '&orderByClause=' + search.orderByClause
-					+ "&createUser=" + search.createUser + '&ifPlatformPublishAward=' + search.ifPlatformPublishAward + '&articleFrom=' + search.articleFrom
-				))
-			}
-		}
-	}
-
+	const { loading, NotciceList, totalNumber, currentPage } = notice
 
 	//搜索
 	function getFields(getFieldDecorator, formItemLayout) {
@@ -133,7 +96,7 @@ function ContentArticle({ location, dispatch, router, content }) {
 		}
 		dispatch(
 			routerRedux.push(
-				'/content/content_article?page=1' + "&addUser=" + values.addUser +"&updateUser=" + values.updateUser 
+				'/content/notice?page=1' + "&addUser=" + values.addUser +"&updateUser=" + values.updateUser 
 		    )
 	    )
 
@@ -147,14 +110,18 @@ function ContentArticle({ location, dispatch, router, content }) {
 
 	//列表传值
 	const NoticeTableProps = {
+		data:NotciceList,
+		loading:loading,
+		total:totalNumber,
+		currentPage:currentPage,
 		editorItem(item){
-			// dispatch({
-			// 	type:"notice/getNoticeById",
-			// 	payload:{
-			// 		id:item.id
-			// 	}
-			// })
-			dispatch(routerRedux.push('/content/notice_editor'))
+			dispatch({
+				type:"notice/getNoticeById",
+				payload:{
+					id:item.id
+				}
+			})
+			//dispatch(routerRedux.push('/content/notice_editor'))
 		},
 		deleteItem(record){
 			dispatch({
@@ -164,6 +131,14 @@ function ContentArticle({ location, dispatch, router, content }) {
 					search:location.search
 				}
 			})
+		},
+		handelchande(page){
+			const values = location.search
+			dispatch(
+				routerRedux.push(
+					'/content/notice?page=' +page+ "&addUser=" + values.addUser +"&updateUser=" + values.updateUser 
+				)
+			)
 		}
 	}
 	return (
@@ -181,10 +156,10 @@ ContentArticle.propTypes = {
 };
 
 function mapStateToProps({
-	content
+	notice
 }) {
 	return {
-		content
+		notice
 	};
 }
 

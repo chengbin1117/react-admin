@@ -72,7 +72,7 @@ function StandardTable({ data, loading, total, editorItem, deleteItem, handelcha
 			<Table
 				rowKey={record => record.id}
 				loading={loading}
-				dataSource={list}
+				dataSource={data}
 				columns={columns}
 				pagination={paginationProps}
 			/>

@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-04 20:54:24
+ * @Last Modified time: 2018-06-05 14:14:30
  */
 
 
@@ -18,7 +18,7 @@ const { CheckableTag } = Tag;
 const Option = Select.Option;
 function NewsAdd({
 	dispatch,
-	afterClose,
+	confirmLoading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -46,7 +46,6 @@ function NewsAdd({
 	//编辑器内容验证
 
 	function onChange(rule, value, callback) {
-		console.log(value)
 		if (value == undefined) {
 			callback()
 		} else {
@@ -63,7 +62,7 @@ function NewsAdd({
 			lg = lg.replace(/\s+/g, "")
 			lg = lg.replace(/<\/?.+?>/g, "");
 			lg = lg.replace(/[\r\n]/g, "");
-			//console.log(html)
+			console.log(lg.length)
 			
 			if (value == "") {
 				callback('请输入正文')
@@ -83,10 +82,9 @@ function NewsAdd({
 				var str = ""
 				
 				const data = {
+					userId:merId,
 					...fieldsValue
 				}
-				
-				console.log(data)
 				dispatch({
 					type:'notice/addNoticeInfo',
 					payload:{
@@ -115,7 +113,7 @@ function NewsAdd({
 				<span style={{ color: "#aaa", marginLeft: 20 }}>1-64个字符</span>
 			</FormItem>
 			<FormItem {...formItemLayout} label="公告正文">
-				{getFieldDecorator('addInfo', {
+				{getFieldDecorator('info', {
 					rules: [
 						{ required: true, message: '请输入公告正文!' },
 						{ type: "object", validator: onChange }
@@ -126,7 +124,7 @@ function NewsAdd({
 				)}
 			</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
-			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()}>发布</Button>
+			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()} loading={confirmLoading}>发布</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>
 			</FormItem>
 		</Form>

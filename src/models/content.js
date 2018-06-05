@@ -194,6 +194,14 @@ export default {
 							
 						}
 					})
+					dispatch({
+						type: 'flagChange',
+						payload: {
+							flag: false,
+							
+						}
+					})
+
 
 				}
 				match = pathToRegexp('/content/EditorVideo').exec(location.pathname);
@@ -2073,6 +2081,15 @@ export default {
 				}
 			})
 		},
+		*flagChange({ payload }, { call, put }) {
+		
+			yield put({
+				type: "flagChangeSuccess",
+				payload: {
+					flag:payload.flag,
+				}
+			})
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -2496,6 +2513,12 @@ export default {
 			};
 		},
 		imgUrlChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		flagChangeSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,

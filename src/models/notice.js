@@ -1,5 +1,5 @@
 import pathToRegexp from 'path-to-regexp';
-import { addNoticeInfo,delNotice,getBkgNoticeInfo,updateNotice} from '../services/notice';
+import { addNoticeInfo,deleteNotice,getBkgNoticeInfo,updateNotice,getNoticeById} from '../services/notice';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
 import {
 	message
@@ -35,11 +35,21 @@ export default {
 						payload: {
 							currentPage: search.page,
 							pageSize:25,
+							addUser: (search.addUser == 'undefined' ||search.addUser==undefined)? null : Base64.decode(search.addUser),
+							updateUser: (search.updateUser == 'undefined' ||search.updateUser==undefined)? null : Base64.decode(search.updateUser),
 						}
 					});
-					
 				}
-		
+				match = pathToRegexp('/content/notice_editor').exec(location.pathname);
+				if(match){
+					const search = GetRequest(location.search);
+					dispatch({
+						type: 'getById',
+						payload: {
+							id: search.id,
+						}
+					});
+				}
 				
 			})
 		},
@@ -51,19 +61,18 @@ export default {
 				type: 'showLoading',
 			});
 			const { data } = yield call(getBkgNoticeInfo, payload);
-			//console.log("图片",data)
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-				for (var i in res.data) {
-					res.data[i].createDate = formatDate(res.data[i].createDate)
-				}
+				// for (var i in res.data) {
+				// 	res.data[i].createDate = formatDate(res.data[i].createDate)
+				// }
 				yield put({
-					type: 'siteimagelistSuccess',
+					type: 'getBkgNoticeInfoSuccess',
 					payload: {
 						NotciceList: res.data,
 						loading: false,
 						currentPage: res.currentPage,
-						totalNumber: res.totalNumber
+						totalNumber: res.total
 					}
 				});
 			} else {
@@ -135,9 +144,9 @@ export default {
 		},
 		*delNotice({ payload }, { call, put }) {
 			let params = {
-				id:payload.imageId
+				id:payload.id
 			}
-			const { data } = yield call(delNotice, params);
+			const { data } = yield call(deleteNotice, params);
 			//console.log("图片",data)
 			if (data && data.code == 10000) {
 				message.success('公告删除成功');
@@ -147,6 +156,8 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
+						addUser: (search.addUser == 'undefined' ||search.addUser==undefined)? null : Base64.decode(search.addUser),
+						updateUser: (search.updateUser == 'undefined' ||search.updateUser==undefined)? null : Base64.decode(search.updateUser),
 					}
 				});
 			} else {
@@ -159,9 +170,9 @@ export default {
 			}
 		},
 		*getNoticeById({ payload }, { call, put }) {
-			yield put({
-				type:'showLoading'
-			})
+			// yield put({
+			// 	type:'showLoading'
+			// })
 			const { data } = yield call(getNoticeById, payload);
 			
 			if (data && data.code == 10000) {
@@ -174,7 +185,8 @@ export default {
 						loading:false
 					}
 				})
-				//yield put(routerRedux.push('/content/notice_editor?id'+payload.id))
+				localStorage.setItem("articleText", res.info);
+				yield put(routerRedux.push('/content/notice_editor?id='+payload.id))
 			} else {
 				yield put({
 					type: "hideLoading"
@@ -187,7 +199,34 @@ export default {
 				}
 			}
 		},
-
+		*getById({ payload }, { call, put }) {
+			yield put({
+				type:'showLoading'
+			})
+			const { data } = yield call(getNoticeById, payload);
+			
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				yield put({
+					type: "getNoticeByIdSuccess",
+					payload:{
+						NoticeItem:res,
+						loading:false
+					}
+				})
+				localStorage.setItem("articleText", res.info);
+			} else {
+				yield put({
+					type: "hideLoading"
+				})
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+			}
+		},
 
 	},
 	reducers: {
@@ -227,7 +266,7 @@ export default {
 		uploadingSuccess(state, action) {
 			return {...state,...action.payload};
 		},
-		siteimagelistSuccess(state, action) {
+		getBkgNoticeInfoSuccess(state, action) {
 			return {...state,...action.payload};
 		},
 		ImgtypeChangeSuccess(state, action) {

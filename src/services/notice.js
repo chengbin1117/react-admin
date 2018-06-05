@@ -18,10 +18,17 @@ export async function getBkgNoticeInfo(params) {
 //添加公告
 export async function addNoticeInfo(params) {
 	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/notice/addNoticeInfo?data='+encodeURIComponent(data)+"&sign="+sign;
+	var sign = SignUrl(data)
+	let myHeaders = new Headers();
+	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+	let url = '/admin/notice/addNoticeInfo';
+	let formData = new FormData();
+   	formData.append('data', data);
+   	formData.append('sign', sign);
 	return request(url,{
-		method:"post"
+		method:"post",
+		body:formData,
+		headers:myHeaders,
 	}
 	);
 }
@@ -29,18 +36,25 @@ export async function addNoticeInfo(params) {
 //编辑公告
 export async function updateNotice(params) {
 	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/notice/updateNotice?data='+encodeURIComponent(data)+"&sign="+sign;
+	var sign = SignUrl(data)
+	let myHeaders = new Headers();
+	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+	let url = '/admin/notice/updateNotice';
+	let formData = new FormData();
+   	formData.append('data', data);
+   	formData.append('sign', sign);
 	return request(url,{
-		method:"post"
+		method:"post",
+		body:formData,
+		headers:myHeaders,
 	}
 	);
 }
 //删除公告
-export async function delNotice(params) {
+export async function deleteNotice(params) {
 	var data = Base64Url(params)
     var sign = SignUrl(data)
-	let url = '/admin/notice/delNotice?data='+encodeURIComponent(data)+"&sign="+sign;
+	let url = '/admin/notice/deleteNotice?data='+encodeURIComponent(data)+"&sign="+sign;
 	return request(url,{
 		method:"post"
 	}
