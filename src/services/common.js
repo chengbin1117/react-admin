@@ -129,23 +129,23 @@ let residences = [{
   value: '1',
   label: '首页',
   children: [{
-    "value": '1',
+    "value": '11',
     "label": "banner"
   }, {
-    "value": '2',
+    "value": '12',
     "label": "通栏横幅"
   }, {
-    "value": '3',
+    "value": '13',
     "label": "热门视频下方矩形广告"
   }, {
-    "value": '4',
+    "value": '14',
     "label": "最新资讯列表横幅"
   }, {
-    "value": '5',
+    "value": '15',
     "label": "热门专栏下方小横幅"
   },
   {
-    "value": '6',
+    "value": '16',
     "label": "热门关键词下方小横幅"
   }
   ],
@@ -153,29 +153,29 @@ let residences = [{
   value: '2',
   label: '栏目/TAG列表页',
   children: [{
-    "value": '1',
+    "value": '21',
     "label": "热门文章下方矩形广告"
   }]
 }, {
   value: '3',
   label: '搜索浮层',
   children: [{
-    "value": '1',
+    "value": '31',
     "label": "小横幅"
   }]
 }, {
   value: '4',
   label: '资讯详情页',
   children: [{
-    "value": '1',
+    "value": '41',
     "label": "顶部通栏横幅",
   },
   {
-    "value": '2',
+    "value": '42',
     "label": "作者信息下方矩形广告",
   },
   {
-    "value": '3',
+    "value": '43',
     "label": "正文底部横幅",
   },]
 }, {
@@ -183,11 +183,11 @@ let residences = [{
   label: '视频详情页',
   children: [
   {
-    "value": '1',
+    "value": '51',
     "label": "为你推荐上方横幅",
   },
   {
-    "value": '2',
+    "value": '52',
     "label": "热门视频上方横幅",
   },]
 }];
