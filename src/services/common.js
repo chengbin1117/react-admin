@@ -15,19 +15,19 @@ let Base64 = require('js-base64').Base64;
 
 
 function p(s) {
-        return s < 10 ? '0' + s: s;
-    }
+  return s < 10 ? '0' + s : s;
+}
 //获取年份
 
-export  function formatDate(now)   {
-      var   now= new Date(now)
-      var   year=now.getFullYear(); 
-      var   month=now.getMonth()+1;     
-      var   date=now.getDate();     
-      var   hour=now.getHours();     
-      var   minute=now.getMinutes();     
-      var   second=now.getSeconds();     
-      return   year+"-"+p(month)+"-"+p(date)+"   "+p(hour)+":"+p(minute)+":"+p(second);
+export function formatDate(now) {
+  var now = new Date(now)
+  var year = now.getFullYear();
+  var month = now.getMonth() + 1;
+  var date = now.getDate();
+  var hour = now.getHours();
+  var minute = now.getMinutes();
+  var second = now.getSeconds();
+  return year + "-" + p(month) + "-" + p(date) + "   " + p(hour) + ":" + p(minute) + ":" + p(second);
 }
 
 
@@ -37,55 +37,55 @@ export function timeFormat(date) {
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
     year = d.getFullYear();
- 
+
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
- 
+
   return [year, month, day].join('-');
 }
 
 
 //token失效
-export function tokenLogOut(data,dispatch) {
-    if(data.code ==10004){
-         message.error(data.message,5);
-         dispatch(routerRedux.push("/#/user/user_admin"))
-        //history.go('/#/')
-        
+export function tokenLogOut(data, dispatch) {
+  if (data.code == 10004) {
+    message.error(data.message, 5);
+    dispatch(routerRedux.push("/#/user/user_admin"))
+    //history.go('/#/')
 
-    }else{
-      message.error(data.message);
+
+  } else {
+    message.error(data.message);
+  }
+
+}
+
+export function GetRequest(url) {
+  // /var url = location.search; //获取url中"?"符后的字串   
+  var theRequest = new Object();
+  if (url.indexOf("?") != -1) {
+    var str = url.substr(1);
+    var strs = str.split("&");
+    for (var i = 0; i < strs.length; i++) {
+      theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
     }
+  }
+  return theRequest;
 
 }
 
-export function GetRequest(url) {   
-   // /var url = location.search; //获取url中"?"符后的字串   
-   var theRequest = new Object();   
-   if (url.indexOf("?") != -1) {   
-      var str = url.substr(1);   
-      var strs = str.split("&");   
-      for(var i = 0; i < strs.length; i ++) {   
-         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
-      }   
-   }   
-   return theRequest; 
-
+export function Base64Url(params) {
+  var data = Base64.encode(JSON.stringify(params));
+  return data
 }
 
-export function Base64Url(params){
-    var data = Base64.encode(JSON.stringify(params));
-    return data
+export function SignUrl(data) {
+  let userId = localStorage.getItem('userId')
+  let token = localStorage.getItem('Kgtoken')
+  var sign = md5(data + userId + '_' + token)
+  return sign
 }
 
-export function SignUrl (data){
-    let userId = localStorage.getItem('userId')
-    let token = localStorage.getItem('Kgtoken')
-    var sign = md5(data+userId+'_'+token)
-    return sign
-}
-
-let options ={
+let options = {
   "lang": {
     "placeholder": "选择时间",
     "rangePlaceholder": [
@@ -126,95 +126,114 @@ let options ={
 
 //图片显示位置
 let residences = [{
-      value: '1',
-      label: '首页',
-      children: [{
-            "value":'11',
-            "label":"首页banner"
-         },{
-            "value":'12',
-            "label":"首页banner下方小幅图片"
-         },{
-            "value":'13',
-            "label":"首页资讯列表横幅"
-         },{
-            "value":'14',
-            "label":"首页右侧top排行上方宽幅图片"
-         },{
-            "value":'15',
-            "label":"首页右侧热门作者下方小横幅"
-         },
-         {
-          "value":'16',
-          "label":"首页行情条下方横幅图片"
-         }
-        ],
-    }, {
-      value: '2',
-      label: '栏目列表',
-      children: [{
-          "value":'21',
-          "label":"栏目页右侧top排行上方宽幅图片"
-        },{
+  value: '1',
+  label: '首页',
+  children: [{
+    "value": '11',
+    "label": "banner"
+  }, {
+    "value": '12',
+    "label": "通栏横幅"
+  }, {
+    "value": '13',
+    "label": "热门视频下方矩形广告"
+  }, {
+    "value": '14',
+    "label": "最新资讯列表横幅"
+  }, {
+    "value": '15',
+    "label": "热门专栏下方小横幅"
+  },
+  {
+    "value": '16',
+    "label": "热门关键词下方小横幅"
+  }
+  ],
+}, {
+  value: '2',
+  label: '栏目/TAG列表页',
+  children: [{
+    "value": '21',
+    "label": "热门文章下方矩形广告"
+  }]
+}, {
+  value: '3',
+  label: '搜索浮层',
+  children: [{
+    "value": '31',
+    "label": "小横幅"
+  }]
+}, {
+  value: '4',
+  label: '资讯详情页',
+  children: [{
+    "value": '41',
+    "label": "顶部通栏横幅",
+  },
+  {
+    "value": '42',
+    "label": "作者信息下方矩形广告",
+  },
+  {
+    "value": '43',
+    "label": "正文底部横幅",
+  },]
+}, {
+  value: '5',
+  label: '视频详情页',
+  children: [
+  {
+    "value": '51',
+    "label": "为你推荐上方横幅",
+  },
+  {
+    "value": '52',
+    "label": "热门视频上方横幅",
+  },]
+}];
 
-          "value":"22",
-          "label":"tag列表右侧top排行上方宽幅图片"
-        }]
-    },{
-      value: '4',
-      label: '资讯详情',
-      children: [{
-          "value":'41',
-          "label":"资讯详情页顶部通栏",
-         },
-         {
-          "value":'42',
-          "label":"资讯详情页正文声明下方横幅",
-         },
-         {
-          "value":'43',
-          "label":"资讯详情页右侧top排行上方宽幅图片",
-         },]
-    }];
+
+//广告行业关键词
+const keWordList = ['区块链', '比特币', 'btc', '以太坊', 'eth', '挖矿', '数字货币', '数字钱包', '区块链底层技术', '区块链数据服务', '区块链信息安全', '区块链工具', '金融', '医疗', '房产', '社交', '游戏', '物流']
+
 //Blob
 export function dataURLtoBlob(dataurl) {  //将base64格式图片转换为文件形式
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], {type:mime});
+  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
 }
 //去HTML标签正则
-export function delHtmlTag(str)
-{
-    //去掉所有的html标记
-    return str.replace(/<[^>]+>/g,"");
+export function delHtmlTag(str) {
+  //去掉所有的html标记
+  return str.replace(/<[^>]+>/g, "");
 }
 
 //转化base64
-export function  getBase64(img){
-        function getBase64Image(img,width,height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
-          var canvas = document.createElement("canvas");
-          canvas.width = width ? width : img.width;
-          canvas.height = height ? height : img.height;
- 
-          var ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          var dataURL = canvas.toDataURL();
-          return dataURL;
-        }
-        var image = new Image();
-        image.crossOrigin = '';
-        image.src = img;
-        var deferred=$.Deferred();
-        if(img){
-          image.onload =function (){
-            deferred.resolve(getBase64Image(image));//将base64传给done上传处理
-          }
-          return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
-        }
-      }
+export function getBase64(img) {
+  function getBase64Image(img, width, height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
+    var canvas = document.createElement("canvas");
+    canvas.width = width ? width : img.width;
+    canvas.height = height ? height : img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    var dataURL = canvas.toDataURL();
+    return dataURL;
+  }
+  var image = new Image();
+  image.crossOrigin = '';
+  image.src = img;
+  var deferred = $.Deferred();
+  if (img) {
+    image.onload = function () {
+      deferred.resolve(getBase64Image(image));//将base64传给done上传处理
+    }
+    return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
+  }
+}
 
 //预览前台地址
 //let previewUrl = "http://kg.btc123.com/dist/views/detail/list.html"; //开发
@@ -249,11 +268,6 @@ let apkUrl = "https://test.kg.com/admin/appvm/uploadFile/"; //正式环境视频
 let urlprefix = "https://test.kg.com"; //生产&&测试
 
 
-
-
-
-
-
 export {
   ImgUrl,
   uploadUrl,
@@ -263,5 +277,6 @@ export {
   videoUrl,
   uploadVideoUrl,
   previewUrl,
-  apkUrl
+  apkUrl,
+  keWordList
 }

@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
+  const {artSorce,flag,imgtype,imgSize,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -56,6 +56,8 @@ function Release_article({location,dispatch,router,content,setting}) {
     validateStatus,
     helpMessage,
     editorContent,
+    imgSize,
+    flag,
     handlsearch(values){
        
     },
@@ -134,8 +136,11 @@ function Release_article({location,dispatch,router,content,setting}) {
   }
   const FtModalProps ={
   	visible:FtVisible,
-  	activeImg:activeImg,
+    activeImg:activeImg,
+    imgtype,
   	onCancel(){
+       var docobj = document.getElementById("uploadInput1");
+       docobj.setAttribute('type','file');
   		 dispatch({
   		    type:'content/hidefpModal',
   		    payload:{
@@ -144,9 +149,13 @@ function Release_article({location,dispatch,router,content,setting}) {
   	    })
       
   	},
-  	oncroup(src){
+  	oncroup(src,flag){
       var s = dataURLtoBlob(src)
-      //console.log(s)
+      var docobj = document.getElementById("uploadInput1");
+      //var docobj2 = document.getElementById("uploadInput2");
+      //console.log(docobj,docobj2)
+      docobj.setAttribute('type','file');
+      //docobj2.setAttribute('type','file');
       let formData = new FormData();
             formData.append('name', 'file');
             formData.append('file', s);
@@ -164,7 +173,8 @@ function Release_article({location,dispatch,router,content,setting}) {
                     dispatch({
                       type:'content/hidefpModal',
                       payload:{
-                        imgUrl:res.data[0].filePath
+                        imgUrl:res.data[0].filePath,
+                        flag:flag
                       }
                     })    
                 }

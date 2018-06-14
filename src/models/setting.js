@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import {
 	getBaseinfoList, deleteBaseinfo, getSysUserList, sysuserSetStatus, resetPassword, getPostList,
 	getPost, getAuthTree, postSetStatus, addSysUser, setKgUser, addBaseinfo, addPost, setInfoStatus,
-	getUserId, getRelUser, unsetKgUser
+	getUserId, getRelUser, unsetKgUser,getRevenueSet,revenueSet
 
 } from '../services/setting';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
@@ -30,6 +30,7 @@ export default {
 		totalNumber: 0,
 		getRelUserList: [],//关联账户列表
 		confirmLoading: false,
+		setShow:0,  //是否展示排行
 	},
 
 	subscriptions: {
@@ -81,7 +82,6 @@ export default {
 					})
 				}
 				match = pathToRegexp('/setting/addinfo').exec(location.pathname);
-
 				if (match) {
 					const search = GetRequest(location.search);
 					dispatch({
@@ -90,8 +90,16 @@ export default {
 							id: search.id
 						}
 					})
-
-
+				}
+				match = pathToRegexp('/setting/system').exec(location.pathname);
+				if (match) {
+					const search = GetRequest(location.search);
+					dispatch({
+						type: 'getRevenueSet',
+						payload: {
+						
+						}
+					})
 				}
 			})
 		},
@@ -622,6 +630,63 @@ export default {
 				}
 			}
 		},
+		*getRevenueSet({ payload }, { call, put }) {
+			yield put({
+				type: 'showLoading',
+			});
+			const { data } = yield call(getRevenueSet, payload);
+			console.log(data)
+			if (data && data.code == 10000) {
+				var res = data.responseBody;
+				
+				yield put({
+					type: 'getRevenueSetSuccess',
+					payload: {
+						loading:false,
+						setShow:res
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+				yield put({
+					type: 'hideLoading',
+				});
+			}
+		},
+		*revenueSet({ payload }, { call, put }) {
+			yield put({
+				type: 'showConfirmLoading',
+			});
+			const { data } = yield call(revenueSet, payload);
+			console.log(data)
+			if (data && data.code == 10000) {
+				message.success('设置成功')
+				yield put({
+					type: 'hideConfirmLoading',
+				});
+				yield put({
+					type:'getRevenueSet',
+					payload:{
+						
+					}
+				})
+			} else {
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+				yield put({
+					type: 'hideConfirmLoading',
+				});
+			}
+		},
 
 	},
 	reducers: {
@@ -795,6 +860,12 @@ export default {
 			return {
 				...state,
 				confirmLoading: false,
+				...action.payload
+			};
+		},
+		getRevenueSetSuccess(state, action) {
+			return {
+				...state,
 				...action.payload
 			};
 		},

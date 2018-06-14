@@ -7,7 +7,7 @@ import {
 	routerRedux,
 
 } from 'dva/router';
-import { Form, Icon, Input, Button, Badge, Checkbox, Select, Tag, Row, Col, Upload, InputNumber, Radio, Cascader, DatePicker, TimePicker, message, Modal } from 'antd';
+import { Form, Icon, Input, Button, Badge, Checkbox, Select, Tag, Row, Col, Upload, InputNumber, Popover,Radio, Cascader, DatePicker, TimePicker, message, Modal } from 'antd';
 import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
@@ -24,6 +24,7 @@ import imga from '../../assets/images/article5.png';
 import imgb from '../../assets/images/article6.png';
 import imgc from '../../assets/images/article7.png';
 import imgd from '../../assets/images/article8.png';
+import share from '../../assets/images/share.jpg';
 import moment from 'moment'
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -128,13 +129,6 @@ function ArticleEditor({
 					videoAddress = data.videoURL[0].url;
 					videoFilename = data.videoURL[0].name;
 				} else {
-					if (data.videoUrl.indexOf('src') != '-1') {
-						data.videoUrl = data.videoUrl.replace(new RegExp("'", "gm"), '"');
-						data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)"/)[1];
-					} else if (data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1') {
-						data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)/)[1];
-					}
-
 					videoAddress = data.videoUrl;
 					videoFilename = "";
 				}
@@ -172,7 +166,8 @@ function ArticleEditor({
 								ifPush:ifPushValue,
 								ifPlatformPublishAward:data.ifPlatformPublishAward,
 								auditUser:merId,
-								refuseReason:data.publishStatus == 1?null:data.refuseReason
+								refuseReason:data.publishStatus == 1?null:data.refuseReason,
+								articleImgSize: 2
 							}
 						})
 						
@@ -208,6 +203,7 @@ function ArticleEditor({
 										videoUrl: videoAddress,
 										videoFilename: videoFilename,
 										textnum: 0,
+										articleImgSize: 2
 									}
 								})
 							}else{
@@ -240,7 +236,8 @@ function ArticleEditor({
 										videoUrl: videoAddress,
 										videoFilename: videoFilename,
 										textnum: 0,
-										ifPush:ifPushValue
+										ifPush:ifPushValue,
+										articleImgSize: 2
 									}
 								})
 							}
@@ -275,6 +272,7 @@ function ArticleEditor({
 									videoUrl: videoAddress,
 									videoFilename: videoFilename,
 									textnum: 0,
+									articleImgSize: 2
 								}
 							})
 						}
@@ -361,6 +359,7 @@ function ArticleEditor({
 						videoUrl: videoAddress,
 						videoFilename: videoFilename,
 						textnum: 0,
+						articleImgSize: 2
 					}
 				})
 			}
@@ -466,9 +465,8 @@ function ArticleEditor({
 			}
 		}
 	}
-	function ImgHandle(src) {
-		//console.log("src",src)
-	}
+
+	
 	function handlevaild(rule, value, callback) {
 		var dd = value.replace(/<\/?.+?>/g, "");
 		var dds = dd.replace(/ /g, "");//dds为得到后的内容
@@ -525,6 +523,67 @@ function ArticleEditor({
 	}
 
 
+	//
+	function imgupload(e) {
+		var docobj = document.getElementById("uploadInput1");
+		var fileList = docobj.files[0];
+		//现在图片文件大小
+		var imgSize = fileList.size;
+		console.log(fileList);
+		if (imgSize > 2 * 1024 * 1024) {
+			message.error('上传的图片的大于2M,请重新选择');
+			docobj.val('');
+			var domObj = docobj[0];
+			domObj.outerHTML = domObj.outerHTML;
+			var newJqObj = docobj.clone();
+			docobj.before(newJqObj);
+			docobj.remove();
+			docobj.unbind().change(function (e) {
+				console.log(e)
+			});
+			return;
+		}
+
+		//将图片文件转换为base64
+		var coverImg = "";
+		var reader = new FileReader();
+		var imgWidth = 0;
+		var imgHeight = 0;
+		reader.onload = function (e) {
+			//加载图片获取图片真实宽度和高度
+
+			coverImg = reader.result;
+			var img = new Image();
+			img.src = coverImg;
+			img.onload = function (argument) {
+				imgWidth = this.width;
+				imgHeight = this.height;
+				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
+				console.log(imgWidth)
+				if (imgWidth < 750 ) {
+					message.warning('上传图片最小尺寸为750*422px')
+				} else if(imgHeight < 421){
+					message.warning('上传图片最小尺寸为750*422px')
+				} else {
+					dispatch({
+						type: 'content/hideBgModal',
+						payload: {
+							activeImg: coverImg,
+							imgtype:'video'
+						}
+					})
+					dispatch({
+						type: 'content/showfpModal',
+						payload: {
+
+						}
+					})
+				}
+			}
+		}
+		reader.readAsDataURL(fileList)
+	}
+
 
 	const props = {
 		action: uploadVideoUrl,
@@ -543,7 +602,7 @@ function ArticleEditor({
 
 	//失去焦点视频链接地址
 	function handleInputBlur(e) {
-		console.log(e.target.value)
+	
 		var value = e.target.value;
 		if (value.indexOf('src') != '-1') {
 			value = value.replace(new RegExp("'", "gm"), '"');
@@ -555,6 +614,16 @@ function ArticleEditor({
 		ArticleList.videoUrl = value;
 	}
 
+	//验证是否是iframe链接
+	function videoiframeUrl(rule, value, callback){
+	
+		if(value.indexOf('iframe') != '-1'){
+			callback()
+		}else{
+			callback('为了更好的视频浏览体验，请粘贴外部视频网站的视频通用代码，代码示例：<iframe frameborder="0"width="640"height="498"src="...……"allowfullscreen></iframe>若视频网站不支持这种通用代码，请尝试更换视频网站或直接本地上传视频。支持的网站：优酷、腾讯视频、爱奇艺等。不支持的网站：搜狐视频、乐视视频等')
+		}
+
+	}
 
 	//是否推送
 	const ifPushChange = (e) => {
@@ -886,28 +955,34 @@ function ArticleEditor({
 			{ArticleList && ArticleList.videoType == 2 ?
 				<FormItem
 					{...formItemLayout}
-					label="&emsp;"
-					colon={false}
+					label={(
+						<span>
+						视频链接&nbsp;
+						<Popover content={<div><img src={share} /></div>} placement="bottom">
+							<Icon type="question-circle-o" />
+						</Popover>
+						</span>
+					)}
 				>
 					{getFieldDecorator('videoUrl', {
 						initialValue: (ArticleList.videoFilename == null || ArticleList.videoFilename == "") ? ArticleList.videoUrl : "",
 						rules: [{
 							required: true, 'message': "请输入视频链接",
-
+						},{
+							validator:videoiframeUrl
 						}]
 					})(
 						<Input
 							placeholder='请粘贴外部视频网站的视频通用代码，代码示例：<iframe frameborder="0" width="640" height="498" src="……" allowfullscreen></iframe>'
 							style={{ width: "100%" }}
-							onBlur={handleInputBlur}
+							// onBlur={handleInputBlur}
 						/>
 					)}
 				</FormItem> : null}
 			{ArticleList && ArticleList.videoType == 1 ?
 				<FormItem
 					{...formItemLayout}
-					label="&emsp;"
-					colon={false}
+					label="本地上传"
 				>
 					{getFieldDecorator('videoURL', {
 						initialValue: ArticleList.videoList,
@@ -1031,10 +1106,12 @@ function ArticleEditor({
 					],
 
 				})(
-					<div>
-						{ArticleList.articleImage == "" ? <div className={styles.bgImg} onClick={showModal}> <Icon type="plus" /></div> :
-							<img onClick={showModal} src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} onChange={ImgHandle} />
+					<div className={styles.imgxbox}>
+						{ArticleList.articleImage == "" ? <div className={styles.bgImg}> <Icon type="plus" /></div> :
+							<img  src={imgUrl == "" ? uploadUrl + ArticleList.articleImage : uploadUrl + imgUrl} className={styles.bgImg} />
 						}
+						<input id='uploadInput1' className={styles.uploadCoverImg} type='file' name="coverImg" accept="image/jpeg,image/png" multiple="multiple"
+						onChange={imgupload} />
 					</div>
 				)}
 			</FormItem>

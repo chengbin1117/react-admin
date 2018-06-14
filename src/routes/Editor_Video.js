@@ -29,10 +29,10 @@ function Editor_article({dispatch,router,content,setting}) {
   var html = '';
   let src = "";
   
-  const {ArticleList,dis,pubStatus,loading,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
+  const {ArticleList,imgtype,dis,pubStatus,loading,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
 
   const options = ColumnList;
-  //console.log("imgUrl",getVideoList)
+  console.log("imgUrl",imgtype)
   const ArticleEditorProps = {
     ColumnList,
     dispatch,
@@ -117,7 +117,8 @@ function Editor_article({dispatch,router,content,setting}) {
   }
   const FtModalProps ={
   	visible:FtVisible,
-  	activeImg:activeImg,
+    activeImg:activeImg,
+    imgtype:imgtype,
   	onCancel(){
   		 dispatch({
   		    type:'content/hidefpModal',

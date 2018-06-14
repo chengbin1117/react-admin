@@ -19,6 +19,7 @@ export default {
 		loading:false,
 		AppDetailItem:{}, //查看版本详情
 		loging:false,
+		forcedVal:'1',   //默认强制更新
 	},
 
 	subscriptions: {
@@ -174,6 +175,14 @@ export default {
 				});
 			}
 		},
+		*forcedChange({ payload }, { call, put }) {
+			yield put({
+				type:"forcedChangeSuccess",
+				payload:{
+					forcedVal:payload.forcedVal
+				}
+			})
+		},
 
 	},
 	reducers: {
@@ -184,7 +193,7 @@ export default {
 			return { ...state, loading: true };
 		},
 		showModal(state, action) {
-			return { ...state, addModal: true,isSys:1 };
+			return { ...state, addModal: true,isSys:1,forcedVal:'1' };
 		},
 		hideModal(state, action) {
 			return { ...state, addModal: false };
@@ -202,6 +211,9 @@ export default {
 			return { ...state,...action.payload};
 		},
 		AppDetailSuccess(state, action) {
+			return { ...state,...action.payload};
+		},
+		forcedChangeSuccess(state, action) {
 			return { ...state,...action.payload};
 		},
 	}

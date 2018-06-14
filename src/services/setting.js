@@ -229,3 +229,25 @@ export async function getUserId(params) {
 	}
 		);
 }
+
+//获取收益排行设置
+export async function getRevenueSet(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+    let url = '/admin/author/revenue/getSet?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	}
+		);
+}
+
+//获取收益排行设置
+export async function revenueSet(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+    let url = '/admin/author/revenue/set?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"post"
+	}
+		);
+}
