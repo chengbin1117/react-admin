@@ -400,14 +400,18 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							publishStatus: 2,
-							publishKind:1
+							publishKind:1,
+							currentPage:1,
+							pageSize:999
 						}
 					});
 					dispatch({
 						type: 'getVideoList',
 						payload: {
 							publishStatus: 2,
-							publishKind:2
+							publishKind:2,
+							currentPage:1,
+							pageSize:999
 						}
 					});
 					dispatch({

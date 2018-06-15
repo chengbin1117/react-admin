@@ -131,7 +131,9 @@ export default {
 					dispatch({
 						type: 'getUserList',
 						payload: {
-							auditStatus: 0
+							auditStatus: 0,
+							currentPage:1,
+							pageSize:999
 						}
 					});
 				}
