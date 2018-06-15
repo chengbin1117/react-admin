@@ -393,7 +393,7 @@ export default {
 					payload:{
 						Advertise:res,
 						imageUrl:res.imageAddress,
-						keWordArr:res.adverTarget.split(','),
+						keWordArr:res.adverTarget!=null?res.adverTarget.split(','):[],
 						loading:false
 					}
 				})
