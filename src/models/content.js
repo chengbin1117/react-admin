@@ -570,7 +570,7 @@ export default {
 			}
 		},
 		*setDisplayStatus({ payload }, { call, put }) {
-			const { articleId, displayStatus, updateUser, search } = payload;
+			const { articleId, displayStatus, updateUser,  } = payload;
 			let params = {
 				articleId: articleId,
 				displayStatus: displayStatus,
@@ -582,7 +582,7 @@ export default {
 			const { data } = yield call(setDisplayStatus, params);
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-				const sea = GetRequest(search)
+				const search = GetRequest(payload.search)
 				message.success('设置成功')
 				yield put({
 					type:"hideSubmitLoading"
@@ -592,15 +592,15 @@ export default {
 					yield put({
 						type: 'getArticleList',
 						payload: {
-							currentPage: sea.page,
+							currentPage: search.page,
 							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
-							articleId: sea.articleId != 'undefined' ? sea.articleId : null,
+							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
-							publishStatus: sea.publishStatus != 'undefined' ? parseInt(sea.publishStatus) : null,
-							displayStatus: sea.displayStatus != 'undefined' ? parseInt(sea.displayStatus) : null,
-							columnId: sea.columnId != 'null' ? parseInt(sea.columnId) : null,
-							secondColumn: sea.secondColumn != 'null' ? parseInt(sea.secondColumn) : null,
+							publishStatus: search.publishStatus != 'undefined' ? parseInt(search.publishStatus) : null,
+							displayStatus: search.displayStatus != 'undefined' ? parseInt(search.displayStatus) : null,
+							columnId: search.columnId != 'null' ? parseInt(search.columnId) : null,
+							secondColumn: search.secondColumn != 'null' ? parseInt(search.secondColumn) : null,
 							ifPlatformPublishAward: search.ifPlatformPublishAward != "undefined" ? search.ifPlatformPublishAward : null,
 							articleFrom: search.articleFrom != "undefined" ? search.articleFrom : null,
 							pageSize: 25,
@@ -611,16 +611,16 @@ export default {
 					yield put({
 						type: 'getArticleList',
 						payload: {
-							currentPage: sea.page,
+							currentPage: search.page,
 							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
-							articleId: sea.articleId != 'undefined' ? sea.articleId : null,
+							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
-							articleTag: sea.articleTag != 'undefined' ? sea.articleTag : null,
-							publishStatus: sea.publishStatus != 'undefined' ? parseInt(sea.publishStatus) : null,
-							displayStatus: sea.displayStatus != 'undefined' ? parseInt(sea.displayStatus) : null,
-							columnId: sea.columnId != 'null' ? parseInt(sea.columnId) : null,
-							secondColumn: sea.secondColumn != 'null' ? parseInt(sea.secondColumn) : null,
+							articleTag: search.articleTag != 'undefined' ? search.articleTag : null,
+							publishStatus: search.publishStatus != 'undefined' ? parseInt(search.publishStatus) : null,
+							displayStatus: search.displayStatus != 'undefined' ? parseInt(search.displayStatus) : null,
+							columnId: search.columnId != 'null' ? parseInt(search.columnId) : null,
+							secondColumn: search.secondColumn != 'null' ? parseInt(search.secondColumn) : null,
 							pageSize: 25,
 							publishKind: 1
 						}

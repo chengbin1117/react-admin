@@ -64,7 +64,6 @@ function ContentImage({ dispatch, advert, location }) {
 		afterClose(removedTag){
 			const  keWordArr  = advert.keWordArr;
 			const nextSelectedTags = keWordArr.filter(t => t !== removedTag);
-			console.log(nextSelectedTags);
 			dispatch({
 				type:'advert/selectWords',
 				payload:{
