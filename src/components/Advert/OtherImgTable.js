@@ -14,10 +14,10 @@ function Content_Image({data,total,currentPage,showModal,deleteItem,handlsearch,
 	function showImg(imageAddress){
 		Modal.info({
 			title:'查看原图',
-			width:'1500px',
+			width:'1000px',
 			content:(
-				<div style={{textAlign:'center'}}>
-					<img src={uploadUrl+imageAddress} />
+				<div style={{textAlign:'center',width:'800px'}} >
+					<img src={uploadUrl+imageAddress} style={{maxWidth:'100%'}}/>
 				</div>
 			)
 		})

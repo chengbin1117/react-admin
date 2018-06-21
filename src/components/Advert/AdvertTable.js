@@ -7,10 +7,10 @@ function StandardTable({ data, loading, total, editorItem, deleteItem, handelcha
 	function showImg(imageAddress){
 		Modal.info({
 			title:'查看原图',
-			width:'1300px',
+			width:'1000px',
 			content:(
-				<div style={{textAlign:'center'}}>
-					<img src={uploadUrl+imageAddress} />
+				<div style={{textAlign:'center',width:'800px'}} >
+					<img src={uploadUrl+imageAddress} style={{maxWidth:'100%'}}/>
 				</div>
 			)
 		})

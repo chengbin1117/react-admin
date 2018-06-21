@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-04 16:08:37
+ * @Last Modified time: 2018-06-21 15:26:44
  */
 
 
@@ -103,7 +103,6 @@ function NewsAdd({
 		validateFields((err, fieldsValue) => {
 			if (!err) {
 				var str = ""
-				console.log(keWordArr)
 				if(keWordArr.length>0){
 					str = keWordArr.join(',')
 				}else{
@@ -119,8 +118,6 @@ function NewsAdd({
 					createUser: merId,
 					...fieldsValue
 				}
-				
-				console.log(data)
 				dispatch({
 					type:'advert/addAdvertise',
 					payload:{
@@ -129,6 +126,15 @@ function NewsAdd({
 				})
 			}
 		})
+	}
+
+	const adverOwnerChange = (rule,value,callback) => {
+		var reg = /[，\s_'’‘\"”“|\\~#$@%^&*;\/<>\?？]/
+		if(reg.test(value)) {
+			callback('名称种含有特殊字符和空格')
+		}else {
+			callback()
+		}
 	}
 	return (
 		<Form>
@@ -184,6 +190,8 @@ function NewsAdd({
 				{getFieldDecorator('adverTitle', {
 					rules: [{
 						required: true,message:'请输入广告标题'
+					},{
+						min:1,max:64,message:'请输入1-64个字符'
 					}
 					],
 				})(
@@ -194,6 +202,9 @@ function NewsAdd({
 				{getFieldDecorator('adverLink', {
 					rules: [{
 						required: true,message:'请输入广告链接'
+					},{
+						pattern:/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/,
+						message:'请输入http://或者https://协议'
 					}
 					],
 				})(
@@ -203,7 +214,13 @@ function NewsAdd({
 			<FormItem label="广告主名称" {...formItemLayout}>
 				{getFieldDecorator('adverOwner', {
 					rules: [{
-						required: true,message:'请输入广告标题'
+						required: true,message:'请输入广告主名称'
+					},
+					{
+						min:2,max:25,message:'请输入2-25个字符'
+					},
+					{
+						validator:adverOwnerChange
 					}
 					],
 				})(
@@ -290,7 +307,7 @@ function NewsAdd({
 					)}
 			</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
-			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()}>保存</Button>
+			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }} onClick={()=>onSubmit()} disabled={uploading}>保存</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>
 			</FormItem>
 		</Form>
