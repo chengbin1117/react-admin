@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-04 16:10:01
+ * @Last Modified time: 2018-06-21 15:42:29
  */
 
 
@@ -132,6 +132,14 @@ function AdvertEditor({
 			}
 		})
 	}
+	const adverOwnerChange = (rule,value,callback) => {
+		var reg = /[，\s_'’‘\"”“|\\~#$@%^&*;\/<>\?？]/
+		if(reg.test(value)) {
+			callback('名称种含有特殊字符和空格')
+		}else {
+			callback()
+		}
+	}
 	return (
 		<Form>
 			<FormItem label="显示端口" {...formItemLayout}>
@@ -187,7 +195,10 @@ function AdvertEditor({
 				{getFieldDecorator('adverTitle', {
 					initialValue:item&&item.adverTitle,
 					rules: [{
-						required: true,
+						required: true,message:'请输入广告标题'
+					},
+					{
+						min:1,max:64,message:'请输入1-64个字符'
 					}
 					],
 				})(
@@ -198,7 +209,11 @@ function AdvertEditor({
 				{getFieldDecorator('adverLink', {
 					initialValue:item&&item.adverLink,
 					rules: [{
-						required: true,
+						required: true,message:'请输入广告链接'
+					},
+					{
+						pattern:/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/,
+						message:'请输入http://或者https://协议'
 					}
 					],
 				})(
@@ -209,7 +224,13 @@ function AdvertEditor({
 				{getFieldDecorator('adverOwner', {
 					initialValue:item&&item.adverOwner,
 					rules: [{
-						required: true,
+						required: true,message:'请输入广告主名称'
+					},
+					{
+						min:2,max:25,message:'请输入2-25个字符'
+					},
+					{
+						validator:adverOwnerChange
 					}
 					],
 				})(
@@ -297,7 +318,7 @@ function AdvertEditor({
 					)}
 			</FormItem>
 			<FormItem label="&emsp;" {...formItemLayout} colon={false}>
-			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }}  onClick={()=>onSubmit()} loading={confirmLoading}>保存</Button>
+			    <Button type="primary" size="large" style={{ paddingLeft: 20, paddingRight: 20 }}  onClick={()=>onSubmit()} loading={confirmLoading} disabled={uploading}>保存</Button>
 				<Button size="large" style={{ paddingLeft: 20, paddingRight: 20,marginLeft: 30 }} onClick={()=>history.back()}>返回</Button>
 			</FormItem>
 		</Form>

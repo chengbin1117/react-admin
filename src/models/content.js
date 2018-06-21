@@ -62,6 +62,7 @@ export default {
 		imgSize:'1',
 		flag:false,  //大图是否可选
 		imgtype:'',
+		isCommentAutid:'0' //评论是否审核
 	},
 
 	subscriptions: {
@@ -1581,6 +1582,7 @@ export default {
 						loading: false,
 						currentPage: res.currentPage,
 						totalNumber: res.totalNumber,
+						isCommentAutid:res.totalPrice+''
 					}
 
 				})
@@ -1606,7 +1608,14 @@ export default {
 				yield put({
 					type: 'hideCommentSet',
 				})
+				yield put({
+					type: 'getCommentList',
+					payload: {
+						currentPage: 1,
+						pageSize: 25,
+					}
 
+				})
 			} else {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);

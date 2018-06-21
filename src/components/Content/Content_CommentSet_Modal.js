@@ -38,16 +38,15 @@ const Content_CommentSet_Modal = ({
   onOk,
   onCancel,
   selectList,
-  fatherType,
-  showfpModal,
+  isCommentAutid,
   form: {
     getFieldDecorator,
     validateFields,
     getFieldsValue,
     setFieldsValue,
+    resetFields
   },
 }) => {
-
 
   function handleOk(value,text) {
       validateFields((errors) => {
@@ -66,14 +65,17 @@ const Content_CommentSet_Modal = ({
     
     
   }
-
+  function afterClose(){
+    resetFields()
+  }
   const modalOpts = {
     title: "评论管理设置",
     visible,
     onOk: handleOk,
     onCancel: onCancel,
     okText:"确定",
-    cancelText:"取消"
+    cancelText:"取消",
+    afterClose:afterClose
     };
   
   
@@ -84,11 +86,11 @@ const Content_CommentSet_Modal = ({
           <Form>
           <FormItem  label="新评论是否需要审核" className="collection-create-form_last-form-item">
             {getFieldDecorator('set', {
-              initialValue: 'private',
+              initialValue: isCommentAutid&&isCommentAutid+'',
             })(
               <RadioGroup>
-                <Radio value="public">需要审核</Radio><span>注：设置为需要审核后，所有新评论需通过审核才能在前台显示</span><br />
-                <Radio value="private">不需要审核</Radio><span>注：该选项为默认项，新评论只要提交成功，即可在前台显示</span>
+                <Radio value="1">需要审核</Radio><span>注：设置为需要审核后，所有新评论需通过审核才能在前台显示</span><br />
+                <Radio value="0">不需要审核</Radio><span>注：该选项为默认项，新评论只要提交成功，即可在前台显示</span>
               </RadioGroup>
             )}
           </FormItem>

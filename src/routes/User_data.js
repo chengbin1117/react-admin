@@ -98,11 +98,12 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				<Form>
 					<FormItem label="审核处理" >
 						{getFieldDecorator('radio', {
-							initialValue: 1,
+							rules: [{
+									required: true,message:'请选择'
+								}]
 						})(
 							<RadioGroup onChange={this.onChange} value={this.state.value}>
 								<Radio value={1}>通过</Radio>
-								<br />
 								<Radio value={2}>
 									不通过
 
