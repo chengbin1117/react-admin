@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-21 15:42:29
+ * @Last Modified time: 2018-06-21 18:51:41
  */
 
 
@@ -244,7 +244,7 @@ function AdvertEditor({
 					   <span>已选择：</span>
 						{keWordArr&&keWordArr.map((item,index)=>{
 							return(
-								<Tag key={index}  className={styles.keyWord} >{item}</Tag>
+								<Tag key={index}  className={styles.keyWord} >{item}<Icon type="close" onClick={()=>afterClose(item)} style={{paddingLeft:5,paddingRight:5}}/></Tag>
 							)
 						})}
 						{keWordArr&&keWordArr.length >= 2 ?<span className={styles.clearAll} onClick={()=>clearAll()}>清空</span>:null}
