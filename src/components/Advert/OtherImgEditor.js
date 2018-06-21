@@ -124,6 +124,11 @@ const Content_ImageAdd_Modal = ({
 				fieldsValue.navigatorPos =fieldsValue.residence[0];
 				fieldsValue.imagePos =fieldsValue.residence[1];
 				fieldsValue.imageAddress = imageUrl ==''?null:imageUrl
+				if(fieldsValue.imageType ==1) {
+				    fieldsValue.imageDetail = fieldsValue.imagetitle
+				}else {
+					fieldsValue.imageDetail = fieldsValue.imageDetail
+				}
 				const data = {
 					imageId: item.imageId,
 					createUser:merId,
@@ -173,7 +178,7 @@ const Content_ImageAdd_Modal = ({
 					)}
 				</FormItem>
 				{selectValue == "1" ? <FormItem {...formItemLayout} label="文章ID" >
-					{getFieldDecorator('imageDetail', {
+					{getFieldDecorator('imagetitle', {
 						initialValue:  item&&item.imageDetail,
 						rules: [
 							{ required: true, message: "请输入文章ID" },

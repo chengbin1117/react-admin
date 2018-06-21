@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 import { getNewsFlashListByCondition,getNewsFlashTopMenus,addNewsFlash,detailNewsFlash,updateNewsFlash,delNewsFlash,getPushNewsFlashInfo} from '../services/news';
 import { formatDate, tokenLogOut, GetRequest } from '../services/common'
 import {
-	message
+	message,Modal
 } from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
@@ -202,15 +202,27 @@ export default {
 			// console.log(data)
 			if (data && data.code == 10000) {
 				message.success('添加快讯成功')
-				setTimeout(()=>{
-					history.back();
-				},100)
+				yield put({
+					type: 'hideLoading',
+				});
+				yield put(routerRedux.push('/content/news_flash?page=1'))
 				
 			} else {
+				yield put({
+					type: 'hideLoading',
+				});
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
-				} else {
+				} else if (data.code === '29002') {
+					Modal.warn({
+						title:'检测快讯内容有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+				} else{
 					message.error(data.message, 2);
 				}
 				yield put({
