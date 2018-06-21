@@ -99,10 +99,7 @@ export default {
 					type:'hideSubmitLoading'
 				})
 
-				//返回列表页
-				setTimeout(()=>{
-					history.back();
-				},50)
+				yield put(routerRedux.push('/content/notice?page=1'))
 			} else {
 				yield put({
 					type:'hideSubmitLoading'

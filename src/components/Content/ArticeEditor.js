@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-05 17:42:48
+ * @Last Modified time: 2018-06-20 18:26:48
  */
 
 
@@ -186,6 +186,7 @@ function ArticleEditor({
 								editArticle: editArticle,
 								auditUser: merId,
 								ifPush: ifPushValue,
+								articleImgSize:data.articleImgSize,
 								ifPlatformPublishAward: data.ifPlatformPublishAward,
 								refuseReason: data.publishStatus == 1 ? null : data.refuseReason
 							}
@@ -220,6 +221,7 @@ function ArticleEditor({
 										thumbupNum: data.thumbupNum,
 										collectNum: data.collectNum,
 										editArticle: editArticle,
+										articleImgSize:data.articleImgSize,
 									}
 								})
 							} else {
@@ -250,6 +252,7 @@ function ArticleEditor({
 										collectNum: data.collectNum,
 										editArticle: editArticle,
 										ifPush: ifPushValue,
+										articleImgSize:data.articleImgSize,
 									}
 								})
 							}
@@ -282,6 +285,7 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
+									articleImgSize:data.articleImgSize,
 								}
 							})
 						}
@@ -315,6 +319,7 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
+									articleImgSize:data.articleImgSize,
 								}
 							})
 						} else {
@@ -344,7 +349,8 @@ function ArticleEditor({
 									thumbupNum: data.thumbupNum,
 									collectNum: data.collectNum,
 									editArticle: editArticle,
-									ifPush: ifPushValue
+									ifPush: ifPushValue,
+									articleImgSize:data.articleImgSize,
 								}
 							})
 						}
@@ -382,7 +388,8 @@ function ArticleEditor({
 									collectNum: data.collectNum,
 									editArticle: editArticle,
 									ifPush: ifPushValue,
-									ifPlatformPublishAward: data.ifPlatformPublishAward
+									ifPlatformPublishAward: data.ifPlatformPublishAward,
+									articleImgSize:data.articleImgSize,
 								}
 							})
 						} else {
@@ -414,7 +421,8 @@ function ArticleEditor({
 									collectNum: data.collectNum,
 									editArticle: editArticle,
 									ifPush: ifPushValue,
-									ifPlatformPublishAward: data.ifPlatformPublishAward
+									ifPlatformPublishAward: data.ifPlatformPublishAward,
+									articleImgSize:data.articleImgSize,
 								}
 							})
 						}

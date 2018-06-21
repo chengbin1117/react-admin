@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-01 14:16:32
+ * @Last Modified time: 2018-06-20 14:06:06
  */
 
 
@@ -48,7 +48,7 @@ function NewsAdd({
 		
 		let val = e.target.value;
 	
-		if(PushNewsFlashInfo.pushNewsFlashNumber <= PushNewsFlashInfo.pushNewsFlashLimit){
+		if(PushNewsFlashInfo.pushNewsFlashNumber >= PushNewsFlashInfo.pushNewsFlashLimit){
 			if(val == 1){
 				confirm({
 					title:'确定推送吗?',
@@ -259,7 +259,7 @@ function NewsAdd({
 					<Input type="text" placeholder="请输入原文链接" style={{ width: '70%' }} />
 				)}
 			</FormItem>
-			<FormItem label="快讯底图" {...formItemLayout} extra="上传快讯底图时，将替换快讯分享的底部图片">
+			<FormItem label="快讯底图" {...formItemLayout} extra="上传快讯底图时，将替换快讯分享的底部图片,只能上传648*180尺寸的图片。">
 				{getFieldDecorator('newsflashBottomImg', {
 					valuePropName: 'fileList',
                     getValueFromEvent: normFile,
@@ -292,7 +292,7 @@ function NewsAdd({
 				{getFieldDecorator('displayStatus', {
 					initialValue:'1',
 					rules: [ {
-						required: true, message: '快讯标题!',
+						required: true, message: '请选择!',
 					}
 					],
 				})(

@@ -194,9 +194,9 @@ function IndexPage({ location, dispatch, user, router, content }) {
 		total: content.ArticleListNumber,
 		onEditItem: function (record) {
 			dispatch({
-				type:"content/getIndexById",
-				payload:{
-					articleId:record.articleId,
+				type: "content/getArticleDetile",
+				payload: {
+					articleId: record.articleId,
 				}
 			})
 			//dispatch(routerRedux.push('/index/editor?articleId='+record.articleId))
@@ -221,10 +221,7 @@ function IndexPage({ location, dispatch, user, router, content }) {
 		total: content.VideoListNumber,
 		onEditItem: function (record) {
 			const search = GetRequest(location.search);
-			dispatch(routerRedux.push('/content/EditorVideo?articleId=' + record.articleId + '&page=' + search.page +
-				"&articleTitle=" + search.articleTitle + "&articleTag=" + search.articleTag + "&publishStatus=" + search.publishStatus +
-				"&displayStatus=" + search.displayStatus + "&columnId=" + search.columnId + "&displayStatus=" + search.displayStatus + "&secondColumn=" + search.secondColumn + "&pageSize=25" + '&orderByClause=' + search.orderByClause
-				+"&createUser=" + search.createUser+'&ifPlatformPublishAward='+search.ifPlatformPublishAward+'&articleFrom='+search.articleFrom
+			dispatch(routerRedux.push('/content/EditorVideo?articleId=' + record.articleId
 			))
 		
 		},

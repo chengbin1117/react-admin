@@ -50,6 +50,7 @@ function ContentArticle({ location, dispatch, router, news }) {
 				<Col span={8} style={{ display: 'block' }}>
 					<FormItem {...formItemLayout} label='来源分类'>
 						{getFieldDecorator('newsflashOrigin')(
+							
 							<Select placeholder="请选择" allowClear={true}>
 								<Option value="0">系统抓取</Option>
 								<Option value="1">人工添加</Option>
@@ -98,8 +99,8 @@ function ContentArticle({ location, dispatch, router, news }) {
 						{getFieldDecorator('ifPush', {
 						})(
 							<Select placeholder="请选择" allowClear={true}>
-								<Option value="1">需要推送</Option>
-								<Option value="0">暂时不推送</Option>
+								<Option value="1">未推送</Option>
+								<Option value="0">已推送</Option>
 							</Select>
 						)}
 					</FormItem>

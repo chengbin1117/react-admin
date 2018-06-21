@@ -43,10 +43,10 @@ const Content_CommentSetShow_Modal = ({
     validateFields,
     getFieldsValue,
     setFieldsValue,
+    resetFields
   },
 }) => {
 
-  //console.log("selectList",selectList)
   function handleOk(value,text) {
       validateFields((errors) => {
       if (errors) {
@@ -64,14 +64,17 @@ const Content_CommentSetShow_Modal = ({
     
     
   }
-
+  function afterClose() {
+		resetFields()
+	}
   const modalOpts = {
     title: "显示设置",
     visible,
     onOk: handleOk,
     onCancel: onCancel,
     okText:"确定",
-    cancelText:"取消"
+    cancelText:"取消",
+    afterClose: afterClose,
   };
   
   
