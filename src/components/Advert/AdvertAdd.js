@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-21 18:50:18
+ * @Last Modified time: 2018-06-22 11:27:19
  */
 
 
@@ -203,8 +203,7 @@ function NewsAdd({
 					rules: [{
 						required: true,message:'请输入广告链接'
 					},{
-						pattern:/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/,
-						message:'请输入http://或者https://协议'
+						type:'url',message:'请输入http://或者https://协议'
 					}
 					],
 				})(

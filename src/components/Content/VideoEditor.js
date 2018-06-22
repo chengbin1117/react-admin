@@ -902,12 +902,12 @@ function ArticleEditor({
 			videoAddress = data.videoURL[0].url;
 			videoFilename = data.videoURL[0].name;
 		} else {
-			if (data.videoUrl.indexOf('src') != '-1') {
-				data.videoUrl = data.videoUrl.replace(new RegExp("'", "gm"), '"');
-				data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)"/)[1];
-			} else if (data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1') {
-				data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)/)[1];
-			}
+			// if (data.videoUrl.indexOf('src') != '-1') {
+			// 	data.videoUrl = data.videoUrl.replace(new RegExp("'", "gm"), '"');
+			// 	data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)"/)[1];
+			// } else if (data.videoUrl.indexOf('http') != '-1' && data.videoUrl.indexOf('src') == '-1') {
+			// 	data.videoUrl = 'https://' + data.videoUrl.match(/:\/\/(\S*)/)[1];
+			// }
 
 			videoAddress = data.videoUrl;
 			videoFilename = null;

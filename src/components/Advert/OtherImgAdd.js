@@ -94,7 +94,7 @@ const Content_ImageAdd_Modal = ({
 
 	//修改图片类型
 	function ImgtypeChange(val) {
-		console.log(val)
+		
 		dispatch({
 			type: "advert/ImgtypeChange",
 			payload: {
@@ -190,7 +190,9 @@ const Content_ImageAdd_Modal = ({
 							initialValue: '',
 							rules: [
 								{ required: true, message: "请输入链接地址" },
-								{ type: "string", }
+								{
+									type:'url',message:'请输入http://或者https://协议'
+								}
 							],
 						})(
 							<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>

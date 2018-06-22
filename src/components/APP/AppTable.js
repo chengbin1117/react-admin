@@ -26,7 +26,7 @@ function StandardTable({ data, loading, total, lookOver, deleteItem, handelchand
       title: '强制更新',
       dataIndex: 'forced',
 	  align: 'left',
-	  render: val => <span>{val==1&&""}{val==0&&"否"}</span>,
+	  render: val => <span>{val==1&&"强制更新"}{val==0&&"非强制更新强提示"}{val==-1&&"非强制更新弱提示"}</span>,
     },
     {
       title: '下载地址',

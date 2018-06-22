@@ -103,7 +103,8 @@ export default {
 				yield put({
 					type: 'appvmList',
 					payload: {
-					    page: search.page,
+						page: search.page,
+						pageSize: 25
 					}
 				})
 			} else {
@@ -160,7 +161,8 @@ export default {
 				yield put({
 					type: 'appvmList',
 					payload: {
-					    page: 1
+						page: 1,
+						pageSize: 25
 					}
 				})
 			} else {
