@@ -35,12 +35,12 @@ function AppPage({ location, dispatch, app }) {
 			}else{
 				downloadUrl= data.downloadUrl
 			}
+			console.log(data)
 			if(data.forced==-1){
 				dispatch({
 					type:"app/createApp",
 					payload:{
 						versionNum:data.versionNum,
-						prompt:data.prompt,
 						forced:data.forced,
 						systemType:parseInt(data.systemType),
 						downloadUrl:downloadUrl,
@@ -51,7 +51,7 @@ function AppPage({ location, dispatch, app }) {
 					type:"app/createApp",
 					payload:{
 						versionNum:data.versionNum,
-
+						prompt:data.prompt,
 						forced:data.forced,
 						systemType:parseInt(data.systemType),
 						downloadUrl:downloadUrl,

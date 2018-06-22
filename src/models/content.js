@@ -1275,12 +1275,12 @@ export default {
 				res[tags] = res.tagnames != null ? res.tagnames.split(",") : '';
 
 				var img_url = uploadUrl+res.articleImage;
-				console.log(img_url)
+				//console.log(img_url)
 			    // 创建对象
 				var img = new Image();
 				// 改变图片的src
 				img.src = img_url;
-				console.log(img.width,img.height)
+				//console.log(img.width,img.height)
 				if(img.width<750){
 					yield put({
 						type: 'flagChange',
@@ -1288,7 +1288,7 @@ export default {
 							flag:true
 						}
 					});
-				}else if(img.height<421){
+				}else if(img.height<422){
 					yield put({
 						type: 'flagChange',
 						payload: {

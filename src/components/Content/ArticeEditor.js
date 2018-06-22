@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-20 18:26:48
+ * @Last Modified time: 2018-06-22 10:19:59
  */
 
 
@@ -105,7 +105,7 @@ function ArticleEditor({
 
 	const { RelationVisible, getRelUserList } = setting;
 	let AllTotal = 0;
-	console.log(flag)
+	// console.log(flag)
 	function handleSubmit() {
 		validateFields((errors, fieldsValue) => {
 			if (errors) {

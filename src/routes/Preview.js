@@ -36,105 +36,26 @@ function ArticlePreview({location,dispatch,content,router,}) {
 	//console.log(previewTitle,previewartic)
 	return (
 			<div style={{minHeight:"100%"}}>
-				<div className={styles.topBox}>
-			    <div className={styles.topNav}>
-			     	<div className={styles.grid_content} >
-				        <ul className = {styles.topNav_r}>
-				          <li className = {styles.fl}>用户须知</li>
-				          <li className = {styles.fl}><a>登录/注册</a></li>
-				          <li className = {styles.fl}><a>欢迎您，xxx</a></li>
-				          <li className = {styles.fl}>app下载</li>
-				        </ul>
-			        </div>
-			    </div>
-			    <div className = {styles.nav}>
-			      	<div className={styles.continaer} >
-			      	    <img className = {styles.nav_logo} src = {logo} />
-			      	    <span className = {styles.nav_logo_title}>千氪</span>
-			      	    <div >
-			              <ul  className={styles.el_menu_demo} >
-			                <li>
-			                    <a  target = "_blank">首页</a>
-			                </li>
-			                <li>
-			                    <a  target = "_blank">区块链</a>
-			                </li>
-			                <li>
-			                    <a  target = "_blank">频道页</a>
-			                </li>
-			                <li>
-			                    <a  target = "_blank">栏目页</a>
-			                </li>
-			                <li>
-			                    <a  target = "_blank">本站</a>
-			                </li>
-			                <li>
-			                    <a  target = "_blank">理财</a>
-			                </li>
-
-			            </ul>
-			            <Icon type="search" className = {styles.search}/>
-			          </div>
-			        </div>
-                </div>
-                </div>
-                 <div className = {styles.previewMask}>
-                 <Alert message="这是预览页面，不支持任何操作" type="warning"  className={styles.text}/>
-                 </div>
-              	<div className={styles.container} style={{minHeight:850}}>
-              	
-              	<div className={styles.container_left_pre}>
-	                <h1 className={styles.title}>{preList&&preList.articleTitle}</h1>
-	                <div>{preList&&preList.username}<span style={{marginLeft:10,marginRight:10}}>·</span>{preList&&formatDate(preList.createDate)}     
-	                </div>
-					<div className={styles.abstract}>
-	              	    {preList&&preList.articleDescription}
-	              	</div>
-					<div className={styles.parLine}></div>
-					{(preList&&preList.publishKind == 2)&&<div>
-						<div className={styles.videoMain}>
-	                	{(preList.videoFilename!='null'&&preList.videoFilename != '')?
-	                		<video  controls="controls" autoplay="autoplay">
-                            <source src={preList.videoUrl} type="video/mp4" />
-                            </video>:<iframe style = {{width:'100%',height:'450px'}} frameborder="0" allowfullscreen="true" src={preList.videoUrl}></iframe>
-	                    }
-	                   </div>
-					</div>}
-					{(preList&&preList.publishKind == 1)&&
+				<div className={styles.context} >
+					<p className={styles.title}>{previewTitle=='undefined'?"":previewTitle}</p>
 					<div>
-					<div className={styles.article} dangerouslySetInnerHTML={{__html: (preList&&preList.articleText)}}></div>
+						{previewType=="1"&&<span className={styles.name}>原创</span>}
+						{previewType=="2"&&<span className={styles.name}>转载<span className={styles.pname}>本文来源：{previewSource}</span>
+					<a target = "_blank" className={styles.articlwe}>阅读原文</a></span>}
 					</div>
-					} 
-					
-					{preList&&preList.articleType==2?<div className={styles.articleSource}>
-					<span>本文来源：{preList.articleSource}</span>
-					<a target = "_blank" href={preList.articleLink} className={styles.articlwe}>阅读原文</a>
-					</div>:null}
-		            <div className = {styles.line}>
-		            {(preList&&preList.tags!=undefined)?preList.tags.map((t,index)=>{
-		            	return(
-		            		 <Tag color="blue" key={index}>{t}</Tag>
-		            		)
-		            }):null}
-		           
-		            </div>
-	          </div>
-              	</div>
-              <div className={styles.footer}>
-			      <div className = {styles.about}>
-			          <a >专栏申请协议</a>
-			          <a>关于我们</a>
-			          <a>加入我们</a>
-			          <a>联系我们</a>
-			          <a>版权声明</a>
-			          <a>用户注册协议</a>
-			      </div>
-			      <div className = {styles.info}>
-			        <span>川ICP备17030508号-1 川公网安备33010602002085号</span>
-			        <span>举报电话：028-23232323</span>
-			        <span>举报邮箱：34343@kg.com</span>
-			      </div>
-			  </div>
+					<p className={styles.hx}></p>
+					<div className={styles.articleDec}>{(previewartic=='undefined'||previewartic=="")?previewdec:previewartic}</div>
+					<article className={styles.article} dangerouslySetInnerHTML={{__html: previewText}}></article>
+					<p className={styles.hx}></p>
+					<p className={styles.statement}>
+						声明：千氪财经登载此文出于传递更多信息之目的，并不意味着赞同其观点或证实其描述。文章内容仅供参考，不构成投资建议，投资者据此操作，风险自担。
+					</p>
+					{(previewTag!=null)?previewTag.map((t,index)=>{
+							return(
+								<Tag color="blue" key={index} className={styles.tags}>{t}</Tag>
+								)
+					}):null}  
+				</div>
 			</div>
 
 	);

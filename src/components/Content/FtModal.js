@@ -104,7 +104,7 @@ var ImgBox = React.createClass({
 		var fileList = docobj.files[0];
 		//现在图片文件大小
 		var imgSize = fileList.size;
-		console.log(fileList);
+		//console.log(fileList);
 		if (imgSize > 2 * 1024 * 1024) {
 			message.error('上传的图片的大于2M,请重新选择');
 			docobj.val('');
@@ -114,7 +114,7 @@ var ImgBox = React.createClass({
 			docobj.before(newJqObj);
 			docobj.remove();
 			docobj.unbind().change(function (e) {
-				console.log(e)
+				//console.log(e)
 			});
 			return;
 		}
@@ -134,8 +134,7 @@ var ImgBox = React.createClass({
 			img.onload = function (argument) {
 				imgWidth = this.width;
 				imgHeight = this.height;
-				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
-				console.log(imgWidth)
+				
 				if (imgWidth < 356 ) {
 					message.warning('上传图片最小尺寸为356*200px')
 				} else if(imgHeight < 200){
@@ -230,7 +229,7 @@ var ImgBox = React.createClass({
 		              </div>
 		              }
 				  <div className={styles.name}>大图封面：16:9</div>
-				  {imgtype == 'video'?<div></div>:<div>
+				 <div>
 				  <div className={styles.crpprtBox2}>
 				     
 		              <div className={this.state.src!= "" ?styles.crpprt:''}>
@@ -240,8 +239,7 @@ var ImgBox = React.createClass({
 		              </div>
 	              </div>
 				  <div className={styles.name}>小图封面：3:2</div>
-				  </div>}
-				  
+				  </div>
 	        </Col>
 	              
             </Row>

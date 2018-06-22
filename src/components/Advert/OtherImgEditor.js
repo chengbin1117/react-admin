@@ -192,7 +192,9 @@ const Content_ImageAdd_Modal = ({
 							initialValue: item&&item.imageDetail,
 							rules: [
 								{ required: true, message: "请输入链接地址" },
-								{ type: "string", }
+								{
+								  type:'url',message:'请输入http://或者https://协议'
+								}
 							],
 						})(
 							<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>
