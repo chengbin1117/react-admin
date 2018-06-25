@@ -28,7 +28,7 @@ const Content_ImageAdd_Modal = ({
 		resetFields
 	},
 }) => {
-
+	console.log(selectValue)
 	//上传图片按钮状态
 	const uploadButton = (
 		<div className={styles.imgBox}>
@@ -94,7 +94,6 @@ const Content_ImageAdd_Modal = ({
 
 	//修改图片类型
 	function ImgtypeChange(val) {
-		console.log(val)
 		dispatch({
 			type: "advert/ImgtypeChange",
 			payload: {
@@ -134,6 +133,7 @@ const Content_ImageAdd_Modal = ({
 					createUser:merId,
 					...fieldsValue
 				}
+				console.log(data)
 				onOk(data)
 			}
 		})
@@ -177,11 +177,11 @@ const Content_ImageAdd_Modal = ({
 
 					)}
 				</FormItem>
-				{selectValue == "1" ? <FormItem {...formItemLayout} label="文章ID" >
+				{selectValue == 1 ? <FormItem {...formItemLayout} label="文章ID" >
 					{getFieldDecorator('imagetitle', {
 						initialValue:  item&&item.imageDetail,
 						rules: [
-							{ required: true, message: "请输入文章ID" },
+							{ required: selectValue == 1 ?true :false, message: "请输入文章ID" },
 							{ type: "string", min: 1, message: "文章ID必须为数字", pattern: /^[0-9]*$/ }
 						],
 					})(
