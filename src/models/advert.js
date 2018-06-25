@@ -97,7 +97,6 @@ export default {
 						type: 'siteimagelist',
 						payload: {
 							currentPage: parseInt(search.page),
-							adverType:1,
 							imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
 							imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 							navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
@@ -244,7 +243,6 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
-						adverType:1,
 						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
 						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
@@ -277,7 +275,6 @@ export default {
 					payload: {
 						pageSize: 25,
 						currentPage: parseInt(search.page),
-						adverType:1,
 						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
 						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
 						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
