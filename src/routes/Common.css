@@ -403,7 +403,7 @@
 }
 .container_left_pre {
   width :100%;
-  min-height: 100%;
+  min-height: 1080px;
   background: rgba(0, 0, 0, 1);
 }
 .videoMain {
