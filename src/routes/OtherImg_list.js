@@ -52,6 +52,7 @@ function ContentImage({dispatch,advert,location}) {
 			            	})(
 			              <Select placeholder="请选择">
 									   	<Option value="1">资讯</Option>
+											<Option value="2">广告</Option>
 			              	<Option value="3">其他</Option>
 											<Option value="4">活动</Option>
 			              </Select>
@@ -87,6 +88,7 @@ function ContentImage({dispatch,advert,location}) {
 			            	})(
 			              <Select placeholder="请选择">
 			              	<Option value="1">资讯</Option>
+											<Option value="2">广告</Option>
 			              	<Option value="3">其他</Option>
 											<Option value="4">活动</Option>
 			              </Select>
@@ -114,12 +116,12 @@ function ContentImage({dispatch,advert,location}) {
 	function handlsearch(values){
 			if(values.residence!=undefined){
 			
-			dispatch(routerRedux.push('/advert/other_imgs?page=1'+"&imageType="+values.type+
+			dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
 				"&imageStatus="+values.showStatus+"&navigatorPos="+values.residence[0]+"&imagePos="+values.residence[1]
 				))
 
 			}else{
-				dispatch(routerRedux.push('/advert/other_imgs?page=1'+"&imageType="+values.type+
+				dispatch(routerRedux.push('/content/content_image?page=1'+"&imageType="+values.type+
 				"&imageStatus="+values.showStatus
 
 				))
@@ -200,13 +202,12 @@ function ContentImage({dispatch,advert,location}) {
 				payload:{
 					imageId:record.imageId,
 					search:location.search,
-					imageType:2
 				}
 			})
 		},
 		changepage(page){
 			const values =GetRequest(location.search)
-			dispatch(routerRedux.push('/advert/other_imgs?page='+page+"&imageType="+values.type+
+			dispatch(routerRedux.push('/content/content_image?page='+page+"&imageType="+values.imageType+
 			"&imageStatus="+values.showStatus+"&navigatorPos="+values.navigatorPos+"&imagePos="+values.imagePos
 			))
 		}

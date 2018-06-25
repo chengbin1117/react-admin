@@ -214,6 +214,14 @@ export default {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
+				}else if (data.code === '29001') {
+					Modal.warn({
+						title:'检测快讯标题有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
 				} else if (data.code === '29002') {
 					Modal.warn({
 						title:'检测快讯内容有敏感词',
@@ -249,7 +257,23 @@ export default {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
-				} else {
+				} else if (data.code === '29001') {
+					Modal.warn({
+						title:'检测快讯标题有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+				} else if (data.code === '29002') {
+					Modal.warn({
+						title:'检测快讯内容有敏感词',
+						content:(<div>敏感词：<span style={{color:"#f00"}}>{data.message}</span></div>),
+						onOk(){
+
+						}
+					})
+				} else{
 					message.error(data.message, 2);
 				}
 				yield put({
