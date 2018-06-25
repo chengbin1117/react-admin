@@ -125,72 +125,126 @@ let options = {
 }
 
 //图片显示位置
+//图片显示位置
 let residences = [{
   value: '1',
   label: '首页',
   children: [{
-    "value": '11',
-    "label": "banner"
-  }, {
-    "value": '12',
-    "label": "通栏横幅"
-  }, {
-    "value": '13',
-    "label": "热门视频下方矩形广告"
-  }, {
-    "value": '14',
-    "label": "最新资讯列表横幅"
-  }, {
-    "value": '15',
-    "label": "热门专栏下方小横幅"
-  },
-  {
-    "value": '16',
-    "label": "热门关键词下方小横幅"
-  }
-  ],
+        "value":'11',
+        "label":"首页banner"
+     },{
+        "value":'12',
+        "label":"首页banner下方小幅图片"
+     },{
+        "value":'13',
+        "label":"首页资讯列表横幅"
+     },{
+        "value":'14',
+        "label":"首页右侧top排行上方宽幅图片"
+     },{
+        "value":'15',
+        "label":"首页右侧热门作者下方小横幅"
+     },
+     {
+      "value":'16',
+      "label":"首页行情条下方横幅图片"
+     }
+    ],
 }, {
   value: '2',
-  label: '栏目/TAG列表页',
+  label: '栏目列表',
   children: [{
-    "value": '21',
-    "label": "热门文章下方矩形广告"
-  }]
-}, {
-  value: '3',
-  label: '搜索浮层',
-  children: [{
-    "value": '31',
-    "label": "小横幅"
-  }]
-}, {
+      "value":'21',
+      "label":"栏目页右侧top排行上方宽幅图片"
+    },{
+
+      "value":"22",
+      "label":"tag列表右侧top排行上方宽幅图片"
+    }]
+},{
   value: '4',
-  label: '资讯详情页',
+  label: '资讯详情',
   children: [{
-    "value": '41',
-    "label": "顶部通栏横幅",
-  },
-  {
-    "value": '42',
-    "label": "作者信息下方矩形广告",
-  },
-  {
-    "value": '43',
-    "label": "正文底部横幅",
-  },]
-}, {
-  value: '5',
-  label: '视频详情页',
-  children: [
-  {
-    "value": '51',
-    "label": "为你推荐上方横幅",
-  },
-  {
-    "value": '52',
-    "label": "热门视频上方横幅",
-  },]
+      "value":'41',
+      "label":"资讯详情页顶部通栏",
+     },
+     {
+      "value":'42',
+      "label":"资讯详情页正文声明下方横幅",
+     },
+     {
+      "value":'43',
+      "label":"资讯详情页右侧top排行上方宽幅图片",
+     },]
 }];
+
+
+// let residences = [{
+//   value: '1',
+//   label: '首页',
+//   children: [{
+//     "value": '11',
+//     "label": "banner"
+//   }, {
+//     "value": '12',
+//     "label": "通栏横幅"
+//   }, {
+//     "value": '13',
+//     "label": "热门视频下方矩形广告"
+//   }, {
+//     "value": '14',
+//     "label": "最新资讯列表横幅"
+//   }, {
+//     "value": '15',
+//     "label": "热门专栏下方小横幅"
+//   },
+//   {
+//     "value": '16',
+//     "label": "热门关键词下方小横幅"
+//   }
+//   ],
+// }, {
+//   value: '2',
+//   label: '栏目/TAG列表页',
+//   children: [{
+//     "value": '21',
+//     "label": "热门文章下方矩形广告"
+//   }]
+// }, {
+//   value: '3',
+//   label: '搜索浮层',
+//   children: [{
+//     "value": '31',
+//     "label": "小横幅"
+//   }]
+// }, {
+//   value: '4',
+//   label: '资讯详情页',
+//   children: [{
+//     "value": '41',
+//     "label": "顶部通栏横幅",
+//   },
+//   {
+//     "value": '42',
+//     "label": "作者信息下方矩形广告",
+//   },
+//   {
+//     "value": '43',
+//     "label": "正文底部横幅",
+//   },]
+// }, {
+//   value: '5',
+//   label: '视频详情页',
+//   children: [
+//   {
+//     "value": '51',
+//     "label": "为你推荐上方横幅",
+//   },
+//   {
+//     "value": '52',
+//     "label": "热门视频上方横幅",
+//   },]
+// }];
 
 
 //广告行业关键词

@@ -175,7 +175,7 @@ function RouterConfig({ history }) {
           <Route path="/content/content/content_column/:id"  component={Content_Column_Editor}/>
           <Route path="/content/content_article" exact component={ContentArticle}/>
           <Route path="/content/videoList" exact component={ContentVideo}/>
-          <Route path="/advert/other_imgs" strict component={ContentImage}/>
+          <Route path="/content/content_image" strict component={ContentImage}/>
           <Route path="/content/content_comment" strict component={ContentComment}/>
           <Route path="/content/release_article" strict component={Release_article}/>
           <Route path="/content/EditorVideo" strict component={Editor_Video}/>

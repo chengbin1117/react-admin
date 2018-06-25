@@ -18,7 +18,7 @@ export default {
 		uploading:false,
 		imageUrl:'',  //上传图片地址
 		keWordArr:[], //选择的行业关键词
-		selectValue:'1',//图片类型
+		selectValue:0,//图片类型
 		ImageList:[],//图片列表
 		confirmLoading:false,
 		currentItem:{},
@@ -90,7 +90,7 @@ export default {
 						}
 					})
 				}
-				match = pathToRegexp('/advert/other_imgs').exec(location.pathname);
+				match = pathToRegexp('/content/content_image').exec(location.pathname);
 				if (match) {
 					const search = GetRequest(location.search);
 					dispatch({
@@ -105,12 +105,12 @@ export default {
 							pageSize: 25,
 						}
 					})
-					dispatch({
-						type: 'ImgtypeChange',
-						payload: {
-							selectValue:'1'
-						}
-					})
+					// dispatch({
+					// 	type: 'ImgtypeChange',
+					// 	payload: {
+					// 		selectValue:1
+					// 	}
+					// })
 					dispatch({
 						type: 'imgurlChange',
 						payload: {
@@ -432,7 +432,7 @@ export default {
 			return {...state,confirmLoading: false};
 		},
 		showModal(state, action) {
-			return {...state,ImgVisible: true,imageUrl:'',selectValue:'1'};
+			return {...state,ImgVisible: true,imageUrl:'',selectValue:1};
 		},
 		hideModal(state, action) {
 			return {...state,ImgVisible: false};

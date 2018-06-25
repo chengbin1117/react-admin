@@ -28,7 +28,6 @@ const Content_ImageAdd_Modal = ({
 		resetFields
 	},
 }) => {
-	console.log(selectValue)
 	//上传图片按钮状态
 	const uploadButton = (
 		<div className={styles.imgBox}>
@@ -133,7 +132,6 @@ const Content_ImageAdd_Modal = ({
 					createUser:merId,
 					...fieldsValue
 				}
-				console.log(data)
 				onOk(data)
 			}
 		})
@@ -177,17 +175,7 @@ const Content_ImageAdd_Modal = ({
 
 					)}
 				</FormItem>
-				{selectValue == 1 ? <FormItem {...formItemLayout} label="文章ID" >
-					{getFieldDecorator('imagetitle', {
-						initialValue:  item&&item.imageDetail,
-						rules: [
-							{ required: selectValue == 1 ?true :false, message: "请输入文章ID" },
-							{ type: "string", min: 1, message: "文章ID必须为数字", pattern: /^[0-9]*$/ }
-						],
-					})(
-						<Input placeholder="请输入文章ID" style={{ width: '350px' }}/>
-					)}
-				</FormItem> : <FormItem {...formItemLayout} label="链接地址">
+				{selectValue != 1 ? <FormItem {...formItemLayout} label="链接地址">
 						{getFieldDecorator('imageDetail', {
 							initialValue: item&&item.imageDetail,
 							rules: [
@@ -199,7 +187,17 @@ const Content_ImageAdd_Modal = ({
 						})(
 							<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>
 						)}
-					</FormItem>}
+					</FormItem>: <FormItem {...formItemLayout} label="文章ID" >
+					{getFieldDecorator('imagetitle', {
+						initialValue:  item&&item.imageDetail,
+						rules: [
+							{ required: selectValue == 1 ?true :false, message: "请输入文章ID" },
+							{ type: "string", min: 1, message: "文章ID必须为数字", pattern: /^[0-9]*$/ }
+						],
+					})(
+						<Input placeholder="请输入文章ID" style={{ width: '350px' }}/>
+					)}
+				</FormItem>}
 				<FormItem
 					{...formItemLayout}
 					label="显示位置"
