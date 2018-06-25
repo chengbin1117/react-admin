@@ -213,11 +213,11 @@ function ContentImage({dispatch,advert,location}) {
 	}
 	return (
 			<div >
-				<div className = {styles.changeAward}>
+				{/* <div className = {styles.changeAward}>
 					<Link  to = '/advert/list?page=1'>广告</Link>
 					<Link  className = {styles.activeAward}  to = '/advert/other_imgs?page=1'>其他图片</Link>
 					
-				</div>
+				</div> */}
 				<Button type="primary" size = 'large' onClick={showModal} style = {{marginBottom:20,marginTop:20}} icon="plus">添加图片</Button>
 			    <WrappedAdvancedSearchForm  style = {{margin:0}} getFields = {getFields} getFieldsFirst = {getFieldsFirst} handlsearch ={handlsearch}/>
 				<OtherImgTable {...OtherImgTableProps}/>
