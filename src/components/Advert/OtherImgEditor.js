@@ -176,9 +176,21 @@ const Content_ImageAdd_Modal = ({
 
 					)}
 				</FormItem>
-				{selectValue == 1 && <FormItem {...formItemLayout} label="文章ID" >
-					{getFieldDecorator('imagetitle', {
-						initialValue:  item&&item.imageDetail,
+				{selectValue != 1 ?<FormItem {...formItemLayout} label="链接地址">
+					{getFieldDecorator('imageDetail', {
+						initialValue:selectValue != 1?item&&item.imageDetail:0,
+						rules: [
+							{ required: selectValue != 1 ?true :false, message: "请输入链接地址" },
+							{
+								type:'url',message:'请输入http://或者https://协议'
+							}
+						],
+					})(
+						<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>
+					)}
+				</FormItem>: <FormItem {...formItemLayout} label="文章ID" >
+					{getFieldDecorator('imageDetail', {
+						initialValue:  selectValue == 1?item&&item.imageDetail:0,
 						rules: [
 							{ required: selectValue == 1 ?true :false, message: "请输入文章ID" },
 							{ type: "string", min: 1, message: "文章ID必须为数字", pattern: /^[0-9]*$/ }
@@ -187,45 +199,7 @@ const Content_ImageAdd_Modal = ({
 						<Input placeholder="请输入文章ID" style={{ width: '350px' }}/>
 					)}
 				</FormItem>}
-				{selectValue == 2&&<FormItem {...formItemLayout} label="链接地址">
-					{getFieldDecorator('imageDetail', {
-						initialValue: item&&item.imageDetail,
-						rules: [
-							{ required: selectValue != 1 ?true :false, message: "请输入链接地址" },
-							{
-								type:'url',message:'请输入http://或者https://协议'
-							}
-						],
-					})(
-						<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>
-					)}
-				</FormItem>}
-				{selectValue == 3&&<FormItem {...formItemLayout} label="链接地址">
-					{getFieldDecorator('imageDetail', {
-						initialValue: item&&item.imageDetail,
-						rules: [
-							{ required: selectValue != 1 ?true :false, message: "请输入链接地址" },
-							{
-								type:'url',message:'请输入http://或者https://协议'
-							}
-						],
-					})(
-						<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>
-					)}
-				</FormItem>}
-				{selectValue == 4&&<FormItem {...formItemLayout} label="链接地址">
-					{getFieldDecorator('imageDetail', {
-						initialValue: item&&item.imageDetail,
-						rules: [
-							{ required: selectValue != 1 ?true :false, message: "请输入链接地址" },
-							{
-								type:'url',message:'请输入http://或者https://协议'
-							}
-						],
-					})(
-						<Input placeholder="请输入链接地址"  style={{ width: '350px' }}/>
-					)}
-				</FormItem>}
+				
 				<FormItem
 					{...formItemLayout}
 					label="显示位置"
