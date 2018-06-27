@@ -29,7 +29,7 @@ function Editor_article({ dispatch, router, content, setting }) {
     var html = '';
     let src = "";
 
-    const { ArticleList,flag,imgtype,imgSize,loading,BgVisible,PushAticleInfo,ifPushValue,UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords,pubStatus} = content;
+    const { ArticleList,flag,imgtype,imgSize,comfingloading,loading,BgVisible,PushAticleInfo,ifPushValue,UserById, FtVisible, activeImg, ColumnList, cruImage, editorList, getBonusList, imgUrl,SensitiveWords,pubStatus} = content;
 
     const options = ColumnList;
     const ArticleEditorProps = {
@@ -119,6 +119,7 @@ function Editor_article({ dispatch, router, content, setting }) {
     const FtModalProps = {
         visible: FtVisible,
         activeImg: activeImg,
+        comfingloading:comfingloading,
         imgtype,
         onCancel() {
             var docobj = document.getElementById("uploadInput1");
@@ -144,12 +145,22 @@ function Editor_article({ dispatch, router, content, setting }) {
                     'Content-Type': 'multipart/form-data'
                 }
             }
+            dispatch ({
+                type:"content/comfingloading",
+                payload:{
+                  comfingloading:true
+                }
+            })
             axios.post(ImgUrl, formData, config).then(res => {
                 res = res.data;
 
                 if (res.errorCode == 10000) {
-                    console.log(res)
-                    //imgUrl =res.data[0].filePath;
+                    dispatch ({
+                        type:"content/comfingloading",
+                        payload:{
+                          comfingloading:false
+                        }
+                    })
                     dispatch({
                         type: 'content/hidefpModal',
                         payload: {

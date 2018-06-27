@@ -29,7 +29,7 @@ function Editor_article({dispatch,router,content,setting}) {
   var html = '';
   let src = "";
   
-  const {ArticleList,imgtype,dis,pubStatus,loading,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
+  const {ArticleList,imgtype,dis,comfingloading,pubStatus,loading,BgVisible,ifPushValue,PushAticleInfo,UserById,FtVisible,activeImg,ColumnList,cruImage,getVideoList,getBonusList,imgUrl} =content;
 
   const options = ColumnList;
   console.log("imgUrl",imgtype)
@@ -119,6 +119,7 @@ function Editor_article({dispatch,router,content,setting}) {
   	visible:FtVisible,
     activeImg:activeImg,
     imgtype:imgtype,
+    comfingloading:comfingloading,
   	onCancel(){
   		 dispatch({
   		    type:'content/hidefpModal',
@@ -139,11 +140,22 @@ function Editor_article({dispatch,router,content,setting}) {
                   'Content-Type': 'multipart/form-data'
                 }
             }
+      dispatch ({
+        type:"content/comfingloading",
+        payload:{
+          comfingloading:true
+        }
+      })
       axios.post(ImgUrl, formData, config).then(res=>{
                res =res.data; 
               
                 if (res.errorCode == 10000) {
-                    console.log(res) 
+                  dispatch ({
+                    type:"content/comfingloading",
+                    payload:{
+                      comfingloading:false
+                    }
+                  })
                    //imgUrl =res.data[0].filePath;
                     dispatch({
                       type:'content/hidefpModal',
