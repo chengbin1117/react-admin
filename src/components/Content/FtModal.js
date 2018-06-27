@@ -44,6 +44,7 @@ const FtModal = ({
 	oncroup,
 	activeImg,
 	imgtype,
+	comfingloading,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -51,7 +52,7 @@ const FtModal = ({
 		setFieldsValue,
 	},
 }) => {
-	console.log(imgtype)
+	
 
 	function handleOk(value,text) {
 			
@@ -160,14 +161,14 @@ var ImgBox = React.createClass({
 	      src:this.refs.cropper.getData().toDataURL()
 		})*/
 		const that = this;
-		console.log(this)
+	
 	    var pevImg = this.refs.cropper.getCroppedCanvas();
 		var reImg = pevImg.toDataURL('image/jpeg', 1.0);
 		var img = new Image();
 		img.src = reImg
 		img.onload = function (argument) {
 			//console.log(that)
-			console.log(this.width, this.height)
+			
 			that.setState({
 				imgWidth: this.width,
 				imgHeight:this.height
@@ -245,7 +246,7 @@ var ImgBox = React.createClass({
             </Row>
 		
             <div className={styles.upBtn}>
-					<Button size="large" onClick={onCancel}>取消</Button><Button type="primary" size="large" style={{marginLeft:20+'px'}}onClick={()=>oncroup(this.state.src,this.state.flag)}>确定</Button>
+					<Button size="large" onClick={onCancel}>取消</Button><Button type="primary" size="large" style={{marginLeft:20+'px'}}onClick={()=>oncroup(this.state.src,this.state.flag)} loading = {comfingloading}>确定</Button>
 				  </div>
             </div>
         );

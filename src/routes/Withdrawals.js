@@ -155,6 +155,11 @@ function Withdrawals({location,dispatch,finance,router,}) {
 	    return children;
 	}
 	function handlsearch(values){
+			if(values.time!=undefined){
+				if(values.time.length==0){
+					values.time=undefined
+				}
+			}
 			if(values.time ==undefined){
 			dispatch(routerRedux.push('/finance/withdrawals?page=1'+"&email="+values.email+
 				"&mobile="+values.mobile+"&status="+values.status

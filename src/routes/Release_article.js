@@ -30,7 +30,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   var text = '';
   var html = '';
   let src = ""
-  const {artSorce,flag,imgtype,imgSize,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
+  const {artSorce,flag,comfingloading,imgtype,imgSize,loading,editorContent,validateStatus,helpMessage,PushAticleInfo,ifPushValue,BgVisible,FtVisible,saveId,activeImg,ColumnList,cruImage,UserById,imgUrl,firstC,secondC,SensitiveWords,titleWords,timeDis} =content;
   //console.log(ColumnList)
   const options = ColumnList;
   //const {getRelUserList} =setting;
@@ -137,6 +137,7 @@ function Release_article({location,dispatch,router,content,setting}) {
   const FtModalProps ={
   	visible:FtVisible,
     activeImg:activeImg,
+    comfingloading:comfingloading,
     imgtype,
   	onCancel(){
        var docobj = document.getElementById("uploadInput1");
@@ -164,12 +165,24 @@ function Release_article({location,dispatch,router,content,setting}) {
                   'Content-Type': 'multipart/form-data'
                 }
             }
+      dispatch ({
+        type:"content/comfingloading",
+        payload:{
+          comfingloading:true
+        }
+      })
       axios.post(ImgUrl, formData, config).then(res=>{
                res =res.data; 
               
                 if (res.errorCode == 10000) {
-                    console.log(res) 
+                   
                    //imgUrl =res.data[0].filePath;
+                    dispatch ({
+                      type:"content/comfingloading",
+                      payload:{
+                        comfingloading:false
+                      }
+                    })
                     dispatch({
                       type:'content/hidefpModal',
                       payload:{

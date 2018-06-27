@@ -2124,6 +2124,15 @@ export default {
 				}
 			})
 		},
+		*comfingloading({ payload }, { call, put }) {
+		
+			yield put({
+				type: "comfingloadingSuccess",
+				payload: {
+					comfingloading:payload.comfingloading,
+				}
+			})
+		},
 	},
 	reducers: {
 		showLoading(state, action) {
@@ -2553,6 +2562,12 @@ export default {
 			};
 		},
 		flagChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		comfingloadingSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,
