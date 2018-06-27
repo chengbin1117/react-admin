@@ -249,6 +249,7 @@ export default {
 						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
 					}
 				});
+				//window.location.reload()
 			} else {
 				yield put({
 					type:'hideSubmitLoading'
