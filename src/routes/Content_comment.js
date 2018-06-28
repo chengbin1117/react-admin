@@ -24,7 +24,7 @@ const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 function ContentComment({ location, dispatch, router, content }) {
 
-	const { CommentList, CommentSetVisible, showSetVisible, selectList, ExamineVisible, loading, totalNumber, currentPage } = content;
+	const { CommentList, CommentSetVisible, showSetVisible,isCommentAutid, selectList, ExamineVisible, loading, totalNumber, currentPage } = content;
 
 	let token = localStorage.getItem("Kgtoken");
 	if (!token) {
@@ -94,6 +94,7 @@ function ContentComment({ location, dispatch, router, content }) {
 	//评论设置
 	const Content_CommentSet_ModalProps = {
 		visible: CommentSetVisible,
+		isCommentAutid:isCommentAutid,
 		onCancel() {
 			dispatch({
 				type: "content/hideCommentSet"
@@ -104,7 +105,7 @@ function ContentComment({ location, dispatch, router, content }) {
 			dispatch({
 				type: "content/commentSet",
 				payload: {
-					commentSet: values.set == "public" ? true : false,
+					commentSet: values.set == "1" ? true : false,
 				}
 			})
 		}

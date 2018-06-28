@@ -121,71 +121,7 @@ export async function getArticleById(params) {
 	}
 	);
 }
-//图片显示列表
-export async function siteimagelist(params) {
 
-	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/siteimage/list?data='+encodeURIComponent(data)+"&sign="+sign;
-
-	return request(url,{
-		method:"post"
-	}
-	);
-}
-
-//图片批量设置显示
-export async function setimagiservice(params) {
-
-	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/seimagi/setimagiservice?data='+encodeURIComponent(data)+"&sign="+sign;
-
-	return request(url,{
-		method:"post"
-	}
-	);
-}
-//添加编辑图片
-export async function addImage(params) {
-
-	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/siteimage/addImage?data='+encodeURIComponent(data)+"&sign="+sign;
-
-	return request(url,{
-		method:"post"
-	}
-	);
-}
-
-//删除图片
-
-export async function deleteImage(params) {
-
-	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/siteimage/deleteImage?data='+encodeURIComponent(data)+"&sign="+sign;
-
-	return request(url,{
-		method:"post"
-	}
-	);
-}
-
-//设置图片显示状态
-
-export async function ImageSetStatus(params) {
-
-	var data = Base64Url(params)
-    var sign = SignUrl(data)
-	let url = '/admin/siteimage/setStatus?data='+encodeURIComponent(data)+"&sign="+sign;
-
-	return request(url,{
-		method:"post"
-	}
-	);
-}
 //意见反馈
 
 export async function getFeedbackList(params) {

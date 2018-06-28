@@ -49,7 +49,6 @@ import Editor_Video from './routes/Editor_Video';
 import ContentColumnContainer from './routes/Content_column_container';
 import ContentColumn from './routes/Content_column';
 import ContentComment from './routes/Content_comment';
-import ContentImage from './routes/Content_image';
 import ContentOpinionContainer from './routes/Content_opinion_container';
 import ContentOpinion from './routes/Content_opinion';
 import ContentOpinionShow from './routes/Content_opinion_show';
@@ -60,6 +59,21 @@ import ArticlePreview from './routes/ArticlePreview';
 import Preview from './routes/Preview';
 import PreviewVideo from './routes/PreviewVideo';
 import home_article from './routes/Home_editor';
+import News_flash from './routes/News_flash';  //快讯列表
+import News_publish from './routes/News_publish';  //快讯列表
+import News_editor from './routes/News_editor';  //快讯列表
+import Content_notice from './routes/Content_notice';  //公告列表
+import Content_notice_publish from './routes/Content_notice_publish';  //公告发布
+import Content_notice_editor from './routes/Content_notice_editor';  //公告编辑
+
+
+//广告中心
+import Advert_list from './routes/Advert_list';   //广告列表
+import Advert_publish from './routes/Advert_publish'; //添加广告
+import Advert_editor from './routes/Advert_editor'; //添加广告
+import ContentImage from './routes/OtherImg_list';  //图片列表
+import OtherImg_publish from './routes/OtherImg_publish'; //添加图片
+import OtherImg_editor from './routes/OtherImg_editor'; //添加图片
 
 //Seo
 import Seo from './routes/Seo';
@@ -75,6 +89,8 @@ import BaseInfo from './routes/BaseInfo';
 import AccountRule from './routes/AccountRule';
 import AddInfo from './routes/AddInfo';
 import EditorInfo from './routes/AddInfoEdior';
+import SysParams from './routes/SysParams';
+
 //数据中心
 import Data from './routes/Data';
 import DataColumn from './routes/data_column';
@@ -131,7 +147,6 @@ function RouterConfig({ history }) {
           <Route path="/user/user_data" exact component={UserData}/>
           <Route path="/user/reward" exact component={RewardDetails}/>
           <Route path="/user/kgaward" exact component={KgAwardDetail}/>
-          
           <Route path="/user/invite" exact component={InviteRecord}/>
           <Route path="/user/master" exact component={Master}/>
           <Route path="/user/platformReward" exact component={PlatformReward}/>
@@ -147,6 +162,7 @@ function RouterConfig({ history }) {
           <Route path="/setting/account" strict component={AccountRule}/>
           <Route path="/setting/addinfo" strict component={AddInfo}/>
           <Route path="/setting/addinfoEditor" strict  component={EditorInfo}/>
+          <Route path="/setting/system" strict  component={SysParams}/>
           <Route path="/data/data_column" strict  component={DataColumn}/>
           <Route path="/data/data_user" strict  component={DataUser}/>
           <Route path="/log/log_admin" strict  component={LogAdmin}/>
@@ -156,7 +172,7 @@ function RouterConfig({ history }) {
           <Route path="/seo/link" component={SeoLink} />
           <Route path="/seo/top_search" component={SeoTopSearch} />
           <Route path="/content/content_column" strict component={ContentColumn} />
-          <Route path = '/content/content/content_column/:id'  component={Content_Column_Editor}/>
+          <Route path="/content/content/content_column/:id"  component={Content_Column_Editor}/>
           <Route path="/content/content_article" exact component={ContentArticle}/>
           <Route path="/content/videoList" exact component={ContentVideo}/>
           <Route path="/content/content_image" strict component={ContentImage}/>
@@ -165,7 +181,13 @@ function RouterConfig({ history }) {
           <Route path="/content/EditorVideo" strict component={Editor_Video}/>
           <Route path="/content/editor_article" strict component={Editor_Article}/>
           <Route path="/content/content_opinion"  component={ContentOpinion} />
-          <Route path ='/content/opinion'  component={ContentOpinionShow}/>
+          <Route path="/content/opinion"  component={ContentOpinionShow}/>
+          <Route path="/content/news_flash"  component={News_flash}/>
+          <Route path="/content/news_publish"  component={News_publish}/>
+          <Route path="/content/news_editor"  component={News_editor}/>
+          <Route path="/content/notice"  component={Content_notice}/>
+          <Route path="/content/notice_publish" strict component={Content_notice_publish} />
+          <Route path="/content/notice_editor" strict component={Content_notice_editor} />
           <Route path="/finance/recharge" strict component={FinanceRecharge}/>
           <Route path="/finance/withdrawals"   strict component={Withdrawals} />
           <Route path="/finance/record" strict component={Record} />
@@ -174,9 +196,13 @@ function RouterConfig({ history }) {
           <Route path="/finance/addAward" strict component={AddAwardPage} />
           <Route path="/finance/userAward" strict component={UserAward} />
           <Route path="/finance/awardDetails" strict component={AwardDetails} />
-          
           <Route path="/app/editon" strict component={AppPage} />
           <Route path="/app/detail" strict component={AppDetail} />
+          <Route path="/advert/list" strict component={Advert_list} />
+          <Route path="/advert/advert_add" strict component={Advert_publish} />
+          <Route path="/advert/advert_editor" strict component={Advert_editor} />
+          <Route path="/advert/otherImg_add" strict component={OtherImg_publish} />
+          <Route path="/advert/otherImg_editor" strict component={OtherImg_editor} />
           
       </LayoutContainer>
       </Switch>
@@ -186,79 +212,3 @@ function RouterConfig({ history }) {
 }
 
 export default RouterConfig;
-/*export default function({
-  history
-}) {
-
-  return (
-    <Router history={history}>
-    <Route path="/" component={Login} >
-     { <Route path="/" component={Login} >
-      			<IndexRoute component={UserRouter} onEnter={requireAuth}/>
-      		  <Route path="/login" component={UserRouter} onEnter={requireAuth}/>
-      </Route>
-      <Route path="/index" component={IndexPage} />
-      <Route path="user" component={User}>
-        <IndexRoute component={UserAdmin}/>
-        <Route path="user_admin" component={UserAdmin}/>
-        <Route path="user_data" component={UserData}/>
-        <Route path="user_role" component={UserRole} />
-        <Route path="user_login" component={UserLogin} />
-        <Route path="user_info" component={UserInfo} />
-        <Route path="realName" component={realName} />
-      </Route>
-      <Route path="setting" component={Setting}>
-        <IndexRoute component={About}/>
-        <Route path="about" component={About}/>
-        <Route path="base" component={BaseInfo}/>
-        <Route path="account" component={AccountRule}/>
-        <Route path="addinfo" component={AddInfo}/>
-        <Route path="addinfoEditor" component={EditorInfo}/>
-      </Route>
-      <Route path="data" component={Data}>
-        <IndexRoute component={DataColumn}/>
-        <Route path="data_column" component={DataColumn}/>
-        <Route path="data_user" component={DataUser}/>
-      </Route>
-      <Route path="log" component={Log}>
-        <IndexRoute component={Log}/>
-        <Route path="log_admin" component={LogAdmin}/>
-        <Route path="log_user" component={LogUser} />
-      </Route>
-      <Route path="seo" component={Seo}>
-        <IndexRoute component={SeoTdk}/>
-        <Route path="tdk" component={SeoTdk}/>
-        <Route path="hot" component={SeoHot} />
-        <Route path="link" component={SeoLink} />
-        <Route path="top_search" component={SeoTopSearch} />
-      </Route>
-      <Route path="content" component={ContentRouter}>
-        <IndexRoute component={ContentRouter}/>
-        <Route path="content_column" component={ContentColumnContainer}>
-            <IndexRoute component={ContentColumn}/>
-            <Route path = '/content/content_column/:id' component={Content_Column_Editor}/>
-        </Route>
-        <Route path="content_article" component={ContentArticle}/>
-        <Route path="content_image" component={ContentImage}/>
-        <Route path="content_comment" component={ContentComment}/>
-        <Route path="release_article" component={Release_article}/>
-        <Route path="editor_article" component={Editor_Article}/>
-        <Route path="content_opinion" component={ContentOpinionContainer}>
-            <IndexRoute component={ContentOpinion}/>
-            <Route path = '/content/content_opinion/:id' component={ContentOpinionShow}/>
-        </Route>
-      </Route>
-       <Route path="finance" component={Finance}>
-        <IndexRoute component={FinanceRecharge}/>
-        <Route path="recharge" component={FinanceRecharge}/>
-        <Route path="withdrawals" component={Withdrawals} />
-        <Route path="record" component={Record} />
-        <Route path="bond" component={Bond} />
-      </Route>}
-    </Router>
-  );
-};*/
-
-
-
-

@@ -190,7 +190,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			dispatch(routerRedux.push('/user/user_admin?page=' + page +
 				"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 				"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
-				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&platfrom='+search.platfrom
+				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&platform='+search.platform
 			))
 
 		},

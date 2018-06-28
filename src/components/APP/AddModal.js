@@ -35,6 +35,8 @@ const AdduserModal = ({
 	isSys,
 	checkSysteme,
 	loging,
+	forcedChange,
+	forcedVal,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -162,35 +164,37 @@ const AdduserModal = ({
 					)}
 				</FormItem>
 				<FormItem
+					label="是否强制更新"
+					{...formItemLayout}
+				>
+					{getFieldDecorator('forced', {
+						initialValue: '1',
+						rules: [
+							{required: true, message: '请选择'}
+						],
+					})(
+						<RadioGroup onChange={forcedChange}>
+						    <Radio value="1">强制更新</Radio>
+							<Radio value="0">非强制更新强提示</Radio>
+						    <Radio value="-1">非强制更新弱提示</Radio>
+						</RadioGroup>
+					)}
+				</FormItem>
+				<FormItem
 					label="更新提示语(内容) "
 					{...formItemLayout}
 				>
 					{getFieldDecorator('prompt', {
 						initialValue: '',
 						rules: [
-							{required: true, message: '请填写更新提示语'},
+							{required: forcedVal=='-1'?false:true, message: '请填写更新提示语'},
 							{type: "string",max:1000,min:1,message: '1-1000个文字，格式不限'},
 						],
 					})(
-						<TextArea style={{minHeight:150}}/>
+						<TextArea style={{minHeight:150}} disabled={forcedVal == '-1'?true:false}/>
 					)}
 				</FormItem>
-				<FormItem
-					label="是否强制更新"
-					{...formItemLayout}
-				>
-					{getFieldDecorator('forced', {
-						initialValue: '0',
-						rules: [
-							{required: true, message: '请选择'}
-						],
-					})(
-						<RadioGroup>
-							<Radio value="1">是</Radio>
-							<Radio value="0">否</Radio>
-						</RadioGroup>
-					)}
-				</FormItem>
+				
 				<FormItem
 					label="操作系统"
 					{...formItemLayout}

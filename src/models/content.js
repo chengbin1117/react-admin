@@ -1,15 +1,15 @@
 import pathToRegexp from 'path-to-regexp';
 import $ from 'jquery';
 import {
-	getArticleList, setDisplayStatus, articleservice, auditArticle, getColumnList, deleteArticle, publishArticle, getArticleById, siteimagelist, addImage, deleteImage,
-	getFeedbackList, deleteFeedback, setStatus, replay, ImageSetStatus, getCommentList, commentSet, deleteComment, setcommentStatus, auditComment, addColumn, deleteColumn,
+	getArticleList, setDisplayStatus, articleservice, auditArticle, getColumnList, deleteArticle, publishArticle, getArticleById,
+	getFeedbackList, deleteFeedback, setStatus, replay, getCommentList, commentSet, deleteComment, setcommentStatus, auditComment, addColumn, deleteColumn,
 	sendEmail, getSysUserById, getBonus, getArticleStat, setDisplayOrder,getPushAticleInfo
 } from '../services/content';
 import {
 	message,Modal
 } from 'antd';
 import { routerRedux } from 'dva/router';
-import { formatDate, tokenLogOut, GetRequest, videoUrl } from '../services/common'
+import { formatDate, tokenLogOut, GetRequest, videoUrl,uploadUrl } from '../services/common'
 export default {
 
 	namespace: 'content',
@@ -59,6 +59,10 @@ export default {
 		validateStatus:'success',
 		helpMessage:'',
 		editorContent:'',//编辑器内容
+		imgSize:'1',
+		flag:false,  //大图是否可选
+		imgtype:'',
+		isCommentAutid:'0' //评论是否审核
 	},
 
 	subscriptions: {
@@ -178,6 +182,29 @@ export default {
 							sysUserId: search.userId
 						}
 					})
+					dispatch({
+						type: 'imgSizeChange',
+						payload: {
+							imgSize: '1',
+							
+						}
+					})
+					dispatch({
+						type: 'imgUrlChange',
+						payload: {
+							imgUrl: '',
+							
+						}
+					})
+					dispatch({
+						type: 'flagChange',
+						payload: {
+							flag: true,
+							
+						}
+					})
+
+
 				}
 				match = pathToRegexp('/content/EditorVideo').exec(location.pathname);
 				if (match) {
@@ -307,22 +334,7 @@ export default {
 					});
 
 				}
-				match = pathToRegexp('/content/content_image').exec(location.pathname);
-				if (match) {
-					const search = GetRequest(location.search);
-
-					dispatch({
-						type: 'siteimagelist',
-						payload: {
-							currentPage: parseInt(search.page),
-							imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
-							imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
-							navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
-							imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
-							pageSize: 25,
-						}
-					})
-				}
+				
 				match = pathToRegexp('/content/content_opinion').exec(location.pathname);
 				if (match) {
 					const search = GetRequest(location.search);
@@ -389,14 +401,18 @@ export default {
 						type: 'getArticleList',
 						payload: {
 							publishStatus: 2,
-							publishKind:1
+							publishKind:1,
+							currentPage:1,
+							pageSize:999
 						}
 					});
 					dispatch({
 						type: 'getVideoList',
 						payload: {
 							publishStatus: 2,
-							publishKind:2
+							publishKind:2,
+							currentPage:1,
+							pageSize:999
 						}
 					});
 					dispatch({
@@ -554,7 +570,7 @@ export default {
 			}
 		},
 		*setDisplayStatus({ payload }, { call, put }) {
-			const { articleId, displayStatus, updateUser, search } = payload;
+			const { articleId, displayStatus, updateUser,  } = payload;
 			let params = {
 				articleId: articleId,
 				displayStatus: displayStatus,
@@ -566,7 +582,7 @@ export default {
 			const { data } = yield call(setDisplayStatus, params);
 			if (data && data.code == 10000) {
 				var res = data.responseBody;
-				const sea = GetRequest(search)
+				const search = GetRequest(payload.search)
 				message.success('设置成功')
 				yield put({
 					type:"hideSubmitLoading"
@@ -576,15 +592,15 @@ export default {
 					yield put({
 						type: 'getArticleList',
 						payload: {
-							currentPage: sea.page,
+							currentPage: search.page,
 							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
-							articleId: sea.articleId != 'undefined' ? sea.articleId : null,
+							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
-							publishStatus: sea.publishStatus != 'undefined' ? parseInt(sea.publishStatus) : null,
-							displayStatus: sea.displayStatus != 'undefined' ? parseInt(sea.displayStatus) : null,
-							columnId: sea.columnId != 'null' ? parseInt(sea.columnId) : null,
-							secondColumn: sea.secondColumn != 'null' ? parseInt(sea.secondColumn) : null,
+							publishStatus: search.publishStatus != 'undefined' ? parseInt(search.publishStatus) : null,
+							displayStatus: search.displayStatus != 'undefined' ? parseInt(search.displayStatus) : null,
+							columnId: search.columnId != 'null' ? parseInt(search.columnId) : null,
+							secondColumn: search.secondColumn != 'null' ? parseInt(search.secondColumn) : null,
 							ifPlatformPublishAward: search.ifPlatformPublishAward != "undefined" ? search.ifPlatformPublishAward : null,
 							articleFrom: search.articleFrom != "undefined" ? search.articleFrom : null,
 							pageSize: 25,
@@ -595,16 +611,16 @@ export default {
 					yield put({
 						type: 'getArticleList',
 						payload: {
-							currentPage: sea.page,
+							currentPage: search.page,
 							createUser: (search.createUser == 'undefined' ||search.createUser==undefined)? null : Base64.decode(search.createUser),
-							articleId: sea.articleId != 'undefined' ? sea.articleId : null,
+							articleId: search.articleId != 'undefined' ? search.articleId : null,
 							orderByClause: search.orderByClause != "undefined" ? search.orderByClause : null,
 							articleTitle: (search.articleTitle != undefined) ? Base64.decode(search.articleTitle) : null,
-							articleTag: sea.articleTag != 'undefined' ? sea.articleTag : null,
-							publishStatus: sea.publishStatus != 'undefined' ? parseInt(sea.publishStatus) : null,
-							displayStatus: sea.displayStatus != 'undefined' ? parseInt(sea.displayStatus) : null,
-							columnId: sea.columnId != 'null' ? parseInt(sea.columnId) : null,
-							secondColumn: sea.secondColumn != 'null' ? parseInt(sea.secondColumn) : null,
+							articleTag: search.articleTag != 'undefined' ? search.articleTag : null,
+							publishStatus: search.publishStatus != 'undefined' ? parseInt(search.publishStatus) : null,
+							displayStatus: search.displayStatus != 'undefined' ? parseInt(search.displayStatus) : null,
+							columnId: search.columnId != 'null' ? parseInt(search.columnId) : null,
+							secondColumn: search.secondColumn != 'null' ? parseInt(search.secondColumn) : null,
 							pageSize: 25,
 							publishKind: 1
 						}
@@ -1257,6 +1273,38 @@ export default {
 				var res = data.responseBody;
 				var tags = "tags";
 				res[tags] = res.tagnames != null ? res.tagnames.split(",") : '';
+
+				var img_url = uploadUrl+res.articleImage;
+				//console.log(img_url)
+			    // 创建对象
+				var img = new Image();
+				// 改变图片的src
+				img.src = img_url;
+				//console.log(img.width,img.height)
+				if(img.width<750){
+					yield put({
+						type: 'flagChange',
+						payload: {
+							flag:true
+						}
+					});
+				}else if(img.height<422){
+					yield put({
+						type: 'flagChange',
+						payload: {
+							flag:true
+						}
+					});
+				}else{
+					yield put({
+						type: 'flagChange',
+						payload: {
+							flag:false
+						}
+					});
+				}
+				// 打印
+				
 				yield put({
 					type: 'getArticleListSuccess',
 					payload: {
@@ -1264,6 +1312,7 @@ export default {
 						loading: false,
 						ifPushValue:res.ifPush+'',
 						pubStatus:res.publishStatus,
+						imgSize:res.articleImgSize,
 					}
 				});
 				if (res.createUser == null) {
@@ -1420,167 +1469,6 @@ export default {
 				}
 			}
 		},
-		*siteimagelist({ payload }, { call, put }) {
-			yield put({
-				type: 'showLoading',
-			});
-			const { data } = yield call(siteimagelist, payload);
-			//console.log("图片",data)
-			if (data && data.code == 10000) {
-				var res = data.responseBody;
-				for (var i in res.data) {
-					res.data[i].createDate = formatDate(res.data[i].createDate)
-				}
-				yield put({
-					type: 'siteimagelistSuccess',
-					payload: {
-						ImageList: res.data,
-						loading: false,
-						currentPage: res.currentPage,
-						totalNumber: res.totalNumber
-					}
-				});
-			} else {
-				if (data.code == 10004 || data.code == 10011) {
-					message.error(data.message, 2);
-					yield put(routerRedux.push('/'));
-				} else {
-					message.error(data.message, 2);
-				}
-				yield put({
-					type: 'hideLoading',
-				});
-			}
-		},
-		*addImage({ payload }, { call, put }) {
-			// console.log(payload)
-			const { imageType, imageDetail, navigatorPos, imagePos, imageStatus, createUser, imageOrder, imageAddress, imageId } = payload;
-			let params = {};
-			if (imageId != undefined) {
-				params = {
-					imageType: imageType,
-					imageDetail: imageDetail,
-					navigatorPos: navigatorPos,
-					imagePos: imagePos,
-					imageStatus: imageStatus,
-					createUser: createUser,
-					imageOrder: imageOrder,
-					imageAddress: imageAddress,
-					imageId: imageId
-				}
-
-			} else {
-				params = {
-					imageType: imageType,
-					imageDetail: imageDetail,
-					navigatorPos: navigatorPos,
-					imagePos: imagePos,
-					imageStatus: imageStatus,
-					createUser: createUser,
-					imageOrder: imageOrder,
-					imageAddress: imageAddress,
-				}
-			}
-			yield put({
-				type:'showSubmitLoading'
-			})
-			const { data } = yield call(addImage, params);
-
-			if (data && data.code == 10000) {
-				if (payload.imageId != undefined) {
-					message.success('图片编辑成功');
-				} else {
-					message.success('图片添加成功');
-				}
-				yield put({
-					type:'hideSubmitLoading'
-				})
-				const search = GetRequest(payload.search);
-				yield put({
-					type: 'siteimagelist',
-					payload: {
-						pageSize: 25,
-						currentPage: parseInt(search.page),
-						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
-						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
-						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
-						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
-					}
-				});
-				
-				yield put({
-					type: 'hideAddImgModal',
-
-				});
-				yield put({
-					type: 'hideEditorImageModal',
-
-				});
-
-			} else {
-				yield put({
-					type:'hideSubmitLoading'
-				})
-				if (data.code == 10004 || data.code == 10011) {
-					message.error(data.message, 2);
-					yield put(routerRedux.push('/'));
-				} else {
-					message.error(data.message, 2);
-				}
-			}
-		},
-		*deleteImage({ payload }, { call, put }) {
-			yield put({
-				type: 'showLoading',
-			});
-			const { data } = yield call(deleteImage, payload);
-			//console.log("图片",data)
-			if (data && data.code == 10000) {
-				message.success('图片删除成功');
-				const search = GetRequest(payload.search);
-				yield put({
-					type: 'siteimagelist',
-					payload: {
-						pageSize: 25,
-						currentPage: parseInt(search.page),
-						imageType: search.imageType != "undefined" ? parseInt(search.imageType) : null,
-						imageStatus: search.imageStatus != "undefined" ? parseInt(search.imageStatus) : null,
-						navigatorPos: search.navigatorPos != "undefined" ? parseInt(search.navigatorPos) : null,
-						imagePos: search.imagePos != "undefined" ? parseInt(search.imagePos) : null,
-					}
-				});
-			} else {
-				if (data.code == 10004 || data.code == 10011) {
-					message.error(data.message, 2);
-					yield put(routerRedux.push('/'));
-				} else {
-					message.error(data.message, 2);
-				}
-			}
-		},
-		*ImageSetStatus({ payload }, { call, put }) {
-
-			const { data } = yield call(ImageSetStatus, payload);
-			if (data && data.code == 10000) {
-				message.success('设置成功')
-				yield put({
-					type: "hideImageModal"
-				})
-				yield put({
-					type: 'siteimagelist',
-					payload: {
-
-					}
-				});
-			} else {
-				if (data.code == 10004 || data.code == 10011) {
-					message.error(data.message, 2);
-					yield put(routerRedux.push('/'));
-				} else {
-					message.error(data.message, 2);
-				}
-			}
-		},
 		*getFeedbackList({ payload }, { call, put }) {
 			yield put({
 				type: 'showLoading',
@@ -1694,6 +1582,7 @@ export default {
 						loading: false,
 						currentPage: res.currentPage,
 						totalNumber: res.totalNumber,
+						isCommentAutid:res.totalPrice+''
 					}
 
 				})
@@ -1719,7 +1608,14 @@ export default {
 				yield put({
 					type: 'hideCommentSet',
 				})
+				yield put({
+					type: 'getCommentList',
+					payload: {
+						currentPage: 1,
+						pageSize: 25,
+					}
 
+				})
 			} else {
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
@@ -2154,6 +2050,22 @@ export default {
 				}
 			})
 		},
+		*imgSizeChange({ payload }, { call, put }) {
+			yield put({
+				type: "imgSizeChangeSuccess",
+				payload: {
+					imgSize: payload.imgSize
+				}
+			})
+		},
+		*imgUrlChange({ payload }, { call, put }) {
+			yield put({
+				type: "imgUrlChangeSuccess",
+				payload: {
+					imgUrl: payload.imgUrl
+				}
+			})
+		},
 		*getPushAticleInfo({ payload }, { call, put }) {
 			const { data } = yield call(getPushAticleInfo, payload);
 			//console.log(data)
@@ -2200,6 +2112,24 @@ export default {
 				type: "editorTextSuccess",
 				payload: {
 					editorContent:payload.editorContent,
+				}
+			})
+		},
+		*flagChange({ payload }, { call, put }) {
+		
+			yield put({
+				type: "flagChangeSuccess",
+				payload: {
+					flag:payload.flag,
+				}
+			})
+		},
+		*comfingloading({ payload }, { call, put }) {
+		
+			yield put({
+				type: "comfingloadingSuccess",
+				payload: {
+					comfingloading:payload.comfingloading,
 				}
 			})
 		},
@@ -2375,29 +2305,6 @@ export default {
 			return {
 				...state,
 				...action.payload,
-			};
-		},
-		siteimagelistSuccess(state, action) {
-			return {
-				...state,
-				...action.payload,
-				saveId: 0
-			};
-		},
-		showAddImgModal(state, action) {
-			return {
-				...state,
-				...action.payload,
-				addImageVisible: true,
-				saveId: 0
-			};
-		},
-		hideAddImgModal(state, action) {
-			return {
-				...state,
-				...action.payload,
-				addImageVisible: false,
-				saveId: 0
 			};
 		},
 		getFeedbackListSuccess(state, action) {
@@ -2637,6 +2544,30 @@ export default {
 			};
 		},
 		editorTextSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		imgSizeChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		imgUrlChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		flagChangeSuccess(state, action) {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		comfingloadingSuccess(state, action) {
 			return {
 				...state,
 				...action.payload,

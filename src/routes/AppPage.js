@@ -16,7 +16,7 @@ import AddModal from '../components/APP/AddModal';
 import {uploadUrl} from '../services/common'
 function AppPage({ location, dispatch, app }) {
 	
-	const {addModal,isSys,appList,totalNumber,currentPage,loading,loging} = app;
+	const {addModal,isSys,appList,totalNumber,currentPage,loading,loging,forcedVal} = app;
 	//新建版本
 	function AddModalBox(){
 		dispatch({
@@ -27,6 +27,7 @@ function AppPage({ location, dispatch, app }) {
 		visible:addModal,
 		isSys:isSys,
 		loging:loging,
+		forcedVal:forcedVal,
 		onOk(data){
 			let downloadUrl = "";
 			if(data.systemType == "1"){
@@ -34,16 +35,30 @@ function AppPage({ location, dispatch, app }) {
 			}else{
 				downloadUrl= data.downloadUrl
 			}
-			dispatch({
-				type:"app/createApp",
-				payload:{
-					versionNum:data.versionNum,
-					prompt:data.prompt,
-					forced:parseInt(data.forced),
-					systemType:parseInt(data.systemType),
-					downloadUrl:downloadUrl,
-				}
-			})
+			console.log(data)
+			if(data.forced==-1){
+				dispatch({
+					type:"app/createApp",
+					payload:{
+						versionNum:data.versionNum,
+						forced:data.forced,
+						systemType:parseInt(data.systemType),
+						downloadUrl:downloadUrl,
+					}
+				})
+			}else{
+				dispatch({
+					type:"app/createApp",
+					payload:{
+						versionNum:data.versionNum,
+						prompt:data.prompt,
+						forced:data.forced,
+						systemType:parseInt(data.systemType),
+						downloadUrl:downloadUrl,
+					}
+				})
+			}
+			
 		},
 		onCancel(){
 			dispatch({
@@ -59,6 +74,15 @@ function AppPage({ location, dispatch, app }) {
 				}
 			})
 		
+		},
+		forcedChange(e){
+			var val = e.target.value;
+			dispatch({
+				type:'app/forcedChange',
+				payload:{
+					forcedVal:val
+				}
+			})
 		}
 	}
 	//APP版本管理列表

@@ -282,6 +282,61 @@ class LayoutContainer extends React.Component {
 			second = "用户奖励";
 			third = "奖励详情";
 			four = "";
+		} else if (path == "/content/news_list") {
+			first = "首页";
+			second = "内容中心";
+			third = "快讯管理";
+			four = "";
+		} else if (path == "/content/news_publish") {
+			first = "首页";
+			second = "内容中心";
+			third = "快讯管理";
+			four = "添加快讯";
+		}else if (path == "/content/news_editor") {
+			first = "首页";
+			second = "内容中心";
+			third = "快讯管理";
+			four = "编辑快讯";
+		}else if (path == "/advert/list") {
+			first = "首页";
+			second = "广告中心";
+			third = "广告管理";
+			four = "";
+		}else if (path == "/advert/advert_add") {
+			first = "首页";
+			second = "广告中心";
+			third = "广告管理";
+			four = "添加广告";
+		}else if (path == "/advert/advert_editor") {
+			first = "首页";
+			second = "广告中心";
+			third = "广告管理";
+			four = "编辑广告";
+		}else if (path == "/advert/advert_editor") {
+			first = "首页";
+			second = "广告中心";
+			third = "广告管理";
+			four = "编辑广告";
+		}else if (path == "/content/notice") {
+			first = "首页";
+			second = "内容中心";
+			third = "公告管理";
+			four = "";
+		}else if (path == "/content/notice_publish") {
+			first = "首页";
+			second = "内容中心";
+			third = "公告管理";
+			four = "发布公告";
+		}else if (path == "/content/notice_editor") {
+			first = "首页";
+			second = "内容中心";
+			third = "公告管理";
+			four = "编辑公告";
+		}else if (path == "/setting/system") {
+			first = "首页";
+			second = "基础设置";
+			third = "系统参数设置";
+			four = "";
 		}
 
 		return (
