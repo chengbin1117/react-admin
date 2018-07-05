@@ -239,6 +239,9 @@ background: -webkit-linear-gradient(left top, #e2f2ef , #edf5e6); Safari 5.1 - 6
     background: linear-gradient(to bottom right, #e2f2ef , #edf5e6); 标准的语法（必须放在最后）
  */
 }
+.header {
+	box-shadow: 0 1px 5px rgba(0,0,0,.2);
+}
 .footer div{
 
 }

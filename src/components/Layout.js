@@ -377,7 +377,7 @@ class LayoutContainer extends React.Component {
 					</Menu>
 				</Sider>
 				<Layout>
-					<Header style={{ background: '#fff', padding: 0 }}>
+					<Header style={{ background: '#fff', padding: 0 }} className={styles.header}>
 						<Icon
 							className={styles.trigger}
 							type={collapsed ? 'menu-unfold' : 'menu-fold'}
