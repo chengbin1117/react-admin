@@ -309,10 +309,6 @@ let uploadUrl = "https://test-kg-oss.oss-cn-beijing.aliyuncs.com/";//开发&测�
 let uploadVideoUrl = "https://testwebapi.kg.com/image/uploadVideo"; //测试环境地址
 //let uploadVideoUrl = "https://webapi.kg.com/image/uploadVideo"; //正式环境地址
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
 //下载视频地址
 let videoUrl = "https://test-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //开发环境视频服务器地址
 //let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
