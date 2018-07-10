@@ -325,6 +325,7 @@ let apkUrl = "https://testwebapi.kg.com/admin/appvm/uploadFile/"; //测试环境
 let urlprefix = "https://testwebapi.kg.com"; //生产&&测试
 //let urlprefix = "https://webapi.kg.com"; //生产
 
+
 export {
   ImgUrl,
   uploadUrl,
