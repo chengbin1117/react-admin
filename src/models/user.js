@@ -50,8 +50,7 @@ export default {
 				let userId = localStorage.getItem("userId");
 				if (match) {
 					const search = GetRequest(location.search);
-					console.log(search.platform)
-					console.log(search.lockStatus)
+					
 					dispatch({
 						type: 'getUserList',
 						payload: {
@@ -66,6 +65,7 @@ export default {
 							createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 							createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
 							platform: search.platform != "undefined" ? search.platform : null,
+							rankingList:search.rankingList != "undefined" ? parseInt(search.rankingList) : null,
 							pageSize: 25,
 
 						}
@@ -414,6 +414,7 @@ export default {
 							createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 							createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
 							platform: search.platform != "undefined" ? search.platform : null,
+							rankingList:search.rankingList != "undefined" ? parseInt(search.rankingList) : null,
 							pageSize: 25,
 						}
 					});
@@ -431,18 +432,22 @@ export default {
 			}
 		},
 		*setHotUser({ payload }, { call, put }) {
-			/* yield put({
-			  type: 'showLoading',
-			});*/
+			yield put({
+			  type: 'showSubmitLoading',
+			});
 			let params = {
 				userId: payload.userId,
-				hotUser: payload.hotUser
+				hotUser: payload.hotUser,
+				rankingList:payload.rankingList
 			}
 			const { data } = yield call(setHotUser, params);
 			// console.log("11",data)
 			if (data && data.code == 10000) {
 				message.success('设置成功')
 				//console.log(res)
+				yield put({
+					type: 'hideSubmitLoading',
+				});
 				const search = GetRequest(payload.search)
 				yield put({
 					type: 'getUserList',
@@ -458,6 +463,7 @@ export default {
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
 						platform: search.platform != "undefined" ? search.platform : null,
+						rankingList:search.rankingList != "undefined" ? parseInt(search.rankingList) : null,
 						pageSize: 25,
 					}
 				});
@@ -468,6 +474,9 @@ export default {
 					}
 				});
 			} else {
+				yield put({
+					type: 'hideSubmitLoading',
+				});
 				if (data.code == 10004 || data.code == 10011) {
 					message.error(data.message, 2);
 					yield put(routerRedux.push('/'));
@@ -510,6 +519,7 @@ export default {
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
 						platform: search.platform != "undefined" ? search.platform : null,
+						rankingList:search.rankingList != "undefined" ? parseInt(search.rankingList) : null,
 						pageSize: 25,
 					}
 				});
@@ -1295,6 +1305,7 @@ export default {
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
 						platform: search.platform != "undefined" ? search.platform : null,
+						rankingList:search.rankingList != "undefined" ? parseInt(search.rankingList) : null,
 						pageSize: 25,
 					}
 				});
@@ -1349,6 +1360,7 @@ export default {
 						createDateStart: search.createDateStart != "undefined" ? search.createDateStart : null,
 						createDateEnd: search.createDateStart != "undefined" ? search.createDateEnd : null,
 						platform: search.platform != "undefined" ? search.platform : null,
+						rankingList:search.rankingList != "undefined" ? parseInt(search.rankingList) : null,
 						pageSize: 25,
 					}
 				});

@@ -89,7 +89,7 @@ function RelesEditor({
 	},
 }) {
 	let merId = localStorage.getItem("userId");
-	console.log(flag)
+
 	const options = ColumnList;
 	const imgArr = [imgx, imgy, imgz, imgw, imga, imgb, imgc, imgd];  //默认背景图；
 	const { RelationVisible, getRelUserList } = setting;
@@ -819,7 +819,7 @@ function RelesEditor({
 		var fileList = docobj.files[0];
 		//现在图片文件大小
 		var imgSize = fileList.size;
-		console.log(fileList);
+	
 		if (imgSize > 2 * 1024 * 1024) {
 			message.error('上传的图片的大于2M,请重新选择');
 			docobj.val('');
@@ -829,7 +829,7 @@ function RelesEditor({
 			docobj.before(newJqObj);
 			docobj.remove();
 			docobj.unbind().change(function (e) {
-				console.log(e)
+				
 			});
 			return;
 		}
@@ -849,8 +849,7 @@ function RelesEditor({
 			img.onload = function (argument) {
 				imgWidth = this.width;
 				imgHeight = this.height;
-				console.log(imgWidth, imgHeight)  //这里就是上传图片的宽和高了
-				console.log(imgWidth)
+				
 				if (imgWidth < 365 ) {
 					message.warning('上传图片最小尺寸为365*200px')
 				} else if(imgHeight < 200){
@@ -880,7 +879,7 @@ function RelesEditor({
 		var fileList = docobj.files[0];
 		//现在图片文件大小
 		var imgSize = fileList.size;
-		console.log(imgSize);
+		
 		if (imgSize > 2 * 1024 * 1024) {
 			message.error('上传的图片的大于2M,请重新选择');
 			docobj.val('')

@@ -15,6 +15,7 @@ import Editor from '../../editor/index';
 import $ from 'jquery';
 import { uploadUrl, ImgUrl, formatDate, videoUrl, uploadVideoUrl } from "../../services/common"
 import UploadVideo from '../Upload_Video.js';
+import {reasons} from '../../utils/config'
 import RelationModal from '../Setting/RelationUser';
 import imgx from '../../assets/images/article1.jpg';
 import imgy from '../../assets/images/article2.jpg';
@@ -412,6 +413,10 @@ function ArticleEditor({
 	function StatusonChange(e) {
 		//console.log(e.target.value)
 		value = e.target.value;
+		setFieldsValue({
+			refuseReason: '',
+			reason:''
+		});
 		dispatch({
 			type:"content/publishStatusChange",
 			payload:{
@@ -677,6 +682,13 @@ function ArticleEditor({
 			})
 		}
 
+	}
+	//设置原因
+	const textReasons = (e) => {
+		setFieldsValue({
+			refuseReason: e.target.value
+		});
+		
 	}
 	function tagValue1(rule, value, callback) {
 		//console.log(value)
@@ -1459,6 +1471,18 @@ function ArticleEditor({
 						<Radio value="1">通过</Radio>
 						<Radio value="3">不通过</Radio>
 
+					</RadioGroup>
+				)}
+			</FormItem> : null}
+			{(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
+				{getFieldDecorator('reason', {
+				})(
+					<RadioGroup size="small" onChange = {textReasons}>
+						{reasons&&reasons.map((item)=>
+							<Radio key ={item.id} value ={item.data} disabled = {pubStatus == 3 ? false : true} >
+								<span>{item.data}</span>
+							</Radio>
+						)}
 					</RadioGroup>
 				)}
 			</FormItem> : null}

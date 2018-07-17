@@ -190,7 +190,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			dispatch(routerRedux.push('/user/user_admin?page=' + page +
 				"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 				"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
-				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&platform='+search.platform
+				"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&platform='+search.platform+'&rankingList='+search.rankingList
 			))
 
 		},
@@ -198,7 +198,6 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			dispatch(routerRedux.push('/user/user_data?userId=' + record.userId))
 		},
 		sorterUserList(sorter){
-			console.log(sorter)
 			const search = GetRequest(location.search);
 			let orderByClause = ""
 			if(sorter.field=="articleNum"){
@@ -235,7 +234,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						"&userId=" + search.userId + "&userName=" + search.userName + "&userMobile=" + search.userMobile +
 						"&userRole=" + search.userRole + "&auditStatus=" + search.auditStatus + "&lockStatus=" + search.lockStatus +
 						"&createDateStart=" + search.createDateStart + "&createDateEnd=" + search.createDateEnd+'&orderByClause='+orderByClause
-						+'&platform='+search.platform
+						+'&platform='+search.platform+'&rankingList='+search.rankingList
 			))	
 			
 
@@ -290,6 +289,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 	const SetHotuserModalProps = {
 		visible: HotVisible,
 		selectList,
+		confirmLoading:confirmLoading,
 		onCancel() {
 			dispatch({
 				type: 'user/hideHotModal',
@@ -297,12 +297,12 @@ function UserAdmin({ location, dispatch, user, router, }) {
 			})
 		},
 		onOk(b, user) {
-			console.log(user)
 			dispatch({
 				type: 'user/setHotUser',
 				payload: {
 					userId: user.userId,
 					hotUser: parseInt(b.radio) == 2 ? false : true,
+					rankingList:parseInt(b.rankingList),
 					search:location.search
 				}
 
@@ -505,6 +505,16 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						)}
 					</FormItem>
 				</Col>
+				<Col span={8} style={{ display: 'block' }}>
+					<FormItem {...formItemLayout} label='是否显示排行榜'>
+						{getFieldDecorator('rankingList')(
+							<Select placeholder="请选择" allowClear={true}>
+								<Option value="1">显示</Option>
+								<Option value="0">隐藏</Option>
+							</Select>
+						)}
+					</FormItem>
+				</Col>
 			</div>
 		);
 		return children;
@@ -554,12 +564,13 @@ function UserAdmin({ location, dispatch, user, router, }) {
 				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
 				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus +
 				"&createDateStart=" + timeFormat(new Date(values.time[0])) +
-				"&createDateEnd=" + timeFormat(new Date(values.time[1]))+'&platform='+values.platform
+				"&createDateEnd=" + timeFormat(new Date(values.time[1]))+'&platform='+values.platform+'&rankingList='+values.rankingList
 			))
 		} else {
 			dispatch(routerRedux.push('/user/user_admin?page=1' + "&userId=" + values.Id +
 				"&userName=" + values.userName + "&userMobile=" + values.phone + "&userRole=" + values.role +
-				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus+'&platform='+values.platform
+				"&auditStatus=" + values.auditStatus + "&lockStatus=" + values.lockStatus+'&platform='+values.platform+
+				'&rankingList='+values.rankingList
 			))
 		}
 	}

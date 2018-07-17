@@ -11,7 +11,7 @@ import './routes/font.less';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 // /import { Router, Route, Switch,IndexRoute} from 'dva/router';
-import { Router, Route, Link, Switch, HashHistory } from 'react-router-dom';
+import { Router, Route, Link, Switch, HashRouter } from 'react-router-dom';
 import LayoutContainer from './components/Layout';
 import UserRouter from './routes/UserLoginPage';
 import Login from './routes/Login';

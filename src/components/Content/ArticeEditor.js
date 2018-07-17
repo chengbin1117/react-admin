@@ -2,7 +2,7 @@
  * @Author: guokang 
  * @Date: 2018-05-21 16:53:49 
  * @Last Modified by: guokang
- * @Last Modified time: 2018-06-22 10:19:59
+ * @Last Modified time: 2018-07-13 09:55:24
  */
 
 
@@ -20,7 +20,8 @@ import WrappedAdvancedSearchForm from '../AdvancedSearchForm.js';
 import style_pagination from '../pagination.css';
 import styles from './Content_Opinion_Show.css';
 import Editor from '../../editor/index';
-import { options, uploadUrl, ImgUrl, formatDate } from "../../services/common"
+import { options, uploadUrl, ImgUrl, formatDate } from "../../services/common";
+import {reasons} from '../../utils/config'
 import E from 'wangeditor';
 import $ from 'jquery';
 import RelationModal from '../Setting/RelationUser';
@@ -572,6 +573,15 @@ function ArticleEditor({
 
 	}
 
+
+	//设置原因
+	const textReasons = (e) => {
+		setFieldsValue({
+			refuseReason: e.target.value
+		});
+		
+	}
+
 	function range(start, end) {
 		const result = [];
 		for (let i = start; i < end; i++) {
@@ -627,12 +637,17 @@ function ArticleEditor({
 	function StatusonChange(e) {
 		//console.log(e.target.value)
 		value = e.target.value;
+		setFieldsValue({
+			refuseReason: '',
+			reason:''
+		});
 		dispatch({
 			type: "content/publishStatusChange",
 			payload: {
 				pubStatus: e.target.value
 			}
 		})
+		
 	}
 	function showUser() {
 		dispatch({
@@ -1547,6 +1562,18 @@ function ArticleEditor({
 						<Radio value="1">通过</Radio>
 						<Radio value="3">不通过</Radio>
 
+					</RadioGroup>
+				)}
+			</FormItem> : null}
+			{(ArticleList.sysUser == null && ArticleList.publishStatus == 2) ? <FormItem {...formItemLayout} label="&nbsp;" colon={false}>
+				{getFieldDecorator('reason', {
+				})(
+					<RadioGroup size="small" onChange = {textReasons}>
+						{reasons&&reasons.map((item)=>
+							<Radio key ={item.id} value ={item.data} disabled = {pubStatus == 3 ? false : true} >
+								<span>{item.data}</span>
+							</Radio>
+						)}
 					</RadioGroup>
 				)}
 			</FormItem> : null}
