@@ -290,12 +290,12 @@ export function getBase64(img) {
 }
 
 //预览前台地址
-//let previewUrl = "https://dev.kg.com/dist/views/detail/list.html"; //开发
-let previewUrl = "https://test.kg.com/detail/list.html"; //测试
+let previewUrl = "https://dev.kg.com/dist/views/detail/list.html"; //开发
+//let previewUrl = "https://test.kg.com/detail/list.html"; //测试
 //let previewUrl = "https://www.kg.com/detail/list.html"; //正式
 
-//let ImgUrl = "https://dev.kg.com/image/upload"; //开发
-let ImgUrl = "https://testwebapi.kg.com/image/upload"; //测试
+let ImgUrl = "https://dev.kg.com/image/upload"; //开发
+//let ImgUrl = "https://testwebapi.kg.com/image/upload"; //测试
 //let ImgUrl = "https://webapi.kg.com/image/upload"; //生产
 
 
@@ -305,8 +305,8 @@ let uploadUrl = "https://test-kg-oss.oss-cn-beijing.aliyuncs.com/";//开发&测�
 
 
 //上传视频地址
-//let uploadVideoUrl = "https://dev.kg.com/image/uploadVideo"; //开发环境地址
-let uploadVideoUrl = "https://testwebapi.kg.com/image/uploadVideo"; //测试环境地址
+let uploadVideoUrl = "https://dev.kg.com/image/uploadVideo"; //开发环境地址
+//let uploadVideoUrl = "https://testwebapi.kg.com/image/uploadVideo"; //测试环境地址
 //let uploadVideoUrl = "https://webapi.kg.com/image/uploadVideo"; //正式环境地址
 
 //下载视频地址
@@ -314,15 +314,15 @@ let videoUrl = "https://test-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //开�
 //let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
 
 //apk上传
-//let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发环境视频服务器地址
-let apkUrl = "https://testwebapi.kg.com/admin/appvm/uploadFile/"; //测试环境视频服务器地址
+let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发环境视频服务器地址
+//let apkUrl = "https://testwebapi.kg.com/admin/appvm/uploadFile/"; //测试环境视频服务器地址
 //let apkUrl = "https://webapi.kg.com/admin/appvm/uploadFile/"; //正式环境视频服务器地址
 //服务器
 //let urlprefix = "http://172.16.1.108:8081/kgapi";  //李熠
 //let urlprefix = "http://172.16.1.97:8080/kgapi";  //文全
 //let urlprefix = "http://172.16.0.243:8080/kgapi";  //王洋
-//let urlprefix = "https://dev.kg.com";//开发
-let urlprefix = "https://testwebapi.kg.com"; //生产&&测试
+let urlprefix = "https://dev.kg.com";//开发
+//let urlprefix = "https://testwebapi.kg.com"; //生产&&测试
 //let urlprefix = "https://webapi.kg.com"; //生产
 
 
