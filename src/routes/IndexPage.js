@@ -21,7 +21,6 @@ import ExamineModal from '../components/User/ExamineModal';
 import styles from './IndexPage.css';
 import { timeFormat, GetRequest } from '../services/common';
 import style_pagination from '../components/pagination.css';
-import { divide } from 'gl-matrix/src/gl-matrix/vec2';
 function IndexPage({ location, dispatch, user, router, content }) {
 	const { AuditVisible, userlist, ExmianVisible, selectList, loading, totalNumber } = user;
 	//const {ArticleList}=content
@@ -196,6 +195,7 @@ function IndexPage({ location, dispatch, user, router, content }) {
 
 		}
 	}
+
 	const ArticleListProps = {
 		data: content.ArticleList,
 		loading: content.loading,
@@ -229,6 +229,7 @@ function IndexPage({ location, dispatch, user, router, content }) {
 				}
 			})
 		}
+
 	}
 
 	//待审核的视频
@@ -257,6 +258,7 @@ function IndexPage({ location, dispatch, user, router, content }) {
 				}
 			})
 		}
+
 	}
 	function onChange(page) {
 		console.log(page)
@@ -269,19 +271,13 @@ function IndexPage({ location, dispatch, user, router, content }) {
 			}} className={styles.allUser}>查看全部用户</Link>}
 				hoverable={true}
 			>
-
 				<Table bordered rowKey={record => record.userId} columns={columns} pagination={false} dataSource={userlist} loading={loading} />
-
 				<ExamineModal {...ExamineModalProps} />
 			</Card>
-			<div>
-				<VideoTable {...VideoTableProps} />
-				<AuditingModal {...AuditingModalProps} />
-			</div>
-			<div>
-				<ArticleList {...ArticleListProps} />
-				<AuditingModal {...AuditingModalProps} />
-			</div>
+			<VideoTable {...VideoTableProps} />
+		    <AuditingModal {...AuditingModalProps} />
+			<ArticleList {...ArticleListProps} />
+			<AuditingModal {...AuditingModalProps} />
 		</div>
 
 	);
