@@ -275,7 +275,6 @@ function IndexPage({ location, dispatch, user, router, content }) {
 				<ExamineModal {...ExamineModalProps} />
 			</Card>
 			<VideoTable {...VideoTableProps} />
-		    <AuditingModal {...AuditingModalProps} />
 			<ArticleList {...ArticleListProps} />
 			<AuditingModal {...AuditingModalProps} />
 		</div>
