@@ -11,7 +11,9 @@ import {
   Switch,
   Pagination,
   Divider,
-  Badge
+  Badge,
+  Button,
+  Card
 } from 'antd';
 import style_pagination from '../pagination.css'
 /*import styles from './purchaseList.css'*/
@@ -26,7 +28,8 @@ function ArticleList({
   onSetItem,
   onToggleItem,
   data,
-  onPreview
+  onPreview,
+  batchAudit
 }) {
 
   //console.log("total",total)
@@ -64,13 +67,38 @@ function ArticleList({
 		}
   },];
 
-  function onChange(page){
-    console.log(page)
-  }
+  class App extends React.Component {
+		state = {
+			selectedRowKeys: [], // Check here to configure the default column
 
+		};
+		onSelectChange = (selectedRowKeys, selectedRows) => {
+			// console.log('selectedRowKeys changed: ', selectedRowKeys,selectedRows);
+			this.setState({
+				selectedRowKeys: selectedRowKeys,
+				selectedRows: selectedRows
+			});
+		}
+		render() {
+			const { selectedRowKeys, selectedRows } = this.state;
+			const rowSelection = {
+				selectedRowKeys,
+				onChange: this.onSelectChange,
+			};
+			const hasSelected = selectedRowKeys.length > 0;
+			return (
+				<Card title={<span><span>待审核文章</span><Button type="primary" disabled = {!hasSelected} style={{marginLeft:30}} onClick={()=>batchAudit(selectedRowKeys)}>批量审核</Button></span>}
+				hoverable={true}
+				extra={<Link to="/content/content_article?page=1">查看全部文章</Link>} style={{ marginTop: "100px" }}>
+          
+					<Table  rowSelection={rowSelection} rowKey={record => record.articleId}  columns={columns}  dataSource={data} pagination={false} loading={loading}/>
+				</Card>
+			);
+		}
+	}
   return (
     <div>
-      <Table  rowKey={record => record.articleId}  columns={columns}  dataSource={data} pagination={false} loading={loading}/>
+      <App />
     </div>
   )
 }

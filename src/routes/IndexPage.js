@@ -21,6 +21,7 @@ import ExamineModal from '../components/User/ExamineModal';
 import styles from './IndexPage.css';
 import { timeFormat, GetRequest } from '../services/common';
 import style_pagination from '../components/pagination.css';
+import { divide } from 'gl-matrix/src/gl-matrix/vec2';
 function IndexPage({ location, dispatch, user, router, content }) {
 	const { AuditVisible, userlist, ExmianVisible, selectList, loading, totalNumber } = user;
 	//const {ArticleList}=content
@@ -150,41 +151,48 @@ function IndexPage({ location, dispatch, user, router, content }) {
 		visible: content.AuditVisible,
 		selectList: content.selectList,
 		ColumnList: content.ColumnList,
+		typeNews:content.typeNews,
+		dispatch:dispatch,
+		pubStatus:content.pubStatus,
 		confirmLoading: content.confirmLoading,
 		onCancel: function () {
 			dispatch({
 				type: 'content/hideModal',
 
 			});
+			dispatch({
+				type:'content/publishStatusChange',
+				payload:{
+					pubStatus: '1'
+				}
+			})
 		},
-		onOk(data, selectList) {
-			if (data.column == undefined) {
+		onOk(data, selectList){
+			if(data.radio == 3) {
 				dispatch({
-					type: "content/auditArticle",
-					payload: {
-						articleId: selectList.articleId,
-						auditUser: merId,
-						refuseReason: data.text,
-						auditStatus: parseInt(data.radio),
-						Status: 2,
-						search: location.search
+					type:'content/batchRevie',
+					payload:{
+						articleIds:selectList.join(','),
+						ifPlatformPublishAward:parseInt(data.isarward),
+						auditUser:localStorage.getItem('userId'),
+						publicStatus:parseInt(data.radio),
+						refuseReason:data.reasons
 					}
 				})
-			} else {
+			}else {
 				dispatch({
-					type: "content/auditArticle",
-					payload: {
-						articleId: selectList.articleId,
-						auditUser: merId,
-						refuseReason: data.text,
-						columnId: data.column[0],
-						secondColumn: data.column[1],
-						auditStatus: parseInt(data.radio),
-						Status: 2,
-						search: location.search
+					type:'content/batchRevie',
+					payload:{
+						articleIds:selectList.join(','),
+						ifPlatformPublishAward:parseInt(data.isarward),
+						auditUser:localStorage.getItem('userId'),
+						publicStatus:parseInt(data.radio),
+						columnId: data.columnarticle[0],
+						secondColumn: data.columnarticle[1]
 					}
 				})
 			}
+
 
 		}
 	}
@@ -211,6 +219,15 @@ function IndexPage({ location, dispatch, user, router, content }) {
 			console.log(record)
 			window.open('/#/articlePreview?articleId=' + record.articleId)
 			//dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
+		},
+		batchAudit(Ids) {
+			dispatch({
+				type:'content/showModal',
+				payload: {
+					selectList:Ids,
+					typeNews:'article'
+				}
+			})
 		}
 	}
 
@@ -229,6 +246,16 @@ function IndexPage({ location, dispatch, user, router, content }) {
 			console.log(record)
 			window.open('/#/articlePreview?articleId=' + record.articleId)
 			//dispatch(routerRedux.push('/articlePreview?articleId='+record.articleId))
+		},
+		batchAudit(Ids) {
+			console.log(Ids)
+			dispatch({
+				type:'content/showModal',
+				payload: {
+					selectList:Ids,
+					typeNews:'video'
+				}
+			})
 		}
 	}
 	function onChange(page) {
@@ -247,25 +274,14 @@ function IndexPage({ location, dispatch, user, router, content }) {
 
 				<ExamineModal {...ExamineModalProps} />
 			</Card>
-			<Card title="待审核视频"
-				hoverable={true}
-				extra={<Link to={{
-					pathname: "/content/videoList",
-					query: { page: 1 }
-				}} className={styles.allUser}>查看全部视频</Link>} style={{ marginTop: "100px" }}>
+			<div>
 				<VideoTable {...VideoTableProps} />
 				<AuditingModal {...AuditingModalProps} />
-			</Card>
-			<Card title="待审核文章"
-				hoverable={true}
-				extra={<Link to={{
-					pathname: "/content/content_article",
-					query: { page: 1 }
-				}} className={styles.allUser}>查看全部文章</Link>} style={{ marginTop: "100px" }}>
+			</div>
+			<div>
 				<ArticleList {...ArticleListProps} />
 				<AuditingModal {...AuditingModalProps} />
-			</Card>
-		
+			</div>
 		</div>
 
 	);

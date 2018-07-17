@@ -60,6 +60,16 @@ export async function auditArticle(params) {
 	);
 }
 
+//文章视频批量审核
+export async function batchRevie(params) {
+	var data = Base64Url(params)
+    var sign = SignUrl(data)
+	let url = '/admin/article/batchReview?data='+encodeURIComponent(data)+"&sign="+sign;
+	return request(url,{
+		method:"POST"
+	});
+}
+
 //文章发布
 
 export async function publishArticle(params) {
