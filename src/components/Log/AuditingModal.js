@@ -13,7 +13,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import { reasons } from '../../utils/config'
+import { reasons } from '../../utils/config.js'
 const formItemLayout = {
 	labelCol: { span: 2 },
 	wrapperCol: { span: 16 },
