@@ -130,15 +130,17 @@ const AuditingModal = ({
 						</RadioGroup>
 					)}
 				</FormItem>
-				{typeNews === 'video' ? <FormItem label="选择栏目" {...formItemLayout}>
-					{getFieldDecorator('columnvideo', {
+				{typeNews === 'video'&& <FormItem label="选择栏目" {...formItemLayout}>
+					{getFieldDecorator('columnarticle', {
 						initialValue: [360],
 						rules: [{ required: pubStatus == 1 ? true : false, message: "请选择!" }],
 					})(
 						<Cascader options={ColumnList} placeholder="请选择" style={{ width: 300 + 'px' }} disabled />
 					)}
-				</FormItem> : <FormItem label="选择栏目" {...formItemLayout}>
+				</FormItem> }
+				{typeNews === 'article'&&<FormItem label="选择栏目" {...formItemLayout}>
 						{getFieldDecorator('columnarticle', {
+							initialValue: [],
 							rules: [{ required: pubStatus == 1 ? true : false, message: "请选择!" }],
 						})(
 							<Cascader options={ColumnList} placeholder="请选择" style={{ width: 300 + 'px' }} />
