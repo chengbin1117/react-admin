@@ -124,7 +124,7 @@ const AuditingModal = ({
 						initialValue: '1',
 						rules: [{ required: true, message: "请选择!" }],
 					})(
-						<RadioGroup onChange={onChange} >
+						<RadioGroup>
 							<Radio value="1">发送</Radio>
 							<Radio value="0">不发送</Radio>
 						</RadioGroup>
