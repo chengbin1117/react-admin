@@ -185,6 +185,11 @@ const UserAdmin = ({
 		key: 'hotUser',
 		width: 60,
 		render: text => <span>{text == true ? "是" : '否'}</span>,
+	},{
+		title: '排序',
+		dataIndex: 'userOrder',
+		key: 'userOrder',
+		width: 60,
 	}, {
 		title: '操作',
 		key: 'action',
@@ -254,7 +259,7 @@ const UserAdmin = ({
 				<div>
 					<Table columns={columns} dataSource={userlist} pagination={false} rowSelection={rowSelection} loading={loading} rowKey={record => record.userId}
 						onChange={this.handleTableChange}
-						scroll={{ x: 2300 }}
+						scroll={{ x: 2360 }}
 					/>
 					<div className="table-operations" >
 						<Button type="primary" size='large' disabled={!hasSelected} onClick={() => ExamineModal(selectedRows)}>批量审核</Button>

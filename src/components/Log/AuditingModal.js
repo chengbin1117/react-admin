@@ -119,7 +119,7 @@ const AuditingModal = ({
 						</RadioGroup>
 					)}
 				</FormItem>
-				<FormItem label="是否发放奖励" {...formItemLayout}>
+				{pubStatus ==1?	<FormItem label="是否发放奖励" {...formItemLayout}>
 					{getFieldDecorator('isarward', {
 						initialValue: '1',
 						rules: [{ required: true, message: "请选择!" }],
@@ -129,8 +129,9 @@ const AuditingModal = ({
 							<Radio value="0">不发送</Radio>
 						</RadioGroup>
 					)}
-				</FormItem>
-				{typeNews === 'video'&& <FormItem label="选择栏目" {...formItemLayout}>
+				</FormItem>:null}
+			
+				{typeNews === 'video'&&pubStatus == 1 &&<FormItem label="选择栏目" {...formItemLayout}>
 					{getFieldDecorator('columnarticle', {
 						initialValue: [360],
 						rules: [{ required: pubStatus == 1 ? true : false, message: "请选择!" }],
@@ -138,7 +139,7 @@ const AuditingModal = ({
 						<Cascader options={ColumnList} placeholder="请选择" style={{ width: 300 + 'px' }} disabled />
 					)}
 				</FormItem> }
-				{typeNews === 'article'&&<FormItem label="选择栏目" {...formItemLayout}>
+				{typeNews === 'article'&& pubStatus == 1 &&<FormItem label="选择栏目" {...formItemLayout}>
 						{getFieldDecorator('columnarticle', {
 							initialValue: [],
 							rules: [{ required: pubStatus == 1 ? true : false, message: "请选择!" }],
