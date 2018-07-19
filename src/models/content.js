@@ -857,7 +857,7 @@ export default {
 
 						}
 					})
-			        let articleText = localStorage.getItem('articleText');
+			        let articleText = localStorage.getItem('articleTextPreview');
 					var str = data.message;
 					var arr = str.split(',')
 					$.each(arr, function (i, e) {

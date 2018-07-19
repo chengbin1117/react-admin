@@ -175,7 +175,7 @@ function IndexPage({ location, dispatch, user, router, content }) {
 						ifPlatformPublishAward:parseInt(data.isarward),
 						auditUser:localStorage.getItem('userId'),
 						publicStatus:parseInt(data.radio),
-						refuseReason:data.reasons
+						refuseReason:data.text
 					}
 				})
 			}else {
