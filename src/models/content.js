@@ -3,7 +3,7 @@ import $ from 'jquery';
 import {
 	getArticleList, setDisplayStatus, articleservice, auditArticle, getColumnList, deleteArticle, publishArticle, getArticleById,
 	getFeedbackList, deleteFeedback, setStatus, replay, getCommentList, commentSet, deleteComment, setcommentStatus, auditComment, addColumn, deleteColumn,
-	sendEmail, getSysUserById, getBonus, getArticleStat, setDisplayOrder,getPushAticleInfo
+	sendEmail, getSysUserById, getBonus, getArticleStat, setDisplayOrder,getPushAticleInfo,batchRevie
 } from '../services/content';
 import {
 	message,Modal
@@ -62,7 +62,8 @@ export default {
 		imgSize:'1',
 		flag:false,  //大图是否可选
 		imgtype:'',
-		isCommentAutid:'0' //评论是否审核
+		isCommentAutid:'0', //评论是否审核,
+		typeNews:'article'
 	},
 
 	subscriptions: {
@@ -707,6 +708,7 @@ export default {
 				})
 				yield put({
 					type: 'hideModal'
+
 				})
 				const search = GetRequest(payload.search);
 				if(payload.Status == 2){
@@ -855,7 +857,7 @@ export default {
 
 						}
 					})
-			        let articleText = localStorage.getItem('articleText');
+			        let articleText = localStorage.getItem('articleTextPreview');
 					var str = data.message;
 					var arr = str.split(',')
 					$.each(arr, function (i, e) {
@@ -2132,6 +2134,38 @@ export default {
 					comfingloading:payload.comfingloading,
 				}
 			})
+		},
+		*batchRevie({ payload }, { call, put }) {
+			yield put({
+				type:'showSubmitLoading'
+			})
+			const { data } = yield call(batchRevie, payload);
+			//console.log(data)
+			if (data && data.code == 10000) {
+				message.success('批量审核成功')
+				var res = data.responseBody;
+				yield put({
+					type: 'hideSubmitLoading',
+				})
+				yield put({
+					type:'hideModal',
+					payload:{
+						selectList:[],
+						pubStatus:'1'
+					}
+				})
+				yield put(routerRedux.push('/index?userId='+localStorage.getItem('userId')));
+			} else {
+				yield put({
+					type: 'hideSubmitLoading',
+				})
+				if (data.code == 10004 || data.code == 10011) {
+					message.error(data.message, 2);
+					yield put(routerRedux.push('/'));
+				} else {
+					message.error(data.message, 2);
+				}
+			}
 		},
 	},
 	reducers: {

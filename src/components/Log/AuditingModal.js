@@ -13,25 +13,23 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-
+import { reasons } from '../../utils/config.js'
 const formItemLayout = {
-	labelCol: {
-		span: 6,
-	},
-	wrapperCol: {
-		span: 14,
-	},
+	labelCol: { span: 2 },
+	wrapperCol: { span: 16 },
 };
-let value =0;
+let value = 0;
 const AuditingModal = ({
 	visible,
 	item = {},
-	type,
+	typeNews,
 	onOk,
 	selectList,
 	ColumnList,
 	onCancel,
 	confirmLoading,
+	dispatch,
+	pubStatus,
 	form: {
 		getFieldDecorator,
 		validateFields,
@@ -41,7 +39,6 @@ const AuditingModal = ({
 	},
 }) => {
 
-
 	function handleOk() {
 		validateFields((errors) => {
 			if (errors) {
@@ -49,20 +46,16 @@ const AuditingModal = ({
 			}
 
 			const data = {
-				
+
 				...getFieldsValue(),
-				
+
 			}
-			onOk(data,selectList);
+			onOk(data, selectList);
 		});
 	}
 
 	function Cancel() {
 		onCancel()
-		setFieldsValue({
-			father: "0",
-			name: ''
-		});
 	}
 	function afterClose() {
 		resetFields()
@@ -73,83 +66,111 @@ const AuditingModal = ({
 		onOk: handleOk,
 		onCancel: Cancel,
 		maskClosable: false,
-		confirmLoading:confirmLoading,
+		confirmLoading: confirmLoading,
 		afterClose: afterClose,
+		destroyOnClose:true,
+		width: 1450
 
 	};
-	
+
 	function onChange(e) {
-        value =e.target.value;
-    }
-	class App extends React.Component {
-		  state = {
-		    value: 1,
-		  }
-		  onChange = (e) => {
-		    console.log('radio checked', e.target.value);
-		    this.setState({
-		      value: e.target.value,
-		    });
-		  }
-		  render() {
-		    const radioStyle = {
-		      display: 'block',
-		      height: '30px',
-		      lineHeight: '30px',
-		    };
-		    return (
-		      <RadioGroup onChange={this.onChange} value={this.state.value}>
-		        
-		        <Radio style={radioStyle} value={3}>通过</Radio>
-		        <Radio style={radioStyle} value={4}>
-		          不通过
-		          <br />
-		           <Input style={{ width: "100%", minHeight: 100 }} disabled={this.state.value === 4 ?false:true} placeholder='请输入不通过原因（选填）'/>
-		        </Radio>
-		      </RadioGroup>
-		    );
-		  }
+		value = e.target.value;
+		if (value == 1) {
+			setFieldsValue({
+				text: '',
+				reasons: ''
+			});
 		}
+		dispatch({
+			type:'content/publishStatusChange',
+			payload:{
+				pubStatus: e.target.value
+			}
+		})
+
+	}
+	const radioStyle = {
+		display: 'block',
+		height: '30px',
+		lineHeight: '30px',
+	};
+	const radioStle = {
+		'wordWrap': 'breakWord',
+	}
+
+	const textReasons = (e) => {
+		setFieldsValue({
+			text: e.target.value
+		});
+
+	}
+
 	return (
 
 		<Modal {...modalOpts}>
-	       <Form>
-			<FormItem>
-				  	    {getFieldDecorator('radio', {
-				  			rules:[{required: true, message: "请选择!"}],
-				  		})(
-				  		    <RadioGroup onChange ={onChange} >
-				              <Radio value="1">通过</Radio>
-				              
-				            </RadioGroup>
-				  		)}
+			<Form>
+				<FormItem label="审核处理" {...formItemLayout}>
+					{getFieldDecorator('radio', {
+						rules: [{ required: true, message: "请选择!" }],
+					})(
+						<RadioGroup onChange={onChange} >
+							<Radio value="1">通过</Radio>
+							<Radio value="3">不通过</Radio>
+						</RadioGroup>
+					)}
 				</FormItem>
-				<FormItem label="选择栏目">
-				  	    {getFieldDecorator('column', {
-				  			rules:[{required: value==1?true:false, message: "请选择!"}],
-				  		})(
-				  		    <Cascader options={ColumnList}  placeholder="请选择" style={{width:300+'px'}}/>
-				  		)}
+				{pubStatus ==1?	<FormItem label="是否发放奖励" {...formItemLayout}>
+					{getFieldDecorator('isarward', {
+						initialValue: '1',
+						rules: [{ required: true, message: "请选择!" }],
+					})(
+						<RadioGroup>
+							<Radio value="1">发送</Radio>
+							<Radio value="0">不发送</Radio>
+						</RadioGroup>
+					)}
+				</FormItem>:null}
+			
+				{typeNews === 'video'&&pubStatus == 1 &&<FormItem label="选择栏目" {...formItemLayout}>
+					{getFieldDecorator('columnarticle', {
+						initialValue: [360],
+						rules: [{ required: pubStatus == 1 ? true : false, message: "请选择!" }],
+					})(
+						<Cascader options={ColumnList} placeholder="请选择" style={{ width: 300 + 'px' }} disabled />
+					)}
+				</FormItem> }
+				{typeNews === 'article'&& pubStatus == 1 &&<FormItem label="选择栏目" {...formItemLayout}>
+						{getFieldDecorator('columnarticle', {
+							initialValue: [],
+							rules: [{ required: pubStatus == 1 ? true : false, message: "请选择!" }],
+						})(
+							<Cascader options={ColumnList} placeholder="请选择" style={{ width: 300 + 'px' }} />
+						)}
+					</FormItem>}
+
+
+				<FormItem>
+					{getFieldDecorator('reasons', {
+
+					})(
+						<RadioGroup size="small" onChange={textReasons}>
+							{reasons && reasons.map((item) =>
+								<Radio key={item.id} value={item.data} disabled={pubStatus == 3 ? false : true} style={radioStyle} >
+									<span style={radioStle}>{item.data}</span>
+								</Radio>
+							)}
+						</RadioGroup>
+					)}
 				</FormItem>
 				<FormItem>
-				  	    {getFieldDecorator('radio', {
-				  			rules:[{required: true, message: "请选择!"}],
-				  		})(
-				  		    <RadioGroup onChange ={onChange} >
-				             
-				              <Radio value="3">不通过</Radio> 
-				            </RadioGroup>
-				  		)}
+					{getFieldDecorator('text', {
+						rules: [{
+							required: false, message: '请输入!',
+						}],
+					})(
+						<TextArea style={{ width: "100%", minHeight: "100px" }} placeholder="不通过原因(选填)" disabled={pubStatus == 3 ? false : true} />
+					)}
 				</FormItem>
-		        <FormItem>
-		          {getFieldDecorator('text',{
-		          	 rules: [{
-			              required: false, message: '请输入!',
-			            }], 
-		          })(
-		          <TextArea  style={{ width: "100%",minHeight:"100px"}} placeholder="不通过原因(选填)" disabled={value==3?false:true}/> 
-		          )}
-		        </FormItem>
 			</Form>
 		</Modal>
 	);

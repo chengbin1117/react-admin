@@ -322,7 +322,7 @@ function UserAdmin({ location, dispatch, user, router, }) {
 						</p>
 						<p className={stytes.dataBox}><span className={stytes.span1}>组织机构代码证/营业执照</span><span className={stytes.span2}>
 							{(userInfo.profile && userInfo.profile.licensePic != null) ?
-								<img src={uploadUrl + userInfo.profile.licensePic} />
+								<img src={uploadUrl + userInfo.profile.licensePic}  style={{width:740}}/>
 								: "——"}
 						</span>
 						</p>

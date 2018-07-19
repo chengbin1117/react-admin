@@ -300,8 +300,7 @@ let ImgUrl = "https://webapi.kg.com/image/upload"; //生产
 
 
 //下载图片
-  // let uploadUrl = "https://kgcom.oss-cn-shenzhen.aliyuncs.com/";//开发
-//let uploadUrl = "https://kgtest01.oss-cn-beijing.aliyuncs.com/"; //测试
+//let uploadUrl = "https://test-kg-oss.oss-cn-beijing.aliyuncs.com/";//开发&测试
 let uploadUrl = "https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/"; //生产
 
 
@@ -310,10 +309,9 @@ let uploadUrl = "https://pro-kg-oss.oss-cn-beijing.aliyuncs.com/"; //生产
 //let uploadVideoUrl = "https://testwebapi.kg.com/image/uploadVideo"; //测试环境地址
 let uploadVideoUrl = "https://webapi.kg.com/image/uploadVideo"; //正式环境地址
 
-
 //下载视频地址
- let videoUrl = "https://kgvideo.oss-cn-shenzhen.aliyuncs.com/"; //开发环境视频服务器地址
-//let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
+//let videoUrl = "https://test-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //开发环境视频服务器地址
+let videoUrl = "https://pro-kg-video-oss.oss-cn-beijing.aliyuncs.com/"; //正式环境视频服务器地址
 
 //apk上传
 //let apkUrl = "http://172.16.0.243:8080/kgapi/admin/appvm/uploadFile"; //开发环境视频服务器地址
@@ -326,6 +324,7 @@ let apkUrl = "https://webapi.kg.com/admin/appvm/uploadFile/"; //正式环境视�
 //let urlprefix = "https://dev.kg.com";//开发
 //let urlprefix = "https://testwebapi.kg.com"; //测试
   let urlprefix = "https://webapi.kg.com"; //生产
+
 
 export {
   ImgUrl,

@@ -18,7 +18,6 @@ import { Button,Modal} from 'antd';
 import ArticleList from '../components/Setting/ArticleList';
 const confirm = Modal.confirm;
 
-
 let userId =localStorage.getItem("userId");
 function AboutUs({dispatch,router,setting}) {
 	const {BaseInfoList} =setting
